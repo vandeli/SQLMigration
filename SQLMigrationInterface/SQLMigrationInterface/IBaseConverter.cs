@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data;
 
 namespace SQLMigrationInterface
 {
@@ -7,5 +8,6 @@ namespace SQLMigrationInterface
      //   event EventHandler onEndGenerate;
      //   event EventHandler onGenerate;
         string CreateScript();
+        DataTable CreateResultXml();
     }
 }

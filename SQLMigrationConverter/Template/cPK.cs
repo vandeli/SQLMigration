@@ -1,5 +1,6 @@
 ﻿using SQLMigrationInterface;
 using SQLMigrationConverter.MapAttribut;
+using System.Data;
 
 namespace SQLMigrationConverter.Template
 {
@@ -17,16 +18,25 @@ namespace SQLMigrationConverter.Template
 
         public string CreateScript()
         {
-            var result = "";
-            var tableResult = "";
-            foreach (var data in info.GetAllPk())
-            {
-                tableResult = getTemplate(data);
-                //   onGenerate(this, new ConvertEventArgs() { Script = tableResult });
-                result += tableResult;
-            }
-            return result;
+            //var result = "";
+            //var tableResult = "";
+            //foreach (var data in info.GetAllPk())
+            //{
+            //    tableResult = getTemplate(data);
+            //    //   onGenerate(this, new ConvertEventArgs() { Script = tableResult });
+            //    result += tableResult;
+            //}
+            return null; // result;
 
+        }
+
+        public DataTable CreateResultXml()
+        {
+          
+            DataTable DTresultItem = new DataTable("ResultInfo");
+
+           
+            return DTresultItem;
         }
 
         private string getTemplate(mPK data)

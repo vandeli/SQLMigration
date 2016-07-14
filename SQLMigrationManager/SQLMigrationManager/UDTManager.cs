@@ -34,21 +34,29 @@ namespace SQLMigrationManager
 
         public void Convert()
         {
+            DataTable resultXML = cudt.CreateResultXml();
             var configdata = dataAccess.ReadXML();
-
             var result = cudt.CreateScript();
-
-            var file = configdata.Path + configdata.Destination;
+            var fileQuery = configdata.Path + configdata.Destination;
+            var fileResultXml = configdata.Path + "UDTresultItem.xml";
            
-            if (Directory.Exists(Path.GetDirectoryName(file)))
+            if (Directory.Exists(Path.GetDirectoryName(fileQuery)))
             {
-                File.Delete(file);
+                File.Delete(fileQuery);
             }
-            using (var sw = File.CreateText(file))
+            using (var sw = File.CreateText(fileQuery))
             {
                 sw.Write(result);
             }
             MessageBox.Show("UDT_pgSQL created " + configdata.Path + configdata.Destination);
+
+
+            if (resultXML.Rows.Count != 0)
+            {
+                               
+                resultXML.WriteXml(configdata.Path + "UDTresult.xml", true);
+                MessageBox.Show("UDTresult created " + configdata.Path + "UDTresult.xml");
+            }
 
         }
 

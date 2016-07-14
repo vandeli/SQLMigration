@@ -8,7 +8,7 @@ namespace SQLMigrationConverter.MapAttribut
     {
       //  List<Column> GetAllColumns();
         List<mUDT> GetAllUdts();
-        //List<mPK> GetAllPk();
+      //  List<mPK> GetAllPk();
     }
 
     public class Info : IInfo

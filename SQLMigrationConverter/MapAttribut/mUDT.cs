@@ -8,6 +8,7 @@ namespace SQLMigrationConverter.MapAttribut
     {
         public mUDT() : base() { }
 
+        public int SchemaID { get; set; }
         public string Name { get; set; }
         public string DataType { get; set; }
         public int MaxLength { get; set; }
@@ -31,7 +32,11 @@ namespace SQLMigrationConverter.MapAttribut
         }
 
         public override void GetValueFromDataRow(DataRow dataRow)
-        {
+        {  
+            SchemaID = System.Convert.ToInt32(String.IsNullOrEmpty(
+                dataRow["SchemaID"].ToString())
+                ? 0
+                : dataRow["SchemaID"]);
             Name = dataRow["name"].ToString();
             MaxLength = System.Convert.ToInt32(String.IsNullOrEmpty(
                 dataRow["max_length"].ToString())
