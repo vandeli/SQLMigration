@@ -1,8 +1,5 @@
-﻿using System;
-using SQLMigrationInterface;
+﻿using SQLMigrationInterface;
 using SQLMigrationConverter.MapAttribut;
-using System.Windows.Forms;
-using System.IO;
 
 namespace SQLMigrationConverter.Template
 {

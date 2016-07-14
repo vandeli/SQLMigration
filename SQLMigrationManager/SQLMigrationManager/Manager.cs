@@ -7,15 +7,14 @@ namespace SQLMigrationManager
         public Manager()
         {
         }
-
-       
+            
 
         public void Convert()
         {
             throw new System.NotImplementedException();
         }
 
-        public void GetSchemaInfo()
+        public void GetSchema()
         {
             throw new System.NotImplementedException();
         }
