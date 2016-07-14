@@ -4,6 +4,6 @@ namespace SQLMigrationOF
 {
     class TestOF :  OF
     {
-        private static ITestConnect TestConnect = null;
+       // private static ITestConnect TestConnect = null;
     }
 }
