@@ -25,8 +25,7 @@ namespace SQLMigrationManager
             ds.WriteXml(configdata.Path + "UDTSchema.xml");
 
             MessageBox.Show("UDT sql Schema created " + configdata.Path + "UDTSchema.xml");
-           }
-     
+           }     
 
         public void Convert()
         {
@@ -71,19 +70,11 @@ namespace SQLMigrationManager
 
         private static void WriteConfig(ConfigData configdata)
         {
-            var getdata = new ConfigData
-            {
-                Destination = configdata.Destination,
-                Id = configdata.Id,
-                Source = configdata.Source,
-                Path = configdata.Path
-            };
-
             var writer = new System.Xml.Serialization.XmlSerializer(typeof(ConfigData));
-            var file = File.Create(getdata.Path + "UDTConfig.xml");
+            var file = File.Create(configdata.Path + "UDTConfig.xml");
 
-            writer.Serialize(file, getdata);
-            MessageBox.Show("config Data created on " + getdata.Path + "UDTConfig.xml");
+            writer.Serialize(file, configdata);
+            MessageBox.Show("config Data created on " + configdata.Path + "UDTConfig.xml");
 
             file.Close();
         }
