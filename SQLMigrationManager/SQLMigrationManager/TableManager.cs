@@ -14,12 +14,12 @@ namespace SQLMigrationManager
 
         public void Convert()
         {
-            throw new System.NotImplementedException();
+            
         }
 
         public void SetConfig(SetData setData)
         {
-            throw new System.NotImplementedException();
+            
         }
     }
 }
