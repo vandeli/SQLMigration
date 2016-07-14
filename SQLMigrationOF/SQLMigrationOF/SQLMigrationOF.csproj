@@ -43,6 +43,28 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestOF.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\SQLMigration.csproj">
+      <Project>{FB4DC7FA-63A2-4A11-89EA-7426EF8C7035}</Project>
+      <Name>SQLMigration</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\SQLMigrationConstants\SQLMigrationConstants\SQLMigrationConstants.csproj">
+      <Project>{FC3F95A8-AFCC-42D9-93C4-80BB709E0AFE}</Project>
+      <Name>SQLMigrationConstants</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\SQLMigrationConverter\SQLMigrationConverter.csproj">
+      <Project>{EB95B286-B62F-4C42-A018-5E18803699E7}</Project>
+      <Name>SQLMigrationConverter</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\SQLMigrationInterface\SQLMigrationInterface\SQLMigrationInterface.csproj">
+      <Project>{25658975-7316-4BDF-9FBC-3DC32955D44D}</Project>
+      <Name>SQLMigrationInterface</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\SQLMigrationManager\SQLMigrationManager\SQLMigrationManager.csproj">
+      <Project>{E6F8CC7B-B6B8-43B7-A061-DA9AE23E0573}</Project>
+      <Name>SQLMigrationManager</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

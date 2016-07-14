@@ -8,7 +8,7 @@ namespace SQLMigration.Data
     public interface IDataAccess
     {
         DataTable GetDataTable(string sql);
-        
+        ConfigData ReadXML();
     }
 
     public class DataAccess : IDataAccess

@@ -36,7 +36,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IBaseConverter.cs" />
+    <Compile Include="IcUDT.cs" />
     <Compile Include="IManager.cs" />
+    <Compile Include="ITableManager.cs" />
+    <Compile Include="IUDTManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

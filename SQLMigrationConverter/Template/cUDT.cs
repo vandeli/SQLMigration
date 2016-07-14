@@ -1,10 +1,11 @@
 ﻿using SQLMigrationInterface;
 using SQLMigrationConverter.MapAttribut;
 using SQLMigrationConverter.ResultInfo;
+using System.Data;
 
 namespace SQLMigrationConverter.Template
 {
-    public class cUDT : IBaseConvert
+    public class cUDT : IcUDT
     {
        // public event EventHandler onEndGenerate;
        // public event EventHandler onGenerate;
@@ -20,19 +21,58 @@ namespace SQLMigrationConverter.Template
 
         public string CreateScript()
         {
-            ResultItemData resultItem = new ResultItemData();
-
+            
             var result = "";
             var tableResult = "";
             foreach (var data in info.GetAllUdts())
             {
                 tableResult = getTemplate(data);
-                resultItem.sqlString = tableResult;
+                //resultItemdata.SourceId = data.SchemaID;
+                //resultItemdata.name = data.Name;
+                //resultItemdata.sqlString = tableResult;
+                //workRow["SourceId"] = data.SchemaID;
+                //workRow["name"] = data.Name;
+                //workRow["sqlString"] = tableResult;
+                //DTresultItem.Rows.Add(workRow);
+
+                //  resultItem.SourceId 
                 //   onGenerate(this, new ConvertEventArgs() { Script = tableResult });
                 result += tableResult;
             }
             return result;
           
+        }
+        public DataTable CreateResultXml()
+        {
+            ResultItemData resultItemdata = new ResultItemData();
+            DataTable DTresultItem = new DataTable("ResultInfo");
+
+            DTresultItem.Columns.Add("SourceId", typeof(int));
+            DTresultItem.Columns.Add("name", typeof(string));
+            DTresultItem.Columns.Add("sqlString", typeof(string));
+
+            DataColumn column = new DataColumn("ResultID");
+            column.DataType = System.Type.GetType("System.Int32");
+            column.AutoIncrement = true;
+            column.AutoIncrementSeed = 10;
+            column.AutoIncrementStep = 10;
+            DTresultItem.Columns.Add(column);
+
+           
+           
+            var tableResult = "";
+            foreach (var data in info.GetAllUdts())
+            {
+                DataRow workRow = DTresultItem.NewRow();
+                tableResult = getTemplate(data);
+                workRow["SourceId"] = data.SchemaID;
+                workRow["name"] = data.Name;
+                workRow["sqlString"] = tableResult;
+                DTresultItem.Rows.Add(workRow);
+                
+            }
+
+            return DTresultItem;
         }
 
         private string  getTemplate(mUDT data)
