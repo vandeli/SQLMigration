@@ -1,6 +1,7 @@
 <?xml version="1.0" standalone="yes"?>
 <NewDataSet>
   <Table1>
+    <SchemaID>0</SchemaID>
     <NAME>BOS_DT_bBoolean</NAME>
     <data_type>tinyint</data_type>
     <max_length>1</max_length>
@@ -9,6 +10,7 @@
     <is_nullable>false</is_nullable>
   </Table1>
   <Table1>
+    <SchemaID>1</SchemaID>
     <NAME>BOS_DT_byteLevel</NAME>
     <data_type>tinyint</data_type>
     <max_length>1</max_length>
@@ -17,6 +19,7 @@
     <is_nullable>false</is_nullable>
   </Table1>
   <Table1>
+    <SchemaID>2</SchemaID>
     <NAME>BOS_DT_decAmount</NAME>
     <data_type>decimal</data_type>
     <max_length>9</max_length>
@@ -25,6 +28,7 @@
     <is_nullable>false</is_nullable>
   </Table1>
   <Table1>
+    <SchemaID>3</SchemaID>
     <NAME>BOS_DT_decCcyRate</NAME>
     <data_type>decimal</data_type>
     <max_length>9</max_length>
@@ -33,6 +37,7 @@
     <is_nullable>false</is_nullable>
   </Table1>
   <Table1>
+    <SchemaID>4</SchemaID>
     <NAME>BOS_DT_decDecimal</NAME>
     <data_type>decimal</data_type>
     <max_length>9</max_length>
@@ -41,6 +46,7 @@
     <is_nullable>false</is_nullable>
   </Table1>
   <Table1>
+    <SchemaID>5</SchemaID>
     <NAME>BOS_DT_decPrice</NAME>
     <data_type>decimal</data_type>
     <max_length>9</max_length>
@@ -49,6 +55,7 @@
     <is_nullable>false</is_nullable>
   </Table1>
   <Table1>
+    <SchemaID>6</SchemaID>
     <NAME>BOS_DT_decQty</NAME>
     <data_type>decimal</data_type>
     <max_length>9</max_length>
@@ -57,6 +64,7 @@
     <is_nullable>false</is_nullable>
   </Table1>
   <Table1>
+    <SchemaID>7</SchemaID>
     <NAME>BOS_DT_decTax</NAME>
     <data_type>decimal</data_type>
     <max_length>9</max_length>
@@ -65,6 +73,7 @@
     <is_nullable>false</is_nullable>
   </Table1>
   <Table1>
+    <SchemaID>8</SchemaID>
     <NAME>BOS_DT_decUomConv</NAME>
     <data_type>decimal</data_type>
     <max_length>9</max_length>
@@ -73,6 +82,7 @@
     <is_nullable>false</is_nullable>
   </Table1>
   <Table1>
+    <SchemaID>9</SchemaID>
     <NAME>BOS_DT_szBigDescription</NAME>
     <data_type>nvarchar</data_type>
     <max_length>500</max_length>
@@ -81,6 +91,7 @@
     <is_nullable>false</is_nullable>
   </Table1>
   <Table1>
+    <SchemaID>10</SchemaID>
     <NAME>BOS_DT_szBigId</NAME>
     <data_type>nvarchar</data_type>
     <max_length>100</max_length>
@@ -89,6 +100,7 @@
     <is_nullable>false</is_nullable>
   </Table1>
   <Table1>
+    <SchemaID>11</SchemaID>
     <NAME>BOS_DT_szBigMessage</NAME>
     <data_type>nvarchar</data_type>
     <max_length>2000</max_length>
@@ -97,6 +109,7 @@
     <is_nullable>false</is_nullable>
   </Table1>
   <Table1>
+    <SchemaID>12</SchemaID>
     <NAME>BOS_DT_szBigPath</NAME>
     <data_type>nvarchar</data_type>
     <max_length>500</max_length>
@@ -105,6 +118,7 @@
     <is_nullable>false</is_nullable>
   </Table1>
   <Table1>
+    <SchemaID>13</SchemaID>
     <NAME>BOS_DT_szDescription</NAME>
     <data_type>nvarchar</data_type>
     <max_length>200</max_length>
@@ -113,6 +127,7 @@
     <is_nullable>false</is_nullable>
   </Table1>
   <Table1>
+    <SchemaID>14</SchemaID>
     <NAME>BOS_DT_szDeviceId</NAME>
     <data_type>nvarchar</data_type>
     <max_length>200</max_length>
@@ -121,6 +136,7 @@
     <is_nullable>false</is_nullable>
   </Table1>
   <Table1>
+    <SchemaID>15</SchemaID>
     <NAME>BOS_DT_szFullPath</NAME>
     <data_type>nvarchar</data_type>
     <max_length>510</max_length>
@@ -129,6 +145,7 @@
     <is_nullable>false</is_nullable>
   </Table1>
   <Table1>
+    <SchemaID>16</SchemaID>
     <NAME>BOS_DT_szGLAccount</NAME>
     <data_type>nvarchar</data_type>
     <max_length>200</max_length>
@@ -137,6 +154,7 @@
     <is_nullable>false</is_nullable>
   </Table1>
   <Table1>
+    <SchemaID>17</SchemaID>
     <NAME>BOS_DT_szGLSegment</NAME>
     <data_type>nvarchar</data_type>
     <max_length>20</max_length>
@@ -145,6 +163,7 @@
     <is_nullable>false</is_nullable>
   </Table1>
   <Table1>
+    <SchemaID>18</SchemaID>
     <NAME>BOS_DT_szGPSCoordinate</NAME>
     <data_type>nvarchar</data_type>
     <max_length>40</max_length>
@@ -153,6 +172,7 @@
     <is_nullable>false</is_nullable>
   </Table1>
   <Table1>
+    <SchemaID>19</SchemaID>
     <NAME>BOS_DT_szId</NAME>
     <data_type>nvarchar</data_type>
     <max_length>60</max_length>
@@ -161,6 +181,7 @@
     <is_nullable>false</is_nullable>
   </Table1>
   <Table1>
+    <SchemaID>20</SchemaID>
     <NAME>BOS_DT_szMediumId</NAME>
     <data_type>nvarchar</data_type>
     <max_length>20</max_length>
@@ -169,6 +190,7 @@
     <is_nullable>false</is_nullable>
   </Table1>
   <Table1>
+    <SchemaID>21</SchemaID>
     <NAME>BOS_DT_szMediumName</NAME>
     <data_type>nvarchar</data_type>
     <max_length>40</max_length>
@@ -177,6 +199,7 @@
     <is_nullable>false</is_nullable>
   </Table1>
   <Table1>
+    <SchemaID>22</SchemaID>
     <NAME>BOS_DT_szMessage</NAME>
     <data_type>nvarchar</data_type>
     <max_length>1000</max_length>
@@ -185,6 +208,7 @@
     <is_nullable>false</is_nullable>
   </Table1>
   <Table1>
+    <SchemaID>23</SchemaID>
     <NAME>BOS_DT_szName</NAME>
     <data_type>nvarchar</data_type>
     <max_length>100</max_length>
@@ -193,6 +217,7 @@
     <is_nullable>false</is_nullable>
   </Table1>
   <Table1>
+    <SchemaID>24</SchemaID>
     <NAME>BOS_DT_szOneChar</NAME>
     <data_type>nvarchar</data_type>
     <max_length>2</max_length>
@@ -201,6 +226,7 @@
     <is_nullable>false</is_nullable>
   </Table1>
   <Table1>
+    <SchemaID>25</SchemaID>
     <NAME>BOS_DT_szPath</NAME>
     <data_type>nvarchar</data_type>
     <max_length>200</max_length>
@@ -209,6 +235,7 @@
     <is_nullable>false</is_nullable>
   </Table1>
   <Table1>
+    <SchemaID>26</SchemaID>
     <NAME>BOS_DT_szQtyFormat</NAME>
     <data_type>nvarchar</data_type>
     <max_length>40</max_length>
@@ -217,6 +244,7 @@
     <is_nullable>false</is_nullable>
   </Table1>
   <Table1>
+    <SchemaID>27</SchemaID>
     <NAME>BOS_DT_szSmallId</NAME>
     <data_type>nvarchar</data_type>
     <max_length>10</max_length>
@@ -225,6 +253,7 @@
     <is_nullable>false</is_nullable>
   </Table1>
   <Table1>
+    <SchemaID>28</SchemaID>
     <NAME>BOS_DT_szSmallName</NAME>
     <data_type>nvarchar</data_type>
     <max_length>20</max_length>
@@ -233,6 +262,7 @@
     <is_nullable>false</is_nullable>
   </Table1>
   <Table1>
+    <SchemaID>29</SchemaID>
     <NAME>BOS_DT_szSN</NAME>
     <data_type>nvarchar</data_type>
     <max_length>60</max_length>
@@ -241,6 +271,7 @@
     <is_nullable>false</is_nullable>
   </Table1>
   <Table1>
+    <SchemaID>30</SchemaID>
     <NAME>BOS_DT_szTaxId</NAME>
     <data_type>nvarchar</data_type>
     <max_length>100</max_length>
@@ -249,6 +280,7 @@
     <is_nullable>false</is_nullable>
   </Table1>
   <Table1>
+    <SchemaID>31</SchemaID>
     <NAME>BOS_DT_szTrnId</NAME>
     <data_type>nvarchar</data_type>
     <max_length>30</max_length>
@@ -257,6 +289,7 @@
     <is_nullable>false</is_nullable>
   </Table1>
   <Table1>
+    <SchemaID>32</SchemaID>
     <NAME>BOS_DT_szUri</NAME>
     <data_type>nvarchar</data_type>
     <max_length>100</max_length>
@@ -265,6 +298,7 @@
     <is_nullable>false</is_nullable>
   </Table1>
   <Table1>
+    <SchemaID>33</SchemaID>
     <NAME>BOS_DT_szUrl</NAME>
     <data_type>nvarchar</data_type>
     <max_length>200</max_length>
@@ -273,6 +307,7 @@
     <is_nullable>false</is_nullable>
   </Table1>
   <Table1>
+    <SchemaID>34</SchemaID>
     <NAME>BOS_DT_szVeryBigMessage</NAME>
     <data_type>nvarchar</data_type>
     <max_length>4000</max_length>

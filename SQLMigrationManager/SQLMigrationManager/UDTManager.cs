@@ -1,6 +1,7 @@
 ﻿using SQLMigration.Data;
 using SQLMigrationConverter.MapAttribut;
 using SQLMigrationConverter.Template;
+using SQLMigrationConstants;
 using SQLMigrationInterface;
 using System.Data;
 using System.IO;
@@ -17,14 +18,12 @@ namespace SQLMigrationManager
         public void GetSchema() 
         {
             var ds = new DataSet();
-            var infoQuery = new InfoQuery();
-            var configdata = dataAccess.ReadXML();
-
+            var infoQuery = new InfoQuery();          
             var dt = dataAccess.GetDataTable(infoQuery.GetUdts());
             ds.Tables.Add(dt);
-            ds.WriteXml(configdata.Path + "UDTSchema.xml");
+            ds.WriteXml(GlobalConstant.configPath + "UDTSchema.xml");
 
-            MessageBox.Show("UDT sql Schema created " + configdata.Path + "UDTSchema.xml");
+            MessageBox.Show("UDT sql Schema created " + GlobalConstant.configPath + "UDTSchema.xml");
            }     
 
         public void Convert()
