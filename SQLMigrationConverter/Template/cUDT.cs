@@ -3,7 +3,7 @@ using SQLMigrationConverter.MapAttribut;
 
 namespace SQLMigrationConverter.Template
 {
-    public class cUDT : IBaseConvert
+    public class cUDT : IcUDT
     {
        // public event EventHandler onEndGenerate;
        // public event EventHandler onGenerate;

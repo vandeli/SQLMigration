@@ -5,7 +5,7 @@ using SQLMigrationInterface;
 
 namespace SQLMigrationManager
 {
-    public class TableManager : IManager
+    public class TableManager : ITableManager
     {
         public void GetSchema()
         {

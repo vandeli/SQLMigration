@@ -1,27 +1,29 @@
 ﻿using System;
 using System.Windows.Forms;
 using SQLMigrationInterface;
-using SQLMigrationManager;
 using SQLMigration.Data;
 using System.Data.SqlClient;
 using SQLMigrationConstants;
 using System.Management;
 using System.Linq;
+using SQLMigrationOF;
 
 namespace SQLMigrationUI
 {
     public partial class Form1 : Form
     {
-        private readonly IManager udtManager = new UDTManager();
-        private readonly IManager tableManager = new TableManager();
+      private OF of = new OF();
+      private readonly IUDTManager udtManager;
+      private readonly IManager tableManager;
     
        
         public Form1()
-        {           
-            InitializeComponent();
-            InitComboBox();
-                      
-            
+        {
+          udtManager = of.GetInstanceUdtManager();
+          tableManager = of.GetInstanceTableManager();
+
+          InitializeComponent();
+          InitComboBox();
         }
 
         public void ProsesManager(String pilihan, SetData setdata)

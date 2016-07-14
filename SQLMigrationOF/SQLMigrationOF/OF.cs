@@ -3,22 +3,28 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SQLMigration.Data;
+using SQLMigrationConverter.MapAttribut;
+using SQLMigrationConverter.Template;
+using SQLMigrationInterface;
+using SQLMigrationManager;
 
 namespace SQLMigrationOF
 {
-    public abstract class OF
+    public  class OF
     {
-        bool isUsingRestFake;
-        bool isUsingDbFake;
-        
-        public void setFakeRest()
-        {
-            isUsingRestFake = true;
-        }
+      public IUDTManager GetInstanceUdtManager()
+      {
+        IInfoQuery infoQuery = new InfoQuery();
+        IInfo info = new Info(infoQuery);
+        IcUDT cudt = new cUDT(info, infoQuery);
+        IDataAccess dataAccess = new DataAccess();
+        return new UDTManager(dataAccess,cudt);
+      }
 
-        public void setFakeDb()
-        {
-            isUsingDbFake = true;
-        }
+      public ITableManager GetInstanceTableManager()
+      {
+        return new TableManager();
+      }
     }
 }
