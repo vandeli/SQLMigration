@@ -1,0 +1,58 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25123.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SQLMigration", "SQLMigration.csproj", "{FB4DC7FA-63A2-4A11-89EA-7426EF8C7035}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SQLMigrationInterface", "SQLMigrationInterface\SQLMigrationInterface\SQLMigrationInterface.csproj", "{25658975-7316-4BDF-9FBC-3DC32955D44D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SQLMigrationConstants", "SQLMigrationConstants\SQLMigrationConstants\SQLMigrationConstants.csproj", "{FC3F95A8-AFCC-42D9-93C4-80BB709E0AFE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SQLMigrationManager", "SQLMigrationManager\SQLMigrationManager\SQLMigrationManager.csproj", "{E6F8CC7B-B6B8-43B7-A061-DA9AE23E0573}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SQLMigrationTest", "SQLMigrationTest\SQLMigrationTest.csproj", "{4FB4C581-ED23-408E-A53D-F008ACAC7D0F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SQLMigrationUI", "SQLMigrationUI\SQLMigrationUI\SQLMigrationUI.csproj", "{EA8CA1E6-7D96-4891-BE98-E0E38D4EADAC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SQLMigrationConverter", "SQLMigrationConverter\SQLMigrationConverter.csproj", "{EB95B286-B62F-4C42-A018-5E18803699E7}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FB4DC7FA-63A2-4A11-89EA-7426EF8C7035}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FB4DC7FA-63A2-4A11-89EA-7426EF8C7035}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FB4DC7FA-63A2-4A11-89EA-7426EF8C7035}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FB4DC7FA-63A2-4A11-89EA-7426EF8C7035}.Release|Any CPU.Build.0 = Release|Any CPU
+		{25658975-7316-4BDF-9FBC-3DC32955D44D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{25658975-7316-4BDF-9FBC-3DC32955D44D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{25658975-7316-4BDF-9FBC-3DC32955D44D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{25658975-7316-4BDF-9FBC-3DC32955D44D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FC3F95A8-AFCC-42D9-93C4-80BB709E0AFE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FC3F95A8-AFCC-42D9-93C4-80BB709E0AFE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FC3F95A8-AFCC-42D9-93C4-80BB709E0AFE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FC3F95A8-AFCC-42D9-93C4-80BB709E0AFE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E6F8CC7B-B6B8-43B7-A061-DA9AE23E0573}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E6F8CC7B-B6B8-43B7-A061-DA9AE23E0573}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E6F8CC7B-B6B8-43B7-A061-DA9AE23E0573}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E6F8CC7B-B6B8-43B7-A061-DA9AE23E0573}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4FB4C581-ED23-408E-A53D-F008ACAC7D0F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4FB4C581-ED23-408E-A53D-F008ACAC7D0F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4FB4C581-ED23-408E-A53D-F008ACAC7D0F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4FB4C581-ED23-408E-A53D-F008ACAC7D0F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EA8CA1E6-7D96-4891-BE98-E0E38D4EADAC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EA8CA1E6-7D96-4891-BE98-E0E38D4EADAC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EA8CA1E6-7D96-4891-BE98-E0E38D4EADAC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EA8CA1E6-7D96-4891-BE98-E0E38D4EADAC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EB95B286-B62F-4C42-A018-5E18803699E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EB95B286-B62F-4C42-A018-5E18803699E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EB95B286-B62F-4C42-A018-5E18803699E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EB95B286-B62F-4C42-A018-5E18803699E7}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<ConfigData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Destination>UDT_pgSQL.sql</Destination>
+  <Path>..\Output\</Path>
+  <Id>UDT</Id>
+  <Source>
+    <serverName>KEA-IBNU\SQLSERVER2012</serverName>
+    <userName>sa</userName>
+    <password>12345</password>
+    <dbName>padma_live</dbName>
+  </Source>
+</ConfigData>
