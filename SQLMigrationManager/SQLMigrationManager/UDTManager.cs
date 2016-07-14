@@ -48,20 +48,18 @@ namespace SQLMigrationManager
 
         }
 
-        public void SetConfig(SetData setdata)
+        public void SetConfig(ConfigData configdata)
         {
-            var configdata = new ConfigData();
+           
             var param = new DBData()
             {
-                dbName = setdata.dbName,
-                serverName = setdata.serverName,
-                password = setdata.passSQL,
-                userName = setdata.usernameSQL,
+                dbName = configdata.dbName,
+                serverName = configdata.serverName,
+                password = configdata.passSQL,
+                userName = configdata.usernameSQL,
 
             };
-            configdata.Destination = setdata.destination;
-            configdata.Path = setdata.path;
-            configdata.Id = setdata.id;
+           
             configdata.Source = param;
 
             WriteConfig(configdata);

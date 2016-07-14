@@ -24,18 +24,18 @@ namespace SQLMigrationUI
             
         }
 
-        public void ProsesManager(String pilihan, SetData setdata)
+        public void ProsesManager(String pilihan, ConfigData configdata)
         {
             switch (pilihan)
             {
                 case "UDT":                                     
-                    udtManager.SetConfig(setdata);
+                    udtManager.SetConfig(configdata);
                     udtManager.GetSchema();
                     udtManager.Convert();
                     break;
 
                 case "":
-                    tableManager.SetConfig(setdata);
+                    tableManager.SetConfig(configdata);
                     tableManager.GetSchema();
                     tableManager.Convert();
 
@@ -178,18 +178,18 @@ namespace SQLMigrationUI
             if (validate == true)
             try
             {
-                var xData = new SetData
+                var xData = new ConfigData
                 {
                     serverName = txtServer.Text,
                     usernameSQL = txtUsername.Text,
                     passSQL = txtPassword.Text,
                     dbName = txtDatabase.Text,
-                    id = cboProcess.Text,
-                    destination = txtOutput.Text,
-                    path = txtPath.Text
+                    Id = cboProcess.Text,
+                    Destination = txtOutput.Text,
+                    Path = txtPath.Text
                 };
                 GlobalConstant.configPath = txtPath.Text;
-                ProsesManager(xData.id, xData);    
+                ProsesManager(xData.Id, xData);    
             }
             catch (Exception ex)
             {

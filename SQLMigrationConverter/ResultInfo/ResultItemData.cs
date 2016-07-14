@@ -8,13 +8,15 @@ namespace SQLMigrationConverter.ResultInfo
 {
     public class ResultItemData
     {
-        public string id { set; get; }
+        public int SourceId { set; get; }
+        public int ResultID { set; get; }
         public string name { set; get; }
         public string sqlString { set; get; }
 
         public ResultItemData()
         {
-            id = "";
+            SourceId = 0;
+            ResultID = 0;
             name = "";
             sqlString = "";
         }

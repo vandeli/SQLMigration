@@ -20,7 +20,7 @@ namespace SQLMigrationManager
             throw new System.NotImplementedException();
         }
 
-        public void SetConfig(SetData setdata)
+        public void SetConfig(ConfigData setdata)
         {
 
         }
