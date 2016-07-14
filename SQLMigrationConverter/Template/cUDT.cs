@@ -1,5 +1,6 @@
 ﻿using SQLMigrationInterface;
 using SQLMigrationConverter.MapAttribut;
+using SQLMigrationConverter.ResultInfo;
 
 namespace SQLMigrationConverter.Template
 {
@@ -19,11 +20,14 @@ namespace SQLMigrationConverter.Template
 
         public string CreateScript()
         {
+            ResultItemData resultItem = new ResultItemData();
+
             var result = "";
             var tableResult = "";
             foreach (var data in info.GetAllUdts())
             {
                 tableResult = getTemplate(data);
+                resultItem.sqlString = tableResult;
                 //   onGenerate(this, new ConvertEventArgs() { Script = tableResult });
                 result += tableResult;
             }

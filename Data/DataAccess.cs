@@ -32,7 +32,18 @@ namespace SQLMigration.Data
             var dataReader = sqlcmd.ExecuteReader();
             var dataTable = new DataTable();
             if (dataReader.HasRows)
+            {
+                DataColumn column = new DataColumn("SchemaID");
+                column.DataType = System.Type.GetType("System.Int32");
+                column.AutoIncrement = true;
+                column.AutoIncrementSeed = 1;
+                column.AutoIncrementStep = 1;
+                dataTable.Columns.Add(column);
+                  
+                
                 dataTable.Load(dataReader);
+
+            }
             return dataTable;
         }
 

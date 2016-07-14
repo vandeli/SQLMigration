@@ -43,7 +43,6 @@
   <ItemGroup>
     <Compile Include="Config\AppConfig.cs" />
     <Compile Include="Data\DataAccess.cs" />
-    <Compile Include="Data\SetData.cs" />
     <Compile Include="Data\ConfigData.cs" />
     <Compile Include="Data\DBData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

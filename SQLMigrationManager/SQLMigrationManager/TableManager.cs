@@ -17,7 +17,7 @@ namespace SQLMigrationManager
             throw new System.NotImplementedException();
         }
 
-        public void SetConfig(SetData setData)
+        public void SetConfig(ConfigData setData)
         {
             throw new System.NotImplementedException();
         }
