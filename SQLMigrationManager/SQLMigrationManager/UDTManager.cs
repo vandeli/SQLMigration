@@ -10,11 +10,17 @@ using System.Windows.Forms;
 namespace SQLMigrationManager
 {
 
-    public class UDTManager : IManager
+  public class UDTManager : IUDTManager
+  {
+    private readonly IcUDT cudt;
+    private readonly IDataAccess dataAccess;
+
+    public UDTManager(IDataAccess dataAccess, IcUDT cudt)
     {
-        private cUDT cudt;
-        readonly DataAccess dataAccess = new DataAccess();
-       
+      this.dataAccess = dataAccess;
+      this.cudt = cudt;
+
+    }
         public void GetSchema() 
         {
             var ds = new DataSet();
@@ -29,9 +35,7 @@ namespace SQLMigrationManager
         public void Convert()
         {
             var configdata = dataAccess.ReadXML();
-            IInfoQuery infoQuery = new InfoQuery();
-            IInfo info = new Info(infoQuery);
-            cudt = new cUDT(info, infoQuery);
+
             var result = cudt.CreateScript();
 
             var file = configdata.Path + configdata.Destination;
