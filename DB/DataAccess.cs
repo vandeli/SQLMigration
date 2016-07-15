@@ -40,10 +40,19 @@ namespace SQLMigration.Data
                 
                 column.AllowDBNull = false;
                 dataTable.Columns.Add(column);
-             
+
+                string[] nColumn = new string[dataTable.Columns.Count];
+                int xs = 0;
+                foreach (DataColumn col in dataTable.Columns)
+                {
+                    Console.WriteLine(col.ColumnName);
+                    nColumn[xs] = col.ColumnName;
+                    xs += 1;
+                }
+
                 foreach (DataRow row in dataTable.Rows)
                 {
-                    row["SchemaID"] = row["PK_Name"].GetHashCode().ToString().Replace("-","");                
+                    row["SchemaID"] = row[nColumn[0]].GetHashCode().ToString().Replace("-","");                
                 }
                 
 
