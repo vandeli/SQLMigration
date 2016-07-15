@@ -8,6 +8,7 @@ namespace SQLMigrationConverter.MapAttribut
     {
         public mPK() : base() { }
 
+        public int SchemaID { get; set; }
         public string PkName { get; set; }
         public string TableName { get; set; }
         public string ColumnName { get; set; }
@@ -20,6 +21,10 @@ namespace SQLMigrationConverter.MapAttribut
 
         public override void GetValueFromDataRow(DataRow dataRow)
         {
+            SchemaID = System.Convert.ToInt32(String.IsNullOrEmpty(
+              dataRow["SchemaID"].ToString())
+              ? 0
+              : dataRow["SchemaID"]);
             PkName = dataRow["PK_Name"].ToString();
             TableName = dataRow["TABLE_NAME"].ToString();
             ColumnName = dataRow["COLUMN_NAME"].ToString();

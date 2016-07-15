@@ -38,7 +38,7 @@ namespace SQLMigrationManager
             var configdata = dataAccess.ReadXML();
             var result = cudt.CreateScript();
             var fileQuery = configdata.Path + configdata.Destination;
-            var fileResultXml = configdata.Path + "UDTresultItem.xml";
+           
            
             if (Directory.Exists(Path.GetDirectoryName(fileQuery)))
             {
@@ -48,7 +48,7 @@ namespace SQLMigrationManager
             {
                 sw.Write(result);
             }
-            MessageBox.Show("UDT_pgSQL created " + configdata.Path + configdata.Destination);
+            MessageBox.Show("UDT PGSCRIPT created " + configdata.Path + configdata.Destination);
 
 
             if (resultXML.Rows.Count != 0)
@@ -62,16 +62,10 @@ namespace SQLMigrationManager
 
         public void SetConfig(ConfigData configdata)
         {
-           
-            var param = new DBData()
-            {
-                dbName = configdata.dbName,
-                serverName = configdata.serverName,
-                password = configdata.passSQL,
-                userName = configdata.usernameSQL,
 
-            };
-           
+            var param = new DBData();
+                param = configdata.Source;
+                      
             configdata.Source = param;
 
             WriteConfig(configdata);
@@ -80,10 +74,10 @@ namespace SQLMigrationManager
         private static void WriteConfig(ConfigData configdata)
         {
             var writer = new System.Xml.Serialization.XmlSerializer(typeof(ConfigData));
-            var file = File.Create(configdata.Path + "UDTConfig.xml");
+            var file = File.Create(configdata.Path + "Config.xml");
 
             writer.Serialize(file, configdata);
-            MessageBox.Show("config Data created on " + configdata.Path + "UDTConfig.xml");
+            MessageBox.Show("config Data created on " + configdata.Path + "Config.xml");
 
             file.Close();
         }
