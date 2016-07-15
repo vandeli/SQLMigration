@@ -8,7 +8,7 @@ namespace SQLMigrationConverter.MapAttribut
     {
       //  List<Column> GetAllColumns();
         List<mUDT> GetAllUdts();
-      //  List<mPK> GetAllPk();
+        List<mPK> GetAllPk();
     }
 
     public class Info : IInfo
@@ -40,10 +40,10 @@ namespace SQLMigrationConverter.MapAttribut
         //{
         //    return GetDataQuery<Column>(infoQuery.GetColumns());
         //}
-        //public List<mPK> GetAllPk()
-        //{
-        //    return GetDataQuery<mPK>(infoQuery.GetTablesPKs());
-        //}
+        public List<mPK> GetAllPk()
+        {
+            return GetDataQuery<mPK>(infoQuery.GetTablesPKs());
+        }
 
         public List<mUDT> GetAllUdts()
         {

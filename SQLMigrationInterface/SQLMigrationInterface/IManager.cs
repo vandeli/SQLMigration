@@ -7,6 +7,6 @@ namespace SQLMigrationInterface
     {
         void GetSchema();
         void Convert();
-        void SetConfig(ConfigData setData);
+        void SetConfig(ConfigData configdata);
     }
 }

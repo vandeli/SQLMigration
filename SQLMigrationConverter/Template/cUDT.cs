@@ -26,17 +26,7 @@ namespace SQLMigrationConverter.Template
             var tableResult = "";
             foreach (var data in info.GetAllUdts())
             {
-                tableResult = getTemplate(data);
-                //resultItemdata.SourceId = data.SchemaID;
-                //resultItemdata.name = data.Name;
-                //resultItemdata.sqlString = tableResult;
-                //workRow["SourceId"] = data.SchemaID;
-                //workRow["name"] = data.Name;
-                //workRow["sqlString"] = tableResult;
-                //DTresultItem.Rows.Add(workRow);
-
-                //  resultItem.SourceId 
-                //   onGenerate(this, new ConvertEventArgs() { Script = tableResult });
+                tableResult = getTemplate(data);               
                 result += tableResult;
             }
             return result;
@@ -47,7 +37,7 @@ namespace SQLMigrationConverter.Template
             ResultItemData resultItemdata = new ResultItemData();
             DataTable DTresultItem = new DataTable("ResultInfo");
 
-            DTresultItem.Columns.Add("SourceId", typeof(int));
+            DTresultItem.Columns.Add("SchemaId", typeof(int));
             DTresultItem.Columns.Add("name", typeof(string));
             DTresultItem.Columns.Add("sqlString", typeof(string));
 
@@ -65,7 +55,7 @@ namespace SQLMigrationConverter.Template
             {
                 DataRow workRow = DTresultItem.NewRow();
                 tableResult = getTemplate(data);
-                workRow["SourceId"] = data.SchemaID;
+                workRow["SchemaId"] = data.SchemaID;
                 workRow["name"] = data.Name;
                 workRow["sqlString"] = tableResult;
                 DTresultItem.Rows.Add(workRow);

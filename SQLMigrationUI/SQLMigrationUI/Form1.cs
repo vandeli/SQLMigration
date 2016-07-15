@@ -15,13 +15,15 @@ namespace SQLMigrationUI
       private OF of = new OF();
       private readonly IUDTManager udtManager;
       private readonly IManager tableManager;
+      private readonly IPKManager pkManager;
+      
     
        
         public Form1()
         {
           udtManager = of.GetInstanceUdtManager();
           tableManager = of.GetInstanceTableManager();
-
+          pkManager = of.GetInstancePkManager();
           InitializeComponent();
           InitComboBox();
         }
@@ -36,10 +38,10 @@ namespace SQLMigrationUI
                     udtManager.Convert();
                     break;
 
-                case "":
-                    tableManager.SetConfig(configdata);
-                    tableManager.GetSchema();
-                    tableManager.Convert();
+                case "PK":
+                    pkManager.SetConfig(configdata);
+                    pkManager.GetSchema();
+                    pkManager.Convert();
 
                     break;
                     
@@ -180,12 +182,16 @@ namespace SQLMigrationUI
             if (validate == true)
             try
             {
+               var param = new DBData
+               {
+                   serverName = txtServer.Text,
+                   userName = txtUsername.Text,
+                   password = txtPassword.Text,
+                   dbName = txtDatabase.Text
+               };
                 var xData = new ConfigData
                 {
-                    serverName = txtServer.Text,
-                    usernameSQL = txtUsername.Text,
-                    passSQL = txtPassword.Text,
-                    dbName = txtDatabase.Text,
+                    Source = param,                   
                     Id = cboProcess.Text,
                     Destination = txtOutput.Text,
                     Path = txtPath.Text

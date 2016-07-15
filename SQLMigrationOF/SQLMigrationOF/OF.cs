@@ -26,5 +26,15 @@ namespace SQLMigrationOF
       {
         return new TableManager();
       }
+
+      public IPKManager GetInstancePkManager()
+      {
+            IInfoQuery infoQuery = new InfoQuery();
+            IInfo info = new Info(infoQuery);
+            IcPK cpk = new cPK(info, infoQuery);
+            IDataAccess dataAccess = new DataAccess();
+            return new PKManager(dataAccess,cpk);
+      }
+
     }
 }

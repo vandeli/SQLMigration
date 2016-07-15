@@ -2,6 +2,7 @@
 using System.Data;
 using System.Data.SqlClient;
 using SQLMigrationConstants;
+using System.Windows.Forms;
 
 namespace SQLMigration.Data
 {
@@ -33,15 +34,19 @@ namespace SQLMigration.Data
             var dataTable = new DataTable();
             if (dataReader.HasRows)
             {
-                DataColumn column = new DataColumn("SchemaID");
-                column.DataType = System.Type.GetType("System.Int32");
-                column.AutoIncrement = true;
-                column.AutoIncrementSeed = 1;
-                column.AutoIncrementStep = 1;
-                dataTable.Columns.Add(column);
-                  
-                
+               
+                DataColumn column = new DataColumn("SchemaID", typeof(string));
                 dataTable.Load(dataReader);
+                
+                column.AllowDBNull = false;
+                dataTable.Columns.Add(column);
+             
+                foreach (DataRow row in dataTable.Rows)
+                {
+                    row["SchemaID"] = row["PK_Name"].GetHashCode().ToString().Replace("-","");
+                 //   MessageBox.Show(row["SchemaID"].ToString());
+                }
+                
 
             }
             return dataTable;
@@ -50,7 +55,7 @@ namespace SQLMigration.Data
         public ConfigData ReadXML()
         {
             var reader = new System.Xml.Serialization.XmlSerializer(typeof(ConfigData));
-            var file = new System.IO.StreamReader(GlobalConstant.configPath + @"\UDTConfig.xml");
+            var file = new System.IO.StreamReader(GlobalConstant.configPath + @"\Config.xml");
             var overview = (ConfigData)reader.Deserialize(file);
             file.Close();
 
