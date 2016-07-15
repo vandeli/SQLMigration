@@ -7,8 +7,6 @@ namespace SQLMigrationConverter.Template
 {
     public class cUDT : IcUDT
     {
-       // public event EventHandler onEndGenerate;
-       // public event EventHandler onGenerate;
         private readonly IInfo info;
         private readonly IInfoQuery infoQuery;
 
@@ -18,10 +16,8 @@ namespace SQLMigrationConverter.Template
             this.infoQuery = infoQuery;
             this.info = info;
         }
-
         public string CreateScript()
-        {
-            
+        {            
             var result = "";
             var tableResult = "";
             foreach (var data in info.GetAllUdts())
@@ -40,16 +36,9 @@ namespace SQLMigrationConverter.Template
             DTresultItem.Columns.Add("SchemaId", typeof(int));
             DTresultItem.Columns.Add("name", typeof(string));
             DTresultItem.Columns.Add("sqlString", typeof(string));
+            DTresultItem.Columns.Add("ResultID", typeof(string));
 
-            DataColumn column = new DataColumn("ResultID");
-            column.DataType = System.Type.GetType("System.Int32");
-            column.AutoIncrement = true;
-            column.AutoIncrementSeed = 10;
-            column.AutoIncrementStep = 10;
-            DTresultItem.Columns.Add(column);
-
-           
-           
+                     
             var tableResult = "";
             foreach (var data in info.GetAllUdts())
             {
@@ -58,13 +47,13 @@ namespace SQLMigrationConverter.Template
                 workRow["SchemaId"] = data.SchemaID;
                 workRow["name"] = data.Name;
                 workRow["sqlString"] = tableResult;
+                workRow["ResultID"] = tableResult.GetHashCode().ToString().Replace("-", "");
                 DTresultItem.Rows.Add(workRow);
                 
             }
 
             return DTresultItem;
         }
-
         private string  getTemplate(mUDT data)
         {
             var result = "";

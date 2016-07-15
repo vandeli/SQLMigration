@@ -1,0 +1,248 @@
+<?xml version="1.0" standalone="yes"?>
+<DocumentElement>
+  <ResultInfo>
+    <SchemaId>2014879715</SchemaId>
+    <name>BOS_DT_bBoolean</name>
+    <sqlString>CREATE DOMAIN BOS_DT_bBoolean AS smallint NOT NULL;
+</sqlString>
+    <ResultID>598609951</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>280113971</SchemaId>
+    <name>BOS_DT_byteLevel</name>
+    <sqlString>CREATE DOMAIN BOS_DT_byteLevel AS smallint NOT NULL;
+</sqlString>
+    <ResultID>173093352</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1832266026</SchemaId>
+    <name>BOS_DT_decAmount</name>
+    <sqlString>CREATE DOMAIN BOS_DT_decAmount AS decimal(18,2) NOT NULL;
+</sqlString>
+    <ResultID>1127758268</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1635617520</SchemaId>
+    <name>BOS_DT_decCcyRate</name>
+    <sqlString>CREATE DOMAIN BOS_DT_decCcyRate AS decimal(18,8) NOT NULL;
+</sqlString>
+    <ResultID>765117677</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1488834286</SchemaId>
+    <name>BOS_DT_decDecimal</name>
+    <sqlString>CREATE DOMAIN BOS_DT_decDecimal AS decimal(18,2) NOT NULL;
+</sqlString>
+    <ResultID>1463256875</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>791743266</SchemaId>
+    <name>BOS_DT_decPrice</name>
+    <sqlString>CREATE DOMAIN BOS_DT_decPrice AS decimal(18,8) NOT NULL;
+</sqlString>
+    <ResultID>84637551</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>725315214</SchemaId>
+    <name>BOS_DT_decQty</name>
+    <sqlString>CREATE DOMAIN BOS_DT_decQty AS decimal(18,2) NOT NULL;
+</sqlString>
+    <ResultID>721441443</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1529460116</SchemaId>
+    <name>BOS_DT_decTax</name>
+    <sqlString>CREATE DOMAIN BOS_DT_decTax AS decimal(18,2) NOT NULL;
+</sqlString>
+    <ResultID>1785619034</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1021824281</SchemaId>
+    <name>BOS_DT_decUomConv</name>
+    <sqlString>CREATE DOMAIN BOS_DT_decUomConv AS decimal(18,8) NOT NULL;
+</sqlString>
+    <ResultID>922976440</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>490812716</SchemaId>
+    <name>BOS_DT_szBigDescription</name>
+    <sqlString>CREATE DOMAIN BOS_DT_szBigDescription AS varchar(500) NOT NULL;
+</sqlString>
+    <ResultID>615220528</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1869362197</SchemaId>
+    <name>BOS_DT_szBigId</name>
+    <sqlString>CREATE DOMAIN BOS_DT_szBigId AS varchar(100) NOT NULL;
+</sqlString>
+    <ResultID>1328835244</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>250469936</SchemaId>
+    <name>BOS_DT_szBigMessage</name>
+    <sqlString>CREATE DOMAIN BOS_DT_szBigMessage AS varchar(2000) NOT NULL;
+</sqlString>
+    <ResultID>2025205122</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1746330562</SchemaId>
+    <name>BOS_DT_szBigPath</name>
+    <sqlString>CREATE DOMAIN BOS_DT_szBigPath AS varchar(500) NOT NULL;
+</sqlString>
+    <ResultID>1247932195</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1799260147</SchemaId>
+    <name>BOS_DT_szDescription</name>
+    <sqlString>CREATE DOMAIN BOS_DT_szDescription AS varchar(200) NOT NULL;
+</sqlString>
+    <ResultID>2073582513</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>925376862</SchemaId>
+    <name>BOS_DT_szDeviceId</name>
+    <sqlString>CREATE DOMAIN BOS_DT_szDeviceId AS varchar(200) NOT NULL;
+</sqlString>
+    <ResultID>1199386671</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1913179643</SchemaId>
+    <name>BOS_DT_szFullPath</name>
+    <sqlString>CREATE DOMAIN BOS_DT_szFullPath AS varchar(510) NOT NULL;
+</sqlString>
+    <ResultID>1249455570</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1473218769</SchemaId>
+    <name>BOS_DT_szGLAccount</name>
+    <sqlString>CREATE DOMAIN BOS_DT_szGLAccount AS varchar(200) NOT NULL;
+</sqlString>
+    <ResultID>1141025020</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>287601225</SchemaId>
+    <name>BOS_DT_szGLSegment</name>
+    <sqlString>CREATE DOMAIN BOS_DT_szGLSegment AS varchar(20) NOT NULL;
+</sqlString>
+    <ResultID>2126533368</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>215488596</SchemaId>
+    <name>BOS_DT_szGPSCoordinate</name>
+    <sqlString>CREATE DOMAIN BOS_DT_szGPSCoordinate AS varchar(40) NOT NULL;
+</sqlString>
+    <ResultID>637678461</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>2062229862</SchemaId>
+    <name>BOS_DT_szId</name>
+    <sqlString>CREATE DOMAIN BOS_DT_szId AS varchar(60) NOT NULL;
+</sqlString>
+    <ResultID>1335865995</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1573946234</SchemaId>
+    <name>BOS_DT_szMediumId</name>
+    <sqlString>CREATE DOMAIN BOS_DT_szMediumId AS varchar(20) NOT NULL;
+</sqlString>
+    <ResultID>581593819</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>2117233786</SchemaId>
+    <name>BOS_DT_szMediumName</name>
+    <sqlString>CREATE DOMAIN BOS_DT_szMediumName AS varchar(40) NOT NULL;
+</sqlString>
+    <ResultID>1684662403</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1698685692</SchemaId>
+    <name>BOS_DT_szMessage</name>
+    <sqlString>CREATE DOMAIN BOS_DT_szMessage AS varchar(1000) NOT NULL;
+</sqlString>
+    <ResultID>1199019634</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1628008607</SchemaId>
+    <name>BOS_DT_szName</name>
+    <sqlString>CREATE DOMAIN BOS_DT_szName AS varchar(100) NOT NULL;
+</sqlString>
+    <ResultID>1084246378</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1371836675</SchemaId>
+    <name>BOS_DT_szOneChar</name>
+    <sqlString>CREATE DOMAIN BOS_DT_szOneChar AS varchar(2) NOT NULL;
+</sqlString>
+    <ResultID>577233582</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>447844190</SchemaId>
+    <name>BOS_DT_szPath</name>
+    <sqlString>CREATE DOMAIN BOS_DT_szPath AS varchar(200) NOT NULL;
+</sqlString>
+    <ResultID>450736427</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>603716574</SchemaId>
+    <name>BOS_DT_szQtyFormat</name>
+    <sqlString>CREATE DOMAIN BOS_DT_szQtyFormat AS varchar(40) NOT NULL;
+</sqlString>
+    <ResultID>450707808</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1427000061</SchemaId>
+    <name>BOS_DT_szSmallId</name>
+    <sqlString>CREATE DOMAIN BOS_DT_szSmallId AS varchar(10) NOT NULL;
+</sqlString>
+    <ResultID>579906006</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1989219385</SchemaId>
+    <name>BOS_DT_szSmallName</name>
+    <sqlString>CREATE DOMAIN BOS_DT_szSmallName AS varchar(20) NOT NULL;
+</sqlString>
+    <ResultID>274384012</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1613991832</SchemaId>
+    <name>BOS_DT_szSN</name>
+    <sqlString>CREATE DOMAIN BOS_DT_szSN AS varchar(60) NOT NULL;
+</sqlString>
+    <ResultID>1708091174</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1567781059</SchemaId>
+    <name>BOS_DT_szTaxId</name>
+    <sqlString>CREATE DOMAIN BOS_DT_szTaxId AS varchar(100) NOT NULL;
+</sqlString>
+    <ResultID>1310810412</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>907844526</SchemaId>
+    <name>BOS_DT_szTrnId</name>
+    <sqlString>CREATE DOMAIN BOS_DT_szTrnId AS varchar(30) NOT NULL;
+</sqlString>
+    <ResultID>1648112850</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1599909748</SchemaId>
+    <name>BOS_DT_szUri</name>
+    <sqlString>CREATE DOMAIN BOS_DT_szUri AS varchar(100) NOT NULL;
+</sqlString>
+    <ResultID>1931587016</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1121079436</SchemaId>
+    <name>BOS_DT_szUrl</name>
+    <sqlString>CREATE DOMAIN BOS_DT_szUrl AS varchar(200) NOT NULL;
+</sqlString>
+    <ResultID>1621673287</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>399245198</SchemaId>
+    <name>BOS_DT_szVeryBigMessage</name>
+    <sqlString>CREATE DOMAIN BOS_DT_szVeryBigMessage AS varchar(4000) NOT NULL;
+</sqlString>
+    <ResultID>28136504</ResultID>
+  </ResultInfo>
+</DocumentElement>
