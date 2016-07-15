@@ -15,8 +15,7 @@ namespace SQLMigrationUI
       private OF of = new OF();
       private readonly IUDTManager udtManager;
       private readonly IManager tableManager;
-      private readonly IPKManager pkManager;
-      
+      private readonly IPKManager pkManager;     
     
        
         public Form1()
@@ -42,7 +41,6 @@ namespace SQLMigrationUI
                     pkManager.SetConfig(configdata);
                     pkManager.GetSchema();
                     pkManager.Convert();
-
                     break;
                     
                
@@ -56,6 +54,7 @@ namespace SQLMigrationUI
         {
             cboProcess.Items.Add("UDT");
             cboProcess.Items.Add("Table");
+            cboProcess.Items.Add("Index");
             cboProcess.Items.Add("PK");
             cboProcess.Items.Add("SP");
         }
@@ -172,9 +171,7 @@ namespace SQLMigrationUI
             }
             //############################################################333
 
-        }
-
-       
+        }       
 
         private void btnConvert_Click_1(object sender, EventArgs e)
         {

@@ -24,7 +24,6 @@ namespace SQLMigrationConverter.Template
             string[] allcolumn = new string[1000];
             var result = "";
             var tableResult = "";
-           // mPK dat = new mPK();
             allcolumn = getAllcolumn(info);
             int xs = 0;
             foreach (var data in info.GetAllPk())
@@ -32,32 +31,24 @@ namespace SQLMigrationConverter.Template
                 if (data.OrdinalPosition == 1)
                 {
                     xs += 1;
-                    tableResult = getTemplate(data, allcolumn[xs]);
-                    //   onGenerate(this, new ConvertEventArgs() { Script = tableResult });                    
-                    result += tableResult;
-                    // MessageBox.Show(xs.ToString());
-                }  
-                           
-
+                    tableResult = getTemplate(data, allcolumn[xs]);                             
+                    result += tableResult;             
+                }                            
             }
             return result;
-
         }
 
         public DataTable CreateResultXml()
         {
             ResultItemData resultItemdata = new ResultItemData();
-            DataTable DTresultItem = new DataTable("ResultInfo");
-            
+            DataTable DTresultItem = new DataTable("ResultInfo");            
             DTresultItem.Columns.Add("SchemaId", typeof(int));
             DTresultItem.Columns.Add("name", typeof(string));
             DTresultItem.Columns.Add("sqlString", typeof(string));
-            DTresultItem.Columns.Add("ResultID", typeof(string));
-               
+            DTresultItem.Columns.Add("ResultID", typeof(string));               
             
             string[] allcolumn = getAllcolumn(info);
             int xs = 1;
-
 
             var tableResult = "";
             foreach (var data in info.GetAllPk())
@@ -74,7 +65,6 @@ namespace SQLMigrationConverter.Template
                     xs = xs++;
                 }
             }
-
             return DTresultItem;
         }
 
@@ -89,8 +79,7 @@ namespace SQLMigrationConverter.Template
                 if (data.OrdinalPosition == 1)
                 {
                     xs += 1;
-                    allColumn[xs] = data.ColumnName;
-                   
+                    allColumn[xs] = data.ColumnName;                   
                 }
                 else
                 {

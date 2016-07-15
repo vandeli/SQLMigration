@@ -20,13 +20,13 @@ namespace SQLMigrationManager
             this.cpk = cpk;
 
         }
+
         public void Convert()
         {
             var configdata = dataAccess.ReadXML();
             var result = cpk.CreateScript();
             DataTable resultXML = cpk.CreateResultXml();
-            var fileQuery = configdata.Path + configdata.Destination;
-        
+            var fileQuery = configdata.Path + configdata.Destination;        
 
             if (Directory.Exists(Path.GetDirectoryName(fileQuery)))
             {
@@ -41,7 +41,6 @@ namespace SQLMigrationManager
 
             if (resultXML.Rows.Count != 0)
             {
-
                 resultXML.WriteXml(configdata.Path + "PKresult.xml", true);
                 MessageBox.Show("PKresult created " + configdata.Path + "PKresult.xml");
             }
@@ -54,7 +53,6 @@ namespace SQLMigrationManager
             var dt = dataAccess.GetDataTable(infoQuery.GetTablesPKs());
             ds.Tables.Add(dt);
             ds.WriteXml(GlobalConstant.configPath + "PKSchema.xml");
-
             MessageBox.Show("PK sql Schema created " + GlobalConstant.configPath + "PKSchema.xml");
         }
 
@@ -63,7 +61,6 @@ namespace SQLMigrationManager
             var param = new DBData();
             param = configdata.Source;           
             configdata.Source = param;
-
             WriteConfig(configdata);
         }
 

@@ -7,8 +7,6 @@ namespace SQLMigrationConverter.Template
 {
     public class cUDT : IcUDT
     {
-       // public event EventHandler onEndGenerate;
-       // public event EventHandler onGenerate;
         private readonly IInfo info;
         private readonly IInfoQuery infoQuery;
 
@@ -18,10 +16,8 @@ namespace SQLMigrationConverter.Template
             this.infoQuery = infoQuery;
             this.info = info;
         }
-
         public string CreateScript()
-        {
-            
+        {            
             var result = "";
             var tableResult = "";
             foreach (var data in info.GetAllUdts())
@@ -46,9 +42,7 @@ namespace SQLMigrationConverter.Template
             column.AutoIncrement = true;
             column.AutoIncrementSeed = 10;
             column.AutoIncrementStep = 10;
-            DTresultItem.Columns.Add(column);
-
-           
+            DTresultItem.Columns.Add(column);           
            
             var tableResult = "";
             foreach (var data in info.GetAllUdts())
@@ -64,7 +58,6 @@ namespace SQLMigrationConverter.Template
 
             return DTresultItem;
         }
-
         private string  getTemplate(mUDT data)
         {
             var result = "";

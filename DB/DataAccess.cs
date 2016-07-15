@@ -43,8 +43,7 @@ namespace SQLMigration.Data
              
                 foreach (DataRow row in dataTable.Rows)
                 {
-                    row["SchemaID"] = row["PK_Name"].GetHashCode().ToString().Replace("-","");
-                 //   MessageBox.Show(row["SchemaID"].ToString());
+                    row["SchemaID"] = row["PK_Name"].GetHashCode().ToString().Replace("-","");                
                 }
                 
 
@@ -58,7 +57,6 @@ namespace SQLMigration.Data
             var file = new System.IO.StreamReader(GlobalConstant.configPath + @"\Config.xml");
             var overview = (ConfigData)reader.Deserialize(file);
             file.Close();
-
             return overview;
         }
 
