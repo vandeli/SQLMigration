@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SQLMigrationInterface
+namespace SQLMigrationConverter.MapAttribut
 {
-    public interface IcPK :IBaseConvert
+    class mTable
     {
     }
 }

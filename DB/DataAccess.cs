@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Data;
 using System.Data.SqlClient;
-using SQLMigrationConstants;
 using System.Windows.Forms;
 
 namespace SQLMigration.Data
@@ -63,7 +62,7 @@ namespace SQLMigration.Data
         public ConfigData ReadXML()
         {
             var reader = new System.Xml.Serialization.XmlSerializer(typeof(ConfigData));
-            var file = new System.IO.StreamReader(GlobalConstant.configPath + @"\Config.xml");
+            var file = new System.IO.StreamReader("Config.xml");
             var overview = (ConfigData)reader.Deserialize(file);
             file.Close();
             return overview;

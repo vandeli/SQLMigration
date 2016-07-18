@@ -12,6 +12,7 @@ namespace SQLMigration.Data
         public String userName = "";
         public String password = "";
         public String dbName = "";
+   
       
     }
 
