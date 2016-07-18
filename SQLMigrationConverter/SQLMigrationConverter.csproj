@@ -45,9 +45,9 @@
     <Compile Include="ConvertEventArgs.cs" />
     <Compile Include="MapAttribut\Base.cs" />
     <Compile Include="MapAttribut\DataTypeExtensions.cs" />
-    <Compile Include="MapAttribut\Info.cs" />
     <Compile Include="MapAttribut\InfoQuery.cs" />
     <Compile Include="MapAttribut\mPK.cs" />
+    <Compile Include="MapAttribut\mTable.cs" />
     <Compile Include="MapAttribut\mUDT.cs" />
     <Compile Include="mapper\DataTypeMap.cs" />
     <Compile Include="mapper\IDataTypeMap.cs" />
@@ -57,8 +57,6 @@
     <Compile Include="ResultInfo\ResultItemData.cs" />
     <Compile Include="SchemaInfo\SchemaInfoData.cs" />
     <Compile Include="SchemaInfo\SchemaItemInfoData.cs" />
-    <Compile Include="Template\cPK.cs" />
-    <Compile Include="Template\cUDT.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

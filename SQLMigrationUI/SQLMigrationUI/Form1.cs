@@ -3,10 +3,10 @@ using System.Windows.Forms;
 using SQLMigrationInterface;
 using SQLMigration.Data;
 using System.Data.SqlClient;
-using SQLMigrationConstants;
 using System.Management;
 using System.Linq;
 using SQLMigrationOF;
+using static SQLMigrationUI.Program;
 
 namespace SQLMigrationUI
 {
@@ -42,6 +42,9 @@ namespace SQLMigrationUI
                     pkManager.GetSchema();
                     pkManager.Convert();
                     break;
+
+             //   case "Table":
+                    
                     
                
                 default:
@@ -139,6 +142,8 @@ namespace SQLMigrationUI
        
         private void Form1_Load(object sender, EventArgs e)
         {
+          //  public static string configPath;
+            
             //### testing purpose only, delete when done #####
             ManagementObjectSearcher searcher = new ManagementObjectSearcher("SELECT UserName FROM Win32_ComputerSystem");
             ManagementObjectCollection collection = searcher.Get();
@@ -175,6 +180,7 @@ namespace SQLMigrationUI
 
         private void btnConvert_Click_1(object sender, EventArgs e)
         {
+            
             var validate = ValidateInput();
             if (validate == true)
             try
@@ -193,7 +199,8 @@ namespace SQLMigrationUI
                     Destination = txtOutput.Text,
                     Path = txtPath.Text
                 };
-                GlobalConstant.configPath = txtPath.Text;
+                
+                                
                 ProsesManager(xData.Id, xData);    
             }
             catch (Exception ex)
@@ -201,5 +208,7 @@ namespace SQLMigrationUI
                 MessageBox.Show(ex.Message);
             }
         }
+
+      
     }
 }
