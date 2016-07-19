@@ -43,10 +43,14 @@ namespace SQLMigrationUI
                     pkManager.Convert();
                     break;
 
-             //   case "Table":
-                    
-                    
-               
+                case "Table":
+                    tableManager.SetConfig(configdata);
+                    tableManager.GetSchema();
+                    tableManager.Convert();
+                    break;
+
+
+
                 default:
                     MessageBox.Show("Pilihan belum tersedia");
                     break;
@@ -160,7 +164,7 @@ namespace SQLMigrationUI
                     txtPassword.Text = "12345";
                     txtDatabase.Text = "padma_live";
                     txtPath.Text = @"..\Output\";
-                    txtOutput.Text = "UDT_pgSQL.sql";
+                    txtOutput.Text = "Table_pgSQL.sql";
                     break;
 
                 case @"KONTINUM22\bintang":
