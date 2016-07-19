@@ -17,7 +17,7 @@ namespace SQLMigrationConverter.mapper
             new TablesFieldDataType() { DataType="dbtime", ConvertedDataType="time" },
             new TablesFieldDataType() { DataType="dbtimestamp", ConvertedDataType="timestamp" },
             new TablesFieldDataType() { DataType="date", ConvertedDataType="date" },
-            new TablesFieldDataType() { DataType="decimal", ConvertedDataType="decimal" },
+            new TablesFieldDataType() { DataType="decimal", ConvertedDataType="numeric" },
             new TablesFieldDataType() { DataType="double", ConvertedDataType="double" },
             new TablesFieldDataType() { DataType="filetime", ConvertedDataType="timestamp" },
             new TablesFieldDataType() { DataType="guid", ConvertedDataType="uuid" },

@@ -26,7 +26,7 @@ namespace SQLMigrationManager
             var dataconfig = dataAccess.ReadXML();
             var ds = new DataSet();
             var infoQuery = new InfoQuery();          
-            var dt = dataAccess.GetDataTable(infoQuery.GetUdts());
+            var dt = dataAccess.GetDataTable(GetQuery());
             ds.Tables.Add(dt);
             ds.WriteXml(dataconfig.Path + "UDTSchema.xml");
 

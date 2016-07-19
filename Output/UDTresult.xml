@@ -17,51 +17,51 @@
   <ResultInfo>
     <SchemaId>1832266026</SchemaId>
     <name>BOS_DT_decAmount</name>
-    <sqlString>CREATE DOMAIN BOS_DT_decAmount AS decimal(18,2) NOT NULL;
+    <sqlString>CREATE DOMAIN BOS_DT_decAmount AS numeric NOT NULL;
 </sqlString>
-    <ResultID>1127758268</ResultID>
+    <ResultID>1587986548</ResultID>
   </ResultInfo>
   <ResultInfo>
     <SchemaId>1635617520</SchemaId>
     <name>BOS_DT_decCcyRate</name>
-    <sqlString>CREATE DOMAIN BOS_DT_decCcyRate AS decimal(18,8) NOT NULL;
+    <sqlString>CREATE DOMAIN BOS_DT_decCcyRate AS numeric NOT NULL;
 </sqlString>
-    <ResultID>765117677</ResultID>
+    <ResultID>1902238026</ResultID>
   </ResultInfo>
   <ResultInfo>
     <SchemaId>1488834286</SchemaId>
     <name>BOS_DT_decDecimal</name>
-    <sqlString>CREATE DOMAIN BOS_DT_decDecimal AS decimal(18,2) NOT NULL;
+    <sqlString>CREATE DOMAIN BOS_DT_decDecimal AS numeric NOT NULL;
 </sqlString>
-    <ResultID>1463256875</ResultID>
+    <ResultID>1497279587</ResultID>
   </ResultInfo>
   <ResultInfo>
     <SchemaId>791743266</SchemaId>
     <name>BOS_DT_decPrice</name>
-    <sqlString>CREATE DOMAIN BOS_DT_decPrice AS decimal(18,8) NOT NULL;
+    <sqlString>CREATE DOMAIN BOS_DT_decPrice AS numeric NOT NULL;
 </sqlString>
-    <ResultID>84637551</ResultID>
+    <ResultID>1804944609</ResultID>
   </ResultInfo>
   <ResultInfo>
     <SchemaId>725315214</SchemaId>
     <name>BOS_DT_decQty</name>
-    <sqlString>CREATE DOMAIN BOS_DT_decQty AS decimal(18,2) NOT NULL;
+    <sqlString>CREATE DOMAIN BOS_DT_decQty AS numeric NOT NULL;
 </sqlString>
-    <ResultID>721441443</ResultID>
+    <ResultID>1449395785</ResultID>
   </ResultInfo>
   <ResultInfo>
     <SchemaId>1529460116</SchemaId>
     <name>BOS_DT_decTax</name>
-    <sqlString>CREATE DOMAIN BOS_DT_decTax AS decimal(18,2) NOT NULL;
+    <sqlString>CREATE DOMAIN BOS_DT_decTax AS numeric NOT NULL;
 </sqlString>
-    <ResultID>1785619034</ResultID>
+    <ResultID>1148293475</ResultID>
   </ResultInfo>
   <ResultInfo>
     <SchemaId>1021824281</SchemaId>
     <name>BOS_DT_decUomConv</name>
-    <sqlString>CREATE DOMAIN BOS_DT_decUomConv AS decimal(18,8) NOT NULL;
+    <sqlString>CREATE DOMAIN BOS_DT_decUomConv AS numeric NOT NULL;
 </sqlString>
-    <ResultID>922976440</ResultID>
+    <ResultID>358533134</ResultID>
   </ResultInfo>
   <ResultInfo>
     <SchemaId>490812716</SchemaId>

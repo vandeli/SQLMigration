@@ -8,5 +8,5 @@ namespace SQLMigrationInterface
   public interface ITableManager : IManager
   {
         
-    }
+  }
 }
