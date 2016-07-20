@@ -21,7 +21,7 @@ namespace SQLMigrationManager
    
 
     }
-        public void GetSchema() 
+        public DataTable GetSchema() 
         {
             var dataconfig = dataAccess.ReadXML();
             var ds = new DataSet();
@@ -31,13 +31,14 @@ namespace SQLMigrationManager
             ds.WriteXml(dataconfig.Path + "UDTSchema.xml");
 
             MessageBox.Show("UDT sql Schema created " + dataconfig.Path + "UDTSchema.xml");
+            return dt;
            }     
 
-        public void Convert()
+        public void Convert(DataTable datasource)
         {
-            DataTable resultXML = CreateResultXml();
+            DataTable resultXML = CreateResultXml(datasource);
             var configdata = dataAccess.ReadXML();
-            var result = CreateScript();
+            var result = CreateScript(datasource);
             var fileQuery = configdata.Path + configdata.Destination;
            
            
@@ -98,13 +99,13 @@ namespace SQLMigrationManager
             ";
         }
 
-        List<T> GetDataQuery<T>(string sql) where T : Base, new()
+        List<T> GetDataQuery<T>(DataTable datasource) where T : Base, new()
         {
             var list = new List<T>();
             if (list.Count == 0)
             {
-                var dataTable = new DataAccess().GetDataTable(sql);
-                foreach (DataRow data in dataTable.Rows)
+                //var dataTable = datasource; //new DataAccess().GetDataTable(sql);
+                foreach (DataRow data in datasource.Rows)
                 {
                     var obj = new T();
                     obj.GetValueFromDataRow(data);
@@ -114,12 +115,12 @@ namespace SQLMigrationManager
             return list;
         }
 
-        public string CreateScript()
+        public string CreateScript(DataTable datasource)
         {
             
             var result = "";
             var tableResult = "";
-            foreach (var data in GetAllUdts())
+            foreach (var data in GetAllUdts(datasource))
             {
                 tableResult = getTemplate(data); 
                 result += tableResult;
@@ -128,13 +129,13 @@ namespace SQLMigrationManager
 
         }
 
-        public List<mUDT> GetAllUdts()
+        public List<mUDT> GetAllUdts(DataTable datasource)
         {
-            return GetDataQuery<mUDT>(GetQuery());
+            return GetDataQuery<mUDT>(datasource);
 
         }
 
-        public DataTable CreateResultXml()
+        public DataTable CreateResultXml(DataTable datasource)
         {
            // ResultItemData resultItemdata = new ResultItemData();
             DataTable DTresultItem = new DataTable("ResultInfo");
@@ -146,7 +147,7 @@ namespace SQLMigrationManager
 
 
             var tableResult = "";
-            foreach (var data in GetAllUdts())
+            foreach (var data in GetAllUdts(datasource))
             {
                 DataRow workRow = DTresultItem.NewRow();
                 tableResult = getTemplate(data);

@@ -7,6 +7,7 @@ using System.Management;
 using System.Linq;
 using SQLMigrationOF;
 using static SQLMigrationUI.Program;
+using System.Data;
 
 namespace SQLMigrationUI
 {
@@ -33,28 +34,32 @@ namespace SQLMigrationUI
         {
             switch (pilihan)
             {
-                case "UDT":                                     
+                case "UDT":
+                    DataTable data = new DataTable();
                     udtManager.SetConfig(configdata);
-                    udtManager.GetSchema();
-                    udtManager.Convert();
+                    data = udtManager.GetSchema();
+                    udtManager.Convert(data);
                     break;
 
                 case "PK":
+                    DataTable data = new DataTable();
                     pkManager.SetConfig(configdata);
-                    pkManager.GetSchema();
-                    pkManager.Convert();
+                    data = pkManager.GetSchema();
+                    pkManager.Convert(data);
                     break;
 
                 case "Table":
+                    DataTable data = new DataTable();
                     tableManager.SetConfig(configdata);
-                    tableManager.GetSchema();
-                    tableManager.Convert();
+                    data = tableManager.GetSchema();
+                    tableManager.Convert(data);
                     break;
 
                 case "Index":
+                    DataTable data = new DataTable();
                     indexManager.SetConfig(configdata);
-                    indexManager.GetSchema();
-                    indexManager.Convert();
+                    data = indexManager.GetSchema();
+                    indexManager.Convert(data);
                     break;
 
                 default:
@@ -70,6 +75,7 @@ namespace SQLMigrationUI
             cboProcess.Items.Add("Index");
             cboProcess.Items.Add("PK");
             cboProcess.Items.Add("SP");
+            cboProcess.Items.Add("Record");
         }
 
         private void cboProcess_KeyPress(object sender, KeyPressEventArgs e)
