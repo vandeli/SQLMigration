@@ -10,8 +10,7 @@ namespace SQLMigrationConverter.MapAttribut
         public static string GetMapping(this TablesFieldDataType dataType, IDataTypeMap dataTypeMap)
         {
             if (dataType == null)
-            {
-               // MessageBox.Show(dataType + " );
+            {             
                 throw new ArgumentNullException("dataType is null, please check your database");
             }
             if (dataType.DomainName != null && dataType.DomainName.Length > 0)
