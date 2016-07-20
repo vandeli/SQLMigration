@@ -15,7 +15,8 @@ namespace SQLMigrationUI
       private OF of = new OF();
       private readonly IUDTManager udtManager;
       private readonly IManager tableManager;
-      private readonly IPKManager pkManager;     
+      private readonly IPKManager pkManager;
+      private readonly IIndexManager indexManager;    
     
        
         public Form1()
@@ -23,6 +24,7 @@ namespace SQLMigrationUI
           udtManager = of.GetInstanceUdtManager();
           tableManager = of.GetInstanceTableManager();
           pkManager = of.GetInstancePkManager();
+          indexManager = of.GetInstanceIndexManager();
           InitializeComponent();
           InitComboBox();
         }
@@ -49,7 +51,11 @@ namespace SQLMigrationUI
                     tableManager.Convert();
                     break;
 
-
+                case "Index":
+                    indexManager.SetConfig(configdata);
+                    indexManager.GetSchema();
+                    indexManager.Convert();
+                    break;
 
                 default:
                     MessageBox.Show("Pilihan belum tersedia");
@@ -164,7 +170,7 @@ namespace SQLMigrationUI
                     txtPassword.Text = "12345";
                     txtDatabase.Text = "padma_live";
                     txtPath.Text = @"..\Output\";
-                    txtOutput.Text = "Table_pgSQL.sql";
+                    txtOutput.Text = "Index_pgSQL.sql";
                     break;
 
                 case @"KONTINUM22\bintang":

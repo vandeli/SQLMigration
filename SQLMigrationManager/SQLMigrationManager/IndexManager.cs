@@ -9,30 +9,27 @@ using System;
 
 namespace SQLMigrationManager
 {
-    public class TableManager : ITableManager
+    public class IndexManager : IIndexManager
     {
-      
         private readonly IDataAccess dataAccess;
 
-        public TableManager(IDataAccess dataAccess)
+        public IndexManager(IDataAccess dataAccess)
         {
-            this.dataAccess = dataAccess;    
-
+            this.dataAccess = dataAccess;
         }
 
         public void GetSchema()
         {
             var dataconfig = dataAccess.ReadXML();
-            var ds = new DataSet();         
+            var ds = new DataSet();
             var dt = dataAccess.GetDataTable(GetQuery());
             ds.Tables.Add(dt);
-            ds.WriteXml(dataconfig.Path + "TableSchema.xml");
-            MessageBox.Show("Table sql Schema created " + dataconfig.Path + "TableSchema.xml");
+            ds.WriteXml(dataconfig.Path + "IndexSchema.xml");
+            MessageBox.Show("Index sql Schema created " + dataconfig.Path + "IndexSchema.xml");
         }
 
         public void Convert()
         {
-           
             var configdata = dataAccess.ReadXML();
             var result = CreateScript();
             DataTable resultXML = CreateResultXml();
@@ -47,14 +44,14 @@ namespace SQLMigrationManager
             {
                 sw.Write(result);
             }
-            MessageBox.Show("Table PGSCRIPT created " + configdata.Path + configdata.Destination);
+            MessageBox.Show("Index PGSCRIPT created " + configdata.Path + configdata.Destination);
 
 
             if (resultXML.Rows.Count != 0)
             {
 
-                resultXML.WriteXml(configdata.Path + "Tableresult.xml", true);
-                MessageBox.Show("Tableresult created " + configdata.Path + "Tableresult.xml");
+                resultXML.WriteXml(configdata.Path + "Indexresult.xml", true);
+                MessageBox.Show("Indexresult created " + configdata.Path + "Indexresult.xml");
             }
         }
 
@@ -72,29 +69,29 @@ namespace SQLMigrationManager
             var file = File.Create("Config.xml");
 
             writer.Serialize(file, configdata);
-       
-
             file.Close();
         }
 
         private string GetQuery()
         {
             return @"
-            SELECT a.TABLE_NAME
-	            ,a.COLUMN_NAME
-	            ,a.ORDINAL_POSITION
-	            ,a.COLUMN_DEFAULT
-	            ,a.IS_NULLABLE
-	            ,a.DOMAIN_NAME
-	            ,a.DATA_TYPE
-	            ,a.CHARACTER_MAXIMUM_LENGTH
-	            ,a.NUMERIC_PRECISION
-	            ,a.NUMERIC_SCALE
-            FROM INFORMATION_SCHEMA.columns a
-            JOIN INFORMATION_SCHEMA.Tables b ON a.TABLE_NAME = b.TABLE_NAME
-            WHERE TABLE_TYPE = 'BASE TABLE'
-            ORDER BY table_name
-	            ,ORDINAL_POSITION
+               SELECT 
+                     i.name as IndexName, 
+                     o.name as TableName, 
+                     ic.key_ordinal as ColumnOrder,
+                     ic.is_included_column as IsIncluded, 
+                     co.[name] as ColumnName
+                FROM sys.indexes i 
+                    join sys.objects o on i.object_id = o.object_id
+                    join sys.index_columns ic on ic.object_id = i.object_id 
+                    and ic.index_id = i.index_id
+                    join sys.columns co on co.object_id = i.object_id 
+                    and co.column_id = ic.column_id
+                WHERE i.[type] = 2 
+                and i.is_unique = 0 
+                and i.is_primary_key = 0
+                and o.[type] = 'U'
+                order by o.[name], i.[name], ic.is_included_column, ic.key_ordinal
             ";
         }
 
@@ -109,7 +106,7 @@ namespace SQLMigrationManager
                     var obj = new T();
                     obj.GetValueFromDataRow(data);
                     list.Add(obj);
-               
+
                 }
             }
             return list;
@@ -117,19 +114,18 @@ namespace SQLMigrationManager
 
         public string CreateScript()
         {
-            
+
             string[] allcolumn = getAllcolumn();
             var result = "";
-            var tableResult = "";
+            var indexResult = "";
             int xs = 1;
-            foreach (var data in GetAllTable())
+            foreach (var data in GetAllIndex())
             {
 
-                if (data.OrdinalPosition == 1)
+                if (data.ColumnOrder == 1)
                 {
-                
-                    tableResult = getTemplate(data,allcolumn[xs]);
-                    result += tableResult;
+                    indexResult = getTemplate(data, allcolumn[xs]);
+                    result += indexResult;
                     xs += 1;
                 }
             }
@@ -137,15 +133,15 @@ namespace SQLMigrationManager
 
         }
 
-        public List<mTable> GetAllTable()
+        public List<mIndex> GetAllIndex()
         {
-            return GetDataQuery<mTable>(GetQuery());
+            return GetDataQuery<mIndex>(GetQuery());
 
         }
 
         public DataTable CreateResultXml()
         {
-          
+
             DataTable DTresultItem = new DataTable("ResultInfo");
 
             DTresultItem.Columns.Add("SchemaId", typeof(int));
@@ -153,13 +149,13 @@ namespace SQLMigrationManager
             DTresultItem.Columns.Add("sqlString", typeof(string));
             DTresultItem.Columns.Add("ResultID", typeof(string));
             string[] allcolumn = getAllcolumn();
-             int xs = 1;
+            int xs = 1;
 
             var tableResult = "";
-            foreach (var data in GetAllTable())
+            foreach (var data in GetAllIndex())
             {
-                if (data.OrdinalPosition == 1)
-                {                    
+                if (data.ColumnOrder == 1)
+                {
                     DataRow workRow = DTresultItem.NewRow();
                     tableResult = getTemplate(data, allcolumn[xs]);
                     workRow["SchemaId"] = data.SchemaID;
@@ -169,7 +165,7 @@ namespace SQLMigrationManager
                     DTresultItem.Rows.Add(workRow);
                     xs += 1;
                 }
-                
+
             }
 
             return DTresultItem;
@@ -179,30 +175,29 @@ namespace SQLMigrationManager
         {
             int xs = 0;
             int xcount = 1;
-            
-            foreach (var totalraw in GetAllTable())
+
+            foreach (var totalraw in GetAllIndex())
             {
-                if (totalraw.OrdinalPosition == 1)
+                if (totalraw.ColumnOrder == 1)
                 {
-                    xcount += 1;                    
+                    xcount += 1;
                 }
             }
             string[] allColumn = new string[xcount];
 
-            foreach (var data in GetAllTable())
+            foreach (var data in GetAllIndex())
             {
-               // var setData = data.GetConvertedDataType();
-
-                if (data.OrdinalPosition == 1)
+               
+                if (data.ColumnOrder == 1)
                 {
                     xs += 1;
-                  //  cekSuffix(data);
-                    allColumn[xs] = data.ColumnName + " " + cekSuffix(data) ;
                     
+                    allColumn[xs] = data.ColumnName;
+
                 }
                 else
                 {
-                    allColumn[xs] += ",\n " + data.ColumnName + "   " + cekSuffix(data);
+                    allColumn[xs] += "," + data.ColumnName;
                 }
 
             }
@@ -210,45 +205,12 @@ namespace SQLMigrationManager
             return allColumn;
         }
 
-        private string cekSuffix(mTable data)
+     
+        public string getTemplate(mIndex data, string allColumn)
         {
-            var cekResult = "";
-            if (data.Domain != "")
-            {
-                cekResult = data.Domain;
-            }
-            else 
-            {
-                cekResult = data.GetConvertedDataType();
-            }
-
-            if (data.CharMaxLength != 0)
-            {
-                cekResult += " (" + data.CharMaxLength + ")";
-            }
-            else if (data.Precision != 0)
-            {
-                cekResult += " (" + data.Precision + "," + data.Scale + ")";
-            }
-
-            if (data.isNullable == false)
-            {
-                cekResult += "  NOT NULL";
-            }
-            return cekResult;
-            
-        }
-
-        public string getTemplate(mTable data, string allColumn)
-        {
-            var result = "";
-            var infodata = data.GetConvertedDataType();
-
-            result = "CREATE TABLE " + data.TableName + "(\n" +
-                      allColumn + "\n" +                        
-                      ");\r\n";
-            
-            
+            var result = "";                  
+            result = "CREATE INDEX " + data.IndexName + " ON " + data.TableName + " (" + allColumn + ");\r\n";
+                     
             return result;
         }
 

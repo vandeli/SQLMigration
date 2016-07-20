@@ -36,6 +36,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IBaseConverter.cs" />
+    <Compile Include="IIndexManager.cs" />
     <Compile Include="IManager.cs" />
     <Compile Include="IPKManager.cs" />
     <Compile Include="ITableManager.cs" />
