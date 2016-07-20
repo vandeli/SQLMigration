@@ -1,0 +1,2796 @@
+<?xml version="1.0" standalone="yes"?>
+<DocumentElement>
+  <ResultInfo>
+    <SchemaId>363728617</SchemaId>
+    <name>BOS_AP_ApMaster</name>
+    <sqlString>CREATE INDEX IX_BOS_AP_ApMaster ON BOS_AP_ApMaster (dtmLastUpdated);
+</sqlString>
+    <ResultID>1886053185</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>753821485</SchemaId>
+    <name>BOS_AP_ApMaster</name>
+    <sqlString>CREATE INDEX IX_BOS_AP_ApMaster_1 ON BOS_AP_ApMaster (bAlreadyTransferred);
+</sqlString>
+    <ResultID>1887092114</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1967167699</SchemaId>
+    <name>BOS_AP_ApMaster</name>
+    <sqlString>CREATE INDEX IX_BOS_AP_ApMaster_2 ON BOS_AP_ApMaster (bBad);
+</sqlString>
+    <ResultID>1379667147</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>425123586</SchemaId>
+    <name>BOS_AP_ApTrans</name>
+    <sqlString>CREATE INDEX IX_BOS_AP_ApTrans ON BOS_AP_ApTrans (dtmDate);
+</sqlString>
+    <ResultID>1037279132</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>784353718</SchemaId>
+    <name>BOS_AP_ApTrans</name>
+    <sqlString>CREATE INDEX IX_BOS_AP_ApTrans_1 ON BOS_AP_ApTrans (szCcyId);
+</sqlString>
+    <ResultID>1323356372</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>781730223</SchemaId>
+    <name>BOS_AP_ApTrans</name>
+    <sqlString>CREATE INDEX IX_BOS_AP_ApTrans_2 ON BOS_AP_ApTrans (szRefTrnId,szRefDocId);
+</sqlString>
+    <ResultID>351156944</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1947153132</SchemaId>
+    <name>BOS_AP_ApTrans</name>
+    <sqlString>CREATE INDEX IX_BOS_AP_ApTrans_3 ON BOS_AP_ApTrans (decRemain);
+</sqlString>
+    <ResultID>589193903</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>24838831</SchemaId>
+    <name>BOS_AP_ApTrans</name>
+    <sqlString>CREATE INDEX IX_BOS_AP_ApTrans_4 ON BOS_AP_ApTrans (bClosed);
+</sqlString>
+    <ResultID>194818307</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1541245110</SchemaId>
+    <name>BOS_AP_ApTrans</name>
+    <sqlString>CREATE INDEX IX_BOS_AP_ApTrans_5 ON BOS_AP_ApTrans (dtmClosed);
+</sqlString>
+    <ResultID>8062600</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1187638245</SchemaId>
+    <name>BOS_AP_ApTrans</name>
+    <sqlString>CREATE INDEX IX_BOS_AP_ApTrans_6 ON BOS_AP_ApTrans (dtmPeriode);
+</sqlString>
+    <ResultID>1210078338</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>378445696</SchemaId>
+    <name>BOS_AP_ApTrans</name>
+    <sqlString>CREATE INDEX IX_BOS_AP_ApTrans_7 ON BOS_AP_ApTrans (dtmDue);
+</sqlString>
+    <ResultID>1642769035</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1588299277</SchemaId>
+    <name>BOS_AP_ApTrans</name>
+    <sqlString>CREATE INDEX IX_BOS_AP_ApTrans_8 ON BOS_AP_ApTrans (dtmDue_Printed);
+</sqlString>
+    <ResultID>1712008492</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1140584078</SchemaId>
+    <name>BOS_AP_ApTrans</name>
+    <sqlString>CREATE INDEX IX_BOS_AP_ApTrans_9 ON BOS_AP_ApTrans (decAmount);
+</sqlString>
+    <ResultID>1629974827</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1034925135</SchemaId>
+    <name>BOS_AP_ApTransRefDoc</name>
+    <sqlString>CREATE INDEX IX_BOS_AP_ApTransRefDoc ON BOS_AP_ApTransRefDoc (szRefTrnId,szRefDocId);
+</sqlString>
+    <ResultID>1929105696</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1204287037</SchemaId>
+    <name>BOS_AR_ArMaster</name>
+    <sqlString>CREATE INDEX IX_BOS_AR_ArMaster ON BOS_AR_ArMaster (dtmLastUpdated);
+</sqlString>
+    <ResultID>2110769664</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>958688339</SchemaId>
+    <name>BOS_AR_ArMaster</name>
+    <sqlString>CREATE INDEX IX_BOS_AR_ArMaster_1 ON BOS_AR_ArMaster (bAlreadyTransferred);
+</sqlString>
+    <ResultID>1034420159</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>997626797</SchemaId>
+    <name>BOS_AR_ArMaster</name>
+    <sqlString>CREATE INDEX IX_BOS_AR_ArMaster_2 ON BOS_AR_ArMaster (bBad);
+</sqlString>
+    <ResultID>161331877</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1907567600</SchemaId>
+    <name>BOS_AR_ArTrans</name>
+    <sqlString>CREATE INDEX IX_BOS_AR_ArTrans ON BOS_AR_ArTrans (dtmDate);
+</sqlString>
+    <ResultID>898228036</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1115045572</SchemaId>
+    <name>BOS_AR_ArTrans</name>
+    <sqlString>CREATE INDEX IX_BOS_AR_ArTrans_1 ON BOS_AR_ArTrans (szCcyId);
+</sqlString>
+    <ResultID>296991749</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>451038369</SchemaId>
+    <name>BOS_AR_ArTrans</name>
+    <sqlString>CREATE INDEX IX_BOS_AR_ArTrans_2 ON BOS_AR_ArTrans (szRefTrnId,szRefDocId);
+</sqlString>
+    <ResultID>1927232302</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>2017122310</SchemaId>
+    <name>BOS_AR_ArTrans</name>
+    <sqlString>CREATE INDEX IX_BOS_AR_ArTrans_3 ON BOS_AR_ArTrans (decRemain);
+</sqlString>
+    <ResultID>659252110</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>355530685</SchemaId>
+    <name>BOS_AR_ArTrans</name>
+    <sqlString>CREATE INDEX IX_BOS_AR_ArTrans_4 ON BOS_AR_ArTrans (bClosed);
+</sqlString>
+    <ResultID>807069033</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1210553256</SchemaId>
+    <name>BOS_AR_ArTrans</name>
+    <sqlString>CREATE INDEX IX_BOS_AR_ArTrans_5 ON BOS_AR_ArTrans (dtmClosed);
+</sqlString>
+    <ResultID>1760035262</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1518330099</SchemaId>
+    <name>BOS_AR_ArTrans</name>
+    <sqlString>CREATE INDEX IX_BOS_AR_ArTrans_6 ON BOS_AR_ArTrans (dtmPeriode);
+</sqlString>
+    <ResultID>126528043</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>47753842</SchemaId>
+    <name>BOS_AR_ArTrans</name>
+    <sqlString>CREATE INDEX IX_BOS_AR_ArTrans_7 ON BOS_AR_ArTrans (dtmDue);
+</sqlString>
+    <ResultID>227730804</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1257607423</SchemaId>
+    <name>BOS_AR_ArTrans</name>
+    <sqlString>CREATE INDEX IX_BOS_AR_ArTrans_8 ON BOS_AR_ArTrans (dtmDue_Printed);
+</sqlString>
+    <ResultID>929543111</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1471275932</SchemaId>
+    <name>BOS_AR_ArTrans</name>
+    <sqlString>CREATE INDEX IX_BOS_AR_ArTrans_9 ON BOS_AR_ArTrans (decAmount);
+</sqlString>
+    <ResultID>1734637618</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>652453441</SchemaId>
+    <name>BOS_AR_ArTrans</name>
+    <sqlString>CREATE INDEX IX_BOS_AR_ArTrans_szCustId ON BOS_AR_ArTrans (szCustId);
+</sqlString>
+    <ResultID>1714063326</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>2039242390</SchemaId>
+    <name>BOS_AR_ArTrans</name>
+    <sqlString>CREATE INDEX IX_BOS_AR_ArTrans_szInvWorkplaceId ON BOS_AR_ArTrans (szInvWorkplaceId);
+</sqlString>
+    <ResultID>628332320</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>994186502</SchemaId>
+    <name>BOS_AR_ArTransRefDoc</name>
+    <sqlString>CREATE INDEX IX_BOS_AR_ArTransRefDoc ON BOS_AR_ArTransRefDoc (szRefTrnId,szRefDocId);
+</sqlString>
+    <ResultID>722336617</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1551822911</SchemaId>
+    <name>BOS_AR_CustInvoice</name>
+    <sqlString>CREATE INDEX IX_BOS_AR_CustInvoice ON BOS_AR_CustInvoice (CollectszAddress_1);
+</sqlString>
+    <ResultID>89994622</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>664050251</SchemaId>
+    <name>BOS_AR_CustInvoice</name>
+    <sqlString>CREATE INDEX IX_BOS_AR_CustInvoice_1 ON BOS_AR_CustInvoice (CollectszAddress_2);
+</sqlString>
+    <ResultID>327673242</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>176023874</SchemaId>
+    <name>BOS_AR_CustLocation</name>
+    <sqlString>CREATE INDEX IX_BOS_AR_CustLocation ON BOS_AR_CustLocation (LocationszAddress_1);
+</sqlString>
+    <ResultID>1218951981</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1488975694</SchemaId>
+    <name>BOS_AR_CustLocation</name>
+    <sqlString>CREATE INDEX IX_BOS_AR_CustLocation_1 ON BOS_AR_CustLocation (LocationszPhoneNo_1,LocationszPhoneNo_2);
+</sqlString>
+    <ResultID>1991469631</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>85002418</SchemaId>
+    <name>BOS_AR_CustLocation</name>
+    <sqlString>CREATE INDEX IX_BOS_AR_CustLocation_2 ON BOS_AR_CustLocation (szCustDeliveryNm);
+</sqlString>
+    <ResultID>1062464459</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1871312718</SchemaId>
+    <name>BOS_AR_CustLocation</name>
+    <sqlString>CREATE INDEX IX_BOS_AR_CustLocation_3 ON BOS_AR_CustLocation (LocationszAddress_2);
+</sqlString>
+    <ResultID>293093115</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1493685815</SchemaId>
+    <name>BOS_AR_Customer</name>
+    <sqlString>CREATE INDEX IX_BOS_AR_Customer ON BOS_AR_Customer (szName);
+</sqlString>
+    <ResultID>1802247452</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>225394235</SchemaId>
+    <name>BOS_AR_Customer</name>
+    <sqlString>CREATE INDEX IX_BOS_AR_Customer_1 ON BOS_AR_Customer (szDeliverToCustId);
+</sqlString>
+    <ResultID>829601607</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>386202575</SchemaId>
+    <name>BOS_AR_Customer</name>
+    <sqlString>CREATE INDEX IX_BOS_AR_Customer_10 ON BOS_AR_Customer (bInvoiceToCust);
+</sqlString>
+    <ResultID>1672369397</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>386202576</SchemaId>
+    <name>BOS_AR_Customer</name>
+    <sqlString>CREATE INDEX IX_BOS_AR_Customer_11 ON BOS_AR_Customer (bCollectToCust);
+</sqlString>
+    <ResultID>2025294255</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>386202573</SchemaId>
+    <name>BOS_AR_Customer</name>
+    <sqlString>CREATE INDEX IX_BOS_AR_Customer_12 ON BOS_AR_Customer (szCollWorkplaceId);
+</sqlString>
+    <ResultID>844213922</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>386202574</SchemaId>
+    <name>BOS_AR_Customer</name>
+    <sqlString>CREATE INDEX IX_BOS_AR_Customer_13 ON BOS_AR_Customer (szInvWorkplaceId);
+</sqlString>
+    <ResultID>70025568</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>386202571</SchemaId>
+    <name>BOS_AR_Customer</name>
+    <sqlString>CREATE INDEX IX_BOS_AR_Customer_14 ON BOS_AR_Customer (CustszAddress_2);
+</sqlString>
+    <ResultID>1391387073</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1730920901</SchemaId>
+    <name>BOS_AR_Customer</name>
+    <sqlString>CREATE INDEX IX_BOS_AR_Customer_2 ON BOS_AR_Customer (szInvoiceToCustId);
+</sqlString>
+    <ResultID>126110243</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>607731259</SchemaId>
+    <name>BOS_AR_Customer</name>
+    <sqlString>CREATE INDEX IX_BOS_AR_Customer_3 ON BOS_AR_Customer (szCollectToCustId);
+</sqlString>
+    <ResultID>2126116657</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1417035323</SchemaId>
+    <name>BOS_AR_Customer</name>
+    <sqlString>CREATE INDEX IX_BOS_AR_Customer_4 ON BOS_AR_Customer (CustszAddress_1);
+</sqlString>
+    <ResultID>1626984769</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>539279813</SchemaId>
+    <name>BOS_AR_Customer</name>
+    <sqlString>CREATE INDEX IX_BOS_AR_Customer_5 ON BOS_AR_Customer (CustszPhoneNo_1,CustszPhoneNo_2);
+</sqlString>
+    <ResultID>855090843</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1799372347</SchemaId>
+    <name>BOS_AR_Customer</name>
+    <sqlString>CREATE INDEX IX_BOS_AR_Customer_6 ON BOS_AR_Customer (szSoldToCustId);
+</sqlString>
+    <ResultID>1412616257</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>156942789</SchemaId>
+    <name>BOS_AR_Customer</name>
+    <sqlString>CREATE INDEX IX_BOS_AR_Customer_7 ON BOS_AR_Customer (szDlvWorkplaceId);
+</sqlString>
+    <ResultID>460719898</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>652361275</SchemaId>
+    <name>BOS_AR_Customer</name>
+    <sqlString>CREATE INDEX IX_BOS_AR_Customer_8 ON BOS_AR_Customer (bSoldToCust);
+</sqlString>
+    <ResultID>1439996257</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1303953861</SchemaId>
+    <name>BOS_AR_Customer</name>
+    <sqlString>CREATE INDEX IX_BOS_AR_Customer_9 ON BOS_AR_Customer (bDeliverToCust);
+</sqlString>
+    <ResultID>1747738463</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1299735357</SchemaId>
+    <name>BOS_AR_CustPrePaymentHistory</name>
+    <sqlString>CREATE INDEX IX_BOS_AR_CustPrePaymentHistory ON BOS_AR_CustPrePaymentHistory (szCustId);
+</sqlString>
+    <ResultID>1941746759</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>966127848</SchemaId>
+    <name>BOS_AR_CustPrePaymentHistory</name>
+    <sqlString>CREATE INDEX IX_BOS_AR_CustPrePaymentHistory_1 ON BOS_AR_CustPrePaymentHistory (szCcyId);
+</sqlString>
+    <ResultID>157236168</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>966127849</SchemaId>
+    <name>BOS_AR_CustPrePaymentHistory</name>
+    <sqlString>CREATE INDEX IX_BOS_AR_CustPrePaymentHistory_2 ON BOS_AR_CustPrePaymentHistory (dtmPayment);
+</sqlString>
+    <ResultID>1735299608</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>2056801521</SchemaId>
+    <name>BOS_AR_CustProductDepositHistory</name>
+    <sqlString>CREATE INDEX IX_BOS_AR_CustProductDepositHistory ON BOS_AR_CustProductDepositHistory (szCustId);
+</sqlString>
+    <ResultID>874988056</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>377911783</SchemaId>
+    <name>BOS_AR_CustProductDepositHistory</name>
+    <sqlString>CREATE INDEX IX_BOS_AR_CustProductDepositHistory_1 ON BOS_AR_CustProductDepositHistory (szProductId);
+</sqlString>
+    <ResultID>283089826</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>377911784</SchemaId>
+    <name>BOS_AR_CustProductDepositHistory</name>
+    <sqlString>CREATE INDEX IX_BOS_AR_CustProductDepositHistory_2 ON BOS_AR_CustProductDepositHistory (dtmTransaction);
+</sqlString>
+    <ResultID>1831376087</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1132307004</SchemaId>
+    <name>BOS_AR_CustSales</name>
+    <sqlString>CREATE INDEX IX_BOS_AR_CustSales ON BOS_AR_CustSales (szInvoiceProcessingId);
+</sqlString>
+    <ResultID>597992827</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>427925841</SchemaId>
+    <name>BOS_AR_CustSales</name>
+    <sqlString>CREATE INDEX IX_BOS_AR_CustSales_1 ON BOS_AR_CustSales (bAllowToCredit);
+</sqlString>
+    <ResultID>893128946</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>348339299</SchemaId>
+    <name>BOS_AR_FCustBasicInformation</name>
+    <sqlString>CREATE INDEX IX_BOS_AR_FCustBasicInformation ON BOS_AR_FCustBasicInformation (dtmLastUpdated);
+</sqlString>
+    <ResultID>1599583568</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1556007680</SchemaId>
+    <name>BOS_AR_FCustBasicInformation</name>
+    <sqlString>CREATE INDEX IX_BOS_AR_FCustBasicInformation_1 ON BOS_AR_FCustBasicInformation (bAlreadyTransferred);
+</sqlString>
+    <ResultID>1206828412</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1556007677</SchemaId>
+    <name>BOS_AR_FCustBasicInformation</name>
+    <sqlString>CREATE INDEX IX_BOS_AR_FCustBasicInformation_2 ON BOS_AR_FCustBasicInformation (szWorkplaceId);
+</sqlString>
+    <ResultID>439894682</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>83547924</SchemaId>
+    <name>BOS_AR_FCustChgDlvAddress</name>
+    <sqlString>CREATE INDEX IX_BOS_AR_FCustChgDlvAddress ON BOS_AR_FCustChgDlvAddress (dtmLastUpdated);
+</sqlString>
+    <ResultID>626211877</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1315270065</SchemaId>
+    <name>BOS_AR_FCustChgDlvAddress</name>
+    <sqlString>CREATE INDEX IX_BOS_AR_FCustChgDlvAddress_1 ON BOS_AR_FCustChgDlvAddress (bAlreadyTransferred);
+</sqlString>
+    <ResultID>39752680</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1315335601</SchemaId>
+    <name>BOS_AR_FCustChgDlvAddress</name>
+    <sqlString>CREATE INDEX IX_BOS_AR_FCustChgDlvAddress_2 ON BOS_AR_FCustChgDlvAddress (szWorkplaceId);
+</sqlString>
+    <ResultID>46863391</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>681770859</SchemaId>
+    <name>BOS_AR_FCustChgInvAddress</name>
+    <sqlString>CREATE INDEX IX_BOS_AR_FCustChgInvAddress ON BOS_AR_FCustChgInvAddress (szWorkplaceId);
+</sqlString>
+    <ResultID>1982873245</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>128128662</SchemaId>
+    <name>BOS_AR_FCustChgSalesCfg</name>
+    <sqlString>CREATE INDEX IX_BOS_AR_FCustChgSalesCfg ON BOS_AR_FCustChgSalesCfg (dtmLastUpdated);
+</sqlString>
+    <ResultID>633801139</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1363555658</SchemaId>
+    <name>BOS_AR_FCustChgSalesCfg</name>
+    <sqlString>CREATE INDEX IX_BOS_AR_FCustChgSalesCfg_1 ON BOS_AR_FCustChgSalesCfg (bAlreadyTransferred);
+</sqlString>
+    <ResultID>1963595766</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>975096502</SchemaId>
+    <name>BOS_AR_FCustChgSalesCfg</name>
+    <sqlString>CREATE INDEX IX_BOS_AR_FCustChgSalesCfg_2 ON BOS_AR_FCustChgSalesCfg (szWorkplaceId);
+</sqlString>
+    <ResultID>1555660335</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1511039488</SchemaId>
+    <name>BOS_AR_FCustChgStatus</name>
+    <sqlString>CREATE INDEX IX_BOS_AR_FCustChgStatus ON BOS_AR_FCustChgStatus (dtmLastUpdated);
+</sqlString>
+    <ResultID>282984497</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1754541210</SchemaId>
+    <name>BOS_AR_FCustChgStatus</name>
+    <sqlString>CREATE INDEX IX_BOS_AR_FCustChgStatus_1 ON BOS_AR_FCustChgStatus (bAlreadyTransferred);
+</sqlString>
+    <ResultID>534193000</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1984249790</SchemaId>
+    <name>BOS_AR_FCustDeposit</name>
+    <sqlString>CREATE INDEX IX_BOS_AR_FCustDeposit ON BOS_AR_FCustDeposit (dtmFCustDeposit);
+</sqlString>
+    <ResultID>1651659433</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>225654247</SchemaId>
+    <name>BOS_AR_FCustDeposit</name>
+    <sqlString>CREATE INDEX IX_BOS_AR_FCustDeposit_1 ON BOS_AR_FCustDeposit (szDeposanId);
+</sqlString>
+    <ResultID>1654185631</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1799632359</SchemaId>
+    <name>BOS_AR_FCustDeposit</name>
+    <sqlString>CREATE INDEX IX_BOS_AR_FCustDeposit_2 ON BOS_AR_FCustDeposit (szBankId,szRefId);
+</sqlString>
+    <ResultID>615609954</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1275078282</SchemaId>
+    <name>BOS_AR_FCustPayment</name>
+    <sqlString>CREATE INDEX IX_BOS_AR_FCustPayment_1 ON BOS_AR_FCustPayment (dtmLastUpdated);
+</sqlString>
+    <ResultID>425323791</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>681236854</SchemaId>
+    <name>BOS_AR_FCustPayment</name>
+    <sqlString>CREATE INDEX IX_BOS_AR_FCustPayment_2 ON BOS_AR_FCustPayment (dtmFCustPayment);
+</sqlString>
+    <ResultID>1182842458</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>269225856</SchemaId>
+    <name>BOS_AR_FCustPaymentItem</name>
+    <sqlString>CREATE INDEX IX_BOS_AR_FCustPaymentItem ON BOS_AR_FCustPaymentItem (szTrnId,szDocId);
+</sqlString>
+    <ResultID>633599302</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1782227828</SchemaId>
+    <name>BOS_AR_FCustPaymentItemDetail</name>
+    <sqlString>CREATE INDEX IX_BOS_AR_FCustPaymentItemDetail ON BOS_AR_FCustPaymentItemDetail (szBankId);
+</sqlString>
+    <ResultID>1674626978</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>59043627</SchemaId>
+    <name>BOS_AR_FCustPaymentItemDetail</name>
+    <sqlString>CREATE INDEX IX_BOS_AR_FCustPaymentItemDetails ON BOS_AR_FCustPaymentItemDetail (szFCustPaymentId);
+</sqlString>
+    <ResultID>1176983044</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>160925489</SchemaId>
+    <name>BOS_CAS_FCashOut</name>
+    <sqlString>CREATE INDEX IX_BOS_CAS_FCashOut ON BOS_CAS_FCashOut (szFCashOutId);
+</sqlString>
+    <ResultID>1620937409</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>112290889</SchemaId>
+    <name>BOS_CAS_FCashOut</name>
+    <sqlString>CREATE INDEX IX_BOS_CAS_FCashOut_1 ON BOS_CAS_FCashOut (bAlreadyTransferred);
+</sqlString>
+    <ResultID>830578089</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>112290890</SchemaId>
+    <name>BOS_CAS_FCashOut</name>
+    <sqlString>CREATE INDEX IX_BOS_CAS_FCashOut_2 ON BOS_CAS_FCashOut (dtmLastUpdated);
+</sqlString>
+    <ResultID>1838478621</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>112290891</SchemaId>
+    <name>BOS_CAS_FCashOut</name>
+    <sqlString>CREATE INDEX IX_BOS_CAS_FCashOut_3 ON BOS_CAS_FCashOut (szWorkplaceId);
+</sqlString>
+    <ResultID>577430445</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>396791342</SchemaId>
+    <name>BOS_CAS_FCashReceipt</name>
+    <sqlString>CREATE INDEX IX_BOS_CAS_FCashReceipt ON BOS_CAS_FCashReceipt (dtmLastUpdated);
+</sqlString>
+    <ResultID>803675754</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>483888894</SchemaId>
+    <name>BOS_CAS_FCashReceipt</name>
+    <sqlString>CREATE INDEX IX_BOS_CAS_FCashReceipt_1 ON BOS_CAS_FCashReceipt (bAlreadyTransferred);
+</sqlString>
+    <ResultID>1741583251</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>483888893</SchemaId>
+    <name>BOS_CAS_FCashReceipt</name>
+    <sqlString>CREATE INDEX IX_BOS_CAS_FCashReceipt_2 ON BOS_CAS_FCashReceipt (szWorkplaceId);
+</sqlString>
+    <ResultID>1791558390</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1826400497</SchemaId>
+    <name>BOS_CAS_FCashTemp</name>
+    <sqlString>CREATE INDEX IX_BOS_CAS_FCashTemp ON BOS_CAS_FCashTemp (dtmTransaction);
+</sqlString>
+    <ResultID>913335523</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>672766311</SchemaId>
+    <name>BOS_CAS_FCashTemp</name>
+    <sqlString>CREATE INDEX IX_BOS_CAS_FCashTemp_1 ON BOS_CAS_FCashTemp (szFCashId);
+</sqlString>
+    <ResultID>770980319</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>672635239</SchemaId>
+    <name>BOS_CAS_FCashTemp</name>
+    <sqlString>CREATE INDEX IX_BOS_CAS_FCashTemp_3 ON BOS_CAS_FCashTemp (dtmLastUpdated);
+</sqlString>
+    <ResultID>905767618</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>672438631</SchemaId>
+    <name>BOS_CAS_FCashTemp</name>
+    <sqlString>CREATE INDEX IX_BOS_CAS_FCashTemp_4 ON BOS_CAS_FCashTemp (szWorkplaceId);
+</sqlString>
+    <ResultID>1189707300</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>685474634</SchemaId>
+    <name>BOS_CAS_FCashTempItem</name>
+    <sqlString>CREATE INDEX IX_BOS_CAS_FCashTempItem_szAccountId ON BOS_CAS_FCashTempItem (szAccountId);
+</sqlString>
+    <ResultID>1521054820</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1380247537</SchemaId>
+    <name>BOS_CAS_FCashTempItem</name>
+    <sqlString>CREATE INDEX IX_BOS_CAS_FCashTempItem_szSubAccountId ON BOS_CAS_FCashTempItem (szSubAccountId);
+</sqlString>
+    <ResultID>1963942738</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1319318605</SchemaId>
+    <name>BOS_CAS_FPdrClearing</name>
+    <sqlString>CREATE INDEX IX_BOS_CAS_FPdrClearing ON BOS_CAS_FPdrClearing (dtmLastUpdated);
+</sqlString>
+    <ResultID>1951726932</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>60438713</SchemaId>
+    <name>BOS_CAS_FPdrClearing</name>
+    <sqlString>CREATE INDEX IX_BOS_CAS_FPdrClearing_2 ON BOS_CAS_FPdrClearing (szWorkplaceId);
+</sqlString>
+    <ResultID>1977023731</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1010489740</SchemaId>
+    <name>BOS_CAS_FPdrDeposit</name>
+    <sqlString>CREATE INDEX IX_BOS_CAS_FPdrDeposit ON BOS_CAS_FPdrDeposit (dtmLastUpdated);
+</sqlString>
+    <ResultID>244767298</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1868065222</SchemaId>
+    <name>BOS_CAS_FPdrDeposit</name>
+    <sqlString>CREATE INDEX IX_BOS_CAS_FPdrDeposit_2 ON BOS_CAS_FPdrDeposit (szWorkplaceId);
+</sqlString>
+    <ResultID>191215889</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>801138611</SchemaId>
+    <name>BOS_CAS_FPdrReceipt</name>
+    <sqlString>CREATE INDEX IX_BOS_CAS_FPdrReceipt ON BOS_CAS_FPdrReceipt (dtmLastUpdated);
+</sqlString>
+    <ResultID>1249642275</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>2130438267</SchemaId>
+    <name>BOS_CAS_FPdrReceipt</name>
+    <sqlString>CREATE INDEX IX_BOS_CAS_FPdrReceipt_2 ON BOS_CAS_FPdrReceipt (szWorkplaceId);
+</sqlString>
+    <ResultID>257139497</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1561499721</SchemaId>
+    <name>BOS_CAS_FPdrReject</name>
+    <sqlString>CREATE INDEX IX_BOS_CAS_FPdrReject ON BOS_CAS_FPdrReject (dtmLastUpdated);
+</sqlString>
+    <ResultID>1946320332</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>223446738</SchemaId>
+    <name>BOS_CAS_FPdrReject</name>
+    <sqlString>CREATE INDEX IX_BOS_CAS_FPdrReject_2 ON BOS_CAS_FPdrReject (szWorkplaceId);
+</sqlString>
+    <ResultID>1445781511</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>629491463</SchemaId>
+    <name>BOS_CAS_Pdr</name>
+    <sqlString>CREATE INDEX IX_BOS_CAS_Pdr ON BOS_CAS_Pdr (szStatus);
+</sqlString>
+    <ResultID>169583242</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>905529207</SchemaId>
+    <name>BOS_CAS_Pdr</name>
+    <sqlString>CREATE INDEX IX_BOS_CAS_Pdr_1 ON BOS_CAS_Pdr (dtmDue);
+</sqlString>
+    <ResultID>613988902</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1433122953</SchemaId>
+    <name>BOS_CAS_Pdr</name>
+    <sqlString>CREATE INDEX IX_BOS_CAS_Pdr_2 ON BOS_CAS_Pdr (dtmClear);
+</sqlString>
+    <ResultID>1845139920</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1815459977</SchemaId>
+    <name>BOS_CAS_Pdr</name>
+    <sqlString>CREATE INDEX IX_BOS_CAS_Pdr_4 ON BOS_CAS_Pdr (dtmDeposit);
+</sqlString>
+    <ResultID>1205481868</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>140855159</SchemaId>
+    <name>BOS_CAS_Pdr</name>
+    <sqlString>CREATE INDEX IX_BOS_CAS_Pdr_5 ON BOS_CAS_Pdr (szDepositBankId);
+</sqlString>
+    <ResultID>1153040513</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>2097170295</SchemaId>
+    <name>BOS_CAS_Pdr</name>
+    <sqlString>CREATE INDEX IX_BOS_CAS_Pdr_6 ON BOS_CAS_Pdr (decRemain);
+</sqlString>
+    <ResultID>1319244039</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>466995214</SchemaId>
+    <name>BOS_CAS_Pdr</name>
+    <sqlString>CREATE INDEX IX_BOS_CAS_Pdr_dtmReceipt ON BOS_CAS_Pdr (dtmReceipt);
+</sqlString>
+    <ResultID>1747510232</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>128877521</SchemaId>
+    <name>BOS_CAS_Pdr</name>
+    <sqlString>CREATE INDEX IX_BOS_CAS_Pdr_szRecWorkplaceId ON BOS_CAS_Pdr (szRecWorkplaceId);
+</sqlString>
+    <ResultID>611024747</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>603461368</SchemaId>
+    <name>BOS_CRL_CustFUp</name>
+    <sqlString>CREATE INDEX IX_BOS_CRL_CustFUp ON BOS_CRL_CustFUp (dtmDate,szCustId);
+</sqlString>
+    <ResultID>1520443419</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1541602436</SchemaId>
+    <name>BOS_CRL_FCall</name>
+    <sqlString>CREATE INDEX IX_BOS_CRL_FCall ON BOS_CRL_FCall (szCustId);
+</sqlString>
+    <ResultID>42899443</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1944996424</SchemaId>
+    <name>BOS_CRL_FCall</name>
+    <sqlString>CREATE INDEX IX_BOS_CRL_FCall_1 ON BOS_CRL_FCall (szName);
+</sqlString>
+    <ResultID>1792631467</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1945193032</SchemaId>
+    <name>BOS_CRL_FCall</name>
+    <sqlString>CREATE INDEX IX_BOS_CRL_FCall_2 ON BOS_CRL_FCall (bVoid);
+</sqlString>
+    <ResultID>688841616</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1945127496</SchemaId>
+    <name>BOS_CRL_FCall</name>
+    <sqlString>CREATE INDEX IX_BOS_CRL_FCall_3 ON BOS_CRL_FCall (dtmLastUpdated);
+</sqlString>
+    <ResultID>1023625810</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1945324104</SchemaId>
+    <name>BOS_CRL_FCall</name>
+    <sqlString>CREATE INDEX IX_BOS_CRL_FCall_4 ON BOS_CRL_FCall (bAlreadyTransferred);
+</sqlString>
+    <ResultID>1727369341</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1945258568</SchemaId>
+    <name>BOS_CRL_FCall</name>
+    <sqlString>CREATE INDEX IX_BOS_CRL_FCall_5 ON BOS_CRL_FCall (dtmFollowUp);
+</sqlString>
+    <ResultID>1655862133</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1945455176</SchemaId>
+    <name>BOS_CRL_FCall</name>
+    <sqlString>CREATE INDEX IX_BOS_CRL_FCall_6 ON BOS_CRL_FCall (dtmFinish);
+</sqlString>
+    <ResultID>1932273113</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1945389640</SchemaId>
+    <name>BOS_CRL_FCall</name>
+    <sqlString>CREATE INDEX IX_BOS_CRL_FCall_7 ON BOS_CRL_FCall (szForwardToWorkplaceId);
+</sqlString>
+    <ResultID>1730391928</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1945586248</SchemaId>
+    <name>BOS_CRL_FCall</name>
+    <sqlString>CREATE INDEX IX_BOS_CRL_FCall_8 ON BOS_CRL_FCall (szWorkplaceId);
+</sqlString>
+    <ResultID>1454752003</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>613002336</SchemaId>
+    <name>BOS_GEN_Approved</name>
+    <sqlString>CREATE INDEX IX_BOS_GEN_Approved ON BOS_GEN_Approved (dtmLastUpdated);
+</sqlString>
+    <ResultID>1665133434</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>232465621</SchemaId>
+    <name>BOS_GEN_Approved</name>
+    <sqlString>CREATE INDEX IX_BOS_GEN_Approved_1 ON BOS_GEN_Approved (bAlreadyTransferred);
+</sqlString>
+    <ResultID>1452551487</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>232465622</SchemaId>
+    <name>BOS_GEN_Approved</name>
+    <sqlString>CREATE INDEX IX_BOS_GEN_Approved_2 ON BOS_GEN_Approved (szWorkplaceId);
+</sqlString>
+    <ResultID>530727221</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1904202159</SchemaId>
+    <name>BOS_GEN_RoutineSchedule</name>
+    <sqlString>CREATE INDEX IX_BOS_GEN_RoutineSchedule ON BOS_GEN_RoutineSchedule (szScheduleType);
+</sqlString>
+    <ResultID>866680742</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1213828290</SchemaId>
+    <name>BOS_GL_AccBalance</name>
+    <sqlString>CREATE INDEX IX_BOS_GL_AccBalance ON BOS_GL_AccBalance (szGLSubAccId);
+</sqlString>
+    <ResultID>1762493345</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1270063589</SchemaId>
+    <name>BOS_GL_AccBalance</name>
+    <sqlString>CREATE INDEX IX_BOS_GL_AccBalance_szAccId ON BOS_GL_AccBalance (szAccId);
+</sqlString>
+    <ResultID>1014877437</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1752861858</SchemaId>
+    <name>BOS_GL_AccBalance</name>
+    <sqlString>CREATE INDEX IX_BOS_GL_AccBalance_szGLSubAccId ON BOS_GL_AccBalance (szGLSubAccId);
+</sqlString>
+    <ResultID>1275362376</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1686430562</SchemaId>
+    <name>BOS_GL_AccBalance</name>
+    <sqlString>CREATE INDEX IX_BOS_GL_AccBalance_szSegment_01 ON BOS_GL_AccBalance (szSegment_01);
+</sqlString>
+    <ResultID>1389641179</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1686430563</SchemaId>
+    <name>BOS_GL_AccBalance</name>
+    <sqlString>CREATE INDEX IX_BOS_GL_AccBalance_szSegment_02 ON BOS_GL_AccBalance (szSegment_02);
+</sqlString>
+    <ResultID>1114400570</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1686430564</SchemaId>
+    <name>BOS_GL_AccBalance</name>
+    <sqlString>CREATE INDEX IX_BOS_GL_AccBalance_szSegment_03 ON BOS_GL_AccBalance (szSegment_03);
+</sqlString>
+    <ResultID>1702550052</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1718364380</SchemaId>
+    <name>BOS_GL_Account</name>
+    <sqlString>CREATE INDEX IX_BOS_GL_Account ON BOS_GL_Account (byteLevel);
+</sqlString>
+    <ResultID>1047982930</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1023674293</SchemaId>
+    <name>BOS_GL_Account</name>
+    <sqlString>CREATE INDEX IX_BOS_GL_Account_1 ON BOS_GL_Account (szFullPathAccId);
+</sqlString>
+    <ResultID>304900324</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>542409648</SchemaId>
+    <name>BOS_GL_Account</name>
+    <sqlString>CREATE INDEX IX_BOS_GL_Account_2 ON BOS_GL_Account (bGroup);
+</sqlString>
+    <ResultID>1918333990</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1396094368</SchemaId>
+    <name>BOS_GL_AccountingCalendarItem</name>
+    <sqlString>CREATE INDEX IX_BOS_GL_AccountingCalendarItem ON BOS_GL_AccountingCalendarItem (dtmStart);
+</sqlString>
+    <ResultID>46963381</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>459022355</SchemaId>
+    <name>BOS_GL_FJournalTrans</name>
+    <sqlString>CREATE INDEX IX_BOS_GL_FJournalTrans ON BOS_GL_FJournalTrans (dtmLastUpdated);
+</sqlString>
+    <ResultID>747932618</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>402541498</SchemaId>
+    <name>BOS_GL_FJournalTrans</name>
+    <sqlString>CREATE INDEX IX_BOS_GL_FJournalTrans_1 ON BOS_GL_FJournalTrans (bAlreadyTransferred);
+</sqlString>
+    <ResultID>460855466</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>402541495</SchemaId>
+    <name>BOS_GL_FJournalTrans</name>
+    <sqlString>CREATE INDEX IX_BOS_GL_FJournalTrans_2 ON BOS_GL_FJournalTrans (szFBatchId);
+</sqlString>
+    <ResultID>951898479</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>402541496</SchemaId>
+    <name>BOS_GL_FJournalTrans</name>
+    <sqlString>CREATE INDEX IX_BOS_GL_FJournalTrans_3 ON BOS_GL_FJournalTrans (bVoid);
+</sqlString>
+    <ResultID>157352065</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>402541501</SchemaId>
+    <name>BOS_GL_FJournalTrans</name>
+    <sqlString>CREATE INDEX IX_BOS_GL_FJournalTrans_4 ON BOS_GL_FJournalTrans (bPosted);
+</sqlString>
+    <ResultID>1872215837</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>730144497</SchemaId>
+    <name>BOS_GL_FJournalTrans</name>
+    <sqlString>CREATE INDEX IX_BOS_GL_FJournalTrans_dtmPost ON BOS_GL_FJournalTrans (dtmPost);
+</sqlString>
+    <ResultID>1520525093</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>939395272</SchemaId>
+    <name>BOS_GL_FJournalTransItem</name>
+    <sqlString>CREATE INDEX IX_BOS_GL_FJournalTransItem ON BOS_GL_FJournalTransItem (szAccId,szSegment_01,szSegment_02,szSegment_03,szSegment_04,szSegment_05,szSegment_06,szSegment_07,szSegment_08,szSegment_09,szSegment_10);
+</sqlString>
+    <ResultID>1064140824</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1954793047</SchemaId>
+    <name>BOS_GL_FJournalTransItem</name>
+    <sqlString>CREATE INDEX IX_BOS_GL_FJournalTransItem_szAccId ON BOS_GL_FJournalTransItem (szAccId);
+</sqlString>
+    <ResultID>1420053009</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1652926849</SchemaId>
+    <name>BOS_GL_FJournalTransItem</name>
+    <sqlString>CREATE INDEX IX_BOS_GL_FJournalTransItem_szGLSubAccId ON BOS_GL_FJournalTransItem (szGLSubAccId);
+</sqlString>
+    <ResultID>524391009</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>517891602</SchemaId>
+    <name>BOS_GL_FJournalTransItem</name>
+    <sqlString>CREATE INDEX IX_BOS_GL_FJournalTransItem_szSegment_01 ON BOS_GL_FJournalTransItem (szSegment_01);
+</sqlString>
+    <ResultID>1820017518</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1820760558</SchemaId>
+    <name>BOS_GL_FJournalTransItem</name>
+    <sqlString>CREATE INDEX IX_BOS_GL_FJournalTransItem_szSegment_02 ON BOS_GL_FJournalTransItem (szSegment_02);
+</sqlString>
+    <ResultID>727451869</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>135554578</SchemaId>
+    <name>BOS_GL_FJournalTransItem</name>
+    <sqlString>CREATE INDEX IX_BOS_GL_FJournalTransItem_szSegment_03 ON BOS_GL_FJournalTransItem (szSegment_03);
+</sqlString>
+    <ResultID>565516691</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1864682260</SchemaId>
+    <name>BOS_GL_JournalConfig</name>
+    <sqlString>CREATE INDEX IX_BOS_GL_JournalConfig_dtmLastUpdated ON BOS_GL_JournalConfig (dtmLastUpdated);
+</sqlString>
+    <ResultID>130504211</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1104547630</SchemaId>
+    <name>BOS_GL_JournalMaster</name>
+    <sqlString>CREATE INDEX IX_BOS_GL_JournalMaster_dtmLastUpdated ON BOS_GL_JournalMaster (dtmLastUpdated);
+</sqlString>
+    <ResultID>281163899</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>404086366</SchemaId>
+    <name>BOS_GL_SubAccountSegmentMapping</name>
+    <sqlString>CREATE INDEX IX_BOS_GL_SubAccountSegmentMapping_dtmLastUpdated ON BOS_GL_SubAccountSegmentMapping (dtmLastUpdated);
+</sqlString>
+    <ResultID>896898474</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>858711580</SchemaId>
+    <name>BOS_INV_FAdjustment</name>
+    <sqlString>CREATE INDEX IX_BOS_INV_FAdjustment ON BOS_INV_FAdjustment (szFAdjustmentId);
+</sqlString>
+    <ResultID>789096450</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>267106360</SchemaId>
+    <name>BOS_INV_FDn</name>
+    <sqlString>CREATE INDEX IX_BOS_INV_FDn ON BOS_INV_FDn (dtmDelivery);
+</sqlString>
+    <ResultID>882689897</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>2122991286</SchemaId>
+    <name>BOS_INV_FDn</name>
+    <sqlString>CREATE INDEX IX_BOS_INV_FDn_1 ON BOS_INV_FDn (dtmLastUpdated);
+</sqlString>
+    <ResultID>1491287220</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>215660874</SchemaId>
+    <name>BOS_INV_FDn</name>
+    <sqlString>CREATE INDEX IX_BOS_INV_FDn_2 ON BOS_INV_FDn (szWorkPlaceId);
+</sqlString>
+    <ResultID>985049408</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1740654262</SchemaId>
+    <name>BOS_INV_FDn</name>
+    <sqlString>CREATE INDEX IX_BOS_INV_FDn_3 ON BOS_INV_FDn (szFStInId);
+</sqlString>
+    <ResultID>1401800127</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>931350198</SchemaId>
+    <name>BOS_INV_FDn</name>
+    <sqlString>CREATE INDEX IX_BOS_INV_FDn_4 ON BOS_INV_FDn (szDestinationType,szDestinationId);
+</sqlString>
+    <ResultID>2054029504</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1407301962</SchemaId>
+    <name>BOS_INV_FDn</name>
+    <sqlString>CREATE INDEX IX_BOS_INV_FDn_5 ON BOS_INV_FDn (bApplied);
+</sqlString>
+    <ResultID>1983606411</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>489108159</SchemaId>
+    <name>BOS_INV_FDn2FDnCreated</name>
+    <sqlString>CREATE INDEX IX_BOS_INV_FDn2FDnCreated ON BOS_INV_FDn2FDnCreated (szFDnId);
+</sqlString>
+    <ResultID>1213387275</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>185610128</SchemaId>
+    <name>BOS_INV_FDnItem</name>
+    <sqlString>CREATE INDEX IX_BOS_INV_FDnItem ON BOS_INV_FDnItem (szProductId);
+</sqlString>
+    <ResultID>1398180894</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1629134816</SchemaId>
+    <name>BOS_INV_FSid</name>
+    <sqlString>CREATE INDEX IX_BOS_INV_FSid ON BOS_INV_FSid (dtmLastUpdated);
+</sqlString>
+    <ResultID>42358277</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1789187615</SchemaId>
+    <name>BOS_INV_FSid</name>
+    <sqlString>CREATE INDEX IX_BOS_INV_FSid_2 ON BOS_INV_FSid (szWorkplaceId);
+</sqlString>
+    <ResultID>1066250848</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>885504674</SchemaId>
+    <name>BOS_INV_FSid</name>
+    <sqlString>CREATE INDEX IX_BOS_INV_FSid_dtmIn ON BOS_INV_FSid (dtmIn);
+</sqlString>
+    <ResultID>948603857</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1629265888</SchemaId>
+    <name>BOS_INV_FSod</name>
+    <sqlString>CREATE INDEX IX_BOS_INV_FSod ON BOS_INV_FSod (dtmLastUpdated);
+</sqlString>
+    <ResultID>2040784415</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1784862239</SchemaId>
+    <name>BOS_INV_FSod</name>
+    <sqlString>CREATE INDEX IX_BOS_INV_FSod_2 ON BOS_INV_FSod (szWorkplaceId);
+</sqlString>
+    <ResultID>1150305749</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1784862240</SchemaId>
+    <name>BOS_INV_FSod</name>
+    <sqlString>CREATE INDEX IX_BOS_INV_FSod_3 ON BOS_INV_FSod (szRefDocId);
+</sqlString>
+    <ResultID>1119406276</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1895021243</SchemaId>
+    <name>BOS_INV_FSod</name>
+    <sqlString>CREATE INDEX IX_BOS_INV_FSod_dtmOut ON BOS_INV_FSod (dtmOut);
+</sqlString>
+    <ResultID>619521227</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>2031829519</SchemaId>
+    <name>BOS_INV_FSrc</name>
+    <sqlString>CREATE INDEX IX_BOS_INV_FSrc ON BOS_INV_FSrc (dtmLastUpdated);
+</sqlString>
+    <ResultID>526318804</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1405367280</SchemaId>
+    <name>BOS_INV_FSrc</name>
+    <sqlString>CREATE INDEX IX_BOS_INV_FSrc_2 ON BOS_INV_FSrc (szWorkplaceId);
+</sqlString>
+    <ResultID>890668216</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>916084272</SchemaId>
+    <name>BOS_INV_FSrt</name>
+    <sqlString>CREATE INDEX IX_BOS_INV_FSrt ON BOS_INV_FSrt (dtmLastUpdated);
+</sqlString>
+    <ResultID>1051355587</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1773854769</SchemaId>
+    <name>BOS_INV_FSrt</name>
+    <sqlString>CREATE INDEX IX_BOS_INV_FSrt_2 ON BOS_INV_FSrt (szWorkplaceId);
+</sqlString>
+    <ResultID>1575027131</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1268801328</SchemaId>
+    <name>BOS_INV_FStCor</name>
+    <sqlString>CREATE INDEX IX_BOS_INV_FStCor ON BOS_INV_FStCor (dtmLastUpdated);
+</sqlString>
+    <ResultID>1468052533</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>595289131</SchemaId>
+    <name>BOS_INV_FStCor</name>
+    <sqlString>CREATE INDEX IX_BOS_INV_FStCor_1 ON BOS_INV_FStCor (bAlreadyTransferred);
+</sqlString>
+    <ResultID>11535777</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>998573658</SchemaId>
+    <name>BOS_INV_FStCor</name>
+    <sqlString>CREATE INDEX IX_BOS_INV_FStCor_2 ON BOS_INV_FStCor (szWorkplaceId);
+</sqlString>
+    <ResultID>354289413</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1145878687</SchemaId>
+    <name>BOS_INV_FStIn</name>
+    <sqlString>CREATE INDEX IX_BOS_INV_FStIn ON BOS_INV_FStIn (dtmLastUpdated);
+</sqlString>
+    <ResultID>509062813</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1709166925</SchemaId>
+    <name>BOS_INV_FStIn</name>
+    <sqlString>CREATE INDEX IX_BOS_INV_FStIn_1 ON BOS_INV_FStIn (dtmTransfer);
+</sqlString>
+    <ResultID>1755724750</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1709363533</SchemaId>
+    <name>BOS_INV_FStIn</name>
+    <sqlString>CREATE INDEX IX_BOS_INV_FStIn_2 ON BOS_INV_FStIn (szWorkplaceId);
+</sqlString>
+    <ResultID>1962950980</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1709297997</SchemaId>
+    <name>BOS_INV_FStIn</name>
+    <sqlString>CREATE INDEX IX_BOS_INV_FStIn_3 ON BOS_INV_FStIn (szFDnId);
+</sqlString>
+    <ResultID>1268257203</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>434912270</SchemaId>
+    <name>BOS_INV_FStInItem</name>
+    <sqlString>CREATE INDEX IX_BOS_INV_FStInItem ON BOS_INV_FStInItem (szProductId);
+</sqlString>
+    <ResultID>590197250</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1658933314</SchemaId>
+    <name>BOS_INV_FStIntern</name>
+    <sqlString>CREATE INDEX IX_BOS_INV_FStIntern ON BOS_INV_FStIntern (dtmLastUpdated);
+</sqlString>
+    <ResultID>819884901</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>2114161945</SchemaId>
+    <name>BOS_INV_FStIntern</name>
+    <sqlString>CREATE INDEX IX_BOS_INV_FStIntern_1 ON BOS_INV_FStIntern (bAlreadyTransferred);
+</sqlString>
+    <ResultID>126837146</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1209811350</SchemaId>
+    <name>BOS_INV_FStMorph</name>
+    <sqlString>CREATE INDEX IX_BOS_INV_FStMorph ON BOS_INV_FStMorph (dtmLastUpdated);
+</sqlString>
+    <ResultID>1119461346</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>871760877</SchemaId>
+    <name>BOS_INV_FStMorph</name>
+    <sqlString>CREATE INDEX IX_BOS_INV_FStMorph_1 ON BOS_INV_FStMorph (bAlreadyTransferred);
+</sqlString>
+    <ResultID>104009417</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1499000466</SchemaId>
+    <name>BOS_INV_FStMovingStock</name>
+    <sqlString>CREATE INDEX IX_BOS_INV_FStMovingStock ON BOS_INV_FStMovingStock (dtmLastUpdated);
+</sqlString>
+    <ResultID>809034336</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1636085231</SchemaId>
+    <name>BOS_INV_FStMovingStock</name>
+    <sqlString>CREATE INDEX IX_BOS_INV_FStMovingStock_1 ON BOS_INV_FStMovingStock (bAlreadyTransferred);
+</sqlString>
+    <ResultID>2036515433</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>789490066</SchemaId>
+    <name>BOS_INV_FStReject</name>
+    <sqlString>CREATE INDEX IX_BOS_INV_FStReject ON BOS_INV_FStReject (dtmLastUpdated);
+</sqlString>
+    <ResultID>707844080</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>334260887</SchemaId>
+    <name>BOS_INV_FStReject</name>
+    <sqlString>CREATE INDEX IX_BOS_INV_FStReject_1 ON BOS_INV_FStReject (bAlreadyTransferred);
+</sqlString>
+    <ResultID>1821192842</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>334195351</SchemaId>
+    <name>BOS_INV_FStReject</name>
+    <sqlString>CREATE INDEX IX_BOS_INV_FStReject_2 ON BOS_INV_FStReject (szWorkplaceId);
+</sqlString>
+    <ResultID>1095277922</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>680572510</SchemaId>
+    <name>BOS_INV_FVRema</name>
+    <sqlString>CREATE INDEX IX_BOS_INV_FVRema ON BOS_INV_FVRema (dtmRemain);
+</sqlString>
+    <ResultID>1767409992</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>576742183</SchemaId>
+    <name>BOS_INV_FVRema</name>
+    <sqlString>CREATE INDEX IX_BOS_INV_FVRema_1 ON BOS_INV_FVRema (dtmLastUpdated);
+</sqlString>
+    <ResultID>1653864892</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>586057231</SchemaId>
+    <name>BOS_INV_FVRema</name>
+    <sqlString>CREATE INDEX IX_BOS_INV_FVRema_3 ON BOS_INV_FVRema (szWorkplaceId);
+</sqlString>
+    <ResultID>1196655944</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>138862423</SchemaId>
+    <name>BOS_INV_FWhClosing</name>
+    <sqlString>CREATE INDEX IX_BOS_INV_FWhClosing ON BOS_INV_FWhClosing (dtmLastUpdated);
+</sqlString>
+    <ResultID>224079968</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>35845492</SchemaId>
+    <name>BOS_INV_FWhClosing</name>
+    <sqlString>CREATE INDEX IX_BOS_INV_FWhClosing_1 ON BOS_INV_FWhClosing (bAlreadyTransferred);
+</sqlString>
+    <ResultID>691733398</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>778256944</SchemaId>
+    <name>BOS_INV_Price</name>
+    <sqlString>CREATE INDEX IX_BOS_INV_Price ON BOS_INV_Price (dtmLastUpdated);
+</sqlString>
+    <ResultID>338913699</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>661532486</SchemaId>
+    <name>BOS_INV_Price</name>
+    <sqlString>CREATE INDEX IX_BOS_INV_Price_1 ON BOS_INV_Price (bAlreadyTransferred);
+</sqlString>
+    <ResultID>1404549058</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>231567243</SchemaId>
+    <name>BOS_INV_Price</name>
+    <sqlString>CREATE INDEX IX_BOS_INV_Price_10 ON BOS_INV_Price (bIsSpecificEndDate,dtmValidEnd);
+</sqlString>
+    <ResultID>930006688</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>661466950</SchemaId>
+    <name>BOS_INV_Price</name>
+    <sqlString>CREATE INDEX IX_BOS_INV_Price_2 ON BOS_INV_Price (szStatus);
+</sqlString>
+    <ResultID>805356876</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>661401414</SchemaId>
+    <name>BOS_INV_Price</name>
+    <sqlString>CREATE INDEX IX_BOS_INV_Price_3 ON BOS_INV_Price (szSalesOrgId_1);
+</sqlString>
+    <ResultID>342861751</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>661335878</SchemaId>
+    <name>BOS_INV_Price</name>
+    <sqlString>CREATE INDEX IX_BOS_INV_Price_4 ON BOS_INV_Price (szSalesOrgId_2);
+</sqlString>
+    <ResultID>1685389125</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>661270342</SchemaId>
+    <name>BOS_INV_Price</name>
+    <sqlString>CREATE INDEX IX_BOS_INV_Price_5 ON BOS_INV_Price (szWorkplaceId);
+</sqlString>
+    <ResultID>1100528049</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>661204806</SchemaId>
+    <name>BOS_INV_Price</name>
+    <sqlString>CREATE INDEX IX_BOS_INV_Price_6 ON BOS_INV_Price (szQualifierId);
+</sqlString>
+    <ResultID>1459478876</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>661139270</SchemaId>
+    <name>BOS_INV_Price</name>
+    <sqlString>CREATE INDEX IX_BOS_INV_Price_7 ON BOS_INV_Price (szQualifierId_2);
+</sqlString>
+    <ResultID>1395827495</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>661073734</SchemaId>
+    <name>BOS_INV_Price</name>
+    <sqlString>CREATE INDEX IX_BOS_INV_Price_8 ON BOS_INV_Price (szQualifierId_3);
+</sqlString>
+    <ResultID>1353216526</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>661008198</SchemaId>
+    <name>BOS_INV_Price</name>
+    <sqlString>CREATE INDEX IX_BOS_INV_Price_9 ON BOS_INV_Price (dtmValidStart);
+</sqlString>
+    <ResultID>2011244131</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1841475721</SchemaId>
+    <name>BOS_INV_PriceOrder</name>
+    <sqlString>CREATE INDEX IX_BOS_INV_PriceOrder ON BOS_INV_PriceOrder (dtmLastUpdated);
+</sqlString>
+    <ResultID>398683762</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1915140781</SchemaId>
+    <name>BOS_INV_PriceOrder</name>
+    <sqlString>CREATE INDEX IX_BOS_INV_PriceOrder_1 ON BOS_INV_PriceOrder (bAlreadyTransferred);
+</sqlString>
+    <ResultID>759761647</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1793672531</SchemaId>
+    <name>BOS_INV_PriceOrder</name>
+    <sqlString>CREATE INDEX IX_BOS_INV_PriceOrder_10 ON BOS_INV_PriceOrder (bIsSpecificEndDate,dtmValidEnd);
+</sqlString>
+    <ResultID>1573630558</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>349056840</SchemaId>
+    <name>BOS_INV_PriceOrder</name>
+    <sqlString>CREATE INDEX IX_BOS_INV_PriceOrder_2 ON BOS_INV_PriceOrder (szSalesOrgId_1);
+</sqlString>
+    <ResultID>1453813639</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1217027101</SchemaId>
+    <name>BOS_INV_PriceOrder</name>
+    <sqlString>CREATE INDEX IX_BOS_INV_PriceOrder_3 ON BOS_INV_PriceOrder (szSalesOrgId_2);
+</sqlString>
+    <ResultID>991427452</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1511856254</SchemaId>
+    <name>BOS_INV_PriceOrder</name>
+    <sqlString>CREATE INDEX IX_BOS_INV_PriceOrder_4 ON BOS_INV_PriceOrder (szWorkplaceId);
+</sqlString>
+    <ResultID>830051266</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>54227687</SchemaId>
+    <name>BOS_INV_PriceOrder</name>
+    <sqlString>CREATE INDEX IX_BOS_INV_PriceOrder_5 ON BOS_INV_PriceOrder (szQualifierId);
+</sqlString>
+    <ResultID>564226775</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1620311628</SchemaId>
+    <name>BOS_INV_PriceOrder</name>
+    <sqlString>CREATE INDEX IX_BOS_INV_PriceOrder_6 ON BOS_INV_PriceOrder (szQualifierId_2);
+</sqlString>
+    <ResultID>1045804545</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1108571727</SchemaId>
+    <name>BOS_INV_PriceOrder</name>
+    <sqlString>CREATE INDEX IX_BOS_INV_PriceOrder_7 ON BOS_INV_PriceOrder (szQualifierId_3);
+</sqlString>
+    <ResultID>743267420</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>457512214</SchemaId>
+    <name>BOS_INV_PriceOrder</name>
+    <sqlString>CREATE INDEX IX_BOS_INV_PriceOrder_8 ON BOS_INV_PriceOrder (szOwnerTrnId,dtmValidStart);
+</sqlString>
+    <ResultID>1395008528</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>2023596155</SchemaId>
+    <name>BOS_INV_PriceOrder</name>
+    <sqlString>CREATE INDEX IX_BOS_INV_PriceOrder_9 ON BOS_INV_PriceOrder (dtmValidStart);
+</sqlString>
+    <ResultID>782129283</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1994206807</SchemaId>
+    <name>BOS_INV_Product</name>
+    <sqlString>CREATE INDEX IX_BOS_INV_Product ON BOS_INV_Product (dtmValidStart,dtmValidEnd);
+</sqlString>
+    <ResultID>1454846441</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1830175286</SchemaId>
+    <name>BOS_INV_Stock</name>
+    <sqlString>CREATE INDEX IX_BOS_INV_Stock ON BOS_INV_Stock (dtmLastUpdated);
+</sqlString>
+    <ResultID>1532880347</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1389393966</SchemaId>
+    <name>BOS_INV_StockAllocation</name>
+    <sqlString>CREATE INDEX IX_BOS_INV_StockAllocation ON BOS_INV_StockAllocation (dtmExpired);
+</sqlString>
+    <ResultID>984803615</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>28181518</SchemaId>
+    <name>BOS_INV_StockAllocation</name>
+    <sqlString>CREATE INDEX IX_BOS_INV_StockAllocation_1 ON BOS_INV_StockAllocation (dtmLastUpdated);
+</sqlString>
+    <ResultID>483430138</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>340409507</SchemaId>
+    <name>BOS_INV_StockHistory</name>
+    <sqlString>CREATE INDEX IX_BOS_INV_StockHistory ON BOS_INV_StockHistory (szProductId,szLocationType,szLocationId,szStockTypeId,dtmTransaction,szReportedAsType,szReportedAsId);
+</sqlString>
+    <ResultID>619549521</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>813721083</SchemaId>
+    <name>BOS_INV_StockHistory</name>
+    <sqlString>CREATE INDEX IX_BOS_INV_StockHistory_dtmTransaction ON BOS_INV_StockHistory (dtmTransaction);
+</sqlString>
+    <ResultID>2144791397</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>547571830</SchemaId>
+    <name>BOS_INV_StockHistory</name>
+    <sqlString>CREATE INDEX IX_BOS_INV_StockHistory_LastUpdated ON BOS_INV_StockHistory (dtmLastUpdated);
+</sqlString>
+    <ResultID>917155145</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>673909058</SchemaId>
+    <name>BOS_INV_StockHistory</name>
+    <sqlString>CREATE INDEX IX_BOS_INV_StockHistory_szEmployeeId ON BOS_INV_StockHistory (szEmployeeId);
+</sqlString>
+    <ResultID>631702160</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>495933706</SchemaId>
+    <name>BOS_INV_StockHistory</name>
+    <sqlString>CREATE INDEX IX_BOS_INV_StockHistory_szReportedAsId ON BOS_INV_StockHistory (szReportedAsId);
+</sqlString>
+    <ResultID>1278615430</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1243667371</SchemaId>
+    <name>BOS_INV_StockLot</name>
+    <sqlString>CREATE INDEX IX_BOS_INV_StockLot_dtmLastUpdated ON BOS_INV_StockLot (dtmLastUpdated);
+</sqlString>
+    <ResultID>460351554</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>277373318</SchemaId>
+    <name>BOS_INV_StockLotHistory</name>
+    <sqlString>CREATE INDEX IX_BOS_INV_StockLotHistory ON BOS_INV_StockLotHistory (szLotId,szProductId,szLocationType,szLocationId,szStockTypeId,dtmTransaction);
+</sqlString>
+    <ResultID>500283145</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>231911931</SchemaId>
+    <name>BOS_INV_StockLotHistory</name>
+    <sqlString>CREATE INDEX IX_BOS_INV_StockLotHistory_LastUpdated ON BOS_INV_StockLotHistory (dtmLastUpdated);
+</sqlString>
+    <ResultID>1228919430</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>394121464</SchemaId>
+    <name>BOS_INV_StockSN</name>
+    <sqlString>CREATE INDEX IX_BOS_INV_StockSN ON BOS_INV_StockSN (dtmLastUpdated);
+</sqlString>
+    <ResultID>1485889895</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>158847475</SchemaId>
+    <name>BOS_INV_StockSN</name>
+    <sqlString>CREATE INDEX IX_BOS_INV_StockSN_dtmLastUpdated ON BOS_INV_StockSN (dtmLastUpdated);
+</sqlString>
+    <ResultID>1928039726</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>161018361</SchemaId>
+    <name>BOS_INV_StockSNHistory</name>
+    <sqlString>CREATE INDEX IX_BOS_INV_StockSNHistory_1 ON BOS_INV_StockSNHistory (szProductId,szLocationType,szLocationId,szStockTypeId,szReportedAsType,szReportedAsId);
+</sqlString>
+    <ResultID>1323638313</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>242266166</SchemaId>
+    <name>BOS_INV_StockSNHistory</name>
+    <sqlString>CREATE INDEX IX_BOS_INV_StockSNHistory_2 ON BOS_INV_StockSNHistory (szProductSn);
+</sqlString>
+    <ResultID>688208926</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>558352481</SchemaId>
+    <name>BOS_INV_StockSNHistory</name>
+    <sqlString>CREATE INDEX IX_BOS_INV_StockSNHistory_LastUpdated ON BOS_INV_StockSNHistory (dtmLastUpdated);
+</sqlString>
+    <ResultID>1155691900</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>459738330</SchemaId>
+    <name>BOS_INV_StockSnProduct</name>
+    <sqlString>CREATE INDEX IX_BOS_INV_StockSnProduct_dtmLastUpdated ON BOS_INV_StockSnProduct (dtmLastUpdated);
+</sqlString>
+    <ResultID>2062338481</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1165708037</SchemaId>
+    <name>BOS_INV_StockToDeliver</name>
+    <sqlString>CREATE INDEX IX_BOS_INV_StockToDeliver ON BOS_INV_StockToDeliver (dtmLastUpdated);
+</sqlString>
+    <ResultID>1289957626</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1745552790</SchemaId>
+    <name>BOS_INV_StockToReceive</name>
+    <sqlString>CREATE INDEX IX_BOS_INV_StockToReceive ON BOS_INV_StockToReceive (dtmLastUpdated);
+</sqlString>
+    <ResultID>196968137</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1832949256</SchemaId>
+    <name>BOS_INV_StockType</name>
+    <sqlString>CREATE INDEX IX_BOS_INV_StockType ON BOS_INV_StockType (dtmLastUpdated);
+</sqlString>
+    <ResultID>1329063001</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1527103226</SchemaId>
+    <name>BOS_INV_Vehicle</name>
+    <sqlString>CREATE INDEX IX_BOS_INV_Vehicle ON BOS_INV_Vehicle (szWorkplaceId);
+</sqlString>
+    <ResultID>183897310</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1957611099</SchemaId>
+    <name>BOS_INV_Warehouse</name>
+    <sqlString>CREATE INDEX IX_BOS_INV_Warehouse ON BOS_INV_Warehouse (szWorkplaceId);
+</sqlString>
+    <ResultID>831024196</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>823655116</SchemaId>
+    <name>BOS_MD_UploadHistory</name>
+    <sqlString>CREATE INDEX IX_BOS_MD_UploadHistory ON BOS_MD_UploadHistory (dtmUpload);
+</sqlString>
+    <ResultID>579145528</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1181085769</SchemaId>
+    <name>BOS_MKT_FPromo</name>
+    <sqlString>CREATE INDEX IX_BOS_MKT_FPromo ON BOS_MKT_FPromo (dtmLastUpdated);
+</sqlString>
+    <ResultID>241664709</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1991244452</SchemaId>
+    <name>BOS_MKT_FPromo</name>
+    <sqlString>CREATE INDEX IX_BOS_MKT_FPromo_1 ON BOS_MKT_FPromo (bAlreadyTransferred);
+</sqlString>
+    <ResultID>1220304567</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1216122787</SchemaId>
+    <name>BOS_PI_Employee</name>
+    <sqlString>CREATE INDEX IX_BOS_PI_Employee ON BOS_PI_Employee (szWorkplaceId);
+</sqlString>
+    <ResultID>611357211</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1025009236</SchemaId>
+    <name>BOS_PI_Employee</name>
+    <sqlString>CREATE INDEX IX_BOS_PI_Employee_1 ON BOS_PI_Employee (szTeamId);
+</sqlString>
+    <ResultID>1984679647</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1340050573</SchemaId>
+    <name>BOS_PI_UserInfo</name>
+    <sqlString>CREATE INDEX IX_BOS_PI_UserInfo ON BOS_PI_UserInfo (szUserId);
+</sqlString>
+    <ResultID>1930967545</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>387207950</SchemaId>
+    <name>BOS_PI_UserInfo</name>
+    <sqlString>CREATE INDEX IX_BOS_PI_UserInfo_1 ON BOS_PI_UserInfo (szUserId);
+</sqlString>
+    <ResultID>136345162</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1186770162</SchemaId>
+    <name>BOS_PI_UserInfo</name>
+    <sqlString>CREATE INDEX IX_BOS_PI_UserInfo_2 ON BOS_PI_UserInfo (szUserId);
+</sqlString>
+    <ResultID>1840629947</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1847756463</SchemaId>
+    <name>BOS_PUR_FPo_sItemDelivery</name>
+    <sqlString>CREATE INDEX IX_BOS_PUR_FPo_sItemDelivery_dtmLastUpdated ON BOS_PUR_FPo_sItemDelivery (dtmLastUpdated);
+</sqlString>
+    <ResultID>1624306938</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>2113957154</SchemaId>
+    <name>BOS_SD_CjrTracking</name>
+    <sqlString>CREATE INDEX IX_BOS_SD_CjrTracking ON BOS_SD_CjrTracking (szCustId);
+</sqlString>
+    <ResultID>1805026398</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1859220170</SchemaId>
+    <name>BOS_SD_CjrTracking</name>
+    <sqlString>CREATE INDEX IX_BOS_SD_CjrTracking_1 ON BOS_SD_CjrTracking (szTrnId,szDocId);
+</sqlString>
+    <ResultID>247863221</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>869663185</SchemaId>
+    <name>BOS_SD_CjrTracking</name>
+    <sqlString>CREATE INDEX IX_BOS_SD_CjrTracking_2 ON BOS_SD_CjrTracking (szCollectorId);
+</sqlString>
+    <ResultID>149521867</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>696420756</SchemaId>
+    <name>BOS_SD_CjrTracking</name>
+    <sqlString>CREATE INDEX IX_BOS_SD_CjrTracking_3 ON BOS_SD_CjrTracking (szFCjrId);
+</sqlString>
+    <ResultID>1303298666</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1676232239</SchemaId>
+    <name>BOS_SD_CjrTracking</name>
+    <sqlString>CREATE INDEX IX_BOS_SD_CjrTracking_4 ON BOS_SD_CjrTracking (dtmNext);
+</sqlString>
+    <ResultID>1036476586</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>110148298</SchemaId>
+    <name>BOS_SD_CjrTracking</name>
+    <sqlString>CREATE INDEX IX_BOS_SD_CjrTracking_5 ON BOS_SD_CjrTracking (szCustId);
+</sqlString>
+    <ResultID>1562915603</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1199351199</SchemaId>
+    <name>BOS_SD_CustCollRoutine</name>
+    <sqlString>CREATE INDEX IX_BOS_SD_CustCollRoutine ON BOS_SD_CustCollRoutine (szScheduleId);
+</sqlString>
+    <ResultID>2105640989</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>886493574</SchemaId>
+    <name>BOS_SD_CustCollRoutine_DRAFT</name>
+    <sqlString>CREATE INDEX IX_BOS_SD_CustCollRoutine_DRAFT ON BOS_SD_CustCollRoutine_DRAFT (szScheduleId);
+</sqlString>
+    <ResultID>272316835</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1746203260</SchemaId>
+    <name>BOS_SD_CustFoc</name>
+    <sqlString>CREATE INDEX IX_BOS_SD_CustFoc ON BOS_SD_CustFoc (dtmLastUpdated);
+</sqlString>
+    <ResultID>1514698475</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>191970109</SchemaId>
+    <name>BOS_SD_CustFoc</name>
+    <sqlString>CREATE INDEX IX_BOS_SD_CustFoc_1 ON BOS_SD_CustFoc (bAlreadyTransferred);
+</sqlString>
+    <ResultID>1785803872</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1758054050</SchemaId>
+    <name>BOS_SD_CustFoc</name>
+    <sqlString>CREATE INDEX IX_BOS_SD_CustFoc_2 ON BOS_SD_CustFoc (dtmEnd);
+</sqlString>
+    <ResultID>143163073</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>970829305</SchemaId>
+    <name>BOS_SD_CustFoc</name>
+    <sqlString>CREATE INDEX IX_BOS_SD_CustFoc_3 ON BOS_SD_CustFoc (dtmStart);
+</sqlString>
+    <ResultID>1816646334</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>27635686</SchemaId>
+    <name>BOS_SD_CustFocHistory</name>
+    <sqlString>CREATE INDEX IX_BOS_SD_CustFocHistory ON BOS_SD_CustFocHistory (szCustId);
+</sqlString>
+    <ResultID>1601461900</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>409703812</SchemaId>
+    <name>BOS_SD_CustFocHistory</name>
+    <sqlString>CREATE INDEX IX_BOS_SD_CustFocHistory_1 ON BOS_SD_CustFocHistory (szProductId);
+</sqlString>
+    <ResultID>831934033</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>409769348</SchemaId>
+    <name>BOS_SD_CustFocHistory</name>
+    <sqlString>CREATE INDEX IX_BOS_SD_CustFocHistory_2 ON BOS_SD_CustFocHistory (szFocType);
+</sqlString>
+    <ResultID>183165740</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>409834884</SchemaId>
+    <name>BOS_SD_CustFocHistory</name>
+    <sqlString>CREATE INDEX IX_BOS_SD_CustFocHistory_3 ON BOS_SD_CustFocHistory (dtmFoc);
+</sqlString>
+    <ResultID>1104598270</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>619567368</SchemaId>
+    <name>BOS_SD_CustRoutine</name>
+    <sqlString>CREATE INDEX IX_BOS_SD_CustRoutine_1 ON BOS_SD_CustRoutine (dtmDelivery);
+</sqlString>
+    <ResultID>659739893</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1031150681</SchemaId>
+    <name>BOS_SD_CustRoutine_DRAFT</name>
+    <sqlString>CREATE INDEX IX_BOS_SD_CustRoutine_DRAFT ON BOS_SD_CustRoutine_DRAFT (dtmDelivery);
+</sqlString>
+    <ResultID>672882836</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1059462311</SchemaId>
+    <name>BOS_SD_CustRoutineItem</name>
+    <sqlString>CREATE INDEX IX_BOS_SD_CustRoutineItem ON BOS_SD_CustRoutineItem (szScheduleId);
+</sqlString>
+    <ResultID>1552296292</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>87774446</SchemaId>
+    <name>BOS_SD_CustRoutineItem</name>
+    <sqlString>CREATE INDEX IX_BOS_SD_CustRoutineItem_1 ON BOS_SD_CustRoutineItem (szTeamId);
+</sqlString>
+    <ResultID>1063071535</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>43526454</SchemaId>
+    <name>BOS_SD_CustRoutineItem_DRAFT</name>
+    <sqlString>CREATE INDEX IX_BOS_SD_CustRoutineItem_DRAFT ON BOS_SD_CustRoutineItem_DRAFT (szScheduleId);
+</sqlString>
+    <ResultID>342751281</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>2117500420</SchemaId>
+    <name>BOS_SD_CustRoutineItem_DRAFT</name>
+    <sqlString>CREATE INDEX IX_BOS_SD_CustRoutineItem_DRAFT_1 ON BOS_SD_CustRoutineItem_DRAFT (szTeamId);
+</sqlString>
+    <ResultID>1615376022</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>150099315</SchemaId>
+    <name>BOS_SD_CustTORoutineItem</name>
+    <sqlString>CREATE INDEX IX_BOS_SD_CustTORoutineItem ON BOS_SD_CustTORoutineItem (szScheduleId);
+</sqlString>
+    <ResultID>871345507</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1657908047</SchemaId>
+    <name>BOS_SD_CustTORoutineItem</name>
+    <sqlString>CREATE INDEX IX_BOS_SD_CustTORoutineItem_1 ON BOS_SD_CustTORoutineItem (szTeamId);
+</sqlString>
+    <ResultID>1097045067</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1578245527</SchemaId>
+    <name>BOS_SD_CustTORoutineItem_DRAFT</name>
+    <sqlString>CREATE INDEX IX_BOS_SD_CustTORoutineItem_DRAFT ON BOS_SD_CustTORoutineItem_DRAFT (szScheduleId);
+</sqlString>
+    <ResultID>2072377344</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>313512092</SchemaId>
+    <name>BOS_SD_CustTORoutineItem_DRAFT</name>
+    <sqlString>CREATE INDEX IX_BOS_SD_CustTORoutineItem_DRAFT_1 ON BOS_SD_CustTORoutineItem_DRAFT (szTeamId);
+</sqlString>
+    <ResultID>579022192</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>678580925</SchemaId>
+    <name>BOS_SD_DjrTracking</name>
+    <sqlString>CREATE INDEX IX_BOS_SD_DjrTracking ON BOS_SD_DjrTracking (szFDoId);
+</sqlString>
+    <ResultID>661686148</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>49401403</SchemaId>
+    <name>BOS_SD_DjrTracking</name>
+    <sqlString>CREATE INDEX IX_BOS_SD_DjrTracking_1 ON BOS_SD_DjrTracking (szDriverId);
+</sqlString>
+    <ResultID>1786455428</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1516682538</SchemaId>
+    <name>BOS_SD_DjrTracking</name>
+    <sqlString>CREATE INDEX IX_BOS_SD_DjrTracking_2 ON BOS_SD_DjrTracking (szCustId);
+</sqlString>
+    <ResultID>1025379874</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1212200817</SchemaId>
+    <name>BOS_SD_DjrTracking</name>
+    <sqlString>CREATE INDEX IX_BOS_SD_DjrTracking_3 ON BOS_SD_DjrTracking (dtmNext);
+</sqlString>
+    <ResultID>2107368033</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>452685930</SchemaId>
+    <name>BOS_SD_DjrTracking</name>
+    <sqlString>CREATE INDEX IX_BOS_SD_DjrTracking_6 ON BOS_SD_DjrTracking (szFDjrId);
+</sqlString>
+    <ResultID>356320342</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>368617979</SchemaId>
+    <name>BOS_SD_FCjr</name>
+    <sqlString>CREATE INDEX IX_BOS_SD_FCjr ON BOS_SD_FCjr (dtmLastUpdated);
+</sqlString>
+    <ResultID>769430438</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1162990121</SchemaId>
+    <name>BOS_SD_FCjr</name>
+    <sqlString>CREATE INDEX IX_BOS_SD_FCjr_2 ON BOS_SD_FCjr (dtmFCjr);
+</sqlString>
+    <ResultID>498907504</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>793325015</SchemaId>
+    <name>BOS_SD_FCjr</name>
+    <sqlString>CREATE INDEX IX_BOS_SD_FCjr_3 ON BOS_SD_FCjr (szWorkplaceId);
+</sqlString>
+    <ResultID>1998682601</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>2098277609</SchemaId>
+    <name>BOS_SD_FCustFoc</name>
+    <sqlString>CREATE INDEX IX_BOS_SD_FCustFoc ON BOS_SD_FCustFoc (dtmLastUpdated);
+</sqlString>
+    <ResultID>1744771581</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1555272121</SchemaId>
+    <name>BOS_SD_FCustFoc</name>
+    <sqlString>CREATE INDEX IX_BOS_SD_FCustFoc_1 ON BOS_SD_FCustFoc (bAlreadyTransferred);
+</sqlString>
+    <ResultID>861352345</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>382258767</SchemaId>
+    <name>BOS_SD_FDistrClosing</name>
+    <sqlString>CREATE INDEX IX_BOS_SD_FDistrClosing ON BOS_SD_FDistrClosing (dtmLastUpdated);
+</sqlString>
+    <ResultID>1239607907</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>624069141</SchemaId>
+    <name>BOS_SD_FDistrClosing</name>
+    <sqlString>CREATE INDEX IX_BOS_SD_FDistrClosing_1 ON BOS_SD_FDistrClosing (bAlreadyTransferred);
+</sqlString>
+    <ResultID>1706110377</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1205360133</SchemaId>
+    <name>BOS_SD_FDjr</name>
+    <sqlString>CREATE INDEX IX_BOS_SD_FDjr ON BOS_SD_FDjr (dtmLastUpdated);
+</sqlString>
+    <ResultID>1704909087</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>2080189911</SchemaId>
+    <name>BOS_SD_FDjr</name>
+    <sqlString>CREATE INDEX IX_BOS_SD_FDjr_2 ON BOS_SD_FDjr (dtmFDjr);
+</sqlString>
+    <ResultID>227200732</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>899456005</SchemaId>
+    <name>BOS_SD_FDjr</name>
+    <sqlString>CREATE INDEX IX_BOS_SD_FDjr_szWorkplaceId ON BOS_SD_FDjr (szWorkplaceId);
+</sqlString>
+    <ResultID>1177639611</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1527357987</SchemaId>
+    <name>BOS_SD_FDo</name>
+    <sqlString>CREATE INDEX IX_BOS_SD_CountUnappliedFDo ON BOS_SD_FDo (szDoId,dtmDelivery,bVoid,bApplied,szWorkplaceId);
+</sqlString>
+    <ResultID>2008709411</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1202345482</SchemaId>
+    <name>BOS_SD_FDo</name>
+    <sqlString>CREATE INDEX IX_BOS_SD_FDo ON BOS_SD_FDo (szManualNo);
+</sqlString>
+    <ResultID>1807148040</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>388897372</SchemaId>
+    <name>BOS_SD_FDo</name>
+    <sqlString>CREATE INDEX IX_BOS_SD_FDo_1 ON BOS_SD_FDo (dtmLastUpdated);
+</sqlString>
+    <ResultID>847073986</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>197256612</SchemaId>
+    <name>BOS_SD_FDo</name>
+    <sqlString>CREATE INDEX IX_BOS_SD_FDo_10 ON BOS_SD_FDo (szReturnFDoId);
+</sqlString>
+    <ResultID>596289179</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1759058524</SchemaId>
+    <name>BOS_SD_FDo</name>
+    <sqlString>CREATE INDEX IX_BOS_SD_FDo_11 ON BOS_SD_FDo (szApplyNo);
+</sqlString>
+    <ResultID>2102692357</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>579593636</SchemaId>
+    <name>BOS_SD_FDo</name>
+    <sqlString>CREATE INDEX IX_BOS_SD_FDo_12 ON BOS_SD_FDo (szDoId,szFSoId,dtmDelivery,szCustId,decAmount,szDriverId,bVoid,bApplied,szWorkplaceId);
+</sqlString>
+    <ResultID>1129947740</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>14387155</SchemaId>
+    <name>BOS_SD_FDo</name>
+    <sqlString>CREATE INDEX IX_BOS_SD_FDo_2 ON BOS_SD_FDo (dtmDelivery);
+</sqlString>
+    <ResultID>700925236</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1551696786</SchemaId>
+    <name>BOS_SD_FDo</name>
+    <sqlString>CREATE INDEX IX_BOS_SD_FDo_3 ON BOS_SD_FDo (szCustId);
+</sqlString>
+    <ResultID>1472615088</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>792181899</SchemaId>
+    <name>BOS_SD_FDo</name>
+    <sqlString>CREATE INDEX IX_BOS_SD_FDo_4 ON BOS_SD_FDo (szFInvoiceId);
+</sqlString>
+    <ResultID>1600824998</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1936701456</SchemaId>
+    <name>BOS_SD_FDo</name>
+    <sqlString>CREATE INDEX IX_BOS_SD_FDo_5 ON BOS_SD_FDo (szDriverId);
+</sqlString>
+    <ResultID>498747606</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>773902042</SchemaId>
+    <name>BOS_SD_FDo</name>
+    <sqlString>CREATE INDEX IX_BOS_SD_FDo_7 ON BOS_SD_FDo (szWorkplaceId);
+</sqlString>
+    <ResultID>775583566</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>32667012</SchemaId>
+    <name>BOS_SD_FDo</name>
+    <sqlString>CREATE INDEX IX_BOS_SD_FDo_9 ON BOS_SD_FDo (szFDnId);
+</sqlString>
+    <ResultID>1121132734</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>91659561</SchemaId>
+    <name>BOS_SD_FDo</name>
+    <sqlString>CREATE INDEX IX_BOS_SD_FDo_bApplied ON BOS_SD_FDo (bApplied);
+</sqlString>
+    <ResultID>1751365573</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1428853319</SchemaId>
+    <name>BOS_SD_FDo</name>
+    <sqlString>CREATE INDEX IX_BOS_SD_FDo_bUploadedFromMoDis ON BOS_SD_FDo (bUploadedFromMoDis);
+</sqlString>
+    <ResultID>1268039504</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1837139662</SchemaId>
+    <name>BOS_SD_FDo</name>
+    <sqlString>CREATE INDEX IX_BOS_SD_FDo_bVoid ON BOS_SD_FDo (bVoid);
+</sqlString>
+    <ResultID>1720165878</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>2139658354</SchemaId>
+    <name>BOS_SD_FDo</name>
+    <sqlString>CREATE INDEX IX_BOS_SD_FDo_FSoId ON BOS_SD_FDo (szFSoId);
+</sqlString>
+    <ResultID>300541155</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1511814370</SchemaId>
+    <name>BOS_SD_FDo</name>
+    <sqlString>CREATE INDEX IX_BOS_SD_FDo_szFSoId ON BOS_SD_FDo (szFSoId);
+</sqlString>
+    <ResultID>852702528</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1669069549</SchemaId>
+    <name>BOS_SD_FDo</name>
+    <sqlString>CREATE INDEX IX_BOS_SD_FDo_szSalesOrgId ON BOS_SD_FDo (szSalesOrgId);
+</sqlString>
+    <ResultID>1621476826</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1093636423</SchemaId>
+    <name>BOS_SD_FDoCorrection</name>
+    <sqlString>CREATE INDEX IX_BOS_SD_FDoCorrection ON BOS_SD_FDoCorrection (dtmLastUpdated);
+</sqlString>
+    <ResultID>373720137</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>2074171495</SchemaId>
+    <name>BOS_SD_FDoCorrection</name>
+    <sqlString>CREATE INDEX IX_BOS_SD_FDoCorrection_1 ON BOS_SD_FDoCorrection (bAlreadyTransferred);
+</sqlString>
+    <ResultID>1321748680</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1292930593</SchemaId>
+    <name>BOS_SD_FDoItem</name>
+    <sqlString>CREATE INDEX IX_BOS_SD_FDoItem_1 ON BOS_SD_FDoItem (szDoId,szProductId,szPaymentType);
+</sqlString>
+    <ResultID>984550476</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>227491458</SchemaId>
+    <name>BOS_SD_FInvHandOver</name>
+    <sqlString>CREATE INDEX IX_BOS_SD_FInvHandOver ON BOS_SD_FInvHandOver (szWorkplaceId);
+</sqlString>
+    <ResultID>499701125</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>489163928</SchemaId>
+    <name>BOS_SD_FInvMoveIn</name>
+    <sqlString>CREATE INDEX IX_BOS_SD_FInvMoveIn ON BOS_SD_FInvMoveIn (szWorkplaceId);
+</sqlString>
+    <ResultID>989031189</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>234281298</SchemaId>
+    <name>BOS_SD_FInvMoveOut</name>
+    <sqlString>CREATE INDEX IX_BOS_SD_FInvMoveOut ON BOS_SD_FInvMoveOut (bApplied);
+</sqlString>
+    <ResultID>404696820</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1852074843</SchemaId>
+    <name>BOS_SD_FInvMoveOut</name>
+    <sqlString>CREATE INDEX IX_BOS_SD_FInvMoveOut_1 ON BOS_SD_FInvMoveOut (szToWorkplaceId);
+</sqlString>
+    <ResultID>1823429290</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>876808512</SchemaId>
+    <name>BOS_SD_FInvMoveOut</name>
+    <sqlString>CREATE INDEX IX_BOS_SD_FInvMoveOut_2 ON BOS_SD_FInvMoveOut (szUsedByFInvMoveInId);
+</sqlString>
+    <ResultID>1122003530</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>689275429</SchemaId>
+    <name>BOS_SD_FInvMoveOut</name>
+    <sqlString>CREATE INDEX IX_BOS_SD_FInvMoveOut_3 ON BOS_SD_FInvMoveOut (szWorkplaceId);
+</sqlString>
+    <ResultID>181584738</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>2105508451</SchemaId>
+    <name>BOS_SD_FInvoice</name>
+    <sqlString>CREATE INDEX IX_BOS_SD_FInvoice_1 ON BOS_SD_FInvoice (dtmLastUpdated);
+</sqlString>
+    <ResultID>2089503174</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1624559023</SchemaId>
+    <name>BOS_SD_FInvoice</name>
+    <sqlString>CREATE INDEX IX_BOS_SD_FInvoice_10 ON BOS_SD_FInvoice (szRebateFInvoiceId);
+</sqlString>
+    <ResultID>300113859</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1624559024</SchemaId>
+    <name>BOS_SD_FInvoice</name>
+    <sqlString>CREATE INDEX IX_BOS_SD_FInvoice_11 ON BOS_SD_FInvoice (szWorkplaceId);
+</sqlString>
+    <ResultID>1872893621</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1624559019</SchemaId>
+    <name>BOS_SD_FInvoice</name>
+    <sqlString>CREATE INDEX IX_BOS_SD_FInvoice_14 ON BOS_SD_FInvoice (szTransitLocWpId);
+</sqlString>
+    <ResultID>1821635956</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1624559017</SchemaId>
+    <name>BOS_SD_FInvoice</name>
+    <sqlString>CREATE INDEX IX_BOS_SD_FInvoice_16 ON BOS_SD_FInvoice (btPrintedCount);
+</sqlString>
+    <ResultID>1115790732</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>531530339</SchemaId>
+    <name>BOS_SD_FInvoice</name>
+    <sqlString>CREATE INDEX IX_BOS_SD_FInvoice_2 ON BOS_SD_FInvoice (szCustId);
+</sqlString>
+    <ResultID>830178591</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1807121821</SchemaId>
+    <name>BOS_SD_FInvoice</name>
+    <sqlString>CREATE INDEX IX_BOS_SD_FInvoice_3 ON BOS_SD_FInvoice (dtmCreated);
+</sqlString>
+    <ResultID>1372699703</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1723171427</SchemaId>
+    <name>BOS_SD_FInvoice</name>
+    <sqlString>CREATE INDEX IX_BOS_SD_FInvoice_7 ON BOS_SD_FInvoice (szChain_NextId);
+</sqlString>
+    <ResultID>1626524245</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1380154781</SchemaId>
+    <name>BOS_SD_FInvoice</name>
+    <sqlString>CREATE INDEX IX_BOS_SD_FInvoice_8 ON BOS_SD_FInvoice (szKeptByOpUserId);
+</sqlString>
+    <ResultID>1298551683</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>576160355</SchemaId>
+    <name>BOS_SD_FInvoice</name>
+    <sqlString>CREATE INDEX IX_BOS_SD_FInvoice_9 ON BOS_SD_FInvoice (szCurrentLocWpId);
+</sqlString>
+    <ResultID>409220706</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1364016659</SchemaId>
+    <name>BOS_SD_FInvoice</name>
+    <sqlString>CREATE INDEX IX_BOS_SD_Invoice_1 ON BOS_SD_FInvoice (dtmPeriode);
+</sqlString>
+    <ResultID>1825172593</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1417166587</SchemaId>
+    <name>BOS_SD_FInvoiceConvert</name>
+    <sqlString>CREATE INDEX IX_BOS_SD_FInvoiceConvert ON BOS_SD_FInvoiceConvert (dtmLastUpdated);
+</sqlString>
+    <ResultID>753321768</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>163321380</SchemaId>
+    <name>BOS_SD_FInvoiceConvert</name>
+    <sqlString>CREATE INDEX IX_BOS_SD_FInvoiceConvert_1 ON BOS_SD_FInvoiceConvert (bAlreadyTransferred);
+</sqlString>
+    <ResultID>1790714187</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1405978918</SchemaId>
+    <name>BOS_SD_FInvOpname</name>
+    <sqlString>CREATE INDEX IX_BOS_SD_FInvOpname ON BOS_SD_FInvOpname (szWorkplaceId);
+</sqlString>
+    <ResultID>506825006</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1995577951</SchemaId>
+    <name>BOS_SD_FPr</name>
+    <sqlString>CREATE INDEX IX_BOS_SD_FPr_1 ON BOS_SD_FPr (dtmLastUpdated);
+</sqlString>
+    <ResultID>189474377</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1136589931</SchemaId>
+    <name>BOS_SD_FPr</name>
+    <sqlString>CREATE INDEX IX_BOS_SD_FPr_3 ON BOS_SD_FPr (szWorkplaceId);
+</sqlString>
+    <ResultID>649401451</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>330020877</SchemaId>
+    <name>BOS_SD_FPr</name>
+    <sqlString>CREATE INDEX IX_BOS_SD_FPr_5 ON BOS_SD_FPr (szStatus);
+</sqlString>
+    <ResultID>1099250243</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>2003662457</SchemaId>
+    <name>BOS_SD_FSettlement</name>
+    <sqlString>CREATE INDEX IX_BOS_SD_FSettlement ON BOS_SD_FSettlement (dtmLastUpdated);
+</sqlString>
+    <ResultID>2049870599</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1886444236</SchemaId>
+    <name>BOS_SD_FSettlement</name>
+    <sqlString>CREATE INDEX IX_BOS_SD_FSettlement_1 ON BOS_SD_FSettlement (bAlreadyTransferred);
+</sqlString>
+    <ResultID>2032198788</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>2005238533</SchemaId>
+    <name>BOS_SD_FSettlement</name>
+    <sqlString>CREATE INDEX IX_BOS_SD_FSettlement_2 ON BOS_SD_FSettlement (szWorkplaceId);
+</sqlString>
+    <ResultID>1442460222</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>723644822</SchemaId>
+    <name>BOS_SD_FSettlement</name>
+    <sqlString>CREATE INDEX IX_BOS_SD_FSettlement_3 ON BOS_SD_FSettlement (dtmSettEnd);
+</sqlString>
+    <ResultID>1078924868</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>823537218</SchemaId>
+    <name>BOS_SD_FSettlement</name>
+    <sqlString>CREATE INDEX IX_BOS_SD_FSettlement_szOpUserId ON BOS_SD_FSettlement (szOpUserId);
+</sqlString>
+    <ResultID>269173105</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>864638469</SchemaId>
+    <name>BOS_SD_FSj</name>
+    <sqlString>CREATE INDEX IX_BOS_SD_FSj ON BOS_SD_FSj (dtmLastUpdated);
+</sqlString>
+    <ResultID>1810065933</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>2129467991</SchemaId>
+    <name>BOS_SD_FSj</name>
+    <sqlString>CREATE INDEX IX_BOS_SD_FSj_1 ON BOS_SD_FSj (bAlreadyTransferred);
+</sqlString>
+    <ResultID>1565852056</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1726183464</SchemaId>
+    <name>BOS_SD_FSj</name>
+    <sqlString>CREATE INDEX IX_BOS_SD_FSj_2 ON BOS_SD_FSj (dtmFSj);
+</sqlString>
+    <ResultID>1431579949</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>809202323</SchemaId>
+    <name>BOS_SD_FSnCorrection</name>
+    <sqlString>CREATE INDEX IX_BOS_SD_FSnCorrection_1 ON BOS_SD_FSnCorrection (bAlreadyTransferred);
+</sqlString>
+    <ResultID>990560982</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>864638474</SchemaId>
+    <name>BOS_SD_FSo</name>
+    <sqlString>CREATE INDEX IX_BOS_SD_FSo ON BOS_SD_FSo (szCompletedFInvoiceId);
+</sqlString>
+    <ResultID>373690103</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>2129467996</SchemaId>
+    <name>BOS_SD_FSo</name>
+    <sqlString>CREATE INDEX IX_BOS_SD_FSo_1 ON BOS_SD_FSo (szStatus);
+</sqlString>
+    <ResultID>1547866425</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1579345316</SchemaId>
+    <name>BOS_SD_FSo</name>
+    <sqlString>CREATE INDEX IX_BOS_SD_FSo_10 ON BOS_SD_FSo (dtmOrder);
+</sqlString>
+    <ResultID>1592153512</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1961682340</SchemaId>
+    <name>BOS_SD_FSo</name>
+    <sqlString>CREATE INDEX IX_BOS_SD_FSo_12 ON BOS_SD_FSo (szFSoId,dtmOrder,szCustId,decAmount,szSalesId,bVoid,bApplied,szWorkplaceId);
+</sqlString>
+    <ResultID>1313614306</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1002699886</SchemaId>
+    <name>BOS_SD_FSo</name>
+    <sqlString>CREATE INDEX IX_BOS_SD_FSo_3 ON BOS_SD_FSo (dtmLastUpdated);
+</sqlString>
+    <ResultID>1355361744</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>196130832</SchemaId>
+    <name>BOS_SD_FSo</name>
+    <sqlString>CREATE INDEX IX_BOS_SD_FSo_5 ON BOS_SD_FSo (szCustId);
+</sqlString>
+    <ResultID>820220846</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>599415359</SchemaId>
+    <name>BOS_SD_FSo</name>
+    <sqlString>CREATE INDEX IX_BOS_SD_FSo_6 ON BOS_SD_FSo (szSalesId);
+</sqlString>
+    <ResultID>41068006</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>207153695</SchemaId>
+    <name>BOS_SD_FSo</name>
+    <sqlString>CREATE INDEX IX_BOS_SD_FSo_8 ON BOS_SD_FSo (bNeedFInvoice);
+</sqlString>
+    <ResultID>985342938</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1773237636</SchemaId>
+    <name>BOS_SD_FSo</name>
+    <sqlString>CREATE INDEX IX_BOS_SD_FSo_9 ON BOS_SD_FSo (szWorkplaceId);
+</sqlString>
+    <ResultID>1455222861</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1448633047</SchemaId>
+    <name>BOS_SD_FSo</name>
+    <sqlString>CREATE INDEX IX_BOS_SD_FSo_bApplied ON BOS_SD_FSo (bApplied);
+</sqlString>
+    <ResultID>1130840906</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>420534433</SchemaId>
+    <name>BOS_SD_FSo</name>
+    <sqlString>CREATE INDEX IX_BOS_SD_FSo_bUploadedFromMoDis ON BOS_SD_FSo (bUploadedFromMoDis);
+</sqlString>
+    <ResultID>215044499</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>848722226</SchemaId>
+    <name>BOS_SD_FSo</name>
+    <sqlString>CREATE INDEX IX_BOS_SD_FSo_bVoid ON BOS_SD_FSo (bVoid);
+</sqlString>
+    <ResultID>967232178</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>573469151</SchemaId>
+    <name>BOS_SD_FSoItem</name>
+    <sqlString>CREATE INDEX IX_BOS_SD_FSoItem_1 ON BOS_SD_FSoItem (szFSoId,szProductId,szPaymentType);
+</sqlString>
+    <ResultID>264228695</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1475164140</SchemaId>
+    <name>BOS_SD_FSoItemDelivery</name>
+    <sqlString>CREATE INDEX IX_BOS_SD_FSoItemDelivery ON BOS_SD_FSoItemDelivery (szFDoId);
+</sqlString>
+    <ResultID>805349749</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1336383972</SchemaId>
+    <name>BOS_SD_FSoItemDelivery</name>
+    <sqlString>CREATE INDEX IX_BOS_SD_FSoItemDelivery_1 ON BOS_SD_FSoItemDelivery (decRemainingQty);
+</sqlString>
+    <ResultID>1879177916</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1392499383</SchemaId>
+    <name>BOS_SD_FSoItemDelivery</name>
+    <sqlString>CREATE INDEX IX_BOS_SD_FSoItemDelivery_2 ON BOS_SD_FSoItemDelivery (szDjrTrackingId);
+</sqlString>
+    <ResultID>1340628079</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1985868366</SchemaId>
+    <name>BOS_SD_FSoItemDelivery</name>
+    <sqlString>CREATE INDEX IX_BOS_SD_FSoItemDelivery_dtmDelivery ON BOS_SD_FSoItemDelivery (dtmDelivery);
+</sqlString>
+    <ResultID>1055749892</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1856350742</SchemaId>
+    <name>BOS_SD_FTO</name>
+    <sqlString>CREATE INDEX IX_BOS_SD_FTO ON BOS_SD_FTO (dtmLastUpdated);
+</sqlString>
+    <ResultID>1933204599</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1343971158</SchemaId>
+    <name>BOS_SD_FTO</name>
+    <sqlString>CREATE INDEX IX_BOS_SD_FTo_dtmFTo ON BOS_SD_FTO (dtmFTO);
+</sqlString>
+    <ResultID>837149317</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>19579915</SchemaId>
+    <name>BOS_SD_FTO</name>
+    <sqlString>CREATE INDEX IX_BOS_SD_FTo_szWorkplaceId ON BOS_SD_FTO (szWorkplaceId);
+</sqlString>
+    <ResultID>1997622383</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>664884680</SchemaId>
+    <name>BOS_SD_InvoiceProcessing</name>
+    <sqlString>CREATE INDEX IX_BOS_SD_InvoiceProcessing ON BOS_SD_InvoiceProcessing (szScheduleId);
+</sqlString>
+    <ResultID>1007171070</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>718621905</SchemaId>
+    <name>BOS_SD_InvoiceProcessing</name>
+    <sqlString>CREATE INDEX IX_BOS_SD_InvoiceProcessing_1 ON BOS_SD_InvoiceProcessing (szRentScheduleId);
+</sqlString>
+    <ResultID>2017565259</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1294684206</SchemaId>
+    <name>BOS_SD_RemainStockInCustomer</name>
+    <sqlString>CREATE INDEX IX_BOS_SD_RemainStockInCustomer_1 ON BOS_SD_RemainStockInCustomer (szCustId,dtmDate,szProductId,decRemainQty,szProductCategory,szSalesId,szRoutineType,szTeamId);
+</sqlString>
+    <ResultID>1370708105</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1294684203</SchemaId>
+    <name>BOS_SD_RemainStockInCustomer</name>
+    <sqlString>CREATE INDEX IX_BOS_SD_RemainStockInCustomer_2 ON BOS_SD_RemainStockInCustomer (szCustId,dtmDate,szProductId,decRemainQty,szProductCategory,szSalesId,szRoutineType,szWorkplaceId,szTeamId);
+</sqlString>
+    <ResultID>740478375</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1091359772</SchemaId>
+    <name>BOS_SD_RemainStockInCustomer</name>
+    <sqlString>CREATE INDEX IX_BOS_SD_RemainStockInCustomer_Date ON BOS_SD_RemainStockInCustomer (dtmDate);
+</sqlString>
+    <ResultID>1296404857</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>131064207</SchemaId>
+    <name>BOS_SD_RemainStockInCustomer</name>
+    <sqlString>CREATE INDEX IX_BOS_SD_RemainStockInCustomer_LastUpdated ON BOS_SD_RemainStockInCustomer (dtmLastUpdated);
+</sqlString>
+    <ResultID>984115594</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>127074985</SchemaId>
+    <name>BOS_SD_RemainStockInCustomer</name>
+    <sqlString>CREATE INDEX IX_BOS_SD_RemainStockInCustomer_SalesId ON BOS_SD_RemainStockInCustomer (szSalesId);
+</sqlString>
+    <ResultID>2086230274</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>2036524059</SchemaId>
+    <name>BOS_SD_RemainStockInCustomer</name>
+    <sqlString>CREATE INDEX IX_BOS_SD_RemainStockInCustomer_WorkplaceId ON BOS_SD_RemainStockInCustomer (szWorkplaceId);
+</sqlString>
+    <ResultID>1597892436</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1530941055</SchemaId>
+    <name>BOS_SD_RentalProduct</name>
+    <sqlString>CREATE INDEX IX_BOS_SD_RentalProduct ON BOS_SD_RentalProduct (szCustId);
+</sqlString>
+    <ResultID>1859055296</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1432244373</SchemaId>
+    <name>BOS_SD_RentalProduct</name>
+    <sqlString>CREATE INDEX IX_BOS_SD_RentalProduct_1 ON BOS_SD_RentalProduct (dtmLastUpdated);
+</sqlString>
+    <ResultID>641010932</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1432244374</SchemaId>
+    <name>BOS_SD_RentalProduct</name>
+    <sqlString>CREATE INDEX IX_BOS_SD_RentalProduct_2 ON BOS_SD_RentalProduct (bAlreadyTransferred);
+</sqlString>
+    <ResultID>1379917051</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1432244375</SchemaId>
+    <name>BOS_SD_RentalProduct</name>
+    <sqlString>CREATE INDEX IX_BOS_SD_RentalProduct_3 ON BOS_SD_RentalProduct (dtmLastInvoiced);
+</sqlString>
+    <ResultID>592181135</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1348608986</SchemaId>
+    <name>BOS_SD_Route</name>
+    <sqlString>CREATE INDEX IX_BOS_SD_Route ON BOS_SD_Route (szScheduleId);
+</sqlString>
+    <ResultID>1968961509</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1723370748</SchemaId>
+    <name>BOS_SD_Route</name>
+    <sqlString>CREATE INDEX IX_BOS_SD_Route_1 ON BOS_SD_Route (szRouteType);
+</sqlString>
+    <ResultID>140046973</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1723370747</SchemaId>
+    <name>BOS_SD_Route</name>
+    <sqlString>CREATE INDEX IX_BOS_SD_Route_2 ON BOS_SD_Route (szOpUserId);
+</sqlString>
+    <ResultID>1423254123</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>2141801618</SchemaId>
+    <name>BOS_SD_Route_DRAFT</name>
+    <sqlString>CREATE INDEX IX_BOS_SD_Route_DRAFT ON BOS_SD_Route_DRAFT (szScheduleId);
+</sqlString>
+    <ResultID>1374060834</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>103919204</SchemaId>
+    <name>BOS_SD_Route_DRAFT</name>
+    <sqlString>CREATE INDEX IX_BOS_SD_Route_DRAFT_1 ON BOS_SD_Route_DRAFT (szRouteType);
+</sqlString>
+    <ResultID>1306089799</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>299365323</SchemaId>
+    <name>BOS_SD_Route_DRAFT</name>
+    <sqlString>CREATE INDEX IX_BOS_SD_Route_DRAFT_2 ON BOS_SD_Route_DRAFT (szOpUserId);
+</sqlString>
+    <ResultID>1709820833</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1478344102</SchemaId>
+    <name>BOS_SD_RouteItem</name>
+    <sqlString>CREATE INDEX IX_BOS_SD_RouteItem ON BOS_SD_RouteItem (szCustId);
+</sqlString>
+    <ResultID>1642806504</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1240179649</SchemaId>
+    <name>BOS_SD_RouteItem_DRAFT</name>
+    <sqlString>CREATE INDEX IX_BOS_SD_RouteItem_DRAFT ON BOS_SD_RouteItem_DRAFT (szCustId);
+</sqlString>
+    <ResultID>718572669</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1792149231</SchemaId>
+    <name>BOS_SD_SalesOrganization</name>
+    <sqlString>CREATE INDEX IX_BOS_SD_SalesOrganization_szParentSalesOrgId ON BOS_SD_SalesOrganization (szParentSalesOrgId);
+</sqlString>
+    <ResultID>1121150319</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>298465118</SchemaId>
+    <name>BOS_SD_SjTracking</name>
+    <sqlString>CREATE INDEX IX_BOS_SD_SjTracking ON BOS_SD_SjTracking (szCustId);
+</sqlString>
+    <ResultID>757332835</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>468838223</SchemaId>
+    <name>BOS_SD_SjTracking</name>
+    <sqlString>CREATE INDEX IX_BOS_SD_SjTracking_1 ON BOS_SD_SjTracking (szSalesId);
+</sqlString>
+    <ResultID>1047424893</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>468903759</SchemaId>
+    <name>BOS_SD_SjTracking</name>
+    <sqlString>CREATE INDEX IX_BOS_SD_SjTracking_2 ON BOS_SD_SjTracking (szFSjId);
+</sqlString>
+    <ResultID>1992071008</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>468969295</SchemaId>
+    <name>BOS_SD_SjTracking</name>
+    <sqlString>CREATE INDEX IX_BOS_SD_SjTracking_3 ON BOS_SD_SjTracking (dtmNext);
+</sqlString>
+    <ResultID>1009815640</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1249917780</SchemaId>
+    <name>BOS_SD_TOTracking</name>
+    <sqlString>CREATE INDEX IX_BOS_SD_TOTracking ON BOS_SD_TOTracking (szFSoId);
+</sqlString>
+    <ResultID>264674644</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>482614439</SchemaId>
+    <name>BOS_SD_TOTracking</name>
+    <sqlString>CREATE INDEX IX_BOS_SD_TOTracking_1 ON BOS_SD_TOTracking (szCustId);
+</sqlString>
+    <ResultID>2136216374</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>482548903</SchemaId>
+    <name>BOS_SD_TOTracking</name>
+    <sqlString>CREATE INDEX IX_BOS_SD_TOTracking_2 ON BOS_SD_TOTracking (dtmNext);
+</sqlString>
+    <ResultID>1915106447</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>381559933</SchemaId>
+    <name>BOS_SM_BlackListPasswords</name>
+    <sqlString>CREATE INDEX IX_BOS_SM_BlackListPasswords ON BOS_SM_BlackListPasswords (szPassword);
+</sqlString>
+    <ResultID>911308358</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1994095094</SchemaId>
+    <name>BOS_SM_UserPasswordHistories</name>
+    <sqlString>CREATE INDEX IX_BOS_SM_UserPasswordHistories ON BOS_SM_UserPasswordHistories (szUserId);
+</sqlString>
+    <ResultID>73761117</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>796272521</SchemaId>
+    <name>BOS_SSE_Prospect</name>
+    <sqlString>CREATE INDEX IX_BOS_PFU_Prospect ON BOS_SSE_Prospect (szName);
+</sqlString>
+    <ResultID>1290350095</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>2062716766</SchemaId>
+    <name>BOS_SSE_Prospect</name>
+    <sqlString>CREATE INDEX IX_BOS_SSE_Prospect ON BOS_SSE_Prospect (szProspectorId);
+</sqlString>
+    <ResultID>1109138281</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1762344658</SchemaId>
+    <name>BOS_SSE_Prospect</name>
+    <sqlString>CREATE INDEX IX_BOS_SSE_Prospect_1 ON BOS_SSE_Prospect (decTargetAmount);
+</sqlString>
+    <ResultID>1819346109</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1762344661</SchemaId>
+    <name>BOS_SSE_Prospect</name>
+    <sqlString>CREATE INDEX IX_BOS_SSE_Prospect_2 ON BOS_SSE_Prospect (szCcyId);
+</sqlString>
+    <ResultID>1545401012</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1039684831</SchemaId>
+    <name>BOS_SSE_ProspectAction</name>
+    <sqlString>CREATE INDEX IX_BOS_SSE_ProspectAction ON BOS_SSE_ProspectAction (szUserId);
+</sqlString>
+    <ResultID>450566584</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1247897326</SchemaId>
+    <name>BOS_SSE_ProspectAction</name>
+    <sqlString>CREATE INDEX IX_BOS_SSE_ProspectAction_1 ON BOS_SSE_ProspectAction (szAction);
+</sqlString>
+    <ResultID>1368810375</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>333427074</SchemaId>
+    <name>BOS_SSE_ProspectAction</name>
+    <sqlString>CREATE INDEX IX_BOS_SSE_ProspectHistory ON BOS_SSE_ProspectAction (dtmNextAction);
+</sqlString>
+    <ResultID>1541861991</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>2061844339</SchemaId>
+    <name>BOS_SSE_ProspectAction</name>
+    <sqlString>CREATE INDEX IX_BOS_SSE_ProspectHistory_1 ON BOS_SSE_ProspectAction (szNextActionUserId);
+</sqlString>
+    <ResultID>340293826</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>348951730</SchemaId>
+    <name>BOS_SYNC_SyncSchedule</name>
+    <sqlString>CREATE INDEX IX_BOS_SYNC_SyncSchedule_dtmLastUpdated ON BOS_SYNC_SyncSchedule (dtmLastUpdated);
+</sqlString>
+    <ResultID>1096789715</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1344474433</SchemaId>
+    <name>BOS_TIN_FakturPajak</name>
+    <sqlString>CREATE INDEX IX_BOS_TIN_FakturPajak ON BOS_TIN_FakturPajak (dtmLastUpdated);
+</sqlString>
+    <ResultID>1649496794</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>804680722</SchemaId>
+    <name>BOS_TIN_FakturPajak</name>
+    <sqlString>CREATE INDEX IX_BOS_TIN_FakturPajak_1 ON BOS_TIN_FakturPajak (bAlreadyTransferred);
+</sqlString>
+    <ResultID>1739093049</ResultID>
+  </ResultInfo>
+  <ResultInfo>
+    <SchemaId>1484048952</SchemaId>
+    <name>BOS_TIN_TaxSerialAllocationItem</name>
+    <sqlString>CREATE INDEX IDX_BOS_TIN_TaxSerialAllocationItem_szTaxEntityId ON BOS_TIN_TaxSerialAllocationItem (szTaxEntityId);
+</sqlString>
+    <ResultID>2138957117</ResultID>
+  </ResultInfo>
+</DocumentElement>

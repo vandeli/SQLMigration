@@ -26,5 +26,12 @@ namespace SQLMigrationOF
             return new PKManager(dataAccess);
       }
 
+      public IndexManager GetInstanceIndexManager()
+      {
+        IDataAccess dataAccess = new DataAccess();
+        return new IndexManager(dataAccess);
+      }
+
+
     }
 }
