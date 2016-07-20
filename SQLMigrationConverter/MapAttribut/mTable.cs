@@ -13,7 +13,7 @@ namespace SQLMigrationConverter.MapAttribut
         public string ColumnName { get; set; }
         public int OrdinalPosition { get; set; }
 	    public string ColumnDefault { get; set; }
-	    public string isNullable { get; set; }
+	    public bool isNullable { get; set; }
         public string Domain { get; set; }
 	    public string DataType { get; set; }
 	    public int CharMaxLength { get; set; }
@@ -50,7 +50,8 @@ namespace SQLMigrationConverter.MapAttribut
                 ? 0
                 : dataRow["ORDINAL_POSITION"]);
             ColumnDefault = dataRow["COLUMN_DEFAULT"].ToString();
-            isNullable = dataRow["IS_NULLABLE"].ToString();
+            isNullable = (dataRow["IS_NULLABLE"].ToString() == "YES");
+          //  (dataRow["is_nullable"].ToString() == "YES");
             Domain = dataRow["DOMAIN_NAME"].ToString();
             DataType = dataRow["DATA_TYPE"].ToString();
             CharMaxLength = System.Convert.ToInt32(String.IsNullOrEmpty(

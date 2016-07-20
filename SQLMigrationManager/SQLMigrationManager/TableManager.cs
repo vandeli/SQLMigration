@@ -214,13 +214,27 @@ namespace SQLMigrationManager
         private string cekSuffix(mTable data)
         {
             var cekResult = "";
-            if (data.Domain != null)
+            if (data.Domain != "")
             {
                 cekResult = data.Domain;
             }
             else 
             {
                 cekResult = data.GetConvertedDataType();
+            }
+
+            if (data.CharMaxLength != 0)
+            {
+                cekResult += " (" + data.CharMaxLength + ")";
+            }
+            else if (data.Precision != 0)
+            {
+                cekResult += " (" + data.Precision + "," + data.Scale + ")";
+            }
+
+            if (data.isNullable == false)
+            {
+                cekResult += "  NOT NULL";
             }
             return cekResult;
             
@@ -234,8 +248,7 @@ namespace SQLMigrationManager
             //==========================================
 
             result = "CREATE TABLE " + data.TableName + "(\n" +
-                      allColumn + "\n" +    // data.GetDataType().DataTypeSuffix +
-                     
+                      allColumn + "\n" +                        
                       ");\r\n";
             
             
