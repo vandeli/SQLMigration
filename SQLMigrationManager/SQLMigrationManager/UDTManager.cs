@@ -1,6 +1,10 @@
 ﻿using SQLMigration.Data;
+using SQLMigration.DB;
+using SQLMigration.IO;
 using SQLMigrationConverter.MapAttribut;
+using SQLMigrationConverter.SchemaInfo;
 using SQLMigrationInterface;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
@@ -11,26 +15,31 @@ namespace SQLMigrationManager
 
     public class UDTManager : IUDTManager
   {
-        
-       
+        private readonly IFileManager fileManager;       
+        private readonly ICoreDB db;
+        private readonly ICoreDB udtSchema;
         private readonly IDataAccess dataAccess;
 
-        public UDTManager(IDataAccess dataAccess)
-    {
-      this.dataAccess = dataAccess;
-   
-
-    }
+        public UDTManager(IFileManager fileManager, ICoreDB db,ICoreDB udtSchema, IDataAccess dataAccess)
+         {
+            this.fileManager = fileManager;
+            this.db = db;
+            this.udtSchema = udtSchema;
+            this.db.CreateTable<ConfigData>();
+            //this.udtSchema.CreateTable<UDTSchemaInfoData>();
+            this.dataAccess = dataAccess;
+            
+         }
         public DataTable GetSchema() 
         {
-            var dataconfig = dataAccess.ReadXML();
-            var ds = new DataSet();
-            var infoQuery = new InfoQuery();          
-            var dt = dataAccess.GetDataTable(GetQuery());
-            ds.Tables.Add(dt);
-            ds.WriteXml(dataconfig.Path + "UDTSchema.xml");
+            ConfigData dataconfig = db.GetConfig();  
+          //  var ds = new DataSet();
+         //   var infoQuery = new InfoQuery();          
+            var dt = dataAccess.GetDataTable(dataconfig, GetQuery());
+            //ds.Tables.Add(dt);
+            //ds.WriteXml(dataconfig.Path + "UDTSchema.xml");
 
-            MessageBox.Show("UDT sql Schema created " + dataconfig.Path + "UDTSchema.xml");
+            //MessageBox.Show("UDT sql Schema created " + dataconfig.Path + "UDTSchema.xml");
             return dt;
            }     
 
@@ -62,24 +71,15 @@ namespace SQLMigrationManager
 
         }
 
-        public void SetConfig(ConfigData configdata)
-        {
+      
 
-            var param = new DBData();
-                param = configdata.Source;
-                      
-            configdata.Source = param;
-            WriteConfig(configdata);
-        }
-
-        private static void WriteConfig(ConfigData configdata)
-        {
-            var writer = new System.Xml.Serialization.XmlSerializer(typeof(ConfigData));
-            var file = File.Create("Config.xml");
-
-            writer.Serialize(file, configdata);
-            file.Close();
-        }
+        //private static void WriteConfig(ConfigData configdata)
+        //{
+        //    var writer = new System.Xml.Serialization.XmlSerializer(typeof(ConfigData));
+        //    var file = File.Create("Config.xml");
+        //    writer.Serialize(file, configdata);
+        //    file.Close();
+        //}
 
         private string GetQuery()
         {
@@ -182,6 +182,13 @@ namespace SQLMigrationManager
                     break;
             }
             return result;
+        }
+
+        public List<UDTSchemaInfoData> GetList()
+        {
+            var listUDTSchema = db.GetList<UDTSchemaInfoData>();
+            Console.WriteLine("Get List UDT Schema : " + listUDTSchema.Count);
+            return listUDTSchema;
         }
     }
 }

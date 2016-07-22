@@ -14,7 +14,7 @@ namespace SQLMigrationUI
     public partial class Form1 : Form
     {
       private OF of = new OF();
-      private readonly IUDTManager udtManager;
+      private  IUDTManager udtManager;
       private readonly IManager tableManager;
       private readonly IPKManager pkManager;
       private readonly IIndexManager indexManager;    
@@ -22,7 +22,7 @@ namespace SQLMigrationUI
        
         public Form1()
         {
-          udtManager = of.GetInstanceUdtManager();
+         // udtManager = of.GetInstanceUdtManager();
           tableManager = of.GetInstanceTableManager();
           pkManager = of.GetInstancePkManager();
           indexManager = of.GetInstanceIndexManager();
@@ -35,6 +35,7 @@ namespace SQLMigrationUI
             switch (pilihan)
             {
                 case "UDT":
+
                     DataTable data = new DataTable();
                     udtManager.SetConfig(configdata);
                     data = udtManager.GetSchema();
@@ -215,9 +216,9 @@ namespace SQLMigrationUI
                     Destination = txtOutput.Text,
                     Path = txtPath.Text
                 };
-                
-                                
-                ProsesManager(xData.Id, xData);    
+
+                    udtManager = of.GetInstanceUdtManager(xData);
+                    ProsesManager(xData.Id, xData);    
             }
             catch (Exception ex)
             {

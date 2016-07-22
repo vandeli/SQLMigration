@@ -8,6 +8,6 @@ namespace SQLMigrationInterface
     {
         DataTable GetSchema();
         void Convert(DataTable datasource);
-        void SetConfig(ConfigData configdata);
+     //   void SetConfig(ConfigData configdata);
     }
 }

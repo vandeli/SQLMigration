@@ -56,8 +56,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ResultInfo\ResultData.cs" />
     <Compile Include="ResultInfo\ResultItemData.cs" />
-    <Compile Include="SchemaInfo\SchemaInfoData.cs" />
-    <Compile Include="SchemaInfo\SchemaItemInfoData.cs" />
+    <Compile Include="SchemaInfo\IndexSchemaInfoData.cs" />
+    <Compile Include="SchemaInfo\PKSchemaInfoData.cs" />
+    <Compile Include="SchemaInfo\TableSchemaInfoData.cs" />
+    <Compile Include="SchemaInfo\UDTSchemaInfoData.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

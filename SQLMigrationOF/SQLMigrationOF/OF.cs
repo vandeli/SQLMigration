@@ -1,4 +1,6 @@
 ﻿using SQLMigration.Data;
+using SQLMigration.DB;
+using SQLMigration.IO;
 using SQLMigrationInterface;
 using SQLMigrationManager;
 
@@ -6,10 +8,15 @@ namespace SQLMigrationOF
 {
     public  class OF
     {
-      public IUDTManager GetInstanceUdtManager()
+      public IUDTManager GetInstanceUdtManager(string SchemaPath)
       {
-        IDataAccess dataAccess = new DataAccess();
-        return new UDTManager(dataAccess);
+        var file = new FileManager();
+            IFileManager fileManager = file;
+            IFileReader fileReader = file;
+            ICoreDB db = new DbXml(@"Config.xml", fileManager);
+            ICoreDB udtSchema = new DbXml(SchemaPath, fileManager);
+            IDataAccess dataAccess = new DataAccess();
+        return new UDTManager(fileManager, db, udtSchema, dataAccess);
       }
 
       public ITableManager GetInstanceTableManager()

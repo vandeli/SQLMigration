@@ -6,13 +6,7 @@ using System.Threading.Tasks;
 
 namespace SQLMigrationConverter.SchemaInfo
 {
-    public class SchemaInfoData
+    class TableSchemaInfoData
     {
-        public string id { set; get; }
-
-        public SchemaInfoData()
-        {
-            id = "";
-        }
     }
 }
