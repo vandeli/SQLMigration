@@ -12,6 +12,7 @@ namespace SQLMigrationConverter.SchemaInfo
     {
         public UDTSchemaInfoData()
         {
+            updated = DateTime.Now;
             rowKey = SchemaID.ToString();
         }
         public int SchemaID { get; set; }

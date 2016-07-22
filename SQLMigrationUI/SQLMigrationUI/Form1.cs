@@ -15,17 +15,17 @@ namespace SQLMigrationUI
     {
       private OF of = new OF();
       private  IUDTManager udtManager;
-      private readonly IManager tableManager;
-      private readonly IPKManager pkManager;
-      private readonly IIndexManager indexManager;    
+      //private readonly IManager tableManager;
+      //private readonly IPKManager pkManager;
+      //private readonly IIndexManager indexManager;    
     
        
         public Form1()
         {
          // udtManager = of.GetInstanceUdtManager();
-          tableManager = of.GetInstanceTableManager();
-          pkManager = of.GetInstancePkManager();
-          indexManager = of.GetInstanceIndexManager();
+          //tableManager = of.GetInstanceTableManager();
+          //pkManager = of.GetInstancePkManager();
+          //indexManager = of.GetInstanceIndexManager();
           InitializeComponent();
           InitComboBox();
         }
@@ -35,33 +35,33 @@ namespace SQLMigrationUI
             switch (pilihan)
             {
                 case "UDT":
-
+                    udtManager = of.GetInstanceUdtManager(configdata);
                     DataTable data = new DataTable();
-                    udtManager.SetConfig(configdata);
+                   // udtManager.SetConfig(configdata);
                     data = udtManager.GetSchema();
                     udtManager.Convert(data);
                     break;
 
-                case "PK":
-                    DataTable data = new DataTable();
-                    pkManager.SetConfig(configdata);
-                    data = pkManager.GetSchema();
-                    pkManager.Convert(data);
-                    break;
+                //case "PK":
+                //    DataTable data = new DataTable();
+                //    pkManager.SetConfig(configdata);
+                //    data = pkManager.GetSchema();
+                //    pkManager.Convert(data);
+                //    break;
 
-                case "Table":
-                    DataTable data = new DataTable();
-                    tableManager.SetConfig(configdata);
-                    data = tableManager.GetSchema();
-                    tableManager.Convert(data);
-                    break;
+                //case "Table":
+                //    DataTable data = new DataTable();
+                //    tableManager.SetConfig(configdata);
+                //    data = tableManager.GetSchema();
+                //    tableManager.Convert(data);
+                //    break;
 
-                case "Index":
-                    DataTable data = new DataTable();
-                    indexManager.SetConfig(configdata);
-                    data = indexManager.GetSchema();
-                    indexManager.Convert(data);
-                    break;
+                //case "Index":
+                //    DataTable data = new DataTable();
+                //    indexManager.SetConfig(configdata);
+                //    data = indexManager.GetSchema();
+                //    indexManager.Convert(data);
+                //    break;
 
                 default:
                     MessageBox.Show("Pilihan belum tersedia");
@@ -209,16 +209,16 @@ namespace SQLMigrationUI
                    password = txtPassword.Text,
                    dbName = txtDatabase.Text
                };
-                var xData = new ConfigData
-                {
-                    Source = param,                   
-                    Id = cboProcess.Text,
+                    var xData = new ConfigData
+                    {
+                        Source = param,
+                        Id = param.dbName.GetHashCode().ToString(),
                     Destination = txtOutput.Text,
                     Path = txtPath.Text
                 };
 
-                    udtManager = of.GetInstanceUdtManager(xData);
-                    ProsesManager(xData.Id, xData);    
+                  
+                    ProsesManager(cboProcess.Text, xData);    
             }
             catch (Exception ex)
             {

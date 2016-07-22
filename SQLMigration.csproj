@@ -38,6 +38,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Config\AppConfig.cs" />
+    <Compile Include="Data\BaseData.cs" />
     <Compile Include="Data\ConfigData.cs" />
     <Compile Include="Data\DBData.cs" />
     <Compile Include="DB\DataAccess.cs" />

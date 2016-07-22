@@ -3,11 +3,11 @@
 namespace SQLMigration.Data
 {
 
-    public class ConfigData : BaseData
+    public class ConfigData 
     {
         public ConfigData()
         {
-            updated = DateTime.Now;
+           
         }
         public string Destination { get; set; }
         public string Path { get; set; }

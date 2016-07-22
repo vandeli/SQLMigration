@@ -2,6 +2,7 @@
 using SQLMigration.DB;
 using SQLMigration.IO;
 using SQLMigrationConverter.MapAttribut;
+using SQLMigrationConverter.ResultInfo;
 using SQLMigrationConverter.SchemaInfo;
 using SQLMigrationInterface;
 using System;
@@ -15,61 +16,43 @@ namespace SQLMigrationManager
 
     public class UDTManager : IUDTManager
   {
-        private readonly IFileManager fileManager;       
+        private readonly IFileManager fileManager;
+        private readonly ConfigData configdata;
         private readonly ICoreDB db;
-        private readonly ICoreDB udtSchema;
+        private readonly ICoreSchema Schema;
+        private readonly ICoreResult Result;
+        private readonly ICoreResult PgSQL;
         private readonly IDataAccess dataAccess;
 
-        public UDTManager(IFileManager fileManager, ICoreDB db,ICoreDB udtSchema, IDataAccess dataAccess)
+        public UDTManager(ConfigData configdata, IFileManager fileManager, ICoreDB db,ICoreSchema Schema, ICoreResult Result, ICoreResult PgSQL, IDataAccess dataAccess)
          {
+            this.configdata = configdata;
             this.fileManager = fileManager;
             this.db = db;
-            this.udtSchema = udtSchema;
-            this.db.CreateTable<ConfigData>();
-            //this.udtSchema.CreateTable<UDTSchemaInfoData>();
+            this.Schema = Schema;
+            this.Result = Result;
+            this.PgSQL = PgSQL;
+            this.db.CreateConfig(configdata);         
             this.dataAccess = dataAccess;
             
          }
         public DataTable GetSchema() 
-        {
-            ConfigData dataconfig = db.GetConfig();  
-          //  var ds = new DataSet();
-         //   var infoQuery = new InfoQuery();          
-            var dt = dataAccess.GetDataTable(dataconfig, GetQuery());
-            //ds.Tables.Add(dt);
-            //ds.WriteXml(dataconfig.Path + "UDTSchema.xml");
-
-            //MessageBox.Show("UDT sql Schema created " + dataconfig.Path + "UDTSchema.xml");
+        {                        
+            var dt = dataAccess.GetDataTable(configdata, GetQuery());
+            Schema.CreateSchema(dt);         
             return dt;
-           }     
-
+           }
         public void Convert(DataTable datasource)
         {
+
             DataTable resultXML = CreateResultXml(datasource);
-            var configdata = dataAccess.ReadXML();
             var result = CreateScript(datasource);
-            var fileQuery = configdata.Path + configdata.Destination;
+
+            Result.CreateResult(resultXML);
+            PgSQL.CreatePgSql(result);
+        }        
            
-           
-            if (Directory.Exists(Path.GetDirectoryName(fileQuery)))
-            {
-                File.Delete(fileQuery);
-            }
-            using (var sw = File.CreateText(fileQuery))
-            {
-                sw.Write(result);
-            }
-            MessageBox.Show("UDT PGSCRIPT created " + configdata.Path + configdata.Destination);
-
-
-            if (resultXML.Rows.Count != 0)
-            {
-                               
-                resultXML.WriteXml(configdata.Path + "UDTresult.xml", true);
-                MessageBox.Show("UDTresult created " + configdata.Path + "UDTresult.xml");
-            }
-
-        }
+    
 
       
 
@@ -116,8 +99,7 @@ namespace SQLMigrationManager
         }
 
         public string CreateScript(DataTable datasource)
-        {
-            
+        {            
             var result = "";
             var tableResult = "";
             foreach (var data in GetAllUdts(datasource))
@@ -139,7 +121,6 @@ namespace SQLMigrationManager
         {
            // ResultItemData resultItemdata = new ResultItemData();
             DataTable DTresultItem = new DataTable("ResultInfo");
-
             DTresultItem.Columns.Add("SchemaId", typeof(int));
             DTresultItem.Columns.Add("name", typeof(string));
             DTresultItem.Columns.Add("sqlString", typeof(string));
@@ -184,11 +165,6 @@ namespace SQLMigrationManager
             return result;
         }
 
-        public List<UDTSchemaInfoData> GetList()
-        {
-            var listUDTSchema = db.GetList<UDTSchemaInfoData>();
-            Console.WriteLine("Get List UDT Schema : " + listUDTSchema.Count);
-            return listUDTSchema;
-        }
+      
     }
 }
