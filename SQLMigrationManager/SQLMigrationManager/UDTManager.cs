@@ -1,6 +1,11 @@
 ﻿using SQLMigration.Data;
+using SQLMigration.DB;
+using SQLMigration.IO;
 using SQLMigrationConverter.MapAttribut;
+using SQLMigrationConverter.ResultInfo;
+using SQLMigrationConverter.SchemaInfo;
 using SQLMigrationInterface;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
@@ -11,74 +16,53 @@ namespace SQLMigrationManager
 
     public class UDTManager : IUDTManager
   {
-        
-       
+        private readonly IFileManager fileManager;
+        private readonly ConfigData configdata;
+        private readonly ICoreDB db;
+        private readonly ICoreSchema Schema;
+        private readonly ICoreResult Result;
+        private readonly ICoreResult PgSQL;
         private readonly IDataAccess dataAccess;
 
-        public UDTManager(IDataAccess dataAccess)
-    {
-      this.dataAccess = dataAccess;
-   
-
-    }
-        public void GetSchema() 
+        public UDTManager(ConfigData configdata, IFileManager fileManager, ICoreDB db,ICoreSchema Schema, ICoreResult Result, ICoreResult PgSQL, IDataAccess dataAccess)
+         {
+            this.configdata = configdata;
+            this.fileManager = fileManager;
+            this.db = db;
+            this.Schema = Schema;
+            this.Result = Result;
+            this.PgSQL = PgSQL;
+            this.db.CreateConfig(configdata);         
+            this.dataAccess = dataAccess;
+            
+         }
+        public DataTable GetSchema() 
+        {                        
+            var dt = dataAccess.GetDataTable(configdata, GetQuery());
+            Schema.CreateSchema(dt);         
+            return dt;
+           }
+        public void Convert(DataTable datasource)
         {
-            var dataconfig = dataAccess.ReadXML();
-            var ds = new DataSet();
-            var infoQuery = new InfoQuery();          
-            var dt = dataAccess.GetDataTable(GetQuery());
-            ds.Tables.Add(dt);
-            ds.WriteXml(dataconfig.Path + "UDTSchema.xml");
 
-            MessageBox.Show("UDT sql Schema created " + dataconfig.Path + "UDTSchema.xml");
-           }     
+            DataTable resultXML = CreateResultXml(datasource);
+            var result = CreateScript(datasource);
 
-        public void Convert()
-        {
-            DataTable resultXML = CreateResultXml();
-            var configdata = dataAccess.ReadXML();
-            var result = CreateScript();
-            var fileQuery = configdata.Path + configdata.Destination;
+            Result.CreateResult(resultXML);
+            PgSQL.CreatePgSql(result);
+        }        
            
-           
-            if (Directory.Exists(Path.GetDirectoryName(fileQuery)))
-            {
-                File.Delete(fileQuery);
-            }
-            using (var sw = File.CreateText(fileQuery))
-            {
-                sw.Write(result);
-            }
-            MessageBox.Show("UDT PGSCRIPT created " + configdata.Path + configdata.Destination);
+    
 
+      
 
-            if (resultXML.Rows.Count != 0)
-            {
-                               
-                resultXML.WriteXml(configdata.Path + "UDTresult.xml", true);
-                MessageBox.Show("UDTresult created " + configdata.Path + "UDTresult.xml");
-            }
-
-        }
-
-        public void SetConfig(ConfigData configdata)
-        {
-
-            var param = new DBData();
-                param = configdata.Source;
-                      
-            configdata.Source = param;
-            WriteConfig(configdata);
-        }
-
-        private static void WriteConfig(ConfigData configdata)
-        {
-            var writer = new System.Xml.Serialization.XmlSerializer(typeof(ConfigData));
-            var file = File.Create("Config.xml");
-
-            writer.Serialize(file, configdata);
-            file.Close();
-        }
+        //private static void WriteConfig(ConfigData configdata)
+        //{
+        //    var writer = new System.Xml.Serialization.XmlSerializer(typeof(ConfigData));
+        //    var file = File.Create("Config.xml");
+        //    writer.Serialize(file, configdata);
+        //    file.Close();
+        //}
 
         private string GetQuery()
         {
@@ -98,13 +82,13 @@ namespace SQLMigrationManager
             ";
         }
 
-        List<T> GetDataQuery<T>(string sql) where T : Base, new()
+        List<T> GetDataQuery<T>(DataTable datasource) where T : Base, new()
         {
             var list = new List<T>();
             if (list.Count == 0)
             {
-                var dataTable = new DataAccess().GetDataTable(sql);
-                foreach (DataRow data in dataTable.Rows)
+                //var dataTable = datasource; //new DataAccess().GetDataTable(sql);
+                foreach (DataRow data in datasource.Rows)
                 {
                     var obj = new T();
                     obj.GetValueFromDataRow(data);
@@ -114,12 +98,11 @@ namespace SQLMigrationManager
             return list;
         }
 
-        public string CreateScript()
-        {
-            
+        public string CreateScript(DataTable datasource)
+        {            
             var result = "";
             var tableResult = "";
-            foreach (var data in GetAllUdts())
+            foreach (var data in GetAllUdts(datasource))
             {
                 tableResult = getTemplate(data); 
                 result += tableResult;
@@ -128,17 +111,16 @@ namespace SQLMigrationManager
 
         }
 
-        public List<mUDT> GetAllUdts()
+        public List<mUDT> GetAllUdts(DataTable datasource)
         {
-            return GetDataQuery<mUDT>(GetQuery());
+            return GetDataQuery<mUDT>(datasource);
 
         }
 
-        public DataTable CreateResultXml()
+        public DataTable CreateResultXml(DataTable datasource)
         {
            // ResultItemData resultItemdata = new ResultItemData();
             DataTable DTresultItem = new DataTable("ResultInfo");
-
             DTresultItem.Columns.Add("SchemaId", typeof(int));
             DTresultItem.Columns.Add("name", typeof(string));
             DTresultItem.Columns.Add("sqlString", typeof(string));
@@ -146,7 +128,7 @@ namespace SQLMigrationManager
 
 
             var tableResult = "";
-            foreach (var data in GetAllUdts())
+            foreach (var data in GetAllUdts(datasource))
             {
                 DataRow workRow = DTresultItem.NewRow();
                 tableResult = getTemplate(data);
@@ -182,5 +164,7 @@ namespace SQLMigrationManager
             }
             return result;
         }
+
+      
     }
 }

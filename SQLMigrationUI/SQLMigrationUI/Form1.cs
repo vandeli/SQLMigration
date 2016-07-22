@@ -7,24 +7,25 @@ using System.Management;
 using System.Linq;
 using SQLMigrationOF;
 using static SQLMigrationUI.Program;
+using System.Data;
 
 namespace SQLMigrationUI
 {
     public partial class Form1 : Form
     {
       private OF of = new OF();
-      private readonly IUDTManager udtManager;
-      private readonly IManager tableManager;
-      private readonly IPKManager pkManager;
-      private readonly IIndexManager indexManager;    
+      private  IUDTManager udtManager;
+      //private readonly IManager tableManager;
+      //private readonly IPKManager pkManager;
+      //private readonly IIndexManager indexManager;    
     
        
         public Form1()
         {
-          udtManager = of.GetInstanceUdtManager();
-          tableManager = of.GetInstanceTableManager();
-          pkManager = of.GetInstancePkManager();
-          indexManager = of.GetInstanceIndexManager();
+         // udtManager = of.GetInstanceUdtManager();
+          //tableManager = of.GetInstanceTableManager();
+          //pkManager = of.GetInstancePkManager();
+          //indexManager = of.GetInstanceIndexManager();
           InitializeComponent();
           InitComboBox();
         }
@@ -33,29 +34,34 @@ namespace SQLMigrationUI
         {
             switch (pilihan)
             {
-                case "UDT":                                     
-                    udtManager.SetConfig(configdata);
-                    udtManager.GetSchema();
-                    udtManager.Convert();
+                case "UDT":
+                    udtManager = of.GetInstanceUdtManager(configdata);
+                    DataTable data = new DataTable();
+                   // udtManager.SetConfig(configdata);
+                    data = udtManager.GetSchema();
+                    udtManager.Convert(data);
                     break;
 
-                case "PK":
-                    pkManager.SetConfig(configdata);
-                    pkManager.GetSchema();
-                    pkManager.Convert();
-                    break;
+                //case "PK":
+                //    DataTable data = new DataTable();
+                //    pkManager.SetConfig(configdata);
+                //    data = pkManager.GetSchema();
+                //    pkManager.Convert(data);
+                //    break;
 
-                case "Table":
-                    tableManager.SetConfig(configdata);
-                    tableManager.GetSchema();
-                    tableManager.Convert();
-                    break;
+                //case "Table":
+                //    DataTable data = new DataTable();
+                //    tableManager.SetConfig(configdata);
+                //    data = tableManager.GetSchema();
+                //    tableManager.Convert(data);
+                //    break;
 
-                case "Index":
-                    indexManager.SetConfig(configdata);
-                    indexManager.GetSchema();
-                    indexManager.Convert();
-                    break;
+                //case "Index":
+                //    DataTable data = new DataTable();
+                //    indexManager.SetConfig(configdata);
+                //    data = indexManager.GetSchema();
+                //    indexManager.Convert(data);
+                //    break;
 
                 default:
                     MessageBox.Show("Pilihan belum tersedia");
@@ -70,6 +76,7 @@ namespace SQLMigrationUI
             cboProcess.Items.Add("Index");
             cboProcess.Items.Add("PK");
             cboProcess.Items.Add("SP");
+            cboProcess.Items.Add("Record");
         }
 
         private void cboProcess_KeyPress(object sender, KeyPressEventArgs e)
@@ -202,16 +209,16 @@ namespace SQLMigrationUI
                    password = txtPassword.Text,
                    dbName = txtDatabase.Text
                };
-                var xData = new ConfigData
-                {
-                    Source = param,                   
-                    Id = cboProcess.Text,
+                    var xData = new ConfigData
+                    {
+                        Source = param,
+                        Id = param.dbName.GetHashCode().ToString(),
                     Destination = txtOutput.Text,
                     Path = txtPath.Text
                 };
-                
-                                
-                ProsesManager(xData.Id, xData);    
+
+                  
+                    ProsesManager(cboProcess.Text, xData);    
             }
             catch (Exception ex)
             {

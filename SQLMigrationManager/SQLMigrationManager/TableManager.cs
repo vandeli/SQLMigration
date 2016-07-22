@@ -20,7 +20,7 @@ namespace SQLMigrationManager
 
         }
 
-        public void GetSchema()
+        public DataTable GetSchema()
         {
             var dataconfig = dataAccess.ReadXML();
             var ds = new DataSet();         
@@ -28,14 +28,15 @@ namespace SQLMigrationManager
             ds.Tables.Add(dt);
             ds.WriteXml(dataconfig.Path + "TableSchema.xml");
             MessageBox.Show("Table sql Schema created " + dataconfig.Path + "TableSchema.xml");
+            return dt;
         }
 
-        public void Convert()
+        public void Convert(DataTable datasource)
         {
            
             var configdata = dataAccess.ReadXML();
-            var result = CreateScript();
-            DataTable resultXML = CreateResultXml();
+            var result = CreateScript(datasource);
+            DataTable resultXML = CreateResultXml(datasource);
             var fileQuery = configdata.Path + configdata.Destination;
 
 
@@ -98,13 +99,13 @@ namespace SQLMigrationManager
             ";
         }
 
-        List<T> GetDataQuery<T>(string sql) where T : Base, new()
+        List<T> GetDataQuery<T>(DataTable datasource) where T : Base, new()
         {
             var list = new List<T>();
             if (list.Count == 0)
             {
-                var dataTable = new DataAccess().GetDataTable(sql);
-                foreach (DataRow data in dataTable.Rows)
+              //  var dataTable = new DataAccess().GetDataTable(sql);
+                foreach (DataRow data in datasource.Rows)
                 {
                     var obj = new T();
                     obj.GetValueFromDataRow(data);
@@ -115,14 +116,14 @@ namespace SQLMigrationManager
             return list;
         }
 
-        public string CreateScript()
+        public string CreateScript(DataTable datasource)
         {
             
             string[] allcolumn = getAllcolumn();
             var result = "";
             var tableResult = "";
             int xs = 1;
-            foreach (var data in GetAllTable())
+            foreach (var data in GetAllTable(datasource))
             {
 
                 if (data.OrdinalPosition == 1)
@@ -137,13 +138,13 @@ namespace SQLMigrationManager
 
         }
 
-        public List<mTable> GetAllTable()
+        public List<mTable> GetAllTable(DataTable datasource)
         {
-            return GetDataQuery<mTable>(GetQuery());
+            return GetDataQuery<mTable>(datasource);
 
         }
 
-        public DataTable CreateResultXml()
+        public DataTable CreateResultXml(DataTable datasource)
         {
           
             DataTable DTresultItem = new DataTable("ResultInfo");
@@ -156,7 +157,7 @@ namespace SQLMigrationManager
              int xs = 1;
 
             var tableResult = "";
-            foreach (var data in GetAllTable())
+            foreach (var data in GetAllTable(datasource))
             {
                 if (data.OrdinalPosition == 1)
                 {                    
@@ -175,12 +176,12 @@ namespace SQLMigrationManager
             return DTresultItem;
         }
 
-        private string[] getAllcolumn()
+        private string[] getAllcolumn(DataTable datasource)
         {
             int xs = 0;
             int xcount = 1;
             
-            foreach (var totalraw in GetAllTable())
+            foreach (var totalraw in GetAllTable(datasource))
             {
                 if (totalraw.OrdinalPosition == 1)
                 {
@@ -189,7 +190,7 @@ namespace SQLMigrationManager
             }
             string[] allColumn = new string[xcount];
 
-            foreach (var data in GetAllTable())
+            foreach (var data in GetAllTable(datasource))
             {
                // var setData = data.GetConvertedDataType();
 

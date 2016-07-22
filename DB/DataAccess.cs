@@ -7,16 +7,16 @@ namespace SQLMigration.Data
 {
     public interface IDataAccess
     {
-        DataTable GetDataTable(string sql);
+        DataTable GetDataTable(ConfigData configdata, string sql);
         ConfigData ReadXML();
     }
 
     public class DataAccess : IDataAccess
     {
-        public DataTable GetDataTable(string sql)
+        public DataTable GetDataTable(ConfigData configdata, string sql)
         {
-            ConfigData configdata = new ConfigData();
-            configdata = ReadXML();
+            //ConfigData configdata = new ConfigData();
+            //configdata = ReadXML();
             DBData param = new DBData();
             param = configdata.Source;
             Validate(param);

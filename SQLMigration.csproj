@@ -38,9 +38,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Config\AppConfig.cs" />
+    <Compile Include="Data\BaseData.cs" />
     <Compile Include="Data\ConfigData.cs" />
     <Compile Include="Data\DBData.cs" />
     <Compile Include="DB\DataAccess.cs" />
+    <Compile Include="DB\DbXml.cs" />
+    <Compile Include="IO\FileManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />

@@ -1,8 +1,14 @@
-﻿namespace SQLMigration.Data
+﻿using System;
+
+namespace SQLMigration.Data
 {
 
-    public class ConfigData
+    public class ConfigData 
     {
+        public ConfigData()
+        {
+           
+        }
         public string Destination { get; set; }
         public string Path { get; set; }
         public string Id { get; set; }
