@@ -8,7 +8,7 @@ namespace SQLMigrationConverter.MapAttribut
         private readonly IDataTypeMapper dataTypeMapper;
         public Base()
         {
-            dataTypeMapper = new SqlServerTypeMapper();
+            dataTypeMapper = new MssToPostgree();
         }
 
         public abstract void GetValueFromDataRow(DataRow dataRow);
