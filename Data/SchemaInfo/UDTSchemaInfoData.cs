@@ -1,10 +1,5 @@
 ﻿using SQLMigration.Data;
-using SQLMigrationConverter.MapAttribut;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SQLMigrationConverter.SchemaInfo
 {
@@ -13,7 +8,8 @@ namespace SQLMigrationConverter.SchemaInfo
         public UDTSchemaInfoData()
         {
             updated = DateTime.Now;
-            rowKey = SchemaID.ToString();
+            id = DateTime.Now.GetHashCode().ToString();
+
         }
         public int SchemaID { get; set; }
         public string Name { get; set; }
@@ -23,6 +19,6 @@ namespace SQLMigrationConverter.SchemaInfo
         public int Scale { get; set; }
         public bool IsNullable { get; set; }
 
-       
+
     }
 }

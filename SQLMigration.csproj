@@ -41,6 +41,8 @@
     <Compile Include="Data\BaseData.cs" />
     <Compile Include="Data\ConfigData.cs" />
     <Compile Include="Data\DBData.cs" />
+    <Compile Include="Data\ResultInfo\UDTResultData.cs" />
+    <Compile Include="Data\SchemaInfo\UDTSchemaInfoData.cs" />
     <Compile Include="DB\DataAccess.cs" />
     <Compile Include="DB\DbXml.cs" />
     <Compile Include="IO\FileManager.cs" />

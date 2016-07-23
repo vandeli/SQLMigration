@@ -5,10 +5,10 @@ namespace SQLMigrationConverter.MapAttribut
 {
     public abstract class Base
     {
-        private readonly IDataTypeMap dataTypeMap;
+        private readonly IDataTypeMapper dataTypeMapper;
         public Base()
         {
-            dataTypeMap = new DataTypeMap();
+            dataTypeMapper = new SqlServerTypeMapper();
         }
 
         public abstract void GetValueFromDataRow(DataRow dataRow);
@@ -16,7 +16,7 @@ namespace SQLMigrationConverter.MapAttribut
         public abstract TablesFieldDataType GetDataType();
         public string GetConvertedDataType()
         {
-            return GetDataType().GetMapping(dataTypeMap);
+            return GetDataType().GetMapping(dataTypeMapper);
         }
     }
 }

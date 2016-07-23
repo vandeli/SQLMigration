@@ -48,10 +48,6 @@
       <Project>{FB4DC7FA-63A2-4A11-89EA-7426EF8C7035}</Project>
       <Name>SQLMigration</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\SQLMigrationConstants\SQLMigrationConstants\SQLMigrationConstants.csproj">
-      <Project>{FC3F95A8-AFCC-42D9-93C4-80BB709E0AFE}</Project>
-      <Name>SQLMigrationConstants</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\SQLMigrationConverter\SQLMigrationConverter.csproj">
       <Project>{EB95B286-B62F-4C42-A018-5E18803699E7}</Project>
       <Name>SQLMigrationConverter</Name>

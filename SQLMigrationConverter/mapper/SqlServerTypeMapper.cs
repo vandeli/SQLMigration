@@ -3,7 +3,7 @@
 namespace SQLMigrationConverter.mapper
 {
 
-    public class DataTypeMap : IDataTypeMap
+    public class SqlServerTypeMapper : IDataTypeMapper
     {
         private readonly List<TablesFieldDataType> _mapDataTypes = new List<TablesFieldDataType>() {
             new TablesFieldDataType() { DataType="datetime", ConvertedDataType="timestamp" },

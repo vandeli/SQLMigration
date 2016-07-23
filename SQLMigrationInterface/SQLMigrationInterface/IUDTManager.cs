@@ -1,10 +1,13 @@
 using SQLMigration.Data;
-using SQLMigrationInterface;
+using SQLMigrationConverter.ResultInfo;
+using SQLMigrationConverter.SchemaInfo;
+using System.Collections.Generic;
 
 namespace SQLMigrationInterface
 {
-  public interface IUDTManager : IManager
-  {
-
-  }
+    public interface IUDTManager
+    {
+        List<UDTSchemaInfoData> GetSchema(ConfigData configData);
+        List<UDTResultData> Convert(List<UDTSchemaInfoData> datasource);
+    }
 }

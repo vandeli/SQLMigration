@@ -1,170 +1,141 @@
 ﻿using SQLMigration.Data;
 using SQLMigration.DB;
-using SQLMigration.IO;
-using SQLMigrationConverter.MapAttribut;
+using SQLMigrationConverter.mapper;
 using SQLMigrationConverter.ResultInfo;
 using SQLMigrationConverter.SchemaInfo;
 using SQLMigrationInterface;
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.IO;
-using System.Windows.Forms;
+using System.Linq;
 
 namespace SQLMigrationManager
 {
 
     public class UDTManager : IUDTManager
-  {
-        private readonly IFileManager fileManager;
-        private readonly ConfigData configdata;
-        private readonly ICoreDB db;
-        private readonly ICoreSchema Schema;
-        private readonly ICoreResult Result;
-        private readonly ICoreResult PgSQL;
-        private readonly IDataAccess dataAccess;
+    {
 
-        public UDTManager(ConfigData configdata, IFileManager fileManager, ICoreDB db,ICoreSchema Schema, ICoreResult Result, ICoreResult PgSQL, IDataAccess dataAccess)
-         {
-            this.configdata = configdata;
-            this.fileManager = fileManager;
-            this.db = db;
-            this.Schema = Schema;
-            this.Result = Result;
-            this.PgSQL = PgSQL;
-            this.db.CreateConfig(configdata);         
-            this.dataAccess = dataAccess;
-            
-         }
-        public DataTable GetSchema() 
-        {                        
-            var dt = dataAccess.GetDataTable(configdata, GetQuery());
-            Schema.CreateSchema(dt);         
-            return dt;
-           }
-        public void Convert(DataTable datasource)
+        private readonly ICoreDB db;
+
+        private readonly IDataAccess dataAccess;
+        readonly IDataTypeMapper dataTypeMapper;
+
+        public UDTManager(IDataAccess dataAccess1, IDataTypeMapper dataTypeMapper)
+        {
+            this.dataAccess = dataAccess1;
+            this.dataTypeMapper = dataTypeMapper;
+        }
+
+        public List<UDTSchemaInfoData> GetSchema(ConfigData configData)
+        {
+            var result = new List<UDTSchemaInfoData>();
+            var dt = dataAccess.GetDataTable(configData, GetQuery());
+            for (int i = 0; i < dt.Rows.Count; i++)
+            {
+                var schema = new UDTSchemaInfoData();
+                DataRow data = dt.Rows[i];
+                schema.name = data["szName"].ToString();
+                result.Add(schema);
+            }
+
+            return result;
+        }
+
+
+
+        public List<UDTResultData> Convert(List<UDTSchemaInfoData> datasource)
         {
 
-            DataTable resultXML = CreateResultXml(datasource);
-            var result = CreateScript(datasource);
+            var result = new List<UDTResultData>();
+            foreach (var schemaInfoData in datasource)
+            {
+                var resultInfo = new UDTResultData
+                {
+                    name = schemaInfoData.name,
+                    sqlString = CreateScript(schemaInfoData)
+                };
 
-            Result.CreateResult(resultXML);
-            PgSQL.CreatePgSql(result);
-        }        
-           
-    
+                result.Add(resultInfo);
+            }
 
-      
+            return result;
+        }
 
-        //private static void WriteConfig(ConfigData configdata)
-        //{
-        //    var writer = new System.Xml.Serialization.XmlSerializer(typeof(ConfigData));
-        //    var file = File.Create("Config.xml");
-        //    writer.Serialize(file, configdata);
-        //    file.Close();
-        //}
-
-        private string GetQuery()
+        string GetQuery()
         {
             return @"
-            SELECT st.NAME
-	            ,bs.[name] AS data_type
-	            ,st.max_length
-	            ,st.precision
-	            ,st.scale
-	            ,st.is_nullable
-            FROM sys.types st
-            INNER JOIN sys.schemas ss ON st.[schema_id] = ss.[schema_id]
-            INNER JOIN sys.types bs ON bs.[user_type_id] = st.[system_type_id]
-            WHERE st.[is_user_defined] = 1 -- exclude system types
-            ORDER BY st.[name]
-	            ,ss.[name]
-            ";
+			SELECT st.NAME
+				,bs.[name] AS data_type
+				,st.max_length
+				,st.precision
+				,st.scale
+				,st.is_nullable
+			FROM sys.types st
+			INNER JOIN sys.schemas ss ON st.[schema_id] = ss.[schema_id]
+			INNER JOIN sys.types bs ON bs.[user_type_id] = st.[system_type_id]
+			WHERE st.[is_user_defined] = 1 -- exclude system types
+			ORDER BY st.[name]
+				,ss.[name]
+			";
         }
 
-        List<T> GetDataQuery<T>(DataTable datasource) where T : Base, new()
+        string CreateScript(UDTSchemaInfoData schemaInfoData)
         {
-            var list = new List<T>();
-            if (list.Count == 0)
-            {
-                //var dataTable = datasource; //new DataAccess().GetDataTable(sql);
-                foreach (DataRow data in datasource.Rows)
-                {
-                    var obj = new T();
-                    obj.GetValueFromDataRow(data);
-                    list.Add(obj);
-                }
-            }
-            return list;
-        }
-
-        public string CreateScript(DataTable datasource)
-        {            
             var result = "";
             var tableResult = "";
-            foreach (var data in GetAllUdts(datasource))
-            {
-                tableResult = getTemplate(data); 
-                result += tableResult;
-            }
+
+            tableResult = GetTemplateUDT(schemaInfoData);
+            result += tableResult;
+
             return result;
 
         }
 
-        public List<mUDT> GetAllUdts(DataTable datasource)
+        TablesFieldDataType GetDataType(UDTSchemaInfoData schemaInfo)
         {
-            return GetDataQuery<mUDT>(datasource);
+            var result = new TablesFieldDataType();
+            result.DataType = schemaInfo.DataType;
 
-        }
+            if (schemaInfo.Precision != 0)
+                result.DataTypeSuffix = schemaInfo.DataType + "(" + schemaInfo.Precision + "," + schemaInfo.Scale + ")";
+            else
+                result.DataTypeSuffix = schemaInfo.DataType + "(" + schemaInfo.MaxLength + ")";
 
-        public DataTable CreateResultXml(DataTable datasource)
-        {
-           // ResultItemData resultItemdata = new ResultItemData();
-            DataTable DTresultItem = new DataTable("ResultInfo");
-            DTresultItem.Columns.Add("SchemaId", typeof(int));
-            DTresultItem.Columns.Add("name", typeof(string));
-            DTresultItem.Columns.Add("sqlString", typeof(string));
-            DTresultItem.Columns.Add("ResultID", typeof(string));
-
-
-            var tableResult = "";
-            foreach (var data in GetAllUdts(datasource))
-            {
-                DataRow workRow = DTresultItem.NewRow();
-                tableResult = getTemplate(data);
-                workRow["SchemaId"] = data.SchemaID;
-                workRow["name"] = data.Name;
-                workRow["sqlString"] = tableResult;
-                workRow["ResultID"] = tableResult.GetHashCode().ToString().Replace("-", "");
-                DTresultItem.Rows.Add(workRow);
-
-            }
-
-            return DTresultItem;
-        }
-
-        public string getTemplate(mUDT data)
-        {
-            var result = "";
-            var infodata = data.GetConvertedDataType();
-            switch (infodata)
-            {
-                case "decimal":
-                    result = "CREATE DOMAIN " + data.Name + " AS " + data.GetConvertedDataType() + "(" + data.Precision + "," + data.Scale + ")" + (data.IsNullable ? "" : " NOT NULL") + ";\r\n";
-
-                    break;
-
-                case "varchar":
-                    result = "CREATE DOMAIN " + data.Name + " AS " + data.GetConvertedDataType() + "(" + data.MaxLength + ")" + (data.IsNullable ? "" : " NOT NULL") + ";\r\n";
-                    break;
-
-                default:
-                    result = "CREATE DOMAIN " + data.Name + " AS " + data.GetConvertedDataType() + (data.IsNullable ? "" : " NOT NULL") + ";\r\n";
-                    break;
-            }
             return result;
         }
 
-      
+        string GetConvertedDataType(UDTSchemaInfoData schema)
+        {
+            var type = GetDataType(schema);
+            return GetMappingDatatype(type);
+        }
+
+        string GetMappingDatatype(TablesFieldDataType dataType)
+        {
+            if (dataType == null)
+            {
+                throw new ArgumentNullException("dataType");
+            }
+            if (dataType.DomainName != null && dataType.DomainName.Length > 0)
+
+                return dataType.DomainName;
+
+            var findingResult = dataTypeMapper.GetDataTypeMap().Where(x => x.DataType == dataType.DataType.ToLower());
+            TablesFieldDataType result = null;
+            if (findingResult.Count() > 1)
+                result = findingResult.SingleOrDefault(x => x.DataTypeSuffix == dataType.DataTypeSuffix.ToLower());
+            else if (findingResult.Count() == 1)
+                result = findingResult.First();
+
+            return result == null ? "null" : result.ConvertedDataType;
+        }
+
+        string GetTemplateUDT(UDTSchemaInfoData schemaInfo)
+        {
+            var result = "CREATE DOMAIN " + schemaInfo.Name + " AS " + GetConvertedDataType(schemaInfo) + "(" + schemaInfo.Precision + "," + schemaInfo.Scale + ")" + (schemaInfo.IsNullable ? "" : " NOT NULL") + ";\r\n";
+            return result;
+        }
+
+
     }
 }
