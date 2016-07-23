@@ -45,11 +45,6 @@
     <Compile Include="ConvertEventArgs.cs" />
     <Compile Include="MapAttribut\Base.cs" />
     <Compile Include="MapAttribut\DataTypeExtensions.cs" />
-    <Compile Include="MapAttribut\InfoQuery.cs" />
-    <Compile Include="MapAttribut\mIndex.cs" />
-    <Compile Include="MapAttribut\mPK.cs" />
-    <Compile Include="MapAttribut\mTable.cs" />
-    <Compile Include="MapAttribut\mUDT.cs" />
     <Compile Include="mapper\SqlServerTypeMapper.cs" />
     <Compile Include="mapper\IDataTypeMapper.cs" />
     <Compile Include="mapper\TablesFieldDataType.cs" />

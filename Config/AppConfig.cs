@@ -25,7 +25,7 @@ namespace SQLMigration.Config
 
         public void Id(String cData)
         {
-            configData.Id = cData;
+            configData.id = cData;
         }
 
         public void SetSource(ConfigData configData)

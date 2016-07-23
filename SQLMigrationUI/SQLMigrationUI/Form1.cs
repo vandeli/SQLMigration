@@ -1,72 +1,33 @@
-﻿using System;
-using System.Windows.Forms;
+﻿using SQLMigration.Data;
 using SQLMigrationInterface;
-using SQLMigration.Data;
-using System.Data.SqlClient;
-using System.Management;
-using System.Linq;
 using SQLMigrationOF;
-using static SQLMigrationUI.Program;
-using System.Data;
+using System;
+using System.Linq;
+using System.Management;
+using System.Windows.Forms;
 
 namespace SQLMigrationUI
 {
     public partial class Form1 : Form
     {
-      private OF of = new OF();
-      private  IUDTManager udtManager;
-      //private readonly IManager tableManager;
-      //private readonly IPKManager pkManager;
-      //private readonly IIndexManager indexManager;    
-    
-       
+        private OF of = new OF();
+        private IUDTManager udtManager;
+
+
+
         public Form1()
         {
-         // udtManager = of.GetInstanceUdtManager();
-          //tableManager = of.GetInstanceTableManager();
-          //pkManager = of.GetInstancePkManager();
-          //indexManager = of.GetInstanceIndexManager();
-          InitializeComponent();
-          InitComboBox();
+
+            InitializeComponent();
+            InitComboBox();
         }
 
         public void ProsesManager(String pilihan, ConfigData configdata)
         {
-            switch (pilihan)
-            {
-                case "UDT":
-                    udtManager = of.GetInstanceUdtManager(configdata);
-                    DataTable data = new DataTable();
-                   // udtManager.SetConfig(configdata);
-                    data = udtManager.GetSchema();
-                    udtManager.Convert(data);
-                    break;
 
-                //case "PK":
-                //    DataTable data = new DataTable();
-                //    pkManager.SetConfig(configdata);
-                //    data = pkManager.GetSchema();
-                //    pkManager.Convert(data);
-                //    break;
+            udtManager = of.GetInstanceUdtManager();
 
-                //case "Table":
-                //    DataTable data = new DataTable();
-                //    tableManager.SetConfig(configdata);
-                //    data = tableManager.GetSchema();
-                //    tableManager.Convert(data);
-                //    break;
 
-                //case "Index":
-                //    DataTable data = new DataTable();
-                //    indexManager.SetConfig(configdata);
-                //    data = indexManager.GetSchema();
-                //    indexManager.Convert(data);
-                //    break;
-
-                default:
-                    MessageBox.Show("Pilihan belum tersedia");
-                    break;
-            }
         }
 
         private void InitComboBox()
@@ -133,7 +94,7 @@ namespace SQLMigrationUI
             }
             else if (txtDatabase.Text == "" || txtDatabase == null)
             {
-                txtDatabase.Focus(); 
+                txtDatabase.Focus();
 
                 isNull = false;
             }
@@ -150,23 +111,23 @@ namespace SQLMigrationUI
             else if (string.IsNullOrEmpty(cboProcess.Text))
             {
                 cboProcess.Focus();
-                    isNull = false;
+                isNull = false;
             }
 
             return isNull;
         }
 
-       
+
         private void Form1_Load(object sender, EventArgs e)
         {
-          //  public static string configPath;
-            
+            //  public static string configPath;
+
             //### testing purpose only, delete when done #####
             ManagementObjectSearcher searcher = new ManagementObjectSearcher("SELECT UserName FROM Win32_ComputerSystem");
             ManagementObjectCollection collection = searcher.Get();
             string username = (string)collection.Cast<ManagementBaseObject>().First()["UserName"];
 
-     
+
 
             switch (username)
             {
@@ -193,39 +154,38 @@ namespace SQLMigrationUI
             }
             //############################################################333
 
-        }       
+        }
 
         private void btnConvert_Click_1(object sender, EventArgs e)
         {
-            
+
             var validate = ValidateInput();
             if (validate == true)
-            try
-            {
-               var param = new DBData
-               {
-                   serverName = txtServer.Text,
-                   userName = txtUsername.Text,
-                   password = txtPassword.Text,
-                   dbName = txtDatabase.Text
-               };
+                try
+                {
+                    var param = new DBData
+                    {
+                        serverName = txtServer.Text,
+                        userName = txtUsername.Text,
+                        password = txtPassword.Text,
+                        dbName = txtDatabase.Text
+                    };
                     var xData = new ConfigData
                     {
                         Source = param,
-                        Id = param.dbName.GetHashCode().ToString(),
-                    Destination = txtOutput.Text,
-                    Path = txtPath.Text
-                };
+                        id = param.dbName.GetHashCode().ToString(),
+                        Path = txtPath.Text
+                    };
 
-                  
-                    ProsesManager(cboProcess.Text, xData);    
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
+
+                    ProsesManager(cboProcess.Text, xData);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
         }
 
-      
+
     }
 }
