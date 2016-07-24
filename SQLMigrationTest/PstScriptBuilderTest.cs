@@ -1,8 +1,9 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using SQLMigrationConverter.SchemaInfo;
-using SQLMigrationConverter.ScriptBuilder;
+using SQLMigration.Converter.ScriptBuilder;
+using SQLMigration.Interface.SchemaInfo;
 
-namespace SQLMigrationTest
+
+namespace SQLMigration.Test
 {
     [TestClass]
     public class PstScriptBuilderTest

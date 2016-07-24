@@ -1,7 +1,8 @@
 ﻿using SQLMigration.Data;
 using System;
+using EasyTools.Data;
 
-namespace SQLMigrationConverter.SchemaInfo
+namespace SQLMigration.Interface.SchemaInfo
 {
     public class UDTSchemaInfoData : BaseData
     {

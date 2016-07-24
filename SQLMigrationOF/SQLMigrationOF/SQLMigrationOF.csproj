@@ -41,9 +41,16 @@
   <ItemGroup>
     <Compile Include="OF.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TestOF.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\EasyTools.Interface\EasyTools.Interface.csproj">
+      <Project>{ff47ff05-a601-46ce-a295-7e3cf798e52b}</Project>
+      <Name>EasyTools.Interface</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\EasyTools\EasyTools.csproj">
+      <Project>{38ad047c-ae85-4cae-a2c4-1077cec245ac}</Project>
+      <Name>EasyTools</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\SQLMigrationConverter\SQLMigrationConverter.csproj">
       <Project>{EB95B286-B62F-4C42-A018-5E18803699E7}</Project>
       <Name>SQLMigrationConverter</Name>
@@ -55,10 +62,6 @@
     <ProjectReference Include="..\..\SQLMigrationManager\SQLMigrationManager\SQLMigrationManager.csproj">
       <Project>{E6F8CC7B-B6B8-43B7-A061-DA9AE23E0573}</Project>
       <Name>SQLMigrationManager</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\SQLMigration\SQLMigration.csproj">
-      <Project>{fb4dc7fa-63a2-4a11-89ea-7426ef8c7035}</Project>
-      <Name>SQLMigration</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

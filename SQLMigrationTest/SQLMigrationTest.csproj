@@ -6,8 +6,8 @@
     <ProjectGuid>{4FB4C581-ED23-408E-A53D-F008ACAC7D0F}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SQLMigrationTest</RootNamespace>
-    <AssemblyName>SQLMigrationTest</AssemblyName>
+    <RootNamespace>SQLMigration.Test</RootNamespace>
+    <AssemblyName>SQLMigration.Test</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -64,6 +64,10 @@
     <Compile Include="DataAccessTest.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\EasyTools.Interface\EasyTools.Interface.csproj">
+      <Project>{ff47ff05-a601-46ce-a295-7e3cf798e52b}</Project>
+      <Name>EasyTools.Interface</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SQLMigrationConverter\SQLMigrationConverter.csproj">
       <Project>{eb95b286-b62f-4c42-a018-5e18803699e7}</Project>
       <Name>SQLMigrationConverter</Name>
@@ -75,10 +79,6 @@
     <ProjectReference Include="..\SQLMigrationManager\SQLMigrationManager\SQLMigrationManager.csproj">
       <Project>{e6f8cc7b-b6b8-43b7-a061-da9ae23e0573}</Project>
       <Name>SQLMigrationManager</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SQLMigration\SQLMigration.csproj">
-      <Project>{fb4dc7fa-63a2-4a11-89ea-7426ef8c7035}</Project>
-      <Name>SQLMigration</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

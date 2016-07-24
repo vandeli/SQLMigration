@@ -1,4 +1,5 @@
 ﻿using System;
+using EasyTools.Data;
 
 namespace SQLMigration.Data
 {

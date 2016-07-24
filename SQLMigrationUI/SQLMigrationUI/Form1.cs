@@ -1,10 +1,13 @@
 ﻿using SQLMigration.Data;
-using SQLMigrationInterface;
-using SQLMigrationOF;
 using System;
 using System.Linq;
 using System.Management;
+using System.Text;
 using System.Windows.Forms;
+using EasyTools.Interface.DB;
+using EasyTools.Interface.IO;
+using SQLMigration;
+using SQLMigration.Interface.Manager;
 
 namespace SQLMigrationUI
 {
@@ -12,12 +15,14 @@ namespace SQLMigrationUI
     {
         private OF of = new OF();
         private IUDTManager udtManager;
+        ICoreDB coreDb;
 
 
 
         public Form1()
         {
-
+            this.coreDb = of.GetInstanceCoreDB(@"E:\dbxml.xml");
+            coreDb.CreateTable<ConfigData>();
             InitializeComponent();
             InitComboBox();
         }
@@ -26,9 +31,20 @@ namespace SQLMigrationUI
         {
 
             udtManager = of.GetInstanceUdtManager();
-            configdata.listSchemaInfo = udtManager.GetSchema(configdata);
-            configdata.listResultInfo = udtManager.Convert(configdata.listSchemaInfo);
+            configdata.listUDTSchemaInfo = udtManager.GetSchema(configdata);
+            configdata.listUDTResultInfo = udtManager.Convert(configdata.listUDTSchemaInfo);
+            coreDb.Insert(configdata);
 
+            StringBuilder scriptStringBuilder = new StringBuilder();
+            foreach (var udtResultData in configdata.listUDTResultInfo)
+            {
+
+                scriptStringBuilder.AppendLine(udtResultData.sqlString);
+
+            }
+
+            IFileManager fileManager = of.GEtInstanceFileManager();
+            fileManager.CreateFile(scriptStringBuilder.ToString(), @"E:\UDTScript.sql");
         }
 
 

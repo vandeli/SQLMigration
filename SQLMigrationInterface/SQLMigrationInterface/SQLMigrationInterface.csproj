@@ -7,8 +7,8 @@
     <ProjectGuid>{25658975-7316-4BDF-9FBC-3DC32955D44D}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SQLMigrationInterface</RootNamespace>
-    <AssemblyName>SQLMigrationInterface</AssemblyName>
+    <RootNamespace>SQLMigration.Interface</RootNamespace>
+    <AssemblyName>SQLMigration.Interface</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -35,13 +35,20 @@
     <Reference Include="System.Data" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Data\ConfigData.cs" />
+    <Compile Include="Data\DBData.cs" />
+    <Compile Include="Data\ResultInfo\UDTResultData.cs" />
+    <Compile Include="Data\SchemaInfo\UDTSchemaInfoData.cs" />
+    <Compile Include="DB\DataAccess.cs" />
+    <Compile Include="IScriptBuilder.cs" />
+    <Compile Include="ISourceQuery.cs" />
     <Compile Include="IUDTManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\SQLMigration\SQLMigration.csproj">
-      <Project>{fb4dc7fa-63a2-4a11-89ea-7426ef8c7035}</Project>
-      <Name>SQLMigration</Name>
+    <ProjectReference Include="..\..\EasyTools.Interface\EasyTools.Interface.csproj">
+      <Project>{ff47ff05-a601-46ce-a295-7e3cf798e52b}</Project>
+      <Name>EasyTools.Interface</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

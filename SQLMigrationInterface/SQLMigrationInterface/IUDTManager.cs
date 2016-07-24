@@ -1,9 +1,9 @@
 using SQLMigration.Data;
-using SQLMigrationConverter.ResultInfo;
-using SQLMigrationConverter.SchemaInfo;
+using SQLMigration.Interface.ResultInfo;
+using SQLMigration.Interface.SchemaInfo;
 using System.Collections.Generic;
 
-namespace SQLMigrationInterface
+namespace SQLMigration.Interface.Manager
 {
     public interface IUDTManager
     {

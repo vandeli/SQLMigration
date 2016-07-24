@@ -1,19 +1,10 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using EasyTools.Interface.IO;
 using System;
 using System.IO;
 
 
-namespace SQLMigration.IO
+namespace EasyTools.IO
 {
-    public interface IFileManager
-    {
-        void CreateFile(string value, string path);
-        string ReadFile(string path);      
-        void DeleteFile(string path);
-        bool Exist(string path);       
-    }
-
     public interface IFileReader
     {
         string ReadFile(string path);
@@ -55,7 +46,7 @@ namespace SQLMigration.IO
             var content = File.ReadAllText(path);
             Console.WriteLine(@"Text : " + content);
             return content;
-        }       
+        }
 
         public void DeleteFile(string path)
         {

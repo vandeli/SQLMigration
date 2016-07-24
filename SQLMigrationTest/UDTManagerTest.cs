@@ -1,16 +1,17 @@
 ﻿using FakeItEasy;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SQLMigration.Data;
-using SQLMigrationConverter.ResultInfo;
-using SQLMigrationConverter.SchemaInfo;
-using SQLMigrationConverter.ScriptBuilder;
-using SQLMigrationConverter.SourceQuery;
-using SQLMigrationInterface;
-using SQLMigrationManager;
+
 using System.Collections.Generic;
 using System.Data;
+using SQLMigration.Interface.Manager;
+using SQLMigration.Interface.ResultInfo;
+using SQLMigration.Interface.SchemaInfo;
+using SQLMigration.Interface.ScriptBuilder;
+using SQLMigration.Interface.SourceQuery;
+using SQLMigration.Manager;
 
-namespace SQLMigrationTest
+namespace SQLMigration.Test
 {
     [TestClass]
     public class UDTManagerTest

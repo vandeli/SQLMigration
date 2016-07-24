@@ -1,6 +1,7 @@
-﻿using SQLMigrationConverter.SchemaInfo;
+﻿using SQLMigration.Interface.SchemaInfo;
 
-namespace SQLMigrationConverter.ScriptBuilder
+
+namespace SQLMigration.Interface.ScriptBuilder
 {
     public interface IScriptBuilder
     {

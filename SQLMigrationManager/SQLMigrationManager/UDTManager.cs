@@ -1,14 +1,14 @@
 ﻿using SQLMigration.Data;
-using SQLMigrationConverter.ResultInfo;
-using SQLMigrationConverter.SchemaInfo;
-using SQLMigrationConverter.ScriptBuilder;
-using SQLMigrationConverter.SourceQuery;
-using SQLMigrationInterface;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using SQLMigration.Interface.Manager;
+using SQLMigration.Interface.ResultInfo;
+using SQLMigration.Interface.SchemaInfo;
+using SQLMigration.Interface.ScriptBuilder;
+using SQLMigration.Interface.SourceQuery;
 
-namespace SQLMigrationManager
+namespace SQLMigration.Manager
 {
 
     public class UDTManager : IUDTManager

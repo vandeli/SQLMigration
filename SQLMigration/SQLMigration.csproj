@@ -38,17 +38,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Config\AppConfig.cs" />
-    <Compile Include="Data\BaseData.cs" />
-    <Compile Include="Data\ConfigData.cs" />
-    <Compile Include="Data\DBData.cs" />
-    <Compile Include="Data\ResultInfo\UDTResultData.cs" />
-    <Compile Include="Data\SchemaInfo\UDTSchemaInfoData.cs" />
-    <Compile Include="DB\DataAccess.cs" />
-    <Compile Include="DB\DbXml.cs" />
-    <Compile Include="IO\FileManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\EasyTools.Interface\EasyTools.Interface.csproj">
+      <Project>{ff47ff05-a601-46ce-a295-7e3cf798e52b}</Project>
+      <Name>EasyTools.Interface</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

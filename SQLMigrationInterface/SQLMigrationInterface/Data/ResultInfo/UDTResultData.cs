@@ -1,7 +1,8 @@
 ﻿using SQLMigration.Data;
 using System;
+using EasyTools.Data;
 
-namespace SQLMigrationConverter.ResultInfo
+namespace SQLMigration.Interface.ResultInfo
 {
     public class UDTResultData : BaseData
     {

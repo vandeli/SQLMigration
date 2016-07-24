@@ -43,21 +43,19 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ConvertEventArgs.cs" />
-    <Compile Include="ScriptBuilder\IScriptBuilder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ScriptBuilder\PstScriptBuilder.cs" />
-    <Compile Include="SourceQuery\ISourceQuery.cs" />
     <Compile Include="SourceQuery\MssQuery.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <ProjectReference Include="..\EasyTools.Interface\EasyTools.Interface.csproj">
+      <Project>{ff47ff05-a601-46ce-a295-7e3cf798e52b}</Project>
+      <Name>EasyTools.Interface</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SQLMigrationInterface\SQLMigrationInterface\SQLMigrationInterface.csproj">
       <Project>{25658975-7316-4bdf-9fbc-3dc32955d44d}</Project>
       <Name>SQLMigrationInterface</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SQLMigration\SQLMigration.csproj">
-      <Project>{fb4dc7fa-63a2-4a11-89ea-7426ef8c7035}</Project>
-      <Name>SQLMigration</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

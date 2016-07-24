@@ -1,22 +1,23 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{E6F8CC7B-B6B8-43B7-A061-DA9AE23E0573}</ProjectGuid>
+    <ProjectGuid>{38AD047C-AE85-4CAE-A2C4-1077CEC245AC}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SQLMigrationManager</RootNamespace>
-    <AssemblyName>SQLMigrationManager</AssemblyName>
+    <RootNamespace>EasyTools</RootNamespace>
+    <AssemblyName>EasyTools</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\bin\</OutputPath>
+    <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -32,27 +33,22 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
-    <Reference Include="System.DirectoryServices" />
-    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DB\DbXml.cs" />
+    <Compile Include="IO\FileManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="UDTManager.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\EasyTools.Interface\EasyTools.Interface.csproj">
+    <ProjectReference Include="..\EasyTools.Interface\EasyTools.Interface.csproj">
       <Project>{ff47ff05-a601-46ce-a295-7e3cf798e52b}</Project>
       <Name>EasyTools.Interface</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\SQLMigrationConverter\SQLMigrationConverter.csproj">
-      <Project>{eb95b286-b62f-4c42-a018-5e18803699e7}</Project>
-      <Name>SQLMigrationConverter</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\SQLMigrationInterface\SQLMigrationInterface\SQLMigrationInterface.csproj">
-      <Project>{25658975-7316-4bdf-9fbc-3dc32955d44d}</Project>
-      <Name>SQLMigrationInterface</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

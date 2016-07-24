@@ -1,9 +1,11 @@
-﻿using SQLMigrationConverter.SchemaInfo;
+﻿
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using SQLMigration.Interface.SchemaInfo;
+using SQLMigration.Interface.ScriptBuilder;
 
-namespace SQLMigrationConverter.ScriptBuilder
+namespace SQLMigration.Converter.ScriptBuilder
 {
     public class PstScriptBuilder : IScriptBuilder
     {
