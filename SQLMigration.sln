@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SQLMigration", "SQLMigration.csproj", "{FB4DC7FA-63A2-4A11-89EA-7426EF8C7035}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SQLMigrationInterface", "SQLMigrationInterface\SQLMigrationInterface\SQLMigrationInterface.csproj", "{25658975-7316-4BDF-9FBC-3DC32955D44D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SQLMigrationManager", "SQLMigrationManager\SQLMigrationManager\SQLMigrationManager.csproj", "{E6F8CC7B-B6B8-43B7-A061-DA9AE23E0573}"
@@ -17,16 +15,14 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SQLMigrationConverter", "SQ
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SQLMigrationOF", "SQLMigrationOF\SQLMigrationOF\SQLMigrationOF.csproj", "{DEBD9A6B-2E77-4DCF-9ED3-0E755B82ABA0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SQLMigration", "SQLMigration\SQLMigration.csproj", "{FB4DC7FA-63A2-4A11-89EA-7426EF8C7035}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{FB4DC7FA-63A2-4A11-89EA-7426EF8C7035}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FB4DC7FA-63A2-4A11-89EA-7426EF8C7035}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FB4DC7FA-63A2-4A11-89EA-7426EF8C7035}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FB4DC7FA-63A2-4A11-89EA-7426EF8C7035}.Release|Any CPU.Build.0 = Release|Any CPU
 		{25658975-7316-4BDF-9FBC-3DC32955D44D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{25658975-7316-4BDF-9FBC-3DC32955D44D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{25658975-7316-4BDF-9FBC-3DC32955D44D}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -51,6 +47,10 @@ Global
 		{DEBD9A6B-2E77-4DCF-9ED3-0E755B82ABA0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DEBD9A6B-2E77-4DCF-9ED3-0E755B82ABA0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DEBD9A6B-2E77-4DCF-9ED3-0E755B82ABA0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FB4DC7FA-63A2-4A11-89EA-7426EF8C7035}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FB4DC7FA-63A2-4A11-89EA-7426EF8C7035}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FB4DC7FA-63A2-4A11-89EA-7426EF8C7035}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FB4DC7FA-63A2-4A11-89EA-7426EF8C7035}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

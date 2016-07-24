@@ -35,17 +35,12 @@
     <Reference Include="System.Data" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IBaseConverter.cs" />
-    <Compile Include="IIndexManager.cs" />
-    <Compile Include="IManager.cs" />
-    <Compile Include="IPKManager.cs" />
-    <Compile Include="ITableManager.cs" />
     <Compile Include="IUDTManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\SQLMigration.csproj">
-      <Project>{FB4DC7FA-63A2-4A11-89EA-7426EF8C7035}</Project>
+    <ProjectReference Include="..\..\SQLMigration\SQLMigration.csproj">
+      <Project>{fb4dc7fa-63a2-4a11-89ea-7426ef8c7035}</Project>
       <Name>SQLMigration</Name>
     </ProjectReference>
   </ItemGroup>

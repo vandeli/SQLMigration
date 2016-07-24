@@ -42,10 +42,6 @@
     <Compile Include="UDTManager.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\SQLMigration.csproj">
-      <Project>{FB4DC7FA-63A2-4A11-89EA-7426EF8C7035}</Project>
-      <Name>SQLMigration</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\SQLMigrationConverter\SQLMigrationConverter.csproj">
       <Project>{eb95b286-b62f-4c42-a018-5e18803699e7}</Project>
       <Name>SQLMigrationConverter</Name>
@@ -53,6 +49,10 @@
     <ProjectReference Include="..\..\SQLMigrationInterface\SQLMigrationInterface\SQLMigrationInterface.csproj">
       <Project>{25658975-7316-4bdf-9fbc-3dc32955d44d}</Project>
       <Name>SQLMigrationInterface</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\SQLMigration\SQLMigration.csproj">
+      <Project>{fb4dc7fa-63a2-4a11-89ea-7426ef8c7035}</Project>
+      <Name>SQLMigration</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

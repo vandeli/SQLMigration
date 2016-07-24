@@ -64,10 +64,6 @@
     <Compile Include="DataAccessTest.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\SQLMigration.csproj">
-      <Project>{FB4DC7FA-63A2-4A11-89EA-7426EF8C7035}</Project>
-      <Name>SQLMigration</Name>
-    </ProjectReference>
     <ProjectReference Include="..\SQLMigrationConverter\SQLMigrationConverter.csproj">
       <Project>{eb95b286-b62f-4c42-a018-5e18803699e7}</Project>
       <Name>SQLMigrationConverter</Name>
@@ -79,6 +75,10 @@
     <ProjectReference Include="..\SQLMigrationManager\SQLMigrationManager\SQLMigrationManager.csproj">
       <Project>{e6f8cc7b-b6b8-43b7-a061-da9ae23e0573}</Project>
       <Name>SQLMigrationManager</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SQLMigration\SQLMigration.csproj">
+      <Project>{fb4dc7fa-63a2-4a11-89ea-7426ef8c7035}</Project>
+      <Name>SQLMigration</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
