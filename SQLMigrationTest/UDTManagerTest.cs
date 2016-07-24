@@ -1,14 +1,12 @@
 ﻿using FakeItEasy;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SQLMigration.Data;
-
 using System.Collections.Generic;
 using System.Data;
-using EasyTools.Interface;
 using EasyTools.Interface.DB;
+using SQLMigration.Data.ResultInfo;
+using SQLMigration.Data.SchemaInfo;
 using SQLMigration.Interface.Manager;
-using SQLMigration.Interface.ResultInfo;
-using SQLMigration.Interface.SchemaInfo;
 using SQLMigration.Interface.ScriptBuilder;
 using SQLMigration.Interface.SourceQuery;
 using SQLMigration.Manager;

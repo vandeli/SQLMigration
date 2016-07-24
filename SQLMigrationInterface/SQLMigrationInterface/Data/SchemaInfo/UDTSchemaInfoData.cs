@@ -2,7 +2,7 @@
 using System;
 using EasyTools.Data;
 
-namespace SQLMigration.Interface.SchemaInfo
+namespace SQLMigration.Data.SchemaInfo
 {
     public class UDTSchemaInfoData : BaseData
     {

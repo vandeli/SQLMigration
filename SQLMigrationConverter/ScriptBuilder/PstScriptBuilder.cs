@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using SQLMigration.Interface.SchemaInfo;
+using SQLMigration.Data.SchemaInfo;
 using SQLMigration.Interface.ScriptBuilder;
 
 namespace SQLMigration.Converter.ScriptBuilder
