@@ -45,7 +45,6 @@ namespace SQLMigrationTest
 
             var listSchema = udtManager.GetSchema(configData);
 
-
             var schemaExpectation = new UDTSchemaInfoData
             {
                 name = "customVar",
