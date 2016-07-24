@@ -8,13 +8,17 @@ namespace SQLMigrationOF
 {
     public class OF
     {
+        IUDTManager udtManager;
         public IUDTManager GetInstanceUdtManager()
         {
+            if (udtManager != null) return udtManager;
+
             IDataAccess dataAccess = new DataAccess();
             IScriptBuilder scriptBuilder = new PstScriptBuilder();
             ISourceQuery schemaQuery = new MssQuery();
+            udtManager = new UDTManager(dataAccess, scriptBuilder, schemaQuery);
 
-            return new UDTManager(dataAccess, scriptBuilder, schemaQuery);
+            return udtManager;
         }
 
 

@@ -16,6 +16,7 @@ namespace SQLMigrationConverter.ResultInfo
             name = "";
             sqlString = "";
             schemaId = "";
+            updated = DateTime.Now;
         }
     }
 }

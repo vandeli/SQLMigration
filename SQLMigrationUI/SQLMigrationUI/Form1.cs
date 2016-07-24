@@ -26,9 +26,12 @@ namespace SQLMigrationUI
         {
 
             udtManager = of.GetInstanceUdtManager();
-
+            configdata.listSchemaInfo = udtManager.GetSchema(configdata);
+            configdata.listResultInfo = udtManager.Convert(configdata.listSchemaInfo);
 
         }
+
+
 
         private void InitComboBox()
         {
@@ -173,7 +176,6 @@ namespace SQLMigrationUI
                     var xData = new ConfigData
                     {
                         Source = param,
-                        id = param.dbName.GetHashCode().ToString(),
                         Path = txtPath.Text
                     };
 
