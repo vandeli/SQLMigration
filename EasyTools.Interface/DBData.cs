@@ -1,7 +1,7 @@
 ﻿using System;
 using EasyTools.Data;
 
-namespace SQLMigration.Data
+namespace EasyTools.Data
 {
     public class DBData : BaseData
     {

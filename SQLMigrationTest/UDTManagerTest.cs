@@ -4,6 +4,8 @@ using SQLMigration.Data;
 
 using System.Collections.Generic;
 using System.Data;
+using EasyTools.Interface;
+using EasyTools.Interface.DB;
 using SQLMigration.Interface.Manager;
 using SQLMigration.Interface.ResultInfo;
 using SQLMigration.Interface.SchemaInfo;
@@ -19,9 +21,9 @@ namespace SQLMigration.Test
         [TestMethod]
         public void GetSchemaTest()
         {
-            IDataAccess dataAccess = A.Fake<IDataAccess>();
-            IScriptBuilder scriptBuilder = A.Fake<IScriptBuilder>();
-            ISourceQuery schemaQuery = A.Fake<ISourceQuery>();
+            var dataAccess = A.Fake<IDataAccess>();
+            var scriptBuilder = A.Fake<IScriptBuilder>();
+            var schemaQuery = A.Fake<ISourceQuery>();
 
             DataTable resultDataAccess = new DataTable("DataTable");
             resultDataAccess.Columns.Add("NAME");
@@ -47,7 +49,7 @@ namespace SQLMigration.Test
             var resultQuery = "";
 
             A.CallTo(() => schemaQuery.GetUDTQuery()).Returns(resultQuery);
-            A.CallTo(() => dataAccess.GetDataTable(configData, resultQuery)).Returns(resultDataAccess);
+            A.CallTo(() => dataAccess.GetDataTable(configData.Source, resultQuery)).Returns(resultDataAccess);
 
             IUDTManager udtManager = new UDTManager(dataAccess, scriptBuilder, schemaQuery);
 
@@ -77,9 +79,9 @@ namespace SQLMigration.Test
         [TestMethod]
         public void ConvertTest()
         {
-            IDataAccess dataAccess = A.Fake<IDataAccess>();
-            IScriptBuilder scriptBuilder = A.Fake<IScriptBuilder>();
-            ISourceQuery schemaQuery = A.Fake<ISourceQuery>();
+            var dataAccess = A.Fake<IDataAccess>();
+            var scriptBuilder = A.Fake<IScriptBuilder>();
+            var schemaQuery = A.Fake<ISourceQuery>();
 
             IUDTManager udtManager = new UDTManager(dataAccess, scriptBuilder, schemaQuery);
 
@@ -93,10 +95,10 @@ namespace SQLMigration.Test
                 IsNullable = true
             };
 
-            var resultQuery = "Select * from master";
-            A.CallTo(() => scriptBuilder.CreateScriptUDT(schemaData)).Returns(resultQuery);
+            const string RESULT_QUERY = "Select * from master";
+            A.CallTo(() => scriptBuilder.CreateScriptUDT(schemaData)).Returns(RESULT_QUERY);
 
-            List<UDTSchemaInfoData> listSchemaInfoData = new List<UDTSchemaInfoData> { schemaData };
+            var listSchemaInfoData = new List<UDTSchemaInfoData> { schemaData };
             var result = udtManager.Convert(listSchemaInfoData);
 
 
@@ -106,10 +108,9 @@ namespace SQLMigration.Test
             var resultExpectation = new UDTResultData
             {
                 name = "customVar",
-                sqlString = resultQuery,
+                sqlString = RESULT_QUERY,
                 schemaId = schemaData.id
             };
-
 
             Assert.AreEqual(resultExpectation.name, resultActual.name);
             Assert.AreEqual(resultExpectation.sqlString, resultActual.sqlString);

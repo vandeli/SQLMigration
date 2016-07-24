@@ -1,4 +1,7 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using EasyTools.Data;
+using EasyTools.Interface;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using SQLMigration;
 using SQLMigration.Data;
 
 namespace SQLMigrationTest
@@ -9,8 +12,8 @@ namespace SQLMigrationTest
         [TestMethod]
         public void GetDataTableTest()
         {
-            IDataAccess dataAccess = new DataAccess();
-            ConfigData configData = new ConfigData()
+            var dataAccess = new DataAccess();
+            var configData = new ConfigData()
             {
                 name = "Test",
                 Source = new DBData
@@ -22,7 +25,7 @@ namespace SQLMigrationTest
                     password = "123456"
                 }
             };
-            var datatable = dataAccess.GetDataTable(configData, @"SELECT st.NAME
+            var datatable = dataAccess.GetDataTable(configData.Source, @"SELECT st.NAME
 				,bs.[name] AS data_type
 				,st.max_length
 				,st.precision

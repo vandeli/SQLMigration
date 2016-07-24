@@ -68,6 +68,10 @@
       <Project>{ff47ff05-a601-46ce-a295-7e3cf798e52b}</Project>
       <Name>EasyTools.Interface</Name>
     </ProjectReference>
+    <ProjectReference Include="..\EasyTools\EasyTools.csproj">
+      <Project>{38AD047C-AE85-4CAE-A2C4-1077CEC245AC}</Project>
+      <Name>EasyTools</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SQLMigrationConverter\SQLMigrationConverter.csproj">
       <Project>{eb95b286-b62f-4c42-a018-5e18803699e7}</Project>
       <Name>SQLMigrationConverter</Name>

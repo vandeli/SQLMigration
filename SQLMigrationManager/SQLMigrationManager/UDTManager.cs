@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using EasyTools.Interface;
+using EasyTools.Interface.DB;
 using SQLMigration.Interface.Manager;
 using SQLMigration.Interface.ResultInfo;
 using SQLMigration.Interface.SchemaInfo;
@@ -10,7 +12,6 @@ using SQLMigration.Interface.SourceQuery;
 
 namespace SQLMigration.Manager
 {
-
     public class UDTManager : IUDTManager
     {
         private readonly IDataAccess dataAccess;
@@ -26,14 +27,14 @@ namespace SQLMigration.Manager
 
         public List<UDTSchemaInfoData> GetSchema(ConfigData configData)
         {
-            var dt = dataAccess.GetDataTable(configData, sourceQuery.GetUDTQuery());
+            var dt = dataAccess.GetDataTable(configData.Source, sourceQuery.GetUDTQuery());
             return GetSchemaDataFromDt(dt);
         }
 
         private static List<UDTSchemaInfoData> GetSchemaDataFromDt(DataTable dt)
         {
-            List<UDTSchemaInfoData> result = new List<UDTSchemaInfoData>();
-            for (int i = 0; i < dt.Rows.Count; i++)
+            var result = new List<UDTSchemaInfoData>();
+            for (var i = 0; i < dt.Rows.Count; i++)
             {
                 var schema = new UDTSchemaInfoData();
                 var data = dt.Rows[i];
@@ -49,17 +50,12 @@ namespace SQLMigration.Manager
             return result;
         }
 
-
-
-        public List<UDTResultData> Convert(List<UDTSchemaInfoData> datasource)
+        public List<UDTResultData> Convert(List<UDTSchemaInfoData> datasource) => datasource.Select(schemaInfoData => new UDTResultData
         {
-            return datasource.Select(schemaInfoData => new UDTResultData
-            {
-                name = schemaInfoData.name,
-                sqlString = scriptBuilder.CreateScriptUDT(schemaInfoData),
-                schemaId = schemaInfoData.id
+          name = schemaInfoData.name,
+          sqlString = scriptBuilder.CreateScriptUDT(schemaInfoData),
+          schemaId = schemaInfoData.id
 
-            }).ToList();
-        }
+        }).ToList();
     }
 }

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Management;
 using System.Text;
 using System.Windows.Forms;
+using EasyTools.Data;
 using EasyTools.Interface.DB;
 using EasyTools.Interface.IO;
 using SQLMigration;
@@ -146,8 +147,6 @@ namespace SQLMigration.UI
             ManagementObjectCollection collection = searcher.Get();
             string username = (string)collection.Cast<ManagementBaseObject>().First()["UserName"];
 
-
-
             switch (username)
             {
                 case @"KONTINUM22\ibnu":
@@ -179,29 +178,28 @@ namespace SQLMigration.UI
         {
 
             var validate = ValidateInput();
-            if (validate == true)
-                try
-                {
-                    var param = new DBData
-                    {
-                        serverName = txtServer.Text,
-                        userName = txtUsername.Text,
-                        password = txtPassword.Text,
-                        dbName = txtDatabase.Text
-                    };
-                    var xData = new ConfigData
-                    {
-                        Source = param,
-                        Path = txtPath.Text
-                    };
+          if (!validate) return;
+          try
+          {
+            var param = new DBData
+            {
+              serverName = txtServer.Text,
+              userName = txtUsername.Text,
+              password = txtPassword.Text,
+              dbName = txtDatabase.Text
+            };
+            var xData = new ConfigData
+            {
+              Source = param,
+              Path = txtPath.Text
+            };
 
-
-                    ProsesManager(cboProcess.Text, xData);
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message);
-                }
+            ProsesManager(cboProcess.Text, xData);
+          }
+          catch (Exception ex)
+          {
+            MessageBox.Show(ex.Message);
+          }
         }
 
 

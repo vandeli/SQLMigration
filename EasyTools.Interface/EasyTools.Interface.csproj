@@ -42,8 +42,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BaseData.cs" />
+    <Compile Include="DBData.cs" />
     <Compile Include="ICoreDB.cs" />
+    <Compile Include="IDataAccess.cs" />
     <Compile Include="IFileManager.cs" />
+    <Compile Include="IFileReader.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

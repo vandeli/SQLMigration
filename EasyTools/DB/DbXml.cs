@@ -14,18 +14,16 @@ namespace EasyTools.DB
         private XmlSerializer xml;
         private readonly string filePath;
         private readonly IFileManager fileManager;
+
         public DbXml(string filePath, IFileManager fileManager)
         {
             this.filePath = filePath;
             this.fileManager = fileManager;
         }
 
-        public void DropTable<T>() where T : BaseData
-        {
-            fileManager.DeleteFile(filePath);
-        }
+        public void DropTable<T>() where T : BaseData => fileManager.DeleteFile(filePath);
 
-        public void CreateTable<T>() where T : BaseData
+      public void CreateTable<T>() where T : BaseData
         {
             var writer = GetWriter<T>();
             var list = Activator.CreateInstance<List<T>>();

@@ -1,15 +1,11 @@
 ﻿using EasyTools.Interface.IO;
 using System;
 using System.IO;
+using EasyTools.Interface;
 
 
 namespace EasyTools.IO
 {
-    public interface IFileReader
-    {
-        string ReadFile(string path);
-    }
-
     public class FileManager : IFileManager, IFileReader
     {
         private static void RemoveAttributeReadOnly(string destpath)
@@ -24,8 +20,8 @@ namespace EasyTools.IO
 
         public void CreateFile(string value, string path)
         {
-            if (String.IsNullOrEmpty(value)) throw new ArgumentNullException("value");
-            if (String.IsNullOrEmpty(path)) throw new ArgumentNullException("path");
+            if (string.IsNullOrEmpty(value)) throw new ArgumentNullException(nameof(value));
+            if (string.IsNullOrEmpty(path)) throw new ArgumentNullException(nameof(path));
             if (!Directory.Exists(Path.GetDirectoryName(path))) throw new DirectoryNotFoundException();
 
             Console.WriteLine("Text content : " + value);
@@ -34,13 +30,11 @@ namespace EasyTools.IO
             Console.WriteLine(path + " Created");
         }
 
-        public bool Exist(string path)
+        public bool Exist(string path) => File.Exists(path);
+
+      public string ReadFile(string path)
         {
-            return File.Exists(path);
-        }
-        public string ReadFile(string path)
-        {
-            if (String.IsNullOrEmpty(path)) throw new ArgumentNullException("path");
+            if (string.IsNullOrEmpty(path)) throw new ArgumentNullException(nameof(path));
             if (!File.Exists(path))
                 throw new FileNotFoundException(path);
             var content = File.ReadAllText(path);
@@ -50,7 +44,7 @@ namespace EasyTools.IO
 
         public void DeleteFile(string path)
         {
-            if (String.IsNullOrEmpty(path)) throw new ArgumentNullException("path");
+            if (string.IsNullOrEmpty(path)) throw new ArgumentNullException(nameof(path));
             if (!File.Exists(path)) return;
             RemoveAttributeReadOnly(path);
             File.Delete(path);

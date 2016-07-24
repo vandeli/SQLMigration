@@ -2,25 +2,20 @@
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq.Expressions;
+using EasyTools.Data;
+using EasyTools.Interface;
+using EasyTools.Interface.DB;
 
-namespace SQLMigration.Data
+namespace SQLMigration
 {
-    public interface IDataAccess
-    {
-        DataTable GetDataTable(ConfigData configdata, string sql);
-
-    }
-
     public class DataAccess : IDataAccess
     {
-        public DataTable GetDataTable(ConfigData configdata, string sql)
+        public DataTable GetDataTable(DBData dbData, string sql)
         {
-
-            DBData param = new DBData();
-            param = configdata.Source;
-            Validate(param);
+            Validate(dbData);
             DataTable result = new DataTable("DataTable");
-            string strConnection = @"Server=" + param.serverName + ";Database=" + param.dbName + ";User Id=" + param.userName + ";Password=" + param.password + ";";
+            string strConnection = @"Server=" + dbData.serverName + ";Database=" + dbData.dbName + ";User Id=" +
+                                   dbData.userName + ";Password=" + dbData.password + ";";
             SqlConnection con = new SqlConnection(strConnection);
 
 
