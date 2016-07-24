@@ -10,7 +10,7 @@ namespace SQLMigrationOF
         public IUDTManager GetInstanceUdtManager()
         {
             IDataAccess dataAccess = new DataAccess();
-            IDataTypeMapper mapper = new MssToPostgree();
+            IDataTypeMapper mapper = new MssToPostgreeTypeMapper();
             IUDTScriptBuilder scriptBuilder = new UDTScriptBuilder(mapper);
             IUDTSchemaQuery schemaQuery = new UDTSchemaQuery();
 

@@ -43,9 +43,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ConvertEventArgs.cs" />
-    <Compile Include="MapAttribut\Base.cs" />
-    <Compile Include="MapAttribut\DataTypeExtensions.cs" />
-    <Compile Include="mapper\MssToPostgree.cs" />
+    <Compile Include="mapper\MssToPostgreeTypeMapper.cs" />
     <Compile Include="mapper\IDataTypeMapper.cs" />
     <Compile Include="mapper\TablesFieldDataType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

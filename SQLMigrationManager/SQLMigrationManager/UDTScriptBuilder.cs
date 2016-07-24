@@ -1,6 +1,7 @@
 ﻿using SQLMigrationConverter.mapper;
 using SQLMigrationConverter.SchemaInfo;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace SQLMigrationManager
@@ -51,23 +52,26 @@ namespace SQLMigrationManager
             {
                 throw new ArgumentNullException("dataType");
             }
-            if (dataType.DomainName != null && dataType.DomainName.Length > 0)
-
+            if (!string.IsNullOrEmpty(dataType.DomainName))
                 return dataType.DomainName;
 
             var findingResult = dataTypeMapper.GetDataTypeMap().Where(x => x.DataType == dataType.DataType.ToLower());
             TablesFieldDataType result = null;
-            if (findingResult.Count() > 1)
-                result = findingResult.SingleOrDefault(x => x.DataTypeSuffix == dataType.DataTypeSuffix.ToLower());
-            else if (findingResult.Count() == 1)
-                result = findingResult.First();
+            var tablesFieldDataTypes = findingResult as IList<TablesFieldDataType> ?? findingResult.ToList();
+            if (tablesFieldDataTypes.Count > 1)
+                result = tablesFieldDataTypes.SingleOrDefault(x => x.DataTypeSuffix == dataType.DataTypeSuffix.ToLower());
+            else if (tablesFieldDataTypes.Count == 1)
+                result = tablesFieldDataTypes.First();
 
             return result == null ? "null" : result.ConvertedDataType;
         }
 
         string GetTemplateUDT(UDTSchemaInfoData schemaInfo)
         {
-            var result = "CREATE DOMAIN " + schemaInfo.name + " AS " + GetConvertedDataType(schemaInfo) + "(" + schemaInfo.Precision + "," + schemaInfo.Scale + ")" + (schemaInfo.IsNullable ? "" : " NOT NULL") + ";\r\n";
+            var convertedDataType = GetConvertedDataType(schemaInfo);
+            var result = string.Format("CREATE DOMAIN {0} AS {1}({2},{3}){4};\r\n", 
+                schemaInfo.name, convertedDataType, schemaInfo.Precision, 
+                schemaInfo.Scale, (schemaInfo.IsNullable ? "" : " NOT NULL"));
             return result;
         }
     }

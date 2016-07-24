@@ -3,9 +3,10 @@
 namespace SQLMigrationConverter.mapper
 {
 
-    public class MssToPostgree : IDataTypeMapper
+    public class MssToPostgreeTypeMapper : IDataTypeMapper
     {
-        private readonly List<TablesFieldDataType> _mapDataTypes = new List<TablesFieldDataType>() {
+        private readonly List<TablesFieldDataType> mapDataTypes = new List<TablesFieldDataType>
+        {
             new TablesFieldDataType() { DataType="datetime", ConvertedDataType="timestamp" },
             new TablesFieldDataType() { DataType="bigint", ConvertedDataType="bigint" },
             new TablesFieldDataType() { DataType="binary", ConvertedDataType="bytea" },
@@ -59,7 +60,7 @@ namespace SQLMigrationConverter.mapper
 
         public List<TablesFieldDataType> GetDataTypeMap()
         {
-            return _mapDataTypes;
+            return mapDataTypes;
         }
     }
 }

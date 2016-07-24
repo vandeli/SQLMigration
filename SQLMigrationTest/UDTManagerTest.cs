@@ -39,7 +39,10 @@ namespace SQLMigrationTest
 
             var configData = new ConfigData { name = "Config1" };
 
-            A.CallTo(() => dataAccess.GetDataTable(configData, "")).Returns(resultDataAccess);
+            var resultQuery = "";
+
+            A.CallTo(() => schemaQuery.GetUDTQuery()).Returns(resultQuery);
+            A.CallTo(() => dataAccess.GetDataTable(configData, resultQuery)).Returns(resultDataAccess);
 
             IUDTManager udtManager = new UDTManager(dataAccess, scriptBuilder, schemaQuery);
 
