@@ -92,11 +92,10 @@ namespace SQLMigrationTest
                 IsNullable = true
             };
 
+            var resultQuery = "Select * from master";
+            A.CallTo(() => scriptBuilder.CreateScriptUDT(schemaData)).Returns(resultQuery);
 
-            A.CallTo(() => scriptBuilder.CreateScriptUDT(schemaData)).Returns("Halo");
-
-            List<UDTSchemaInfoData> listSchemaInfoData = new List<UDTSchemaInfoData>();
-            listSchemaInfoData.Add(schemaData);
+            List<UDTSchemaInfoData> listSchemaInfoData = new List<UDTSchemaInfoData> { schemaData };
             var result = udtManager.Convert(listSchemaInfoData);
 
 
@@ -106,7 +105,7 @@ namespace SQLMigrationTest
             var resultExpectation = new UDTResultData
             {
                 name = "customVar",
-                sqlString = "Halo",
+                sqlString = resultQuery,
                 schemaId = schemaData.id
             };
 

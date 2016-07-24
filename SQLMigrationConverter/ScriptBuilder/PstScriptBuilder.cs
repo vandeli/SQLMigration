@@ -91,7 +91,7 @@ namespace SQLMigrationConverter.ScriptBuilder
             new TablesFieldDataType { DataType="unsignedsmallint", ConvertedDataType="--" },
         };
 
-        public string GetDataTypeMap(String dataType)
+        string GetDataTypeMap(String dataType)
         {
             if (dataType == null)
             {
