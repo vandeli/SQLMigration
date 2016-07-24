@@ -5,8 +5,6 @@ namespace SQLMigrationConverter.ResultInfo
 {
     public class UDTResultData : BaseData
     {
-
-        public string name { set; get; }
         public string schemaId { get; set; }
         public string sqlString { set; get; }
 
