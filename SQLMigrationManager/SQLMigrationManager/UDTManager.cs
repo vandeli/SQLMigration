@@ -4,41 +4,45 @@ using SQLMigrationConverter.SchemaInfo;
 using SQLMigrationInterface;
 using System.Collections.Generic;
 using System.Data;
-using System.DirectoryServices.ActiveDirectory;
+using System.Linq;
+using SQLMigrationConverter.ScriptBuilder;
+using SQLMigrationConverter.SourceQuery;
 
 namespace SQLMigrationManager
 {
 
     public class UDTManager : IUDTManager
     {
-
-
-
         private readonly IDataAccess dataAccess;
-        readonly IUDTScriptBuilder scriptBuilder;
-        readonly IUDTSchemaQuery schemaQuery;
+        readonly IScriptBuilder scriptBuilder;
+        readonly ISourceQuery schemaQuery;
 
-        public UDTManager(IDataAccess dataAccess1, IUDTScriptBuilder scriptBuilder, IUDTSchemaQuery schemaQuery)
+        public UDTManager(IDataAccess dataAccess, IScriptBuilder scriptBuilder, ISourceQuery schemaQuery)
         {
-            this.dataAccess = dataAccess1;
+            this.dataAccess = dataAccess;
             this.scriptBuilder = scriptBuilder;
             this.schemaQuery = schemaQuery;
         }
 
         public List<UDTSchemaInfoData> GetSchema(ConfigData configData)
         {
-            var result = new List<UDTSchemaInfoData>();
             var dt = dataAccess.GetDataTable(configData, schemaQuery.GetUDTQuery());
+            return GetSchemaDataFromDt(dt);
+        }
+
+        private static List<UDTSchemaInfoData> GetSchemaDataFromDt(DataTable dt)
+        {
+            List<UDTSchemaInfoData> result = new List<UDTSchemaInfoData>();
             for (int i = 0; i < dt.Rows.Count; i++)
             {
                 var schema = new UDTSchemaInfoData();
-                DataRow data = dt.Rows[i];
+                var data = dt.Rows[i];
                 schema.name = data["NAME"].ToString();
                 schema.DataType = data["data_type"].ToString();
                 schema.MaxLength = System.Convert.ToInt16(data["max_length"]);
                 schema.Precision = System.Convert.ToByte(data["precision"]);
                 schema.Scale = System.Convert.ToInt16(data["scale"]);
-                schema.IsNullable = System.Convert.ToBoolean(data["is_nullable"].ToString() == "1" ? true:false);
+                schema.IsNullable = System.Convert.ToBoolean(data["is_nullable"].ToString() == "1");
                 result.Add(schema);
             }
 
@@ -46,29 +50,14 @@ namespace SQLMigrationManager
         }
 
 
-
         public List<UDTResultData> Convert(List<UDTSchemaInfoData> datasource)
         {
-
-            var result = new List<UDTResultData>();
-            foreach (var schemaInfoData in datasource)
+            return datasource.Select(schemaInfoData => new UDTResultData
             {
-                var resultInfo = new UDTResultData
-                {
-                    name = schemaInfoData.name,
-                    sqlString = scriptBuilder.CreateScript(schemaInfoData)
-                };
+                name = schemaInfoData.name,
+                sqlString = scriptBuilder.CreateScriptUDT(schemaInfoData)
 
-                result.Add(resultInfo);
-            }
-
-            return result;
+            }).ToList();
         }
-
-
-
-
-
-
     }
 }

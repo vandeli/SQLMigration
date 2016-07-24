@@ -1,13 +1,49 @@
-﻿using System;
+﻿using SQLMigrationConverter.SchemaInfo;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using static System.String;
 
-namespace SQLMigrationConverter.mapper
+namespace SQLMigrationConverter.ScriptBuilder
 {
-
-    public class MssToPostgreeTypeMapper : IDataTypeMapper
+    public class PstScriptBuilder : IScriptBuilder
     {
+
+        class TablesFieldDataType
+        {
+            public string DataType { get; set; }
+            public string ConvertedDataType { get; set; }
+        }
+
+        public string CreateScriptUDT(UDTSchemaInfoData schemaInfo)
+        {
+            string result;
+            var convertedDataType = GetDataTypeMap(schemaInfo.DataType);
+            switch (schemaInfo.DataType)
+            {
+                case "decimal":
+                    result = string.Format("CREATE DOMAIN {0} AS {1}({2},{3}){4};\r\n",
+                                schemaInfo.name, convertedDataType, schemaInfo.Precision,
+                                schemaInfo.Scale, (schemaInfo.IsNullable ? "" : " NOT NULL"));
+                    break;
+
+                case "varchar":
+                    result = string.Format("CREATE DOMAIN {0} AS {1}({2}){3};\r\n",
+                        schemaInfo.name, convertedDataType, schemaInfo.MaxLength,
+                        (schemaInfo.IsNullable ? "" : " NOT NULL"));
+                    break;
+
+                default:
+                    result = string.Format("CREATE DOMAIN {0} AS {1}{2};\r\n",
+                        schemaInfo.name, convertedDataType,
+                        (schemaInfo.IsNullable ? "" : " NOT NULL"));
+                    break;
+            }
+
+
+            return result;
+
+        }
+
         private readonly List<TablesFieldDataType> mapDataTypes = new List<TablesFieldDataType>
         {
             new TablesFieldDataType { DataType="datetime", ConvertedDataType="timestamp" },
@@ -67,5 +103,6 @@ namespace SQLMigrationConverter.mapper
 
             return findingResult == null ? "" : findingResult.ConvertedDataType;
         }
+
     }
 }

@@ -1,5 +1,6 @@
 ﻿using SQLMigration.Data;
-using SQLMigrationConverter.mapper;
+using SQLMigrationConverter.ScriptBuilder;
+using SQLMigrationConverter.SourceQuery;
 using SQLMigrationInterface;
 using SQLMigrationManager;
 
@@ -10,9 +11,8 @@ namespace SQLMigrationOF
         public IUDTManager GetInstanceUdtManager()
         {
             IDataAccess dataAccess = new DataAccess();
-            IDataTypeMapper mapper = new MssToPostgreeTypeMapper();
-            IUDTScriptBuilder scriptBuilder = new UDTScriptBuilder(mapper);
-            IUDTSchemaQuery schemaQuery = new UDTSchemaQuery();
+            IScriptBuilder scriptBuilder = new PstScriptBuilder();
+            ISourceQuery schemaQuery = new MssQuery();
 
             return new UDTManager(dataAccess, scriptBuilder, schemaQuery);
         }

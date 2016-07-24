@@ -1,6 +1,6 @@
-﻿namespace SQLMigrationManager
+﻿namespace SQLMigrationConverter.SourceQuery
 {
-    public class UDTSchemaQuery : IUDTSchemaQuery
+    public class MssQuery : ISourceQuery
     {
         public string GetUDTQuery()
         {

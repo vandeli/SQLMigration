@@ -5,6 +5,8 @@ using SQLMigrationConverter.SchemaInfo;
 using SQLMigrationInterface;
 using SQLMigrationManager;
 using System.Data;
+using SQLMigrationConverter.ScriptBuilder;
+using SQLMigrationConverter.SourceQuery;
 
 namespace SQLMigrationTest
 {
@@ -15,8 +17,8 @@ namespace SQLMigrationTest
         public void GetSchemaTest()
         {
             IDataAccess dataAccess = A.Fake<IDataAccess>();
-            IUDTScriptBuilder scriptBuilder = A.Fake<IUDTScriptBuilder>();
-            IUDTSchemaQuery schemaQuery = A.Fake<IUDTSchemaQuery>();
+            IScriptBuilder scriptBuilder = A.Fake<IScriptBuilder>();
+            ISourceQuery schemaQuery = A.Fake<ISourceQuery>();
 
             DataTable resultDataAccess = new DataTable("DataTable");
             resultDataAccess.Columns.Add("NAME");

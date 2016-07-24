@@ -43,10 +43,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ConvertEventArgs.cs" />
-    <Compile Include="mapper\MssToPostgreeTypeMapper.cs" />
-    <Compile Include="mapper\IDataTypeMapper.cs" />
-    <Compile Include="mapper\TablesFieldDataType.cs" />
+    <Compile Include="ScriptBuilder\IScriptBuilder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ScriptBuilder\PstScriptBuilder.cs" />
+    <Compile Include="SourceQuery\ISourceQuery.cs" />
+    <Compile Include="SourceQuery\MssQuery.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
