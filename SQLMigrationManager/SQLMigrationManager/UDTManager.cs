@@ -4,6 +4,7 @@ using SQLMigrationConverter.SchemaInfo;
 using SQLMigrationInterface;
 using System.Collections.Generic;
 using System.Data;
+using System.DirectoryServices.ActiveDirectory;
 
 namespace SQLMigrationManager
 {
@@ -32,7 +33,12 @@ namespace SQLMigrationManager
             {
                 var schema = new UDTSchemaInfoData();
                 DataRow data = dt.Rows[i];
-                schema.name = data["szName"].ToString();
+                schema.name = data["NAME"].ToString();
+                schema.DataType = data["data_type"].ToString();
+                schema.MaxLength = System.Convert.ToInt16(data["max_length"]);
+                schema.Precision = System.Convert.ToByte(data["precision"]);
+                schema.Scale = System.Convert.ToInt16(data["scale"]);
+                schema.IsNullable = System.Convert.ToBoolean(data["is_nullable"].ToString() == "1" ? true:false);
                 result.Add(schema);
             }
 

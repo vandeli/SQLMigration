@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data;
 using System.Data.SqlClient;
+using System.Linq.Expressions;
 
 namespace SQLMigration.Data
 {
@@ -18,43 +19,23 @@ namespace SQLMigration.Data
             DBData param = new DBData();
             param = configdata.Source;
             Validate(param);
-
+            DataTable result = new DataTable("DataTable");
             string strConnection = @"Server=" + param.serverName + ";Database=" + param.dbName + ";User Id=" + param.userName + ";Password=" + param.password + ";";
             SqlConnection con = new SqlConnection(strConnection);
+
+
             con.Open();
-
-            SqlCommand sqlcmd = new SqlCommand();
-            sqlcmd.Connection = con;
-            sqlcmd.CommandText = sql;
-
-            var dataReader = sqlcmd.ExecuteReader();
-            var dataTable = new DataTable();
-            if (dataReader.HasRows)
+            var sqlcmd = new SqlCommand
             {
+                Connection = con,
+                CommandText = sql
+            };
 
-                DataColumn column = new DataColumn("SchemaID", typeof(string));
-                dataTable.Load(dataReader);
+            SqlDataAdapter dataAdapter = new SqlDataAdapter(sqlcmd);
 
-                column.AllowDBNull = false;
-                dataTable.Columns.Add(column);
+            dataAdapter.Fill(result);
 
-                string[] nColumn = new string[dataTable.Columns.Count];
-                int xs = 0;
-                foreach (DataColumn col in dataTable.Columns)
-                {
-                    Console.WriteLine(col.ColumnName);
-                    nColumn[xs] = col.ColumnName;
-                    xs += 1;
-                }
-
-                foreach (DataRow row in dataTable.Rows)
-                {
-                    row["SchemaID"] = row[nColumn[0]].GetHashCode().ToString().Replace("-", "");
-                }
-
-
-            }
-            return dataTable;
+            return result;
         }
 
 

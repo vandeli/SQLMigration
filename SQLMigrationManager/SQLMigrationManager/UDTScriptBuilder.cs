@@ -67,7 +67,7 @@ namespace SQLMigrationManager
 
         string GetTemplateUDT(UDTSchemaInfoData schemaInfo)
         {
-            var result = "CREATE DOMAIN " + schemaInfo.Name + " AS " + GetConvertedDataType(schemaInfo) + "(" + schemaInfo.Precision + "," + schemaInfo.Scale + ")" + (schemaInfo.IsNullable ? "" : " NOT NULL") + ";\r\n";
+            var result = "CREATE DOMAIN " + schemaInfo.name + " AS " + GetConvertedDataType(schemaInfo) + "(" + schemaInfo.Precision + "," + schemaInfo.Scale + ")" + (schemaInfo.IsNullable ? "" : " NOT NULL") + ";\r\n";
             return result;
         }
     }

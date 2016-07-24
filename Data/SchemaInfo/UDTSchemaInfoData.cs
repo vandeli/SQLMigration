@@ -11,8 +11,8 @@ namespace SQLMigrationConverter.SchemaInfo
             id = DateTime.Now.GetHashCode().ToString();
 
         }
-        public int SchemaID { get; set; }
-        public string Name { get; set; }
+       
+
         public string DataType { get; set; }
         public int MaxLength { get; set; }
         public byte Precision { get; set; }

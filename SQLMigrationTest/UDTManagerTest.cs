@@ -1,142 +1,70 @@
-﻿//using System;
-//using Microsoft.VisualStudio.TestTools.UnitTesting;
-//using SQLMigrationInterface;
-//using SQLMigrationManager;
-//using SQLMigration.Data;
+﻿using FakeItEasy;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using SQLMigration.Data;
+using SQLMigrationConverter.SchemaInfo;
+using SQLMigrationInterface;
+using SQLMigrationManager;
+using System.Data;
 
-//namespace SQLMigrationTest
-//{
-//    [TestClass]
-//    public class UDTManagerTest
-//    {
-//        private readonly IManager udtManager;
+namespace SQLMigrationTest
+{
+    [TestClass]
+    public class UDTManagerTest
+    {
+        [TestMethod]
+        public void GetSchemaTest()
+        {
+            IDataAccess dataAccess = A.Fake<IDataAccess>();
+            IUDTScriptBuilder scriptBuilder = A.Fake<IUDTScriptBuilder>();
+            IUDTSchemaQuery schemaQuery = A.Fake<IUDTSchemaQuery>();
 
+            DataTable resultDataAccess = new DataTable("DataTable");
+            resultDataAccess.Columns.Add("NAME");
+            resultDataAccess.Columns.Add("data_type");
+            resultDataAccess.Columns.Add("max_length");
+            resultDataAccess.Columns.Add("precision");
+            resultDataAccess.Columns.Add("scale");
+            resultDataAccess.Columns.Add("is_nullable");
 
-//        public UDTManagerTest()
-//        {
-//            udtManager = new UDTManager();
-//        }
+            DataRow dataRow = resultDataAccess.NewRow();
+            dataRow["NAME"] = "customVar";
+            dataRow["data_type"] = "varchar";
+            dataRow["max_length"] = "50";
+            dataRow["precision"] = "0";
+            dataRow["scale"] = "0";
+            dataRow["is_nullable"] = "1";
 
-//        [TestMethod]
-//        public void GetSource()
-//        {
-//            var param = new DBData
-//            {
-//                dbName = "Padma_Live",
-//                password = "12345",
-//                serverName = @"KEA-IBNU\SQLSERVER2012",
-//                userName = "sa"
-
-//            };
-//            udtManager.GetSchema(param);
-//            Assert.IsFalse(true);
-//        }
-
-//        [TestMethod]
-//        public void Restore_null()
-//        {
-//            try
-//            {
-//                udtManager.GetSchema(null);
-//                Assert.IsFalse(true);
-//            }
-//            catch (Exception ex)
-//            {
-//                Assert.AreEqual(new ArgumentNullException("param").Message, ex.Message);
-//            }
-
-//        }
-
-//        [TestMethod]
-//        public void Restore_DbnameEmpty()
-//        {
-//            try
-//            {
-//                var param = new DBData
-//                {
-//                    dbName = "",
-//                    password = "123456",
-//                    serverName = @"localhost\sqlserver2012",
-//                    userName = "sa"
-
-//                };
-//                udtManager.GetSchema(param);
-//                Assert.IsFalse(true);
-//            }
-//            catch (Exception ex)
-//            {
-//                Assert.AreEqual(new ArgumentNullException("param.dbName").Message, ex.Message);
-//            }
-
-//        }
-
-//        [TestMethod]
-//        public void Restore_PasswordEmpty()
-//        {
-//            try
-//            {
-//                var param = new DBData
-//                {
-//                    dbName = "TestRestore",
-//                    password = "",
-//                    serverName = @"localhost\sqlserver2012",
-//                    userName = "sa"
-
-//                };
-//                udtManager.GetSchema(param);
-//                Assert.IsFalse(true);
-//            }
-//            catch (Exception ex)
-//            {
-//                Assert.AreEqual(new ArgumentNullException("param.password").Message, ex.Message);
-//            }
-
-//        }
-
-//        [TestMethod]
-//        public void Restore_ServerNameEmpty()
-//        {
-//            try
-//            {
-//                var param = new DBData
-//                {
-//                    dbName = "TestRestore",
-//                    password = "123456",
-//                    serverName = @"",
-//                    userName = "sa"
-
-//                };
-//                udtManager.GetSchema(param);
-//                Assert.IsFalse(true);
-//            }
-//            catch (Exception ex)
-//            {
-//                Assert.AreEqual(new ArgumentNullException("param.serverName").Message, ex.Message);
-//            }
-//        }
+            resultDataAccess.Rows.Add(dataRow);
 
 
+            var configData = new ConfigData { name = "Config1" };
 
-//        [TestMethod]
-//        public void Restore_UsernameEmpty()
-//        {
-//            try
-//            {
-//                var param = new DBData
-//                {
-//                    dbName = "TestRestore",
-//                    password = "123456",
-//                    serverName = @"localhost\sqlserver2012",
-//                    userName = ""
+            A.CallTo(() => dataAccess.GetDataTable(configData, "")).Returns(resultDataAccess);
 
-//                };
-//                udtManager.GetSchema(param);
-//                Assert.IsFalse(true);
-//            }
-//            catch (Exception ex)
-//            {
-//                Assert.AreEqual(new ArgumentNullException("param.userName").Message, ex.Message);
-//            }
-//        }
-//    }
-//}
+            IUDTManager udtManager = new UDTManager(dataAccess, scriptBuilder, schemaQuery);
+
+            var listSchema = udtManager.GetSchema(configData);
+
+
+            var schemaExpectation = new UDTSchemaInfoData
+            {
+                name = "customVar",
+                DataType = "varchar",
+                MaxLength = 50,
+                Precision = 0,
+                Scale = 0,
+                IsNullable = true
+            };
+
+            var schemaActual = listSchema[0];
+
+            Assert.AreEqual(schemaExpectation.name, schemaActual.name);
+            Assert.AreEqual(schemaExpectation.DataType, schemaActual.DataType);
+            Assert.AreEqual(schemaExpectation.MaxLength, schemaActual.MaxLength);
+            Assert.AreEqual(schemaExpectation.Precision, schemaActual.Precision);
+            Assert.AreEqual(schemaExpectation.Scale, schemaActual.Scale);
+            Assert.AreEqual(schemaExpectation.IsNullable, schemaActual.IsNullable);
+
+        }
+    }
+}
