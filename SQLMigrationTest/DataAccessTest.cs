@@ -6,26 +6,26 @@ using SQLMigration.Data;
 
 namespace SQLMigrationTest
 {
-    [TestClass]
-    public class DataAccessTest
-    {
-        [TestMethod]
-        public void GetDataTableTest()
-        {
-            var dataAccess = new DataAccess();
-            var configData = new ConfigData()
-            {
-                name = "Test",
-                Source = new DBData
-                {
-                    name = "SQLSERVER",
-                    dbName = "master",
-                    serverName = "localhost",
-                    userName = "sa",
-                    password = "123456"
-                }
-            };
-            var datatable = dataAccess.GetDataTable(configData.Source, @"SELECT st.NAME
+	[TestClass]
+	public class DataAccessTest
+	{
+		[TestMethod]
+		public void GetDataTableTest()
+		{
+			var dataAccess = new DataAccess();
+			var configData = new ConfigData()
+			{
+				name = "Test",
+				Source = new DBData
+				{
+					name = "SQLSERVER",
+					dbName = "master",
+					serverName = "localhost",
+					userName = "sa",
+					password = "123456"
+				}
+			};
+			var datatable = dataAccess.GetDataTable(configData.Source, @"SELECT st.NAME
 				,bs.[name] AS data_type
 				,st.max_length
 				,st.precision
@@ -37,9 +37,9 @@ namespace SQLMigrationTest
 			ORDER BY st.[name]
 				,ss.[name]");
 
-            Assert.IsNotNull(datatable);
-            Assert.IsTrue(datatable.Columns.Count > 0);
-            Assert.IsTrue(datatable.Rows.Count > 0);
-        }
-    }
+			Assert.IsNotNull(datatable);
+			Assert.IsTrue(datatable.Columns.Count > 0);
+			Assert.IsTrue(datatable.Rows.Count > 0);
+		}
+	}
 }
