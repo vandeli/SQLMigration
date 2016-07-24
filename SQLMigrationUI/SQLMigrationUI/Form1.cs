@@ -9,7 +9,7 @@ using EasyTools.Interface.IO;
 using SQLMigration;
 using SQLMigration.Interface.Manager;
 
-namespace SQLMigrationUI
+namespace SQLMigration.UI
 {
     public partial class Form1 : Form
     {

@@ -1,4 +1,4 @@
-﻿namespace SQLMigrationUI
+﻿namespace SQLMigration.UI
 {
     partial class Form1
     {

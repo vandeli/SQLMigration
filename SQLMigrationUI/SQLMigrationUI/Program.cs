@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using SQLMigration.UI;
 
-namespace SQLMigrationUI
+namespace SQLMigration.UI
 {
     static class Program
     {
