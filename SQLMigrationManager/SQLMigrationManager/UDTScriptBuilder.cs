@@ -1,8 +1,5 @@
 ﻿using SQLMigrationConverter.mapper;
 using SQLMigrationConverter.SchemaInfo;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace SQLMigrationManager
 {
@@ -15,64 +12,35 @@ namespace SQLMigrationManager
             this.dataTypeMapper = dataTypeMapper;
         }
 
-        public string CreateScript(UDTSchemaInfoData schemaInfoData)
+        public string CreateScript(UDTSchemaInfoData schemaInfo)
         {
-            var result = "";
-            var tableResult = "";
-
-            tableResult = GetTemplateUDT(schemaInfoData);
-            result += tableResult;
-
-            return result;
-
-        }
-
-        TablesFieldDataType GetDataType(UDTSchemaInfoData schemaInfo)
-        {
-            var result = new TablesFieldDataType();
-            result.DataType = schemaInfo.DataType;
-
-            if (schemaInfo.Precision != 0)
-                result.DataTypeSuffix = schemaInfo.DataType + "(" + schemaInfo.Precision + "," + schemaInfo.Scale + ")";
-            else
-                result.DataTypeSuffix = schemaInfo.DataType + "(" + schemaInfo.MaxLength + ")";
-
-            return result;
-        }
-
-        string GetConvertedDataType(UDTSchemaInfoData schema)
-        {
-            var type = GetDataType(schema);
-            return GetMappingDatatype(type);
-        }
-
-        string GetMappingDatatype(TablesFieldDataType dataType)
-        {
-            if (dataType == null)
+            string result;
+            var convertedDataType = dataTypeMapper.GetDataTypeMap(schemaInfo.DataType);
+            switch (schemaInfo.DataType)
             {
-                throw new ArgumentNullException("dataType");
+                case "decimal":
+                    result = string.Format("CREATE DOMAIN {0} AS {1}({2},{3}){4};\r\n",
+                                schemaInfo.name, convertedDataType, schemaInfo.Precision,
+                                schemaInfo.Scale, (schemaInfo.IsNullable ? "" : " NOT NULL"));
+                    break;
+
+                case "varchar":
+                    result = string.Format("CREATE DOMAIN {0} AS {1}({2}){3};\r\n",
+                        schemaInfo.name, convertedDataType, schemaInfo.MaxLength,
+                        (schemaInfo.IsNullable ? "" : " NOT NULL"));
+                    break;
+
+                default:
+                    result = string.Format("CREATE DOMAIN {0} AS {1}{2};\r\n",
+                        schemaInfo.name, convertedDataType,
+                        (schemaInfo.IsNullable ? "" : " NOT NULL"));
+                    break;
             }
-            if (!string.IsNullOrEmpty(dataType.DomainName))
-                return dataType.DomainName;
 
-            var findingResult = dataTypeMapper.GetDataTypeMap().Where(x => x.DataType == dataType.DataType.ToLower());
-            TablesFieldDataType result = null;
-            var tablesFieldDataTypes = findingResult as IList<TablesFieldDataType> ?? findingResult.ToList();
-            if (tablesFieldDataTypes.Count > 1)
-                result = tablesFieldDataTypes.SingleOrDefault(x => x.DataTypeSuffix == dataType.DataTypeSuffix.ToLower());
-            else if (tablesFieldDataTypes.Count == 1)
-                result = tablesFieldDataTypes.First();
 
-            return result == null ? "null" : result.ConvertedDataType;
-        }
-
-        string GetTemplateUDT(UDTSchemaInfoData schemaInfo)
-        {
-            var convertedDataType = GetConvertedDataType(schemaInfo);
-            var result = string.Format("CREATE DOMAIN {0} AS {1}({2},{3}){4};\r\n", 
-                schemaInfo.name, convertedDataType, schemaInfo.Precision, 
-                schemaInfo.Scale, (schemaInfo.IsNullable ? "" : " NOT NULL"));
             return result;
+
         }
+
     }
 }

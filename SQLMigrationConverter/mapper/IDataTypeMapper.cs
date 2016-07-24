@@ -1,9 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace SQLMigrationConverter.mapper
 {
     public interface IDataTypeMapper
     {
-        List<TablesFieldDataType> GetDataTypeMap();
+        string GetDataTypeMap(String dataType);
     }
 }
