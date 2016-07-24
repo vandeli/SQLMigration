@@ -1,12 +1,12 @@
 ﻿using SQLMigration.Data;
 using SQLMigrationConverter.ResultInfo;
 using SQLMigrationConverter.SchemaInfo;
+using SQLMigrationConverter.ScriptBuilder;
+using SQLMigrationConverter.SourceQuery;
 using SQLMigrationInterface;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-using SQLMigrationConverter.ScriptBuilder;
-using SQLMigrationConverter.SourceQuery;
 
 namespace SQLMigrationManager
 {
@@ -15,18 +15,18 @@ namespace SQLMigrationManager
     {
         private readonly IDataAccess dataAccess;
         readonly IScriptBuilder scriptBuilder;
-        readonly ISourceQuery schemaQuery;
+        readonly ISourceQuery sourceQuery;
 
-        public UDTManager(IDataAccess dataAccess, IScriptBuilder scriptBuilder, ISourceQuery schemaQuery)
+        public UDTManager(IDataAccess dataAccess, IScriptBuilder scriptBuilder, ISourceQuery sourceQuery)
         {
             this.dataAccess = dataAccess;
             this.scriptBuilder = scriptBuilder;
-            this.schemaQuery = schemaQuery;
+            this.sourceQuery = sourceQuery;
         }
 
         public List<UDTSchemaInfoData> GetSchema(ConfigData configData)
         {
-            var dt = dataAccess.GetDataTable(configData, schemaQuery.GetUDTQuery());
+            var dt = dataAccess.GetDataTable(configData, sourceQuery.GetUDTQuery());
             return GetSchemaDataFromDt(dt);
         }
 
@@ -56,7 +56,8 @@ namespace SQLMigrationManager
             return datasource.Select(schemaInfoData => new UDTResultData
             {
                 name = schemaInfoData.name,
-                sqlString = scriptBuilder.CreateScriptUDT(schemaInfoData)
+                sqlString = scriptBuilder.CreateScriptUDT(schemaInfoData),
+                schemaId = schemaInfoData.id
 
             }).ToList();
         }

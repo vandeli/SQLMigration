@@ -7,6 +7,7 @@ namespace SQLMigrationConverter.ResultInfo
     {
 
         public string name { set; get; }
+        public string schemaId { get; set; }
         public string sqlString { set; get; }
 
         public UDTResultData()
@@ -14,6 +15,7 @@ namespace SQLMigrationConverter.ResultInfo
             id = DateTime.Now.GetHashCode().ToString();
             name = "";
             sqlString = "";
+            schemaId = "";
         }
     }
 }

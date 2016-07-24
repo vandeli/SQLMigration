@@ -1,12 +1,14 @@
 ﻿using FakeItEasy;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SQLMigration.Data;
+using SQLMigrationConverter.ResultInfo;
 using SQLMigrationConverter.SchemaInfo;
-using SQLMigrationInterface;
-using SQLMigrationManager;
-using System.Data;
 using SQLMigrationConverter.ScriptBuilder;
 using SQLMigrationConverter.SourceQuery;
+using SQLMigrationInterface;
+using SQLMigrationManager;
+using System.Collections.Generic;
+using System.Data;
 
 namespace SQLMigrationTest
 {
@@ -68,6 +70,50 @@ namespace SQLMigrationTest
             Assert.AreEqual(schemaExpectation.Precision, schemaActual.Precision);
             Assert.AreEqual(schemaExpectation.Scale, schemaActual.Scale);
             Assert.AreEqual(schemaExpectation.IsNullable, schemaActual.IsNullable);
+
+        }
+
+        [TestMethod]
+        public void ConvertTest()
+        {
+            IDataAccess dataAccess = A.Fake<IDataAccess>();
+            IScriptBuilder scriptBuilder = A.Fake<IScriptBuilder>();
+            ISourceQuery schemaQuery = A.Fake<ISourceQuery>();
+
+            IUDTManager udtManager = new UDTManager(dataAccess, scriptBuilder, schemaQuery);
+
+            var schemaData = new UDTSchemaInfoData
+            {
+                name = "customVar",
+                DataType = "varchar",
+                MaxLength = 50,
+                Precision = 0,
+                Scale = 0,
+                IsNullable = true
+            };
+
+
+            A.CallTo(() => scriptBuilder.CreateScriptUDT(schemaData)).Returns("Halo");
+
+            List<UDTSchemaInfoData> listSchemaInfoData = new List<UDTSchemaInfoData>();
+            listSchemaInfoData.Add(schemaData);
+            var result = udtManager.Convert(listSchemaInfoData);
+
+
+
+            var resultActual = result[0];
+
+            var resultExpectation = new UDTResultData
+            {
+                name = "customVar",
+                sqlString = "Halo",
+                schemaId = schemaData.id
+            };
+
+
+            Assert.AreEqual(resultExpectation.name, resultActual.name);
+            Assert.AreEqual(resultExpectation.sqlString, resultActual.sqlString);
+            Assert.AreEqual(resultExpectation.schemaId, resultActual.schemaId);
 
         }
     }
