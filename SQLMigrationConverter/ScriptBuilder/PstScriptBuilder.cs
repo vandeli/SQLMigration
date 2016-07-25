@@ -1,11 +1,11 @@
 ﻿
+using SQLMigration.Interface.Data.SchemaInfo;
+using SQLMigrationInterface.Interface.ScriptBuilder;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using SQLMigration.Data.SchemaInfo;
-using SQLMigration.Interface.ScriptBuilder;
 
-namespace SQLMigration.Converter.ScriptBuilder
+namespace SQLMigrationConverter.ScriptBuilder
 {
     public class PstScriptBuilder : IScriptBuilder
     {
@@ -19,27 +19,29 @@ namespace SQLMigration.Converter.ScriptBuilder
         public string CreateScriptUDT(UDTSchemaInfoData schemaInfo)
         {
             string result;
+          
             var convertedDataType = GetDataTypeMap(schemaInfo.DataType);
-            switch (schemaInfo.DataType)
+            if (schemaInfo.Scale > 0)
             {
-                case "decimal":
-                    result = string.Format("CREATE DOMAIN {0} AS {1}({2},{3}){4};\r\n",
+                result = string.Format("CREATE DOMAIN {0} AS {1}({2},{3}){4};\r\n",
                                 schemaInfo.name, convertedDataType, schemaInfo.Precision,
                                 schemaInfo.Scale, (schemaInfo.IsNullable ? "" : " NOT NULL"));
-                    break;
 
-                case "varchar":
-                    result = string.Format("CREATE DOMAIN {0} AS {1}({2}){3};\r\n",
+            }
+            else if (schemaInfo.Precision == 0)
+            {
+                result = string.Format("CREATE DOMAIN {0} AS {1}({2}){3};\r\n",
                         schemaInfo.name, convertedDataType, schemaInfo.MaxLength,
                         (schemaInfo.IsNullable ? "" : " NOT NULL"));
-                    break;
 
-                default:
-                    result = string.Format("CREATE DOMAIN {0} AS {1}{2};\r\n",
+            }
+            else
+            {
+                result = string.Format("CREATE DOMAIN {0} AS {1}{2};\r\n",
                         schemaInfo.name, convertedDataType,
                         (schemaInfo.IsNullable ? "" : " NOT NULL"));
-                    break;
             }
+           
 
 
             return result;

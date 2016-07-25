@@ -1,8 +1,7 @@
-﻿using SQLMigration.Data;
-using System;
-using EasyTools.Data;
+﻿using System;
+using EasyTools.Interface.Data;
 
-namespace SQLMigration.Data.ResultInfo
+namespace SQLMigration.Interface.Data.ResultInfo
 {
     public class UDTResultData : BaseData
     {
@@ -11,11 +10,11 @@ namespace SQLMigration.Data.ResultInfo
 
         public UDTResultData()
         {
-            id = DateTime.Now.GetHashCode().ToString();
+            id = Guid.NewGuid().ToString(); 
             name = "";
             sqlString = "";
             schemaId = "";
-            updated = DateTime.Now;
+            updated = string.Format("{0:dd/mm/yyy HH:mm:ss}", DateTime.Now);
         }
     }
 }

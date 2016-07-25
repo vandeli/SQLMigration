@@ -1,17 +1,16 @@
-﻿using SQLMigration.Data;
-using System;
-using EasyTools.DB;
-using EasyTools.Interface.DB;
-using EasyTools.Interface.IO;
+﻿using EasyTools.DB;
 using EasyTools.IO;
-using SQLMigration.Converter.ScriptBuilder;
-using SQLMigration.Converter.SourceQuery;
-using SQLMigration.Interface.Manager;
-using SQLMigration.Interface.ScriptBuilder;
-using SQLMigration.Interface.SourceQuery;
-using SQLMigration.Manager;
+using EasyTools.Interface.Interface.DB;
+using EasyTools.Interface.Interface.IO;
+using SQLMigration.Interface.Interface.Manager;
+using SQLMigrationConverter.ScriptBuilder;
+using SQLMigrationConverter.SourceQuery;
+using SQLMigrationInterface.Interface.ScriptBuilder;
+using SQLMigrationInterface.Interface.SourceQuery;
+using SQLMigrationManager;
+using System;
 
-namespace SQLMigration
+namespace SQLMigrationOF
 {
     public class OF
     {

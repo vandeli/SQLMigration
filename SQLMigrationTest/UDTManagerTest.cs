@@ -1,15 +1,15 @@
-﻿using FakeItEasy;
+﻿using EasyTools.Interface.Interface.DB;
+using FakeItEasy;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using SQLMigration.Data;
+using SQLMigration.Interface.Data;
+using SQLMigration.Interface.Data.ResultInfo;
+using SQLMigration.Interface.Data.SchemaInfo;
+using SQLMigration.Interface.Interface.Manager;
+using SQLMigrationInterface.Interface.ScriptBuilder;
+using SQLMigrationInterface.Interface.SourceQuery;
+using SQLMigrationManager;
 using System.Collections.Generic;
 using System.Data;
-using EasyTools.Interface.DB;
-using SQLMigration.Data.ResultInfo;
-using SQLMigration.Data.SchemaInfo;
-using SQLMigration.Interface.Manager;
-using SQLMigration.Interface.ScriptBuilder;
-using SQLMigration.Interface.SourceQuery;
-using SQLMigration.Manager;
 
 namespace SQLMigration.Test
 {

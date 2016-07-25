@@ -1,12 +1,11 @@
-﻿using EasyTools.Data;
-using EasyTools.Interface;
+﻿using EasyTools.DB;
+using EasyTools.Interface.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using SQLMigration;
-using SQLMigration.Data;
+using SQLMigration.Interface.Data;
 
 namespace SQLMigrationTest
 {
-	[TestClass]
+    [TestClass]
 	public class DataAccessTest
 	{
 		[TestMethod]

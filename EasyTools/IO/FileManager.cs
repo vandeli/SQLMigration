@@ -1,7 +1,6 @@
-﻿using EasyTools.Interface.IO;
+﻿using EasyTools.Interface.Interface.IO;
 using System;
 using System.IO;
-using EasyTools.Interface;
 
 
 namespace EasyTools.IO

@@ -1,6 +1,6 @@
-﻿using SQLMigration.Interface.SourceQuery;
+﻿using SQLMigrationInterface.Interface.SourceQuery;
 
-namespace SQLMigration.Converter.SourceQuery
+namespace SQLMigrationConverter.SourceQuery
 {
     public class MssQuery : ISourceQuery
     {
@@ -16,7 +16,7 @@ namespace SQLMigration.Converter.SourceQuery
 			FROM sys.types st
 			INNER JOIN sys.schemas ss ON st.[schema_id] = ss.[schema_id]
 			INNER JOIN sys.types bs ON bs.[user_type_id] = st.[system_type_id]
-			--WHERE st.[is_user_defined] = 1 -- exclude system types
+			WHERE st.[is_user_defined] = 1 -- exclude system types
 			ORDER BY st.[name]
 				,ss.[name]
 			";

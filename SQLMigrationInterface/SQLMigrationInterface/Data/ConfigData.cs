@@ -1,12 +1,11 @@
 ﻿
-using EasyTools.Data;
-
+using EasyTools.Interface.Data;
+using SQLMigration.Interface.Data.ResultInfo;
+using SQLMigration.Interface.Data.SchemaInfo;
 using System;
 using System.Collections.Generic;
-using SQLMigration.Data.ResultInfo;
-using SQLMigration.Data.SchemaInfo;
 
-namespace SQLMigration.Data
+namespace SQLMigration.Interface.Data
 {
 
     public class ConfigData : BaseData
@@ -14,8 +13,8 @@ namespace SQLMigration.Data
         public ConfigData()
         {
             OutputPath = "";
-            updated = DateTime.Now;
-            id = DateTime.Now.GetHashCode().ToString();
+            updated = string.Format("{0:dd/mm/yyy HH:mm:ss}", DateTime.Now);
+            id = Guid.NewGuid().ToString();  
             listUDTSchemaInfo = new List<UDTSchemaInfoData>();
             listUDTResultInfo = new List<UDTResultData>();
         }

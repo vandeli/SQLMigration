@@ -1,4 +1,4 @@
-﻿namespace EasyTools.Interface.IO
+﻿namespace EasyTools.Interface.Interface.IO
 {
   public interface IFileReader
   {

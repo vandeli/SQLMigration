@@ -1,4 +1,4 @@
-﻿namespace SQLMigration.Interface.SourceQuery
+﻿namespace SQLMigrationInterface.Interface.SourceQuery
 {
     public interface ISourceQuery
     {

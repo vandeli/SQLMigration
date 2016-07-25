@@ -1,7 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using SQLMigration.Converter.ScriptBuilder;
-using SQLMigration.Data.SchemaInfo;
-
+using SQLMigration.Interface.Data.SchemaInfo;
+using SQLMigrationConverter.ScriptBuilder;
 
 namespace SQLMigration.Test
 {

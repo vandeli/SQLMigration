@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Data;
 using System.Data.SqlClient;
-using System.Linq.Expressions;
-using EasyTools.Data;
-using EasyTools.Interface;
-using EasyTools.Interface.DB;
+using EasyTools.Interface.Interface.DB;
+using EasyTools.Interface.Data;
 
-namespace SQLMigration
+
+namespace EasyTools.DB
 {
     public class DataAccess : IDataAccess
     {
@@ -26,6 +25,33 @@ namespace SQLMigration
                 CommandText = sql
             };
 
+            //var dataReader = sqlcmd.ExecuteReader();           
+
+            //if (dataReader.HasRows)
+            //{
+
+            //    DataColumn column = new DataColumn("SchemaID", typeof(string));
+            //    result.Load(dataReader);
+
+            //    column.AllowDBNull = false;
+            //    result.Columns.Add(column);
+
+            //    string[] nColumn = new string[result.Columns.Count];
+            //    int xs = 0;
+            //    foreach (DataColumn col in result.Columns)
+            //    {
+            //        Console.WriteLine(col.ColumnName);
+            //        nColumn[xs] = col.ColumnName;
+            //        xs += 1;
+            //    }
+
+            //    foreach (DataRow row in result.Rows)
+            //    {
+            //        row["SchemaID"] = row[nColumn[0]].GetHashCode().ToString().Replace("-", "");
+            //    }
+
+
+            //}
             SqlDataAdapter dataAdapter = new SqlDataAdapter(sqlcmd);
 
             dataAdapter.Fill(result);

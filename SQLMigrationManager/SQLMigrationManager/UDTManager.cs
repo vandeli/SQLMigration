@@ -1,16 +1,15 @@
-﻿using SQLMigration.Data;
+﻿using EasyTools.Interface.Interface.DB;
+using SQLMigration.Interface.Data;
+using SQLMigration.Interface.Data.ResultInfo;
+using SQLMigration.Interface.Data.SchemaInfo;
+using SQLMigration.Interface.Interface.Manager;
+using SQLMigrationInterface.Interface.ScriptBuilder;
+using SQLMigrationInterface.Interface.SourceQuery;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-using EasyTools.Interface;
-using EasyTools.Interface.DB;
-using SQLMigration.Data.ResultInfo;
-using SQLMigration.Data.SchemaInfo;
-using SQLMigration.Interface.Manager;
-using SQLMigration.Interface.ScriptBuilder;
-using SQLMigration.Interface.SourceQuery;
 
-namespace SQLMigration.Manager
+namespace SQLMigrationManager
 {
     public class UDTManager : IUDTManager
     {

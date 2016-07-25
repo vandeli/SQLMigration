@@ -1,9 +1,11 @@
-﻿using EasyTools.Data;
-using EasyTools.Interface.DB;
-using EasyTools.Interface.IO;
-using SQLMigration.Data;
-using SQLMigration.Interface.Manager;
+﻿using EasyTools.Interface.Data;
+using EasyTools.Interface.Interface.DB;
+using EasyTools.Interface.Interface.IO;
+using SQLMigration.Interface.Data;
+using SQLMigration.Interface.Interface.Manager;
+using SQLMigrationOF;
 using System;
+using System.IO;
 using System.Linq;
 using System.Management;
 using System.Text;
@@ -50,8 +52,6 @@ namespace SQLMigration.UI
             IFileManager fileManager = of.GEtInstanceFileManager();
             //fileManager.CreateFile(scriptStringBuilder.ToString(), configdata.OutputPath + @"\UDTScript.sql");
         }
-
-
 
         private void InitComboBox()
         {
@@ -140,7 +140,6 @@ namespace SQLMigration.UI
             return isNull;
         }
 
-
         private void Form1_Load(object sender, EventArgs e)
         {
             //  public static string configPath;
@@ -205,7 +204,21 @@ namespace SQLMigration.UI
                 MessageBox.Show(ex.Message);
             }
         }
+            
 
-
+        private void btnSaveQuery_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog save = new SaveFileDialog();
+            save.FileName = cboProcess.Text + "_PgSQL.sql";
+            save.Filter = "Sql File | *.sql";
+            if (save.ShowDialog() == DialogResult.OK)
+            {
+                StreamWriter writer = new StreamWriter(save.OpenFile());
+                writer.Write(txtResult.Text);                  
+               
+                writer.Dispose();
+                writer.Close();
+            }
+        }
     }
 }

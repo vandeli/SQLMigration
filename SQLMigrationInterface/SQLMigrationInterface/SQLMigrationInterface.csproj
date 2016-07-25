@@ -49,6 +49,10 @@
       <Project>{ff47ff05-a601-46ce-a295-7e3cf798e52b}</Project>
       <Name>EasyTools.Interface</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\EasyTools\EasyTools.csproj">
+      <Project>{38ad047c-ae85-4cae-a2c4-1077cec245ac}</Project>
+      <Name>EasyTools</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

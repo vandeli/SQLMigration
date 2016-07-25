@@ -1,15 +1,14 @@
-﻿using SQLMigration.Data;
-using System;
-using EasyTools.Data;
+﻿using System;
+using EasyTools.Interface.Data;
 
-namespace SQLMigration.Data.SchemaInfo
+namespace SQLMigration.Interface.Data.SchemaInfo
 {
     public class UDTSchemaInfoData : BaseData
     {
         public UDTSchemaInfoData()
         {
-            updated = DateTime.Now;
-            id = DateTime.Now.GetHashCode().ToString();
+            updated = string.Format("{0:dd/mm/yyy HH:mm:ss}", DateTime.Now);
+            id = Guid.NewGuid().ToString(); 
 
         }
 
