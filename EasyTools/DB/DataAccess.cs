@@ -10,9 +10,9 @@ namespace SQLMigration
 {
     public class DataAccess : IDataAccess
     {
-        private IDbConnection dbConnection;
-        private IDbCommand dbCommand;
-        private IDbDataAdapter dbDataAdapter;
+        private readonly IDbConnection dbConnection;
+        private readonly IDbCommand dbCommand;
+        private readonly IDbDataAdapter dbDataAdapter;
 
         public DataAccess(IDbConnection dbConnection, IDbCommand dbCommand, IDbDataAdapter dbDataAdapter)
         {
@@ -42,6 +42,11 @@ namespace SQLMigration
             dbDataAdapter.Fill(dataSet);
 
             return dataSet.Tables[0];
+        }
+
+        public void Execute(DBData dbData, string sql)
+        {
+            throw new NotImplementedException();
         }
 
 
