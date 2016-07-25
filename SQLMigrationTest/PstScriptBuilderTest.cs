@@ -38,8 +38,8 @@ namespace SQLMigration.Test
                 name = "customVar",
                 DataType = "decimal",
                 MaxLength = 50,
-                Precision = 0,
-                Scale = 0,
+                Precision = 18,
+                Scale = 2,
                 IsNullable = true
             };
 
@@ -66,7 +66,7 @@ namespace SQLMigration.Test
             };
 
             var scriptExpectation = string.Format("CREATE DOMAIN {0} AS {1}{2};\r\n",
-                schemaInfo.name, "bit", "");
+                schemaInfo.name, "bit(" + schemaInfo.MaxLength +")", "");
 
             var scriptActual = scriptBuilder.CreateScriptUDT(schemaInfo);
 
