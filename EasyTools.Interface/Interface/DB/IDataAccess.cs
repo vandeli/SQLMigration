@@ -5,7 +5,8 @@ namespace EasyTools.Interface.Interface.DB
 {
   public interface IDataAccess
   {
-    DataTable GetDataTable(DBData dbData, string sql);
+      DataTable GetDataTable(DBData dbData, string sql);
+      void Execute(DBData dbData, string sql);
 
   }
 }

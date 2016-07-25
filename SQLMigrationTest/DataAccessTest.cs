@@ -1,25 +1,32 @@
-﻿using EasyTools.DB;
-using EasyTools.Interface.Data;
+﻿using System.Data.SqlClient;
+using EasyTools.Data;
+using EasyTools.Interface;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using SQLMigration.Interface.Data;
+using SQLMigration;
+using SQLMigration.Data;
 
 namespace SQLMigrationTest
 {
-    [TestClass]
+	[TestClass]
 	public class DataAccessTest
 	{
 		[TestMethod]
 		public void GetDataTableTest()
 		{
-			var dataAccess = new DataAccess();
+
+			var dbConn = new SqlConnection();
+			var dbCommand = new SqlCommand();
+			var dbAdapter = new SqlDataAdapter();
+
+			var dataAccess = new DataAccess(dbConn,dbCommand,dbAdapter);
 			var configData = new ConfigData()
 			{
 				name = "Test",
 				Source = new DBData
 				{
 					name = "SQLSERVER",
-					dbName = "master",
-					serverName = "localhost",
+					dbName = "BOSNET",
+					serverName = @"localhost\SQLSERVER2016",
 					userName = "sa",
 					password = "123456"
 				}

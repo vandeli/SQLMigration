@@ -9,54 +9,43 @@ namespace EasyTools.DB
 {
     public class DataAccess : IDataAccess
     {
+        private readonly IDbConnection dbConnection;
+        private readonly IDbCommand dbCommand;
+        private readonly IDbDataAdapter dbDataAdapter;
+
+        public DataAccess(IDbConnection dbConnection, IDbCommand dbCommand, IDbDataAdapter dbDataAdapter)
+        {
+            this.dbConnection = dbConnection;
+            this.dbCommand = dbCommand;
+            this.dbDataAdapter = dbDataAdapter;
+        }
+
         public DataTable GetDataTable(DBData dbData, string sql)
         {
             Validate(dbData);
-            DataTable result = new DataTable("DataTable");
+
+            DataSet dataSet = new DataSet("DataQuery");
+
             string strConnection = @"Server=" + dbData.serverName + ";Database=" + dbData.dbName + ";User Id=" +
                                    dbData.userName + ";Password=" + dbData.password + ";";
-            SqlConnection con = new SqlConnection(strConnection);
+            dbConnection.ConnectionString = strConnection;
 
 
-            con.Open();
-            var sqlcmd = new SqlCommand
-            {
-                Connection = con,
-                CommandText = sql
-            };
+            dbConnection.Open();
 
-            //var dataReader = sqlcmd.ExecuteReader();           
-
-            //if (dataReader.HasRows)
-            //{
-
-            //    DataColumn column = new DataColumn("SchemaID", typeof(string));
-            //    result.Load(dataReader);
-
-            //    column.AllowDBNull = false;
-            //    result.Columns.Add(column);
-
-            //    string[] nColumn = new string[result.Columns.Count];
-            //    int xs = 0;
-            //    foreach (DataColumn col in result.Columns)
-            //    {
-            //        Console.WriteLine(col.ColumnName);
-            //        nColumn[xs] = col.ColumnName;
-            //        xs += 1;
-            //    }
-
-            //    foreach (DataRow row in result.Rows)
-            //    {
-            //        row["SchemaID"] = row[nColumn[0]].GetHashCode().ToString().Replace("-", "");
-            //    }
+            dbCommand.Connection = dbConnection;
+            dbCommand.CommandText = sql;
 
 
-            //}
-            SqlDataAdapter dataAdapter = new SqlDataAdapter(sqlcmd);
+            dbDataAdapter.SelectCommand = dbCommand;
+            dbDataAdapter.Fill(dataSet);
 
-            dataAdapter.Fill(result);
+            return dataSet.Tables[0];
+        }
 
-            return result;
+        public void Execute(DBData dbData, string sql)
+        {
+            throw new NotImplementedException();
         }
 
 
