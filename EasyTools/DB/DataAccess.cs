@@ -10,27 +10,38 @@ namespace SQLMigration
 {
     public class DataAccess : IDataAccess
     {
+        private IDbConnection dbConnection;
+        private IDbCommand dbCommand;
+        private IDbDataAdapter dbDataAdapter;
+
+        public DataAccess(IDbConnection dbConnection, IDbCommand dbCommand, IDbDataAdapter dbDataAdapter)
+        {
+            this.dbConnection = dbConnection;
+            this.dbCommand = dbCommand;
+            this.dbDataAdapter = dbDataAdapter;
+        }
+
         public DataTable GetDataTable(DBData dbData, string sql)
         {
             Validate(dbData);
-            DataTable result = new DataTable("DataTable");
+            
+            DataSet dataSet = new DataSet("DataQuery");
+
             string strConnection = @"Server=" + dbData.serverName + ";Database=" + dbData.dbName + ";User Id=" +
                                    dbData.userName + ";Password=" + dbData.password + ";";
-            SqlConnection con = new SqlConnection(strConnection);
+            dbConnection.ConnectionString = strConnection;
 
 
-            con.Open();
-            var sqlcmd = new SqlCommand
-            {
-                Connection = con,
-                CommandText = sql
-            };
+            dbConnection.Open();
 
-            SqlDataAdapter dataAdapter = new SqlDataAdapter(sqlcmd);
+            dbCommand.Connection = dbConnection;
+            dbCommand.CommandText = sql;
 
-            dataAdapter.Fill(result);
 
-            return result;
+            dbDataAdapter.SelectCommand = dbCommand;
+            dbDataAdapter.Fill(dataSet);
+
+            return dataSet.Tables[0];
         }
 
 

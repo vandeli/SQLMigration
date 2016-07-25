@@ -1,5 +1,6 @@
 ﻿using SQLMigration.Data;
 using System;
+using System.Data.SqlClient;
 using EasyTools.DB;
 using EasyTools.Interface.DB;
 using EasyTools.Interface.IO;
@@ -21,8 +22,11 @@ namespace SQLMigration
         public IUDTManager GetInstanceUdtManager()
         {
             if (udtManager != null) return udtManager;
+            var dbConn = new SqlConnection();
+            var dbCommand = new SqlCommand();
+            var dbAdapter = new SqlDataAdapter();
 
-            IDataAccess dataAccess = new DataAccess();
+            IDataAccess dataAccess = new DataAccess(dbConn,dbCommand,dbAdapter);
             IScriptBuilder scriptBuilder = new PstScriptBuilder();
             ISourceQuery schemaQuery = new MssQuery();
             udtManager = new UDTManager(dataAccess, scriptBuilder, schemaQuery);
