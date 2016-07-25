@@ -9,6 +9,12 @@ namespace EasyTools.Data
         public String password = "";
         public String dbName = "";
 
+
+        public override string ToString()
+        {
+            return string.Format("{0}, DbName: {1}, Password: {2}, ServerName: {3}, UserName: {4}", 
+                base.ToString(), dbName, password, serverName, userName);
+        }
     }
 
 

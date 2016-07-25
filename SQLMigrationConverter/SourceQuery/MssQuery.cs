@@ -1,4 +1,5 @@
-﻿using SQLMigrationInterface.Interface.SourceQuery;
+﻿using System;
+using SQLMigrationInterface.Interface.SourceQuery;
 
 namespace SQLMigrationConverter.SourceQuery
 {
@@ -6,6 +7,7 @@ namespace SQLMigrationConverter.SourceQuery
     {
         public string GetUDTQuery()
         {
+            Console.WriteLine("GetUDTQuery...");
             return @"
 			SELECT st.NAME
 				,bs.[name] AS data_type

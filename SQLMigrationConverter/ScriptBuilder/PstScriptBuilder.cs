@@ -18,6 +18,7 @@ namespace SQLMigration.Converter.ScriptBuilder
 
         public string CreateScriptUDT(UDTSchemaInfoData schemaInfo)
         {
+            Console.WriteLine("CreateScriptUDT : " + schemaInfo);
             string result;
           
             var convertedDataType = GetDataTypeMap(schemaInfo.DataType);

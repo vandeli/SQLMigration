@@ -16,5 +16,10 @@ namespace SQLMigration.Interface.Data.ResultInfo
             schemaId = "";
             updated = string.Format("{0:dd/MM/yyy HH:mm:ss}", DateTime.Now);
         }
+
+        public override string ToString()
+        {
+            return string.Format("{0}, schemaId: {1}, sqlString: {2}", base.ToString(), schemaId, sqlString);
+        }
     }
 }

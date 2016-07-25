@@ -25,6 +25,10 @@ namespace SQLMigration.Interface.Data
         public List<UDTSchemaInfoData> listUDTSchemaInfo { get; set; }
         public List<UDTResultData> listUDTResultInfo { get; set; }
 
-
+        public override string ToString()
+        {
+            return string.Format("{0}, Destination: {1}, listUDTResultInfo: {2}, listUDTSchemaInfo: {3}, OutputPath: {4}, Source: {5}", 
+                base.ToString(), Destination, listUDTResultInfo, listUDTSchemaInfo, OutputPath, Source);
+        }
     }
 }

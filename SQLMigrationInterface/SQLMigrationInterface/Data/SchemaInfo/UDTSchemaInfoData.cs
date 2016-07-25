@@ -20,5 +20,10 @@ namespace SQLMigration.Interface.Data.SchemaInfo
         public bool IsNullable { get; set; }
 
 
+        public override string ToString()
+        {
+            return string.Format("{0}, DataType: {1}, IsNullable: {2}, MaxLength: {3}, Precision: {4}, Scale: {5}", 
+                base.ToString(), DataType, IsNullable, MaxLength, Precision, Scale);
+        }
     }
 }

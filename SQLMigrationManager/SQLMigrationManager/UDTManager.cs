@@ -1,4 +1,5 @@
-﻿using EasyTools.Interface.DB;
+﻿using System;
+using EasyTools.Interface.DB;
 using SQLMigration.Interface.Data;
 using SQLMigration.Interface.Data.ResultInfo;
 using SQLMigration.Interface.Data.SchemaInfo;
@@ -26,6 +27,7 @@ namespace SQLMigrationManager
 
         public List<UDTSchemaInfoData> GetSchema(ConfigData configData)
         {
+            Console.WriteLine("GetSchema : " + configData);
             var dt = dataAccess.GetDataTable(configData.Source, sourceQuery.GetUDTQuery());
             return GetSchemaDataFromDt(dt);
         }
@@ -49,12 +51,15 @@ namespace SQLMigrationManager
             return result;
         }
 
-        public List<UDTResultData> Convert(List<UDTSchemaInfoData> datasource) => datasource.Select(schemaInfoData => new UDTResultData
+        public List<UDTResultData> Convert(List<UDTSchemaInfoData> datasource)
         {
-          name = schemaInfoData.name,
-          sqlString = scriptBuilder.CreateScriptUDT(schemaInfoData),
-          schemaId = schemaInfoData.id
-
-        }).ToList();
+            Console.WriteLine("Convert : " + datasource.Count );
+            return datasource.Select(schemaInfoData => new UDTResultData
+            {
+                name = schemaInfoData.name,
+                sqlString = scriptBuilder.CreateScriptUDT(schemaInfoData),
+                schemaId = schemaInfoData.id
+            }).ToList();
+        }
     }
 }

@@ -23,6 +23,7 @@ namespace EasyTools.DB
 
         public DataTable GetDataTable(DBData dbData, string sql)
         {
+            Console.WriteLine("GetDataTable : " + dbData + sql);
             Validate(dbData);
 
             DataSet dataSet = new DataSet("DataQuery");
@@ -46,6 +47,7 @@ namespace EasyTools.DB
 
         public void Execute(DBData dbData, string sql)
         {
+            Console.WriteLine("Execute : " + dbData + sql);
             throw new NotImplementedException();
         }
 
