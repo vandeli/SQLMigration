@@ -7,7 +7,7 @@ namespace SQLMigration.Interface.Data.SchemaInfo
     {
         public UDTSchemaInfoData()
         {
-            updated = string.Format("{0:dd/mm/yyy HH:mm:ss}", DateTime.Now);
+            updated = string.Format("{0:dd/MM/yyy HH:mm:ss}", DateTime.Now);
             id = Guid.NewGuid().ToString(); 
 
         }
