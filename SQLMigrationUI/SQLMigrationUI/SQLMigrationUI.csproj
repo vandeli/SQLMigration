@@ -34,6 +34,9 @@
   <PropertyGroup>
     <StartupObject>SQLMigration.UI.Program</StartupObject>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>1469425809_1-47.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -92,6 +95,9 @@
       <Project>{DEBD9A6B-2E77-4DCF-9ED3-0E755B82ABA0}</Project>
       <Name>SQLMigrationOF</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="1469425809_1-47.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

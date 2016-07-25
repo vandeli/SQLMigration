@@ -149,6 +149,7 @@ namespace SQLMigration.UI
             ManagementObjectSearcher searcher = new ManagementObjectSearcher("SELECT UserName FROM Win32_ComputerSystem");
             ManagementObjectCollection collection = searcher.Get();
             string username = (string)collection.Cast<ManagementBaseObject>().First()["UserName"];
+            txtConfigPath.Text = Properties.Settings.Default.configPath;
 
             switch (username)
             {
@@ -159,7 +160,7 @@ namespace SQLMigration.UI
                     txtPassword.Text = "12345";
                     txtDatabase.Text = "padma_live";
                     txtPath.Text = @"..\Output\";
-                    txtOutput.Text = "Index_pgSQL.sql";
+                    //txtConfigName.Text = "Index_pgSQL.sql";
                     break;
 
                 case @"KONTINUM22\bintang":
@@ -169,7 +170,7 @@ namespace SQLMigration.UI
                     txtPassword.Text = "12345";
                     txtDatabase.Text = "Reckitt2";
                     txtPath.Text = @"..\Output\";
-                    txtOutput.Text = "UDT_pgSQL.sql";
+                    //txtConfigName.Text = "UDT_pgSQL.sql";
                     break;
 
             }
