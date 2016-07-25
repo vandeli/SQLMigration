@@ -1,14 +1,13 @@
-﻿using SQLMigration.Data;
+﻿using EasyTools.Data;
+using EasyTools.Interface.DB;
+using EasyTools.Interface.IO;
+using SQLMigration.Data;
+using SQLMigration.Interface.Manager;
 using System;
 using System.Linq;
 using System.Management;
 using System.Text;
 using System.Windows.Forms;
-using EasyTools.Data;
-using EasyTools.Interface.DB;
-using EasyTools.Interface.IO;
-using SQLMigration;
-using SQLMigration.Interface.Manager;
 
 namespace SQLMigration.UI
 {
@@ -18,11 +17,9 @@ namespace SQLMigration.UI
         private IUDTManager udtManager;
         ICoreDB coreDb;
 
-
-
         public Form1()
         {
-            this.coreDb = of.GetInstanceCoreDB(@"E:\dbxml.xml");
+            this.coreDb = of.GetInstanceCoreDB(Properties.Settings.Default.configPath);
             coreDb.CreateTable<ConfigData>();
             InitializeComponent();
             InitComboBox();
@@ -44,8 +41,14 @@ namespace SQLMigration.UI
 
             }
 
+            txtResult.Text = scriptStringBuilder.ToString();
+
+            DGUDT.DataSource = null;
+            DGUDT.DataSource = configdata.listUDTSchemaInfo;
+            DGUDT.Refresh();
+
             IFileManager fileManager = of.GEtInstanceFileManager();
-            fileManager.CreateFile(scriptStringBuilder.ToString(), @"E:\UDTScript.sql");
+            //fileManager.CreateFile(scriptStringBuilder.ToString(), configdata.OutputPath + @"\UDTScript.sql");
         }
 
 
@@ -178,28 +181,28 @@ namespace SQLMigration.UI
         {
 
             var validate = ValidateInput();
-          if (!validate) return;
-          try
-          {
-            var param = new DBData
+            if (!validate) return;
+            try
             {
-              serverName = txtServer.Text,
-              userName = txtUsername.Text,
-              password = txtPassword.Text,
-              dbName = txtDatabase.Text
-            };
-            var xData = new ConfigData
-            {
-              Source = param,
-              Path = txtPath.Text
-            };
+                var param = new DBData
+                {
+                    serverName = txtServer.Text,
+                    userName = txtUsername.Text,
+                    password = txtPassword.Text,
+                    dbName = txtDatabase.Text
+                };
+                var xData = new ConfigData
+                {
+                    Source = param,
+                    OutputPath = txtPath.Text
+                };
 
-            ProsesManager(cboProcess.Text, xData);
-          }
-          catch (Exception ex)
-          {
-            MessageBox.Show(ex.Message);
-          }
+                ProsesManager(cboProcess.Text, xData);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
 
 

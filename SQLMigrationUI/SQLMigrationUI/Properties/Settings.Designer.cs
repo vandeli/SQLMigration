@@ -22,5 +22,17 @@ namespace SQLMigration.UI.Properties {
                 return defaultInstance;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("E:\\db.xml")]
+        public string configPath {
+            get {
+                return ((string)(this["configPath"]));
+            }
+            set {
+                this["configPath"] = value;
+            }
+        }
     }
 }
