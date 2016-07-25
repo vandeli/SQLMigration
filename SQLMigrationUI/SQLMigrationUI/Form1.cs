@@ -1,6 +1,6 @@
-﻿using EasyTools.Interface.Data;
-using EasyTools.Interface.Interface.DB;
-using EasyTools.Interface.Interface.IO;
+﻿using EasyTools.Interface;
+using EasyTools.Interface.DB;
+using EasyTools.Interface.IO;
 using SQLMigration.Interface.Data;
 using SQLMigration.Interface.Interface.Manager;
 using SQLMigrationOF;
@@ -10,6 +10,7 @@ using System.Linq;
 using System.Management;
 using System.Text;
 using System.Windows.Forms;
+using EasyTools.Data;
 
 namespace SQLMigration.UI
 {

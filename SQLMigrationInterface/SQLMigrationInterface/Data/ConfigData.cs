@@ -1,9 +1,9 @@
 ﻿
-using EasyTools.Interface.Data;
 using SQLMigration.Interface.Data.ResultInfo;
 using SQLMigration.Interface.Data.SchemaInfo;
 using System;
 using System.Collections.Generic;
+using EasyTools.Data;
 
 namespace SQLMigration.Interface.Data
 {

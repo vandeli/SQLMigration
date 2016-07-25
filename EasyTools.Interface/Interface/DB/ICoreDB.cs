@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using EasyTools.Interface.Data;
+using EasyTools.Data;
+using EasyTools.Data;
 
-namespace EasyTools.Interface.Interface.DB
+namespace EasyTools.Interface.DB
 {
     public interface ICoreDB
     {

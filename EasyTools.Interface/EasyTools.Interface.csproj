@@ -7,7 +7,7 @@
     <ProjectGuid>{FF47FF05-A601-46CE-A295-7E3CF798E52B}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>EasyTools.Interface</RootNamespace>
+    <RootNamespace>EasyTools</RootNamespace>
     <AssemblyName>EasyTools.Interface</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>

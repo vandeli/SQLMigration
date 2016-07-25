@@ -1,7 +1,7 @@
 ﻿using System.Data;
-using EasyTools.Interface.Data;
+using EasyTools.Data;
 
-namespace EasyTools.Interface.Interface.DB
+namespace EasyTools.Interface.DB
 {
   public interface IDataAccess
   {

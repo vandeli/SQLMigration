@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace EasyTools.Interface.Data
+namespace EasyTools.Data
 {
     public class DBData : BaseData
     {

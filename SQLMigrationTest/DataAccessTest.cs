@@ -1,9 +1,9 @@
 ﻿using System.Data.SqlClient;
 using EasyTools.Data;
+using EasyTools.DB;
 using EasyTools.Interface;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using SQLMigration;
-using SQLMigration.Data;
+using SQLMigration.Interface.Data;
 
 namespace SQLMigrationTest
 {

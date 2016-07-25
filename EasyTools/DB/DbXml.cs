@@ -1,6 +1,6 @@
-﻿using EasyTools.Interface.Data;
-using EasyTools.Interface.Interface.DB;
-using EasyTools.Interface.Interface.IO;
+﻿using EasyTools.Data;
+using EasyTools.Interface.DB;
+using EasyTools.Interface.IO;
 using System;
 using System.Collections.Generic;
 using System.IO;

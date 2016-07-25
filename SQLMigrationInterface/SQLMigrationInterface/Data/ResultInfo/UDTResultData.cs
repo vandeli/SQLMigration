@@ -1,5 +1,5 @@
 ﻿using System;
-using EasyTools.Interface.Data;
+using EasyTools.Data;
 
 namespace SQLMigration.Interface.Data.ResultInfo
 {

@@ -1,4 +1,4 @@
-﻿using EasyTools.Interface.Interface.IO;
+﻿using EasyTools.Interface.IO;
 using System;
 using System.IO;
 

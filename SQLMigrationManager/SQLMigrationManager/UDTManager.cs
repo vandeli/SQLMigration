@@ -1,4 +1,4 @@
-﻿using EasyTools.Interface.Interface.DB;
+﻿using EasyTools.Interface.DB;
 using SQLMigration.Interface.Data;
 using SQLMigration.Interface.Data.ResultInfo;
 using SQLMigration.Interface.Data.SchemaInfo;

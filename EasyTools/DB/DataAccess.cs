@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Data;
 using System.Data.SqlClient;
-using EasyTools.Interface.Interface.DB;
-using EasyTools.Interface.Data;
+using EasyTools.Data;
+using EasyTools.Interface.DB;
+using EasyTools.Interface;
 
 
 namespace EasyTools.DB

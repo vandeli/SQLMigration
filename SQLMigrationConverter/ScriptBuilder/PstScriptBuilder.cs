@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace SQLMigrationConverter.ScriptBuilder
+namespace SQLMigration.Converter.ScriptBuilder
 {
     public class PstScriptBuilder : IScriptBuilder
     {

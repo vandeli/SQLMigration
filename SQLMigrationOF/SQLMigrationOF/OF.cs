@@ -2,10 +2,10 @@
 using System;
 using System.Data.SqlClient;
 using EasyTools.IO;
-using EasyTools.Interface.Interface.DB;
-using EasyTools.Interface.Interface.IO;
-using SQLMigration.Interface.Interface.Manager;
-using SQLMigrationConverter.ScriptBuilder;
+using EasyTools.Interface.DB;
+using EasyTools.Interface.IO;
+﻿using SQLMigration.Converter.ScriptBuilder;
+﻿using SQLMigration.Interface.Interface.Manager;
 using SQLMigrationConverter.SourceQuery;
 using SQLMigrationInterface.Interface.ScriptBuilder;
 using SQLMigrationInterface.Interface.SourceQuery;

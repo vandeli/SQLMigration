@@ -1,4 +1,4 @@
-﻿using EasyTools.Interface.Interface.DB;
+﻿using EasyTools.Interface.DB;
 using FakeItEasy;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SQLMigration.Interface.Data;
