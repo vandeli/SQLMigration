@@ -228,27 +228,14 @@ namespace SQLMigration.UI
             {
                 try
                 {
-                    //var param = new DBData
-                    //{
-                    //    serverName = txtServer.Text,
-                    //    userName = txtUsername.Text,
-                    //    password = txtPassword.Text,
-                    //    dbName = txtDatabase.Text
-                    //};
-                    //var xData = new ConfigData
-                    //{
-                    //    Source = param,
-                    //    name = comboBox1.Text,
-                    //    OutputPath = txtPath.Text
-                    //};
-
+                    BindControls();
                     udtManager = of.GetInstanceUdtManager();
                     xData.listUDTSchemaInfo = udtManager.GetSchema(xData);
                     xData.listUDTResultInfo = udtManager.Convert(xData.listUDTSchemaInfo);
-
                     coreDb.Insert(xData);
-                   // comboBox1.Refresh();
-                  //  refreshList();
+                    comboBox1.Refresh();
+                   
+                    refreshList();
                     MessageBox.Show("Data Config created.");
                 }
               
@@ -318,7 +305,7 @@ namespace SQLMigration.UI
             var config = globalConfig;
             var database = globalConfig.Source;
 
-            comboBox1.Text = "";
+            
             comboBox1.DataBindings.Clear();
             txtServer.DataBindings.Clear();
             txtUsername.DataBindings.Clear();
@@ -330,7 +317,7 @@ namespace SQLMigration.UI
 
             if (config == null) return;
 
-            comboBox1.DataSource = new BindingSource(listConfig, null);
+            comboBox1.DataSource = listConfig;
             comboBox1.DisplayMember = "name";
             comboBox1.ValueMember = "id";
             comboBox1.Refresh();
