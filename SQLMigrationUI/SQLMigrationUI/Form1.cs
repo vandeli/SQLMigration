@@ -34,11 +34,16 @@ namespace SQLMigration.UI
           
         }
 
-        public void ProsesManager(String pilihan, ConfigData configdata)
+        public void ProsesManager(String pilihan)
         {
-                     
+            udtManager = of.GetInstanceUdtManager();
+            globalConfig.listUDTSchemaInfo = udtManager.GetSchema(globalConfig);
+            globalConfig.listUDTResultInfo = udtManager.Convert(globalConfig.listUDTSchemaInfo);
+            coreDb.Insert(globalConfig);
+            comboBox1.Refresh();
+
             StringBuilder scriptStringBuilder = new StringBuilder();
-            foreach (var udtResultData in configdata.listUDTResultInfo)
+            foreach (var udtResultData in globalConfig.listUDTResultInfo)
             {
                 scriptStringBuilder.AppendLine(udtResultData.sqlString);
             }
@@ -46,10 +51,10 @@ namespace SQLMigration.UI
             txtResult.Text = scriptStringBuilder.ToString();
 
             DGUDT.DataSource = null;
-            DGUDT.DataSource = configdata.listUDTSchemaInfo;
+            DGUDT.DataSource = globalConfig.listUDTSchemaInfo;
             DGUDT.Refresh();
 
-            IFileManager fileManager = of.GEtInstanceFileManager();
+        
          
         }
 
@@ -188,7 +193,7 @@ namespace SQLMigration.UI
                 comboBox1.ValueMember = "id";
                 var selectData = listConfig.Where(sumber => sumber.id == comboBox1.SelectedValue.ToString()).SingleOrDefault();
 
-                ProsesManager(cboProcess.Text, selectData);
+                ProsesManager(cboProcess.Text);
             }
             catch (Exception ex)
             {
@@ -226,11 +231,11 @@ namespace SQLMigration.UI
             if (validate && isExist)
             {
                 try
-                {
-                    
-                    coreDb.Insert(globalConfig);
-        
+                {                    
+                    coreDb.Insert(globalConfig);        
                     MessageBox.Show("Data Config created.");
+                    BindingCboConfig();
+                    BindControls();
                 }
               
 
@@ -250,8 +255,7 @@ namespace SQLMigration.UI
         }
 
         private void BindControls()
-        {
-         
+        {       
 
  
             comboBox1.DataBindings.Clear();
@@ -299,16 +303,16 @@ namespace SQLMigration.UI
                 };
 
                 var configNew = new ConfigData
-                {
-                    id = "",
+                {                    
                     Source = source,
                     name = "",
                     OutputPath = @"..\Output\",
-                    updated = "",                    
+                                        
                 };
 
                 globalConfig = configNew;
-                globalListConfig = new List<ConfigData>();
+           
+                BindingCboConfig();
                 BindControls();
             }
             catch (Exception ex)
