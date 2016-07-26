@@ -442,10 +442,9 @@
             // 
             // LblLog
             // 
-            this.LblLog.AutoSize = true;
             this.LblLog.Location = new System.Drawing.Point(16, 417);
             this.LblLog.Name = "LblLog";
-            this.LblLog.Size = new System.Drawing.Size(31, 13);
+            this.LblLog.Size = new System.Drawing.Size(720, 13);
             this.LblLog.TabIndex = 29;
             this.LblLog.Text = "Log :";
             // 

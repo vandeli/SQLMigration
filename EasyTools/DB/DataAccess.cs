@@ -47,6 +47,8 @@ namespace EasyTools.DB
             dbDataAdapter.SelectCommand = dbCommand;
             dbDataAdapter.Fill(dataSet);
 
+            dbConnection.Close();
+
             Console.WriteLine("GetDataTable Result : " + dataSet.Tables[0].Rows.Count);
             return dataSet.Tables[0];
         }

@@ -13,7 +13,7 @@ namespace EasyTools.Data
         public override string ToString()
         {
             return string.Format("DBData => {0}, DbName: {1}, Password: {2}, ServerName: {3}, UserName: {4}", 
-                base.ToString(), dbName, password, serverName, userName);
+                base.ToString(), dbName, "*****", serverName, userName);
         }
     }
 
