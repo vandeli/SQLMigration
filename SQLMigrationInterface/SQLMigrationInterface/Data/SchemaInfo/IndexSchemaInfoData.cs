@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SQLMigrationConverter.SchemaInfo
+namespace SQLMigration.Data.SchemaInfo
 {
-    class IndexSchemaInfoData
+    public class IndexSchemaInfoData
     {
     }
 }

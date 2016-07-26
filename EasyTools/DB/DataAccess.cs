@@ -23,6 +23,12 @@ namespace EasyTools.DB
 
         public DataTable GetDataTable(DBData dbData, string sql)
         {
+            Console.WriteLine("GetDataTable : " +
+                              "\r\n {0} " +
+                              "\r\n " +
+                              "SQL : " +
+                              "\r\n {1}", 
+                              dbData, sql);
             Validate(dbData);
 
             DataSet dataSet = new DataSet("DataQuery");
@@ -31,8 +37,8 @@ namespace EasyTools.DB
                                    dbData.userName + ";Password=" + dbData.password + ";";
             dbConnection.ConnectionString = strConnection;
 
-
-            dbConnection.Open();
+            if(dbConnection.State != ConnectionState.Open)
+                dbConnection.Open();
 
             dbCommand.Connection = dbConnection;
             dbCommand.CommandText = sql;
@@ -41,11 +47,15 @@ namespace EasyTools.DB
             dbDataAdapter.SelectCommand = dbCommand;
             dbDataAdapter.Fill(dataSet);
 
+            dbConnection.Close();
+
+            Console.WriteLine("GetDataTable Result : " + dataSet.Tables[0].Rows.Count);
             return dataSet.Tables[0];
         }
 
         public void Execute(DBData dbData, string sql)
         {
+            Console.WriteLine("Execute : " + dbData + sql);
             throw new NotImplementedException();
         }
 

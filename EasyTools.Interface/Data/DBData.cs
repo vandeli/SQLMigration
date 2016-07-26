@@ -10,9 +10,17 @@ namespace EasyTools.Data
         public String password = "";
         public String dbName = "";
 
+
         public static implicit operator List<object>(DBData v)
         {
             throw new NotImplementedException();
+
+        }
+        public override string ToString()
+        {
+            return string.Format("DBData => {0}, DbName: {1}, Password: {2}, ServerName: {3}, UserName: {4}", 
+                base.ToString(), dbName, "*****", serverName, userName);
+
         }
     }
 

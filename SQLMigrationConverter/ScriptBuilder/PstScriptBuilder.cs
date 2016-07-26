@@ -1,9 +1,9 @@
 ﻿
-using SQLMigration.Interface.Data.SchemaInfo;
 using SQLMigrationInterface.Interface.ScriptBuilder;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using SQLMigration.Data.SchemaInfo;
 
 namespace SQLMigration.Converter.ScriptBuilder
 {
@@ -18,6 +18,7 @@ namespace SQLMigration.Converter.ScriptBuilder
 
         public string CreateScriptUDT(UDTSchemaInfoData schemaInfo)
         {
+            Console.WriteLine("CreateScriptUDT : " + schemaInfo);
             string result;
           
             var convertedDataType = GetDataTypeMap(schemaInfo.DataType);
@@ -41,8 +42,9 @@ namespace SQLMigration.Converter.ScriptBuilder
                         schemaInfo.name, convertedDataType,
                         (schemaInfo.IsNullable ? "" : " NOT NULL"));
             }
-           
 
+
+            Console.WriteLine("CreateScriptUDT Result : " + result);
 
             return result;
 

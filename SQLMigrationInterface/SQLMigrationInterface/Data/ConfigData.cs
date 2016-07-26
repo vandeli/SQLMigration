@@ -1,9 +1,10 @@
 ﻿
-using SQLMigration.Interface.Data.ResultInfo;
-using SQLMigration.Interface.Data.SchemaInfo;
+
 using System;
 using System.Collections.Generic;
 using EasyTools.Data;
+using SQLMigration.Data.ResultInfo;
+using SQLMigration.Data.SchemaInfo;
 
 namespace SQLMigration.Interface.Data
 {
@@ -26,6 +27,12 @@ namespace SQLMigration.Interface.Data
         public List<UDTSchemaInfoData> listUDTSchemaInfo { get; set; }
         public List<UDTResultData> listUDTResultInfo { get; set; }
 
-
+        public override string ToString()
+        {
+            return string.Format("ConfigData => {0} OutputPath: {4} , \r\n " +
+                                 "Destination: {1}, Source: {5}, \r\n" +
+                                 "listUDTResultInfo: {2}, listUDTSchemaInfo: {3}", 
+                base.ToString(), Destination, listUDTResultInfo.Count, listUDTSchemaInfo.Count, OutputPath, Source);
+        }
     }
 }

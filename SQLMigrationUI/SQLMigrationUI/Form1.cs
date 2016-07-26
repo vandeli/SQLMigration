@@ -3,7 +3,7 @@ using EasyTools.Interface.DB;
 using EasyTools.Interface.IO;
 using SQLMigration.Interface.Data;
 using SQLMigration.Interface.Interface.Manager;
-using SQLMigrationOF;
+using SQLMigration.OF;
 using System;
 using System.IO;
 using System.Linq;
@@ -17,10 +17,14 @@ namespace SQLMigration.UI
 {
     public partial class Form1 : Form
     {
-        private OF of = new OF();
+        private readonly UIOF of = new UIOF();
         private IUDTManager udtManager;
+
         ICoreDB coreDb;
         ConfigData globalConfig;
+
+    //    private readonly ICoreDB coreDb;
+
 
         public Form1()
         {
@@ -140,15 +144,21 @@ namespace SQLMigration.UI
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            refreshList();
-              
 
+            refreshList();
+
+            ILogger logger = of.GetInstanceLogger();
+            Console.SetOut(logger.GetWriter());
+
+            logger.OnValueChange += LoggerOnOnValueChange;
+
+        
             //### testing purpose only, delete when done #####
             ManagementObjectSearcher searcher = new ManagementObjectSearcher("SELECT UserName FROM Win32_ComputerSystem");
             ManagementObjectCollection collection = searcher.Get();
             string username = (string)collection.Cast<ManagementBaseObject>().First()["UserName"];
             txtConfigPath.Text = Properties.Settings.Default.configPath;
-            lbNotif.Text = "";
+            
             switch (username)
             {
                 case @"KONTINUM22\ibnu":
@@ -175,6 +185,12 @@ namespace SQLMigration.UI
             }
             //############################################################333
 
+        }
+
+        private void LoggerOnOnValueChange(string value)
+        {
+            LblLog.Text = value;
+            txtLog.AppendText( System.Environment.NewLine + value);
         }
 
         private void btnConvert_Click_1(object sender, EventArgs e)
@@ -264,7 +280,7 @@ namespace SQLMigration.UI
                     xData.listUDTResultInfo = udtManager.Convert(xData.listUDTSchemaInfo);
                     coreDb.Insert(xData);
                     comboBox1.Refresh();
-                    makeNotif("Database Config Saved.");
+                  
                     refreshList();
                    
                 }
@@ -290,19 +306,7 @@ namespace SQLMigration.UI
             }
         }
 
-        private void makeNotif(string text)
-        {
-            lbNotif.Text = text;
-            var t = new Timer();
-            t.Interval = 3000; // it will Tick in 3 seconds
-            t.Tick += (s, e) =>
-            {
-                lbNotif.Text = "";
-                t.Stop();
-            };
-            t.Start();
-
-        }
+       
 
         private void refreshList()
         {

@@ -1,7 +1,7 @@
 ﻿using System;
 using EasyTools.Data;
 
-namespace SQLMigration.Interface.Data.ResultInfo
+namespace SQLMigration.Data.ResultInfo
 {
     public class UDTResultData : BaseData
     {
@@ -15,6 +15,11 @@ namespace SQLMigration.Interface.Data.ResultInfo
             sqlString = "";
             schemaId = "";
             updated = string.Format("{0:dd/MM/yyy HH:mm:ss}", DateTime.Now);
+        }
+
+        public override string ToString()
+        {
+            return string.Format("UDTResultData => {0}, schemaId: {1}, sqlString: {2}", base.ToString(), schemaId, sqlString);
         }
     }
 }

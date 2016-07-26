@@ -1,7 +1,7 @@
 using SQLMigration.Interface.Data;
-using SQLMigration.Interface.Data.ResultInfo;
-using SQLMigration.Interface.Data.SchemaInfo;
 using System.Collections.Generic;
+using SQLMigration.Data.ResultInfo;
+using SQLMigration.Data.SchemaInfo;
 
 namespace SQLMigration.Interface.Interface.Manager
 {

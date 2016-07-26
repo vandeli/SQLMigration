@@ -1,13 +1,14 @@
-﻿using EasyTools.Interface.DB;
+﻿using System;
+using EasyTools.Interface.DB;
 using SQLMigration.Interface.Data;
-using SQLMigration.Interface.Data.ResultInfo;
-using SQLMigration.Interface.Data.SchemaInfo;
 using SQLMigration.Interface.Interface.Manager;
 using SQLMigrationInterface.Interface.ScriptBuilder;
 using SQLMigrationInterface.Interface.SourceQuery;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using SQLMigration.Data.ResultInfo;
+using SQLMigration.Data.SchemaInfo;
 
 namespace SQLMigrationManager
 {
@@ -26,8 +27,11 @@ namespace SQLMigrationManager
 
         public List<UDTSchemaInfoData> GetSchema(ConfigData configData)
         {
+            Console.WriteLine("GetSchema : " + configData);
             var dt = dataAccess.GetDataTable(configData.Source, sourceQuery.GetUDTQuery());
-            return GetSchemaDataFromDt(dt);
+            var listSchema =  GetSchemaDataFromDt(dt);
+            Console.WriteLine("GetSchema result : listSchema => " + listSchema.Count);
+            return listSchema;
         }
 
         private static List<UDTSchemaInfoData> GetSchemaDataFromDt(DataTable dt)
@@ -49,12 +53,18 @@ namespace SQLMigrationManager
             return result;
         }
 
-        public List<UDTResultData> Convert(List<UDTSchemaInfoData> datasource) => datasource.Select(schemaInfoData => new UDTResultData
+        public List<UDTResultData> Convert(List<UDTSchemaInfoData> datasource)
         {
-          name = schemaInfoData.name,
-          sqlString = scriptBuilder.CreateScriptUDT(schemaInfoData),
-          schemaId = schemaInfoData.id
+            Console.WriteLine("Convert : listSchema =>" + datasource.Count );
+            var result =  datasource.Select(schemaInfoData => new UDTResultData
+            {
+                name = schemaInfoData.name,
+                sqlString = scriptBuilder.CreateScriptUDT(schemaInfoData),
+                schemaId = schemaInfoData.id
+            }).ToList();
 
-        }).ToList();
+            Console.WriteLine("Convert result : " + result.Count);
+            return result;
+        }
     }
 }

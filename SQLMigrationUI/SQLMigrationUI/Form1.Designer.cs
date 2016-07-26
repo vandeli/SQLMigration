@@ -45,6 +45,7 @@
             this.btnConvert = new System.Windows.Forms.Button();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.btnNew = new System.Windows.Forms.Button();
             this.btnSaveDb = new System.Windows.Forms.Button();
             this.txtPath = new System.Windows.Forms.TextBox();
             this.button5 = new System.Windows.Forms.Button();
@@ -64,12 +65,13 @@
             this.button2 = new System.Windows.Forms.Button();
             this.btnSaveQuery = new System.Windows.Forms.Button();
             this.txtResult = new System.Windows.Forms.TextBox();
+            this.tabPage10 = new System.Windows.Forms.TabPage();
+            this.txtLog = new System.Windows.Forms.TextBox();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.label4 = new System.Windows.Forms.Label();
             this.txtConfigPath = new System.Windows.Forms.TextBox();
             this.button4 = new System.Windows.Forms.Button();
-            this.lbNotif = new System.Windows.Forms.Label();
-            this.btnNew = new System.Windows.Forms.Button();
+            this.LblLog = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.uDTManagerBindingSource)).BeginInit();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -80,6 +82,7 @@
             this.tabPage4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DGUDT)).BeginInit();
             this.tabPage3.SuspendLayout();
+            this.tabPage10.SuspendLayout();
             this.SuspendLayout();
             // 
             // label1
@@ -194,6 +197,7 @@
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage2);
             this.tabControl1.Controls.Add(this.tabPage3);
+            this.tabControl1.Controls.Add(this.tabPage10);
             this.tabControl1.Location = new System.Drawing.Point(12, 39);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
@@ -218,6 +222,15 @@
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Config";
             this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // btnNew
+            // 
+            this.btnNew.Location = new System.Drawing.Point(6, 264);
+            this.btnNew.Name = "btnNew";
+            this.btnNew.Size = new System.Drawing.Size(79, 23);
+            this.btnNew.TabIndex = 32;
+            this.btnNew.Text = "New ";
+            this.btnNew.UseVisualStyleBackColor = true;
             // 
             // btnSaveDb
             // 
@@ -300,7 +313,7 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(726, 349);
+            this.tabPage2.Size = new System.Drawing.Size(726, 339);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Schema";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -383,7 +396,7 @@
             this.tabPage3.Location = new System.Drawing.Point(4, 22);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(726, 349);
+            this.tabPage3.Size = new System.Drawing.Size(726, 339);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Result";
             this.tabPage3.UseVisualStyleBackColor = true;
@@ -415,6 +428,27 @@
             this.txtResult.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.txtResult.Size = new System.Drawing.Size(714, 244);
             this.txtResult.TabIndex = 0;
+            // 
+            // tabPage10
+            // 
+            this.tabPage10.Controls.Add(this.txtLog);
+            this.tabPage10.Location = new System.Drawing.Point(4, 22);
+            this.tabPage10.Name = "tabPage10";
+            this.tabPage10.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage10.Size = new System.Drawing.Size(726, 339);
+            this.tabPage10.TabIndex = 3;
+            this.tabPage10.Text = "Log";
+            this.tabPage10.UseVisualStyleBackColor = true;
+            // 
+            // txtLog
+            // 
+            this.txtLog.Location = new System.Drawing.Point(6, 6);
+            this.txtLog.Multiline = true;
+            this.txtLog.Name = "txtLog";
+            this.txtLog.ScrollBars = System.Windows.Forms.ScrollBars.Both;
+            this.txtLog.Size = new System.Drawing.Size(714, 337);
+            this.txtLog.TabIndex = 1;
+            this.txtLog.WordWrap = false;
             // 
             // comboBox1
             // 
@@ -451,31 +485,20 @@
             this.button4.Text = "B";
             this.button4.UseVisualStyleBackColor = true;
             // 
-            // lbNotif
+            // LblLog
             // 
-            this.lbNotif.AutoSize = true;
-            this.lbNotif.Location = new System.Drawing.Point(11, 409);
-            this.lbNotif.Name = "lbNotif";
-            this.lbNotif.Size = new System.Drawing.Size(35, 13);
-            this.lbNotif.TabIndex = 29;
-            this.lbNotif.Text = "label3";
-            // 
-            // btnNew
-            // 
-            this.btnNew.Location = new System.Drawing.Point(6, 264);
-            this.btnNew.Name = "btnNew";
-            this.btnNew.Size = new System.Drawing.Size(79, 23);
-            this.btnNew.TabIndex = 32;
-            this.btnNew.Text = "New ";
-            this.btnNew.UseVisualStyleBackColor = true;
-
+            this.LblLog.Location = new System.Drawing.Point(16, 417);
+            this.LblLog.Name = "LblLog";
+            this.LblLog.Size = new System.Drawing.Size(720, 13);
+            this.LblLog.TabIndex = 29;
+            this.LblLog.Text = "Log :";
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(758, 426);
-            this.Controls.Add(this.lbNotif);
+            this.ClientSize = new System.Drawing.Size(758, 447);
+            this.Controls.Add(this.LblLog);
             this.Controls.Add(this.button4);
             this.Controls.Add(this.txtConfigPath);
             this.Controls.Add(this.label4);
@@ -501,6 +524,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.DGUDT)).EndInit();
             this.tabPage3.ResumeLayout(false);
             this.tabPage3.PerformLayout();
+            this.tabPage10.ResumeLayout(false);
+            this.tabPage10.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -545,9 +570,14 @@
         private System.Windows.Forms.TabControl tabControl3;
         private System.Windows.Forms.TabPage tabPage8;
         private System.Windows.Forms.TabPage tabPage9;
+
         private System.Windows.Forms.Button btnSaveDb;
-        private System.Windows.Forms.Label lbNotif;
         private System.Windows.Forms.Button btnNew;
+
+        private System.Windows.Forms.Label LblLog;
+        private System.Windows.Forms.TabPage tabPage10;
+        private System.Windows.Forms.TextBox txtLog;
+
     }
 }
 
