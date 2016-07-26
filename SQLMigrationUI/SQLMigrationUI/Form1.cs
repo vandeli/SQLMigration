@@ -24,31 +24,23 @@ namespace SQLMigration.UI
         List<ConfigData> globalListConfig;
         ConfigData globalConfig;
 
-    //    private readonly ICoreDB coreDb;
-
-
         public Form1()
-        {
-            ConfigData cData = new ConfigData();
-            this.coreDb = of.GetInstanceCoreDB(Properties.Settings.Default.configPath);
+        {            
+            coreDb = of.GetInstanceCoreDB(Properties.Settings.Default.configPath);
             if(!File.Exists(Properties.Settings.Default.configPath))
                 coreDb.CreateTable<ConfigData>();
             InitializeComponent();
-            InitComboBox();
-           
+            InitComboBox();         
           
         }
 
         public void ProsesManager(String pilihan, ConfigData configdata)
         {
-
-         
+                     
             StringBuilder scriptStringBuilder = new StringBuilder();
             foreach (var udtResultData in configdata.listUDTResultInfo)
             {
-
                 scriptStringBuilder.AppendLine(udtResultData.sqlString);
-
             }
 
             txtResult.Text = scriptStringBuilder.ToString();
@@ -58,7 +50,7 @@ namespace SQLMigration.UI
             DGUDT.Refresh();
 
             IFileManager fileManager = of.GEtInstanceFileManager();
-            //fileManager.CreateFile(scriptStringBuilder.ToString(), configdata.OutputPath + @"\UDTScript.sql");
+         
         }
 
         private void InitComboBox()
@@ -145,12 +137,10 @@ namespace SQLMigration.UI
 
         private void Form1_Load(object sender, EventArgs e)
         {
-
             var listConfig = coreDb.GetList<ConfigData>();
             globalListConfig = listConfig;
-            var selectData = listConfig[0];
+            var selectData = listConfig[0];           
             globalConfig = selectData;
-
 
             var database = selectData.Source;
 
@@ -168,37 +158,6 @@ namespace SQLMigration.UI
             logger.OnValueChange += LoggerOnOnValueChange;
 
         
-            //### testing purpose only, delete when done #####
-            ManagementObjectSearcher searcher = new ManagementObjectSearcher("SELECT UserName FROM Win32_ComputerSystem");
-            ManagementObjectCollection collection = searcher.Get();
-            string username = (string)collection.Cast<ManagementBaseObject>().First()["UserName"];
-            txtConfigPath.Text = Properties.Settings.Default.configPath;
-            
-            switch (username)
-            {
-                case @"KONTINUM22\ibnu":
-                  
-
-                    //txtServer.Text = @"KEA-IBNU\SQLSERVER2012";
-                    //txtUsername.Text = "sa";
-                    //txtPassword.Text = "12345";
-                    //txtDatabase.Text = "padma_live";
-                    //txtPath.Text = @"..\Output\";
-                    //txtConfigName.Text = "Index_pgSQL.sql";
-                    break;
-
-                case @"KONTINUM22\bintang":
-
-                    txtServer.Text = @"KEA-BINTANG\SQLSERVER2014";
-                    txtUsername.Text = "sa";
-                    txtPassword.Text = "12345";
-                    txtDatabase.Text = "Reckitt2";
-                    txtPath.Text = @"..\Output\";
-                    //txtConfigName.Text = "UDT_pgSQL.sql";
-                    break;
-
-            }
-            //############################################################333
 
         }
 
@@ -222,20 +181,12 @@ namespace SQLMigration.UI
             if (!validate && !isNull) return;
             try
             {
-                var param = new DBData
-                {
-                    serverName = txtServer.Text,
-                    userName = txtUsername.Text,
-                    password = txtPassword.Text,
-                    dbName = txtDatabase.Text
-                };
-                var xData = new ConfigData
-                {
-                    Source = param,
-                    OutputPath = txtPath.Text
-                };
+                var listConfig = globalListConfig;
+                comboBox1.DisplayMember = "name";
+                comboBox1.ValueMember = "id";
+                var selectData = listConfig.Where(sumber => sumber.id == comboBox1.SelectedValue.ToString()).SingleOrDefault();
 
-                ProsesManager(cboProcess.Text, xData);
+                ProsesManager(cboProcess.Text, selectData);
             }
             catch (Exception ex)
             {
@@ -261,70 +212,78 @@ namespace SQLMigration.UI
         private void btnSaveDb_Click(object sender, EventArgs e)
         {
             var isExist = true;
-            var listConfig = coreDb.GetList<ConfigData>();
-          
+            var listConfig = globalListConfig;
+            var xData = globalConfig;
             foreach (ConfigData configName in listConfig)
             {
                 if (comboBox1.Text == configName.name)
                 {
                     isExist = false;
-                    MessageBox.Show("DataBase Config Name already exist");
+                    MessageBox.Show("Config Name Already exist");
                 }
 
             }
             var validate = ValidateInput();
-            if (validate && isExist)             
+            if (validate && isExist)
             {
                 try
                 {
-                    var param = new DBData
-                    {
-                        serverName = txtServer.Text,
-                        userName = txtUsername.Text,
-                        password = txtPassword.Text,
-                        dbName = txtDatabase.Text
-                    };
-                    var xData = new ConfigData
-                    {
-                        Source = param,
-                        name = comboBox1.Text,
-                        OutputPath = txtPath.Text
-                    };
+                    //var param = new DBData
+                    //{
+                    //    serverName = txtServer.Text,
+                    //    userName = txtUsername.Text,
+                    //    password = txtPassword.Text,
+                    //    dbName = txtDatabase.Text
+                    //};
+                    //var xData = new ConfigData
+                    //{
+                    //    Source = param,
+                    //    name = comboBox1.Text,
+                    //    OutputPath = txtPath.Text
+                    //};
+
                     udtManager = of.GetInstanceUdtManager();
                     xData.listUDTSchemaInfo = udtManager.GetSchema(xData);
                     xData.listUDTResultInfo = udtManager.Convert(xData.listUDTSchemaInfo);
+
                     coreDb.Insert(xData);
-                    comboBox1.Refresh();
-                  
-                    refreshList();
-                   
+                   // comboBox1.Refresh();
+                  //  refreshList();
+                    MessageBox.Show("Data Config created.");
                 }
+              
+
                 catch (Exception ex)
                 {
                     MessageBox.Show(ex.Message);
                 }
             }
+          
         }
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            var listConfig = coreDb.GetList<ConfigData>();
-            var selectData = listConfig.Where(sumber => sumber.name == comboBox1.Text).ToList();
-            var database = selectData.Select(d => d.Source).ToList();
 
-            foreach (ConfigData cd in selectData)
-            {
-                txtPath.Text = cd.OutputPath;
-            }
+            var listConfig = globalListConfig;
 
-            foreach (DBData item in database)
-            {
-                txtDatabase.Text = item.dbName;
-                txtServer.Text = item.serverName;
-                txtUsername.Text = item.userName;
-                txtPassword.Text = item.password;
-            }
-        }       
+            comboBox1.DisplayMember = "name";
+            comboBox1.ValueMember = "id";
+
+
+            var selectedValue = comboBox1.SelectedValue.ToString();
+            var selectData = listConfig.Where(sumber => sumber.id == selectedValue).SingleOrDefault();
+
+            globalConfig = selectData;
+            var database = selectData.Source;
+
+
+            txtPath.Text = selectData.OutputPath;
+            txtDatabase.Text = database.dbName;
+            txtServer.Text = database.serverName;
+            txtUsername.Text = database.userName;
+            txtPassword.Text = database.password;
+
+        }
 
         private void refreshList()
         {
@@ -339,6 +298,7 @@ namespace SQLMigration.UI
             var selectData = listConfig[0];
             comboBox1.Text = selectData.name;
             globalConfig = selectData;
+            globalListConfig = listConfig;
 
             var database = selectData.Source;
 
@@ -365,8 +325,9 @@ namespace SQLMigration.UI
             txtPassword.DataBindings.Clear();
             txtDatabase.DataBindings.Clear();
             txtPath.DataBindings.Clear();
-            
-            
+            comboBox1.DataBindings.Clear();
+
+
             if (config == null) return;
 
             comboBox1.DataSource = new BindingSource(listConfig, null);
@@ -375,7 +336,7 @@ namespace SQLMigration.UI
             comboBox1.Refresh();
 
 
-
+            comboBox1.DataBindings.Add("Text", config, "name", false, DataSourceUpdateMode.OnPropertyChanged);
             txtServer.DataBindings.Add("Text", database, "serverName", false, DataSourceUpdateMode.OnPropertyChanged);
             txtUsername.DataBindings.Add("Text", database, "userName", false, DataSourceUpdateMode.OnPropertyChanged);
             txtPassword.DataBindings.Add("Text", database, "password", false, DataSourceUpdateMode.OnPropertyChanged);
@@ -406,6 +367,7 @@ namespace SQLMigration.UI
                     OutputPath = @"..\Output\",
                     updated = "",                    
                 };
+
                 globalConfig = configNew;
                 globalListConfig = new List<ConfigData>();
                 BindControls();
@@ -420,6 +382,23 @@ namespace SQLMigration.UI
         private static void ShowWarnMessage(String message)
         {
             MessageBox.Show(message, "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+        }
+
+        private void btnUpdate_Click(object sender, EventArgs e)
+        {
+          
+            try
+            {
+              
+                coreDb.Update(globalConfig);
+                comboBox1.Refresh();               
+                MessageBox.Show("Data Config updated.");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            
         }
     }
 }
