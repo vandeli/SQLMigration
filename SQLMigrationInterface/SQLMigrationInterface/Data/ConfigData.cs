@@ -28,8 +28,10 @@ namespace SQLMigration.Interface.Data
 
         public override string ToString()
         {
-            return string.Format("{0}, Destination: {1}, listUDTResultInfo: {2}, listUDTSchemaInfo: {3}, OutputPath: {4}, Source: {5}", 
-                base.ToString(), Destination, listUDTResultInfo, listUDTSchemaInfo, OutputPath, Source);
+            return string.Format("ConfigData => {0} OutputPath: {4} , \r\n " +
+                                 "Destination: {1}, Source: {5}, \r\n" +
+                                 "listUDTResultInfo: {2}, listUDTSchemaInfo: {3}", 
+                base.ToString(), Destination, listUDTResultInfo.Count, listUDTSchemaInfo.Count, OutputPath, Source);
         }
     }
 }

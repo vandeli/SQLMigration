@@ -19,6 +19,7 @@ namespace SQLMigration.OF
         static IUDTManager udtManager;
         static IFileManager fileManager;
         static ICoreDB coreDb;
+        private static ILogger logger;
         public IUDTManager GetInstanceUdtManager()
         {
             if (udtManager != null) return udtManager;
@@ -35,7 +36,7 @@ namespace SQLMigration.OF
         }
 
         public IFileManager GEtInstanceFileManager()
-        {
+        {                                                                        
             if (fileManager != null) return fileManager;
 
             fileManager = new FileManager();
@@ -47,10 +48,18 @@ namespace SQLMigration.OF
         {
             if (coreDb != null) return coreDb;
 
-
+            fileManager = GEtInstanceFileManager();
             coreDb = new DbXml(filePath, fileManager);
 
             return coreDb;
         }
+
+
+        public ILogger GetInstanceLogger()
+        {
+            if (logger != null) return logger;
+            logger = new Logger();
+            return logger;
+        }  
     }
 }

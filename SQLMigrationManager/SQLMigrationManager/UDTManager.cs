@@ -29,7 +29,9 @@ namespace SQLMigrationManager
         {
             Console.WriteLine("GetSchema : " + configData);
             var dt = dataAccess.GetDataTable(configData.Source, sourceQuery.GetUDTQuery());
-            return GetSchemaDataFromDt(dt);
+            var listSchema =  GetSchemaDataFromDt(dt);
+            Console.WriteLine("GetSchema result : listSchema => " + listSchema.Count);
+            return listSchema;
         }
 
         private static List<UDTSchemaInfoData> GetSchemaDataFromDt(DataTable dt)
@@ -53,13 +55,16 @@ namespace SQLMigrationManager
 
         public List<UDTResultData> Convert(List<UDTSchemaInfoData> datasource)
         {
-            Console.WriteLine("Convert : " + datasource.Count );
-            return datasource.Select(schemaInfoData => new UDTResultData
+            Console.WriteLine("Convert : listSchema =>" + datasource.Count );
+            var result =  datasource.Select(schemaInfoData => new UDTResultData
             {
                 name = schemaInfoData.name,
                 sqlString = scriptBuilder.CreateScriptUDT(schemaInfoData),
                 schemaId = schemaInfoData.id
             }).ToList();
+
+            Console.WriteLine("Convert result : " + result.Count);
+            return result;
         }
     }
 }

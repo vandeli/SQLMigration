@@ -143,6 +143,12 @@ namespace SQLMigration.UI
 
         private void Form1_Load(object sender, EventArgs e)
         {
+
+            ILogger logger = of.GetInstanceLogger();
+            Console.SetOut(logger.GetWriter());
+
+            logger.OnValueChange += LoggerOnOnValueChange;
+
             //  public static string configPath;
 
             //### testing purpose only, delete when done #####
@@ -176,6 +182,12 @@ namespace SQLMigration.UI
             }
             //############################################################333
 
+        }
+
+        private void LoggerOnOnValueChange(string value)
+        {
+            LblLog.Text = value;
+            txtLog.AppendText( System.Environment.NewLine + value);
         }
 
         private void btnConvert_Click_1(object sender, EventArgs e)

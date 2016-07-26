@@ -44,6 +44,7 @@
     <Compile Include="DB\DataAccess.cs" />
     <Compile Include="DB\DbXml.cs" />
     <Compile Include="IO\FileManager.cs" />
+    <Compile Include="IO\Logger.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

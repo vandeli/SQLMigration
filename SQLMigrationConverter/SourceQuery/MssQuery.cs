@@ -7,8 +7,7 @@ namespace SQLMigrationConverter.SourceQuery
     {
         public string GetUDTQuery()
         {
-            Console.WriteLine("GetUDTQuery...");
-            return @"
+            var sql = @"
 			SELECT st.NAME
 				,bs.[name] AS data_type
 				,st.max_length
@@ -22,6 +21,8 @@ namespace SQLMigrationConverter.SourceQuery
 			ORDER BY st.[name]
 				,ss.[name]
 			";
+            Console.WriteLine("GetUDTQuery Result : " + sql);
+            return sql;
         }
     }
 }

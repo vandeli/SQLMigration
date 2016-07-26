@@ -67,6 +67,9 @@
             this.label4 = new System.Windows.Forms.Label();
             this.txtConfigPath = new System.Windows.Forms.TextBox();
             this.button4 = new System.Windows.Forms.Button();
+            this.LblLog = new System.Windows.Forms.Label();
+            this.tabPage10 = new System.Windows.Forms.TabPage();
+            this.txtLog = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.uDTManagerBindingSource)).BeginInit();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -77,6 +80,7 @@
             this.tabPage4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DGUDT)).BeginInit();
             this.tabPage3.SuspendLayout();
+            this.tabPage10.SuspendLayout();
             this.SuspendLayout();
             // 
             // label1
@@ -191,6 +195,7 @@
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage2);
             this.tabControl1.Controls.Add(this.tabPage3);
+            this.tabControl1.Controls.Add(this.tabPage10);
             this.tabControl1.Location = new System.Drawing.Point(12, 39);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
@@ -435,11 +440,42 @@
             this.button4.Text = "B";
             this.button4.UseVisualStyleBackColor = true;
             // 
+            // LblLog
+            // 
+            this.LblLog.AutoSize = true;
+            this.LblLog.Location = new System.Drawing.Point(16, 417);
+            this.LblLog.Name = "LblLog";
+            this.LblLog.Size = new System.Drawing.Size(31, 13);
+            this.LblLog.TabIndex = 29;
+            this.LblLog.Text = "Log :";
+            // 
+            // tabPage10
+            // 
+            this.tabPage10.Controls.Add(this.txtLog);
+            this.tabPage10.Location = new System.Drawing.Point(4, 22);
+            this.tabPage10.Name = "tabPage10";
+            this.tabPage10.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage10.Size = new System.Drawing.Size(726, 349);
+            this.tabPage10.TabIndex = 3;
+            this.tabPage10.Text = "Log";
+            this.tabPage10.UseVisualStyleBackColor = true;
+            // 
+            // txtLog
+            // 
+            this.txtLog.Location = new System.Drawing.Point(6, 6);
+            this.txtLog.Multiline = true;
+            this.txtLog.Name = "txtLog";
+            this.txtLog.ScrollBars = System.Windows.Forms.ScrollBars.Both;
+            this.txtLog.Size = new System.Drawing.Size(714, 337);
+            this.txtLog.TabIndex = 1;
+            this.txtLog.WordWrap = false;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(758, 426);
+            this.ClientSize = new System.Drawing.Size(758, 447);
+            this.Controls.Add(this.LblLog);
             this.Controls.Add(this.button4);
             this.Controls.Add(this.txtConfigPath);
             this.Controls.Add(this.label4);
@@ -465,6 +501,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.DGUDT)).EndInit();
             this.tabPage3.ResumeLayout(false);
             this.tabPage3.PerformLayout();
+            this.tabPage10.ResumeLayout(false);
+            this.tabPage10.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -509,6 +547,9 @@
         private System.Windows.Forms.TabControl tabControl3;
         private System.Windows.Forms.TabPage tabPage8;
         private System.Windows.Forms.TabPage tabPage9;
+        private System.Windows.Forms.Label LblLog;
+        private System.Windows.Forms.TabPage tabPage10;
+        private System.Windows.Forms.TextBox txtLog;
     }
 }
 

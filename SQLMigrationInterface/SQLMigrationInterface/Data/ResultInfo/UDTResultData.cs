@@ -19,7 +19,7 @@ namespace SQLMigration.Data.ResultInfo
 
         public override string ToString()
         {
-            return string.Format("{0}, schemaId: {1}, sqlString: {2}", base.ToString(), schemaId, sqlString);
+            return string.Format("UDTResultData => {0}, schemaId: {1}, sqlString: {2}", base.ToString(), schemaId, sqlString);
         }
     }
 }

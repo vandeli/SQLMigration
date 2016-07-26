@@ -42,8 +42,9 @@ namespace SQLMigration.Converter.ScriptBuilder
                         schemaInfo.name, convertedDataType,
                         (schemaInfo.IsNullable ? "" : " NOT NULL"));
             }
-           
 
+
+            Console.WriteLine("CreateScriptUDT Result : " + result);
 
             return result;
 
