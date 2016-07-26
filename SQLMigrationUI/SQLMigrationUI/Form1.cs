@@ -21,6 +21,7 @@ namespace SQLMigration.UI
         private IUDTManager udtManager;
 
         ICoreDB coreDb;
+        List<ConfigData> globalListConfig;
         ConfigData globalConfig;
 
     //    private readonly ICoreDB coreDb;
@@ -145,7 +146,21 @@ namespace SQLMigration.UI
         private void Form1_Load(object sender, EventArgs e)
         {
 
-            refreshList();
+            var listConfig = coreDb.GetList<ConfigData>();
+            globalListConfig = listConfig;
+            var selectData = listConfig[0];
+            globalConfig = selectData;
+
+
+            var database = selectData.Source;
+
+            txtDatabase.Text = database.dbName;
+            txtServer.Text = database.serverName;
+            txtUsername.Text = database.userName;
+            txtPassword.Text = database.password;
+            BindControls();
+            
+            comboBox1.Text = selectData.name;
 
             ILogger logger = of.GetInstanceLogger();
             Console.SetOut(logger.GetWriter());
@@ -297,6 +312,11 @@ namespace SQLMigration.UI
             var selectData = listConfig.Where(sumber => sumber.name == comboBox1.Text).ToList();
             var database = selectData.Select(d => d.Source).ToList();
 
+            foreach (ConfigData cd in selectData)
+            {
+                txtPath.Text = cd.OutputPath;
+            }
+
             foreach (DBData item in database)
             {
                 txtDatabase.Text = item.dbName;
@@ -304,34 +324,102 @@ namespace SQLMigration.UI
                 txtUsername.Text = item.userName;
                 txtPassword.Text = item.password;
             }
-        }
-
-       
+        }       
 
         private void refreshList()
         {
             var listConfig = coreDb.GetList<ConfigData>();
             var total = listConfig.Count;
-           
+
             comboBox1.DisplayMember = "name";
             comboBox1.ValueMember = "id";
             comboBox1.DataSource = listConfig;
             comboBox1.Refresh();
-           
-           var selectData = listConfig[total-1]; 
+
+            var selectData = listConfig[0];
             comboBox1.Text = selectData.name;
             globalConfig = selectData;
+
             var database = selectData.Source;
 
             txtDatabase.Text = database.dbName;
             txtServer.Text = database.serverName;
             txtUsername.Text = database.userName;
             txtPassword.Text = database.password;
+            txtPath.Text = selectData.OutputPath;
 
             DGUDT.DataSource = globalConfig.listUDTSchemaInfo;
             DGUDT.Refresh();
         }
 
-      
+        private void BindControls()
+        {
+            var listConfig = globalListConfig;
+            var config = globalConfig;
+            var database = globalConfig.Source;
+
+            comboBox1.Text = "";
+            comboBox1.DataBindings.Clear();
+            txtServer.DataBindings.Clear();
+            txtUsername.DataBindings.Clear();
+            txtPassword.DataBindings.Clear();
+            txtDatabase.DataBindings.Clear();
+            txtPath.DataBindings.Clear();
+            
+            
+            if (config == null) return;
+
+            comboBox1.DataSource = new BindingSource(listConfig, null);
+            comboBox1.DisplayMember = "name";
+            comboBox1.ValueMember = "id";
+            comboBox1.Refresh();
+
+
+
+            txtServer.DataBindings.Add("Text", database, "serverName", false, DataSourceUpdateMode.OnPropertyChanged);
+            txtUsername.DataBindings.Add("Text", database, "userName", false, DataSourceUpdateMode.OnPropertyChanged);
+            txtPassword.DataBindings.Add("Text", database, "password", false, DataSourceUpdateMode.OnPropertyChanged);
+            txtDatabase.DataBindings.Add("Text", database, "dbName", false, DataSourceUpdateMode.OnPropertyChanged);
+            txtPath.DataBindings.Add("Text", config, "OutputPath", false, DataSourceUpdateMode.OnPropertyChanged);
+
+            DGUDT.DataSource = globalConfig.listUDTSchemaInfo;
+            DGUDT.Refresh();
+        }
+
+        private void btnNew_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var source = new DBData
+                {                    
+                    serverName = "",
+                    dbName = "",
+                    userName = "sa",
+                    password = "12345",                   
+                };
+
+                var configNew = new ConfigData
+                {
+                    id = "",
+                    Source = source,
+                    name = "",
+                    OutputPath = @"..\Output\",
+                    updated = "",                    
+                };
+                globalConfig = configNew;
+                globalListConfig = new List<ConfigData>();
+                BindControls();
+            }
+            catch (Exception ex)
+            {
+                ShowWarnMessage(ex.Message);
+            }
+
+        }
+
+        private static void ShowWarnMessage(String message)
+        {
+            MessageBox.Show(message, "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+        }
     }
 }
