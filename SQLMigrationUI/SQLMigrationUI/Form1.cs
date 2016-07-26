@@ -148,6 +148,8 @@ namespace SQLMigration.UI
             txtServer.Text = database.serverName;
             txtUsername.Text = database.userName;
             txtPassword.Text = database.password;
+
+            BindingCboConfig();
             BindControls();
             
             comboBox1.Text = selectData.name;
@@ -213,42 +215,21 @@ namespace SQLMigration.UI
         {
             var isExist = true;
             var listConfig = globalListConfig;
-            var xData = globalConfig;
-            foreach (ConfigData configName in listConfig)
-            {
-                if (comboBox1.Text == configName.name)
-                {
-                    isExist = false;
-                    MessageBox.Show("Config Name Already exist");
-                }
 
+            foreach (ConfigData configName in listConfig.Where(configName => globalConfig.name == configName.name))
+            {
+                isExist = false;
+                MessageBox.Show("Config Name Already exist");
             }
+
             var validate = ValidateInput();
             if (validate && isExist)
             {
                 try
                 {
-                    //var param = new DBData
-                    //{
-                    //    serverName = txtServer.Text,
-                    //    userName = txtUsername.Text,
-                    //    password = txtPassword.Text,
-                    //    dbName = txtDatabase.Text
-                    //};
-                    //var xData = new ConfigData
-                    //{
-                    //    Source = param,
-                    //    name = comboBox1.Text,
-                    //    OutputPath = txtPath.Text
-                    //};
-
-                    udtManager = of.GetInstanceUdtManager();
-                    xData.listUDTSchemaInfo = udtManager.GetSchema(xData);
-                    xData.listUDTResultInfo = udtManager.Convert(xData.listUDTSchemaInfo);
-
-                    coreDb.Insert(xData);
-                   // comboBox1.Refresh();
-                  //  refreshList();
+                    
+                    coreDb.Insert(globalConfig);
+        
                     MessageBox.Show("Data Config created.");
                 }
               
@@ -264,87 +245,45 @@ namespace SQLMigration.UI
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
 
-            var listConfig = globalListConfig;
+            
 
-            comboBox1.DisplayMember = "name";
-            comboBox1.ValueMember = "id";
-
-
-            var selectedValue = comboBox1.SelectedValue.ToString();
-            var selectData = listConfig.Where(sumber => sumber.id == selectedValue).SingleOrDefault();
-
-            globalConfig = selectData;
-            var database = selectData.Source;
-
-
-            txtPath.Text = selectData.OutputPath;
-            txtDatabase.Text = database.dbName;
-            txtServer.Text = database.serverName;
-            txtUsername.Text = database.userName;
-            txtPassword.Text = database.password;
-
-        }
-
-        private void refreshList()
-        {
-            var listConfig = coreDb.GetList<ConfigData>();
-            var total = listConfig.Count;
-
-            comboBox1.DisplayMember = "name";
-            comboBox1.ValueMember = "id";
-            comboBox1.DataSource = listConfig;
-            comboBox1.Refresh();
-
-            var selectData = listConfig[0];
-            comboBox1.Text = selectData.name;
-            globalConfig = selectData;
-            globalListConfig = listConfig;
-
-            var database = selectData.Source;
-
-            txtDatabase.Text = database.dbName;
-            txtServer.Text = database.serverName;
-            txtUsername.Text = database.userName;
-            txtPassword.Text = database.password;
-            txtPath.Text = selectData.OutputPath;
-
-            DGUDT.DataSource = globalConfig.listUDTSchemaInfo;
-            DGUDT.Refresh();
         }
 
         private void BindControls()
         {
-            var listConfig = globalListConfig;
-            var config = globalConfig;
-            var database = globalConfig.Source;
+         
 
-            comboBox1.Text = "";
+ 
             comboBox1.DataBindings.Clear();
             txtServer.DataBindings.Clear();
             txtUsername.DataBindings.Clear();
             txtPassword.DataBindings.Clear();
             txtDatabase.DataBindings.Clear();
             txtPath.DataBindings.Clear();
-            comboBox1.DataBindings.Clear();
 
 
-            if (config == null) return;
+            if (globalConfig == null) return;
 
-            comboBox1.DataSource = new BindingSource(listConfig, null);
-            comboBox1.DisplayMember = "name";
-            comboBox1.ValueMember = "id";
-            comboBox1.Refresh();
+            
 
 
-            comboBox1.DataBindings.Add("Text", config, "name", false, DataSourceUpdateMode.OnPropertyChanged);
-            txtServer.DataBindings.Add("Text", database, "serverName", false, DataSourceUpdateMode.OnPropertyChanged);
-            txtUsername.DataBindings.Add("Text", database, "userName", false, DataSourceUpdateMode.OnPropertyChanged);
-            txtPassword.DataBindings.Add("Text", database, "password", false, DataSourceUpdateMode.OnPropertyChanged);
-            txtDatabase.DataBindings.Add("Text", database, "dbName", false, DataSourceUpdateMode.OnPropertyChanged);
-            txtPath.DataBindings.Add("Text", config, "OutputPath", false, DataSourceUpdateMode.OnPropertyChanged);
+            comboBox1.DataBindings.Add("Text", globalConfig, "name", false, DataSourceUpdateMode.OnPropertyChanged);
+            txtServer.DataBindings.Add("Text", globalConfig.Source, "serverName", false, DataSourceUpdateMode.OnPropertyChanged);
+            txtUsername.DataBindings.Add("Text", globalConfig.Source, "userName", false, DataSourceUpdateMode.OnPropertyChanged);
+            txtPassword.DataBindings.Add("Text", globalConfig.Source, "password", false, DataSourceUpdateMode.OnPropertyChanged);
+            txtDatabase.DataBindings.Add("Text", globalConfig.Source, "dbName", false, DataSourceUpdateMode.OnPropertyChanged);
+            txtPath.DataBindings.Add("Text", globalConfig, "OutputPath", false, DataSourceUpdateMode.OnPropertyChanged);
 
             DGUDT.DataSource = globalConfig.listUDTSchemaInfo;
             DGUDT.Refresh();
+        }
+
+        private void BindingCboConfig()
+        {
+            comboBox1.DataSource = new BindingSource(globalListConfig, null);
+            comboBox1.DisplayMember = "name";
+            comboBox1.ValueMember = "id";
+            comboBox1.Refresh();
         }
 
         private void btnNew_Click(object sender, EventArgs e)
@@ -399,6 +338,17 @@ namespace SQLMigration.UI
                 MessageBox.Show(ex.Message);
             }
             
+        }
+
+        private void comboBox1_Leave(object sender, EventArgs e)
+        {
+           
+             if(comboBox1.SelectedValue == null )
+                return;
+            
+            var selectedValue = comboBox1.SelectedValue.ToString();
+            globalConfig = coreDb.Find<ConfigData>(selectedValue);
+            BindControls();
         }
     }
 }
