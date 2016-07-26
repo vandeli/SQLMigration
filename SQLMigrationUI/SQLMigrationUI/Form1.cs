@@ -3,7 +3,7 @@ using EasyTools.Interface.DB;
 using EasyTools.Interface.IO;
 using SQLMigration.Interface.Data;
 using SQLMigration.Interface.Interface.Manager;
-using SQLMigrationOF;
+using SQLMigration.OF;
 using System;
 using System.IO;
 using System.Linq;
@@ -16,9 +16,9 @@ namespace SQLMigration.UI
 {
     public partial class Form1 : Form
     {
-        private OF of = new OF();
+        private readonly UIOF of = new UIOF();
         private IUDTManager udtManager;
-        ICoreDB coreDb;
+        private readonly ICoreDB coreDb;
 
         public Form1()
         {
