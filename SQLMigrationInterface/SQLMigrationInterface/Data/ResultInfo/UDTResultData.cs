@@ -1,7 +1,7 @@
 ﻿using System;
 using EasyTools.Data;
 
-namespace SQLMigration.Interface.Data.ResultInfo
+namespace SQLMigration.Data.ResultInfo
 {
     public class UDTResultData : BaseData
     {

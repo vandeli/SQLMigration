@@ -1,14 +1,14 @@
 ﻿using System;
 using EasyTools.Interface.DB;
 using SQLMigration.Interface.Data;
-using SQLMigration.Interface.Data.ResultInfo;
-using SQLMigration.Interface.Data.SchemaInfo;
 using SQLMigration.Interface.Interface.Manager;
 using SQLMigrationInterface.Interface.ScriptBuilder;
 using SQLMigrationInterface.Interface.SourceQuery;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using SQLMigration.Data.ResultInfo;
+using SQLMigration.Data.SchemaInfo;
 
 namespace SQLMigrationManager
 {

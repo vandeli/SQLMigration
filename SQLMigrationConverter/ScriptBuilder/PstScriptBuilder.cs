@@ -1,9 +1,9 @@
 ﻿
-using SQLMigration.Interface.Data.SchemaInfo;
 using SQLMigrationInterface.Interface.ScriptBuilder;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using SQLMigration.Data.SchemaInfo;
 
 namespace SQLMigration.Converter.ScriptBuilder
 {

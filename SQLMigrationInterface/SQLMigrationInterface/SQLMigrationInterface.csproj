@@ -38,6 +38,9 @@
   <ItemGroup>
     <Compile Include="Data\ConfigData.cs" />
     <Compile Include="Data\ResultInfo\UDTResultData.cs" />
+    <Compile Include="Data\SchemaInfo\IndexSchemaInfoData.cs" />
+    <Compile Include="Data\SchemaInfo\PKSchemaInfoData.cs" />
+    <Compile Include="Data\SchemaInfo\TableSchemaInfoData.cs" />
     <Compile Include="Data\SchemaInfo\UDTSchemaInfoData.cs" />
     <Compile Include="Interface\ScriptBuilder\IScriptBuilder.cs" />
     <Compile Include="Interface\SourceQuery\ISourceQuery.cs" />

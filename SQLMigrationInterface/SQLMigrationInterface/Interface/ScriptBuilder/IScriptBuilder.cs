@@ -1,4 +1,4 @@
-﻿using SQLMigration.Interface.Data.SchemaInfo;
+﻿using SQLMigration.Data.SchemaInfo;
 
 namespace SQLMigrationInterface.Interface.ScriptBuilder
 {
