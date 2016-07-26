@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace EasyTools.Data
 {
@@ -9,6 +10,10 @@ namespace EasyTools.Data
         public String password = "";
         public String dbName = "";
 
+        public static implicit operator List<object>(DBData v)
+        {
+            throw new NotImplementedException();
+        }
     }
 
 

@@ -17,6 +17,7 @@ namespace SQLMigration.Interface.Data
             id = Guid.NewGuid().ToString();  
             listUDTSchemaInfo = new List<UDTSchemaInfoData>();
             listUDTResultInfo = new List<UDTResultData>();
+            name = "";
         }
         public DBData Destination { get; set; }
         public string OutputPath { get; set; }

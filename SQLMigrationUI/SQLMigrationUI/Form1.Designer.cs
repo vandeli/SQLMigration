@@ -45,6 +45,7 @@
             this.btnConvert = new System.Windows.Forms.Button();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.btnSaveDb = new System.Windows.Forms.Button();
             this.txtPath = new System.Windows.Forms.TextBox();
             this.button5 = new System.Windows.Forms.Button();
             this.tabControl3 = new System.Windows.Forms.TabControl();
@@ -67,6 +68,8 @@
             this.label4 = new System.Windows.Forms.Label();
             this.txtConfigPath = new System.Windows.Forms.TextBox();
             this.button4 = new System.Windows.Forms.Button();
+            this.lbNotif = new System.Windows.Forms.Label();
+            this.btnNew = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.uDTManagerBindingSource)).BeginInit();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -194,11 +197,13 @@
             this.tabControl1.Location = new System.Drawing.Point(12, 39);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(734, 375);
+            this.tabControl1.Size = new System.Drawing.Size(734, 365);
             this.tabControl1.TabIndex = 24;
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.btnNew);
+            this.tabPage1.Controls.Add(this.btnSaveDb);
             this.tabPage1.Controls.Add(this.txtPath);
             this.tabPage1.Controls.Add(this.button5);
             this.tabPage1.Controls.Add(this.lblProcess);
@@ -209,10 +214,20 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(726, 349);
+            this.tabPage1.Size = new System.Drawing.Size(726, 339);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Config";
             this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // btnSaveDb
+            // 
+            this.btnSaveDb.Location = new System.Drawing.Point(90, 264);
+            this.btnSaveDb.Name = "btnSaveDb";
+            this.btnSaveDb.Size = new System.Drawing.Size(79, 23);
+            this.btnSaveDb.TabIndex = 31;
+            this.btnSaveDb.Text = "Save Db";
+            this.btnSaveDb.UseVisualStyleBackColor = true;
+            this.btnSaveDb.Click += new System.EventHandler(this.btnSaveDb_Click);
             // 
             // txtPath
             // 
@@ -408,6 +423,7 @@
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(287, 21);
             this.comboBox1.TabIndex = 25;
+            this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
             // 
             // label4
             // 
@@ -435,11 +451,31 @@
             this.button4.Text = "B";
             this.button4.UseVisualStyleBackColor = true;
             // 
+            // lbNotif
+            // 
+            this.lbNotif.AutoSize = true;
+            this.lbNotif.Location = new System.Drawing.Point(11, 409);
+            this.lbNotif.Name = "lbNotif";
+            this.lbNotif.Size = new System.Drawing.Size(35, 13);
+            this.lbNotif.TabIndex = 29;
+            this.lbNotif.Text = "label3";
+            // 
+            // btnNew
+            // 
+            this.btnNew.Location = new System.Drawing.Point(6, 264);
+            this.btnNew.Name = "btnNew";
+            this.btnNew.Size = new System.Drawing.Size(79, 23);
+            this.btnNew.TabIndex = 32;
+            this.btnNew.Text = "New ";
+            this.btnNew.UseVisualStyleBackColor = true;
+
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(758, 426);
+            this.Controls.Add(this.lbNotif);
             this.Controls.Add(this.button4);
             this.Controls.Add(this.txtConfigPath);
             this.Controls.Add(this.label4);
@@ -509,6 +545,9 @@
         private System.Windows.Forms.TabControl tabControl3;
         private System.Windows.Forms.TabPage tabPage8;
         private System.Windows.Forms.TabPage tabPage9;
+        private System.Windows.Forms.Button btnSaveDb;
+        private System.Windows.Forms.Label lbNotif;
+        private System.Windows.Forms.Button btnNew;
     }
 }
 

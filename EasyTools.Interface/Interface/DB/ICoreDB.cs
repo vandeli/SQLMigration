@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using EasyTools.Data;
-using EasyTools.Data;
+
 
 namespace EasyTools.Interface.DB
 {
