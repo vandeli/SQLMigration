@@ -34,7 +34,7 @@ namespace SQLMigration.UI
           
         }
 
-        public void ProsesManager(String pilihan, ConfigData configdata)
+        public void ProsesManager(String pilihan)
         {
             udtManager = of.GetInstanceUdtManager();
             globalConfig.listUDTSchemaInfo = udtManager.GetSchema(globalConfig);
