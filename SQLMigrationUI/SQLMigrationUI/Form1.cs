@@ -137,27 +137,28 @@ namespace SQLMigration.UI
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            ILogger logger = of.GetInstanceLogger();
+            Console.SetOut(logger.GetWriter());
+
+            logger.OnValueChange += LoggerOnOnValueChange;
+
             var listConfig = coreDb.GetList<ConfigData>();
             globalListConfig = listConfig;
+
+            if(listConfig.Count == 0)
+                return;
+            
             var selectData = listConfig[0];           
             globalConfig = selectData;
 
             var database = selectData.Source;
-
-            txtDatabase.Text = database.dbName;
-            txtServer.Text = database.serverName;
-            txtUsername.Text = database.userName;
-            txtPassword.Text = database.password;
-
+   
             BindingCboConfig();
             BindControls();
             
             comboBox1.Text = selectData.name;
 
-            ILogger logger = of.GetInstanceLogger();
-            Console.SetOut(logger.GetWriter());
-
-            logger.OnValueChange += LoggerOnOnValueChange;
+           
 
         
 
@@ -280,7 +281,8 @@ namespace SQLMigration.UI
 
         private void BindingCboConfig()
         {
-            comboBox1.DataSource = new BindingSource(globalListConfig, null);
+            var list = coreDb.GetList<ConfigData>();
+            comboBox1.DataSource = new BindingSource(list, null);
             comboBox1.DisplayMember = "name";
             comboBox1.ValueMember = "id";
             comboBox1.Refresh();
@@ -300,11 +302,11 @@ namespace SQLMigration.UI
 
                 var configNew = new ConfigData
                 {
-                    id = "",
+               
                     Source = source,
-                    name = "",
+                    name = "Name",
                     OutputPath = @"..\Output\",
-                    updated = "",                    
+                    updated = DateTime.Now,                    
                 };
 
                 globalConfig = configNew;
@@ -329,8 +331,9 @@ namespace SQLMigration.UI
             try
             {
               
-                coreDb.Update(globalConfig);
-                comboBox1.Refresh();               
+                coreDb.Update(globalConfig);  
+                BindingCboConfig(); 
+                BindControls();         
                 MessageBox.Show("Data Config updated.");
             }
             catch (Exception ex)

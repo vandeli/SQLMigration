@@ -14,7 +14,7 @@ namespace SQLMigration.Data.ResultInfo
             name = "";
             sqlString = "";
             schemaId = "";
-            updated = string.Format("{0:dd/MM/yyy HH:mm:ss}", DateTime.Now);
+            updated =DateTime.Now;
         }
 
         public override string ToString()

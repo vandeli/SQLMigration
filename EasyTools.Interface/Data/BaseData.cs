@@ -6,7 +6,7 @@ namespace EasyTools.Data
     {
         public string id { get; set; }
         public string name { get; set; }
-        public string updated { get; set; }
+        public DateTime updated { get; set; }
 
         public override string ToString()
         {

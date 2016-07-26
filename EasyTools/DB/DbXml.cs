@@ -4,6 +4,7 @@ using EasyTools.Interface.IO;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Xml.Serialization;
 
 namespace EasyTools.DB
@@ -49,15 +50,17 @@ namespace EasyTools.DB
             xml = new XmlSerializer(typeof(List<T>));
             var stream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
             var list = (List<T>)xml.Deserialize(stream);
+            list = list.OrderBy(x => x.updated).ToList();
             stream.Close();
             return list;
         }
 
         public void Update<T>(T model) where T : BaseData, new()
-        {
+        {                   
             var list = GetList<T>();
             var data = list.Find(x => x.id == model.id);
             list.Remove(data);
+            model.updated = DateTime.Now;
             list.Add(model);
             var writer = GetWriter<T>();
             xml.Serialize(writer, list);

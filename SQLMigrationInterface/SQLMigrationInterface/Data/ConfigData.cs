@@ -14,7 +14,7 @@ namespace SQLMigration.Interface.Data
         public ConfigData()
         {
             OutputPath = "";
-            updated = string.Format("{0:dd/MM/yyy HH:mm:ss}", DateTime.Now);
+            updated =  DateTime.Now;
             id = Guid.NewGuid().ToString();  
             listUDTSchemaInfo = new List<UDTSchemaInfoData>();
             listUDTResultInfo = new List<UDTResultData>();
