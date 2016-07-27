@@ -19,6 +19,7 @@ namespace SQLMigration.OF
     public class UIOF
     {
         static IUDTManager udtManager;
+        static ITableManager tableManager;
         static IFileManager fileManager;
         static ICoreDB coreDb;
         private static ILogger logger;
@@ -36,6 +37,22 @@ namespace SQLMigration.OF
             udtManager = new UDTManager(dataAccess, scriptBuilder, schemaQuery);
 
             return udtManager;
+        }
+
+        public ITableManager GetInstanceTableManager()
+        {
+            if (tableManager != null) return tableManager;
+            var dbConn = new SqlConnection();
+            var dbCommand = new SqlCommand();
+            var dbAdapter = new SqlDataAdapter();
+
+            IDataAccess dataAccess = new DataAccess(dbConn, dbCommand, dbAdapter);
+            IScriptBuilder scriptBuilder = new PstScriptBuilder();
+            ISourceQuery schemaQuery = new MssQuery();
+            tableManager = new TableManager(dataAccess, scriptBuilder, schemaQuery);
+
+            return tableManager;
+
         }
 
         public IFileManager GEtInstanceFileManager()
