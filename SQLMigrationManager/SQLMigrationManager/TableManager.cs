@@ -42,7 +42,7 @@ namespace SQLMigrationManager
             var result = datasource.Select(schemaInfoData => new TableResultData
             {
                 name = schemaInfoData.name,
-                sqlString = scriptBuilder.CreateScriptTable(schemaInfoData),
+                sqlString = scriptBuilder.CreateScriptTable(schemaInfoData, datasource),
                 schemaId = schemaInfoData.id
             }).ToList();
 

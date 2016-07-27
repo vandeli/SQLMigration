@@ -72,6 +72,7 @@
             this.txtConfigPath = new System.Windows.Forms.TextBox();
             this.button4 = new System.Windows.Forms.Button();
             this.LblLog = new System.Windows.Forms.Label();
+            this.DGTABLE = new System.Windows.Forms.DataGridView();
             ((System.ComponentModel.ISupportInitialize)(this.uDTManagerBindingSource)).BeginInit();
             this.tabControl1.SuspendLayout();
             this.TpConfig.SuspendLayout();
@@ -81,8 +82,10 @@
             this.tabControl2.SuspendLayout();
             this.tabPage4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DGUDT)).BeginInit();
+            this.tabPage5.SuspendLayout();
             this.tabPage3.SuspendLayout();
             this.tabPage10.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.DGTABLE)).BeginInit();
             this.SuspendLayout();
             // 
             // label1
@@ -366,6 +369,7 @@
             // 
             // tabPage5
             // 
+            this.tabPage5.Controls.Add(this.DGTABLE);
             this.tabPage5.Location = new System.Drawing.Point(4, 22);
             this.tabPage5.Name = "tabPage5";
             this.tabPage5.Padding = new System.Windows.Forms.Padding(3);
@@ -500,6 +504,14 @@
             this.LblLog.TabIndex = 29;
             this.LblLog.Text = "Log :";
             // 
+            // DGTABLE
+            // 
+            this.DGTABLE.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.DGTABLE.Location = new System.Drawing.Point(6, 6);
+            this.DGTABLE.Name = "DGTABLE";
+            this.DGTABLE.Size = new System.Drawing.Size(697, 217);
+            this.DGTABLE.TabIndex = 1;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -529,10 +541,12 @@
             this.tabControl2.ResumeLayout(false);
             this.tabPage4.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.DGUDT)).EndInit();
+            this.tabPage5.ResumeLayout(false);
             this.tabPage3.ResumeLayout(false);
             this.tabPage3.PerformLayout();
             this.tabPage10.ResumeLayout(false);
             this.tabPage10.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.DGTABLE)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -584,6 +598,7 @@
         private System.Windows.Forms.Label LblLog;
         private System.Windows.Forms.TabPage tabPage10;
         private System.Windows.Forms.TextBox txtLog;
+        private System.Windows.Forms.DataGridView DGTABLE;
     }
 }
 

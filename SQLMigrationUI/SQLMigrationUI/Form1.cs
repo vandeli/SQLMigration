@@ -20,6 +20,7 @@ namespace SQLMigration.UI
         private readonly UIOF of = new UIOF();
         private readonly IBinder binder;
         private readonly IUDTManager udtManager;
+        private readonly ITableManager tableManager;
 
         readonly ICoreDB coreDb;
         List<ConfigData> globalListConfig;
@@ -41,21 +42,47 @@ namespace SQLMigration.UI
 
         public void ProsesManager(String pilihan)
         {
-           
-            globalConfig.listUDTSchemaInfo = udtManager.GetSchema(globalConfig);
-            globalConfig.listUDTResultInfo = udtManager.Convert(globalConfig.listUDTSchemaInfo);
-            coreDb.Insert(globalConfig);
-            cboConfigName.Refresh();
-
-            var scriptStringBuilder = new StringBuilder();
-            foreach (var udtResultData in globalConfig.listUDTResultInfo)
+            switch (pilihan)
             {
-                scriptStringBuilder.AppendLine(udtResultData.sqlString);
+                case "UDT":
+                    globalConfig.listUDTSchemaInfo = udtManager.GetSchema(globalConfig);
+                    globalConfig.listUDTResultInfo = udtManager.Convert(globalConfig.listUDTSchemaInfo);
+                    coreDb.Insert(globalConfig);
+                    cboConfigName.Refresh();
+
+                    var UDTscriptStringBuilder = new StringBuilder();
+                    foreach (var udtResultData in globalConfig.listUDTResultInfo)
+                    {
+                        UDTscriptStringBuilder.AppendLine(udtResultData.sqlString);
+                    }
+
+                    txtResult.Text = UDTscriptStringBuilder.ToString();
+
+                    binder.BindControls(DGUDT, globalConfig.listUDTSchemaInfo);
+                    break;
+
+                case "Table":
+                    globalConfig.listTableSchemaInfo = tableManager.GetSchema(globalConfig);
+                    globalConfig.listTableResultInfo = tableManager.Convert(globalConfig.listTableSchemaInfo);
+                    coreDb.Insert(globalConfig);
+                    cboConfigName.Refresh();
+
+                    var TableScriptStringBuilder = new StringBuilder();
+                    foreach (var tableResultData in globalConfig.listTableResultInfo)
+                    {
+                        TableScriptStringBuilder.AppendLine(tableResultData.sqlString);
+                    }
+
+                    txtResult.Text = TableScriptStringBuilder.ToString();
+
+                    binder.BindControls(DGTABLE, globalConfig.listTableSchemaInfo);
+                    break;
+
+                default:
+                    MessageBox.Show("Pilihan belum tersedia");
+                    break;
             }
-
-            txtResult.Text = scriptStringBuilder.ToString();
-
-            binder.BindControls(DGUDT,globalConfig.listUDTSchemaInfo);
+           
         }
 
         private void InitComboBox()
