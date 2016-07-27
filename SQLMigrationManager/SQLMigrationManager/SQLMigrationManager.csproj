@@ -39,6 +39,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TableManager.cs" />
     <Compile Include="UDTManager.cs" />
   </ItemGroup>
   <ItemGroup>
