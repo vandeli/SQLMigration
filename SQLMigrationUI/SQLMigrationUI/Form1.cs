@@ -21,27 +21,25 @@ namespace SQLMigration.UI
         private readonly IBinder binder;
         private readonly IUDTManager udtManager;
 
-        readonly ICoreDB coreDb;
-        List<ConfigData> globalListConfig;
-        ConfigData globalConfig;
+        private readonly ICoreDB coreDb;
+        private List<ConfigData> globalListConfig;
+        private ConfigData globalConfig;
 
         public Form1()
         {
             coreDb = of.GetInstanceCoreDB(Properties.Settings.Default.configPath);
             if (!File.Exists(Properties.Settings.Default.configPath))
                 coreDb.CreateTable<ConfigData>();
-          
+
             InitializeComponent();
             InitComboBox();
 
             binder = of.GetInstanceBinder();
             udtManager = of.GetInstanceUdtManager();
-
         }
 
         public void ProsesManager(String pilihan)
         {
-           
             globalConfig.listUDTSchemaInfo = udtManager.GetSchema(globalConfig);
             globalConfig.listUDTResultInfo = udtManager.Convert(globalConfig.listUDTSchemaInfo);
             coreDb.Insert(globalConfig);
@@ -55,7 +53,7 @@ namespace SQLMigration.UI
 
             txtResult.Text = scriptStringBuilder.ToString();
 
-            binder.BindControls(DGUDT,globalConfig.listUDTSchemaInfo);
+            binder.BindControls(DGUDT, globalConfig.listUDTSchemaInfo);
         }
 
         private void InitComboBox()
@@ -77,7 +75,7 @@ namespace SQLMigration.UI
         {
             string strFindStr;
 
-            if (e.KeyChar == (char)8)
+            if (e.KeyChar == (char) 8)
             {
                 if (cb.SelectionStart <= 1)
                 {
@@ -85,7 +83,9 @@ namespace SQLMigration.UI
                     return;
                 }
 
-                strFindStr = cb.SelectionLength == 0 ? cb.Text.Substring(0, cb.Text.Length - 1) : cb.Text.Substring(0, cb.SelectionStart - 1);
+                strFindStr = cb.SelectionLength == 0
+                    ? cb.Text.Substring(0, cb.Text.Length - 1)
+                    : cb.Text.Substring(0, cb.SelectionStart - 1);
             }
             else
             {
@@ -135,27 +135,13 @@ namespace SQLMigration.UI
                 txtConfigPath.Text = Properties.Settings.Default.configPath;
                 logger.OnValueChange += LoggerOnOnValueChange;
 
-                var listConfig = coreDb.GetList<ConfigData>();
-                globalListConfig = listConfig;
-
-                if (listConfig.Count == 0)
-                    return;
-
-                var selectData = listConfig[0];
-                globalConfig = selectData;
-
-
-                BindingCboConfig();
-                BindControls();
-
-                cboConfigName.Text = selectData.name;
+                RefreshUi();
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex);
                 ShowWarnMessage(ex.Message);
             }
-            
         }
 
         private void LoggerOnOnValueChange(string value)
@@ -166,7 +152,6 @@ namespace SQLMigration.UI
 
         private void btnConvert_Click_1(object sender, EventArgs e)
         {
-
             try
             {
                 if (string.IsNullOrEmpty(cboProcess.Text))
@@ -186,7 +171,6 @@ namespace SQLMigration.UI
                 Console.WriteLine(ex);
                 ShowWarnMessage(ex.Message);
             }
-          
         }
 
         private void btnSaveQuery_Click(object sender, EventArgs e)
@@ -206,45 +190,39 @@ namespace SQLMigration.UI
                 Console.WriteLine(ex);
                 ShowWarnMessage(ex.Message);
             }
-           
         }
 
         private void btnSaveDb_Click(object sender, EventArgs e)
         {
-
             try
             {
-                 ValidateInput();
-           
-                    coreDb.Insert(globalConfig);
-                    MessageBox.Show("Data Config created.");
-                    BindingCboConfig();
-                    BindControls();
+                ValidateInput();
+
+                coreDb.Insert(globalConfig);
+                MessageBox.Show("Data Config created.");
+                RefreshUi();
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex);
                 ShowWarnMessage(ex.Message);
-            } 
-        
+            }
         }
- 
+
         private void BindControls()
         {
-                 
             if (globalConfig == null) return;
 
-            binder.BindControls(TpSourceMss,globalConfig.Source);
-            binder.BindControls(this,globalConfig);
-            binder.BindControls(TpConfig,globalConfig);
+            binder.BindControls(TpSourceMss, globalConfig.Source);
+            binder.BindControls(this, globalConfig);
+            binder.BindControls(TpConfig, globalConfig);
 
-            binder.BindControls(DGUDT,globalConfig.listUDTSchemaInfo);
+            binder.BindControls(DGUDT, globalConfig.listUDTSchemaInfo);
         }
 
         private void BindingCboConfig()
         {
-            var list = coreDb.GetList<ConfigData>();
-            binder.BindControls(cboConfigName,list);
+            binder.BindControls(cboConfigName,globalListConfig);
         }
 
         private void btnNew_Click(object sender, EventArgs e)
@@ -271,7 +249,6 @@ namespace SQLMigration.UI
 
                 var configNew = new ConfigData
                 {
-
                     Source = source,
                     name = "Name",
                     OutputPath = Environment.CurrentDirectory,
@@ -302,8 +279,7 @@ namespace SQLMigration.UI
                 if (cboConfigName.SelectedValue == null)
                     return;
 
-                var selectedValue = cboConfigName.SelectedValue.ToString();
-                globalConfig = coreDb.Find<ConfigData>(selectedValue);
+                globalConfig = coreDb.Find<ConfigData>(cboConfigName.SelectedValue.ToString());
                 BindControls();
             }
             catch (Exception ex)
@@ -311,9 +287,50 @@ namespace SQLMigration.UI
                 Console.WriteLine(ex);
                 ShowWarnMessage(ex.Message);
             }
-           
         }
 
-       
+        private void btnDelete_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (MessageBox.Show("Delete config ?", "Confirm", MessageBoxButtons.YesNo, MessageBoxIcon.Question) !=
+                    DialogResult.Yes) return;
+                coreDb.Delete(globalConfig);
+                RefreshUi();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                ShowWarnMessage(ex.Message);
+            }
+        }
+
+        private void RefreshUi()
+        {
+            globalListConfig = coreDb.GetList<ConfigData>();
+            if (globalListConfig.Count > 0)
+                globalConfig = globalListConfig[0];
+
+            SetupBinding();
+        }
+
+        private void SetupBinding()
+        {
+            BindingCboConfig();
+            BindControls();
+        }
+
+        private void btnCancel_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                RefreshUi();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                ShowWarnMessage(ex.Message);
+            }
+        }
     }
 }

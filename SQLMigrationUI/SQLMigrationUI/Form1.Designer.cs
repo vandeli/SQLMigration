@@ -72,6 +72,8 @@
             this.txtConfigPath = new System.Windows.Forms.TextBox();
             this.button4 = new System.Windows.Forms.Button();
             this.LblLog = new System.Windows.Forms.Label();
+            this.btnDelete = new System.Windows.Forms.Button();
+            this.btnCancel = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.uDTManagerBindingSource)).BeginInit();
             this.tabControl1.SuspendLayout();
             this.TpConfig.SuspendLayout();
@@ -210,6 +212,8 @@
             // 
             // TpConfig
             // 
+            this.TpConfig.Controls.Add(this.btnCancel);
+            this.TpConfig.Controls.Add(this.btnDelete);
             this.TpConfig.Controls.Add(this.btnNew);
             this.TpConfig.Controls.Add(this.btnSaveDb);
             this.TpConfig.Controls.Add(this.txtPath);
@@ -239,11 +243,11 @@
             // 
             // btnSaveDb
             // 
-            this.btnSaveDb.Location = new System.Drawing.Point(90, 264);
+            this.btnSaveDb.Location = new System.Drawing.Point(176, 264);
             this.btnSaveDb.Name = "btnSaveDb";
             this.btnSaveDb.Size = new System.Drawing.Size(79, 23);
             this.btnSaveDb.TabIndex = 31;
-            this.btnSaveDb.Text = "Save Db";
+            this.btnSaveDb.Text = "Save";
             this.btnSaveDb.UseVisualStyleBackColor = true;
             this.btnSaveDb.Click += new System.EventHandler(this.btnSaveDb_Click);
             // 
@@ -500,6 +504,26 @@
             this.LblLog.TabIndex = 29;
             this.LblLog.Text = "Log :";
             // 
+            // btnDelete
+            // 
+            this.btnDelete.Location = new System.Drawing.Point(260, 264);
+            this.btnDelete.Name = "btnDelete";
+            this.btnDelete.Size = new System.Drawing.Size(79, 23);
+            this.btnDelete.TabIndex = 33;
+            this.btnDelete.Text = "Delete";
+            this.btnDelete.UseVisualStyleBackColor = true;
+            this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
+            // 
+            // btnCancel
+            // 
+            this.btnCancel.Location = new System.Drawing.Point(91, 264);
+            this.btnCancel.Name = "btnCancel";
+            this.btnCancel.Size = new System.Drawing.Size(79, 23);
+            this.btnCancel.TabIndex = 34;
+            this.btnCancel.Text = "Cancel";
+            this.btnCancel.UseVisualStyleBackColor = true;
+            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -584,6 +608,8 @@
         private System.Windows.Forms.Label LblLog;
         private System.Windows.Forms.TabPage tabPage10;
         private System.Windows.Forms.TextBox txtLog;
+        private System.Windows.Forms.Button btnDelete;
+        private System.Windows.Forms.Button btnCancel;
     }
 }
 

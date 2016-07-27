@@ -18,6 +18,7 @@ namespace EasyTools.Controls
             cbo.DataSource = listData;
             cbo.ValueMember = "id";
             cbo.DisplayMember = "name";
+            cbo.Refresh();
         }
 
         public void BindControls<T>(DataGridView grd, List<T> listData, bool autoGenerateCol = true) where T : BaseData, new()
@@ -32,10 +33,12 @@ namespace EasyTools.Controls
         {
             foreach (var control in panel.Controls)
             {
+
+  
                 if (control.GetType() == typeof (ComboBox))
                 {
                     var cbo = (ComboBox) control;
-                    if(cbo.Tag == null)
+                    if(cbo.Tag == null || ReferenceEquals(cbo.Tag, ""))
                         continue;
                     cbo.DataBindings.Clear();
                     cbo.DataBindings.Add("Text", data, (string) cbo.Tag, false, DataSourceUpdateMode.OnPropertyChanged);
@@ -44,7 +47,7 @@ namespace EasyTools.Controls
                 if (control.GetType() == typeof(TextBox))
                 {
                     var textBox = (TextBox)control;
-                    if (textBox.Tag == null)
+                    if (textBox.Tag == null || ReferenceEquals(textBox.Tag, ""))
                         continue;
                     textBox.DataBindings.Clear();
                     textBox.DataBindings.Add("Text", data, (string)textBox.Tag, false, DataSourceUpdateMode.OnPropertyChanged);
@@ -62,7 +65,7 @@ namespace EasyTools.Controls
                 if (control.GetType() == typeof(ComboBox))
                 {
                     var cbo = (ComboBox)control;
-                    if (cbo.Tag == null)
+                    if (cbo.Tag == null || ReferenceEquals(cbo.Tag, ""))
                         continue;
                     cbo.DataBindings.Clear();
                     cbo.DataBindings.Add("Text", data, (string)cbo.Tag, false, DataSourceUpdateMode.OnPropertyChanged);
@@ -71,7 +74,7 @@ namespace EasyTools.Controls
                 if (control.GetType() == typeof(TextBox))
                 {
                     var textBox = (TextBox)control;
-                    if (textBox.Tag == null)
+                    if (textBox.Tag == null || ReferenceEquals(textBox.Tag, ""))
                         continue;
                     textBox.DataBindings.Clear();
                     textBox.DataBindings.Add("Text", data, (string)textBox.Tag, false, DataSourceUpdateMode.OnPropertyChanged);
