@@ -44,7 +44,7 @@ namespace EasyTools.DB
         {
             var list = JustGetList<T>();
             var data = list?.Find(x => x.id == rowKey);
-            Console.WriteLine("CreateTable.Find : " + data.name + " found");
+            Console.WriteLine("DbXml.Find : " + data.name + " found");
             return data;
         }
 
