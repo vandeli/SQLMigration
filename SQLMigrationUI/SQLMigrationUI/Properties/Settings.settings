@@ -3,7 +3,7 @@
   <Profiles />
   <Settings>
     <Setting Name="configPath" Type="System.String" Scope="User">
-      <Value Profile="(Default)">D:\db.xml</Value>
+      <Value Profile="(Default)">E:\db.xml</Value>
     </Setting>
   </Settings>
 </SettingsFile>

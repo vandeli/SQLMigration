@@ -25,7 +25,7 @@ namespace SQLMigration.UI.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("D:\\db.xml")]
+        [global::System.Configuration.DefaultSettingValueAttribute("E:\\db.xml")]
         public string configPath {
             get {
                 return ((string)(this["configPath"]));

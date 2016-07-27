@@ -1,5 +1,5 @@
-﻿using System;
-using SQLMigrationInterface.Interface.SourceQuery;
+﻿using SQLMigrationInterface.Interface.SourceQuery;
+using System;
 
 namespace SQLMigrationConverter.SourceQuery
 {
@@ -21,7 +21,7 @@ namespace SQLMigrationConverter.SourceQuery
 			ORDER BY st.[name]
 				,ss.[name]
 			";
-            Console.WriteLine("GetUDTQuery Result : " + sql);
+            Console.WriteLine("MssQuery.GetUDTQuery : Done");
             return sql;
         }
     }

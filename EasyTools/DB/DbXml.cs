@@ -23,12 +23,13 @@ namespace EasyTools.DB
 
         public void DropTable<T>() where T : BaseData => fileManager.DeleteFile(filePath);
 
-      public void CreateTable<T>() where T : BaseData
+        public void CreateTable<T>() where T : BaseData
         {
             var writer = GetWriter<T>();
             var list = Activator.CreateInstance<List<T>>();
             xml.Serialize(writer, list);
             writer.Close();
+            Console.WriteLine("DbXml.CreateTable : " + filePath);
         }
 
         private TextWriter GetWriter<T>() where T : BaseData
@@ -41,45 +42,59 @@ namespace EasyTools.DB
 
         public T Find<T>(string rowKey) where T : BaseData, new()
         {
-            var list = GetList<T>();
-            return list?.Find(x => x.id == rowKey);
+            var list = JustGetList<T>();
+            var data = list?.Find(x => x.id == rowKey);
+            Console.WriteLine("CreateTable.Find : " + data.name + " found");
+            return data;
         }
 
         public List<T> GetList<T>() where T : BaseData, new()
         {
+            var list = JustGetList<T>();
+
+            Console.WriteLine("DbXml.GetList : " + list.Count);
+            return list;
+        }
+
+        private List<T> JustGetList<T>() where T : BaseData, new()
+        {
             xml = new XmlSerializer(typeof(List<T>));
             var stream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
             var list = (List<T>)xml.Deserialize(stream);
-            list = list.OrderBy(x => x.updated).ToList();
+            list = list.OrderByDescending(x => x.updated).ToList();
             stream.Close();
             return list;
         }
 
         public void Update<T>(T model) where T : BaseData, new()
-        {                   
-            var list = GetList<T>();
+        {
+            var list = JustGetList<T>();
             var data = list.Find(x => x.id == model.id);
+            if (data == null)
+                throw new Exception("data not found");
             list.Remove(data);
             model.updated = DateTime.Now;
             list.Add(model);
             var writer = GetWriter<T>();
             xml.Serialize(writer, list);
             writer.Close();
+            Console.WriteLine("DbXml.Update : " + model.name);
         }
 
         public void Delete<T>(T model) where T : BaseData, new()
         {
-            var list = GetList<T>();
+            var list = JustGetList<T>();
             var data = list.Find(x => x.id == model.id);
             list.Remove(data);
             var writer = GetWriter<T>();
             xml.Serialize(writer, list);
             writer.Close();
+            Console.WriteLine("DbXml.Delete : " + model.name);
         }
 
         public void Insert<T>(T model) where T : BaseData, new()
         {
-            var list = GetList<T>();
+            var list = JustGetList<T>();
             if (list.Exists(x => x.id == model.id))
             {
                 Update(model);
@@ -90,6 +105,7 @@ namespace EasyTools.DB
             var writer = GetWriter<T>();
             xml.Serialize(writer, list);
             writer.Close();
+            Console.WriteLine("DbXml.Insert : " + model.name);
         }
 
     }

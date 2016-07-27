@@ -1,14 +1,14 @@
-﻿using System;
-using EasyTools.Interface.DB;
+﻿using EasyTools.Interface.DB;
+using SQLMigration.Data.ResultInfo;
+using SQLMigration.Data.SchemaInfo;
 using SQLMigration.Interface.Data;
 using SQLMigration.Interface.Interface.Manager;
 using SQLMigrationInterface.Interface.ScriptBuilder;
 using SQLMigrationInterface.Interface.SourceQuery;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-using SQLMigration.Data.ResultInfo;
-using SQLMigration.Data.SchemaInfo;
 
 namespace SQLMigrationManager
 {
@@ -27,10 +27,10 @@ namespace SQLMigrationManager
 
         public List<UDTSchemaInfoData> GetSchema(ConfigData configData)
         {
-            Console.WriteLine("GetSchema : " + configData);
+            Console.WriteLine("UDTManager.GetSchema : " + configData.name + " , start...");
             var dt = dataAccess.GetDataTable(configData.Source, sourceQuery.GetUDTQuery());
-            var listSchema =  GetSchemaDataFromDt(dt);
-            Console.WriteLine("GetSchema result : listSchema => " + listSchema.Count);
+            var listSchema = GetSchemaDataFromDt(dt);
+            Console.WriteLine("UDTManager.GetSchema : listSchema => " + listSchema.Count + ", Done");
             return listSchema;
         }
 
@@ -55,15 +55,15 @@ namespace SQLMigrationManager
 
         public List<UDTResultData> Convert(List<UDTSchemaInfoData> datasource)
         {
-            Console.WriteLine("Convert : listSchema =>" + datasource.Count );
-            var result =  datasource.Select(schemaInfoData => new UDTResultData
+            Console.WriteLine("UDTManager.Convert : listSchema =>" + datasource.Count + " , start...");
+            var result = datasource.Select(schemaInfoData => new UDTResultData
             {
                 name = schemaInfoData.name,
                 sqlString = scriptBuilder.CreateScriptUDT(schemaInfoData),
                 schemaId = schemaInfoData.id
             }).ToList();
 
-            Console.WriteLine("Convert result : " + result.Count);
+            Console.WriteLine("UDTManager.Convert : " + result.Count + " , Done...");
             return result;
         }
     }

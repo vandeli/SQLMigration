@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace EasyTools.Data
 {
@@ -11,10 +10,11 @@ namespace EasyTools.Data
         public String dbName { get; set; }
 
 
-        public static implicit operator List<object>(DBData v)
+        public DBData()
         {
-            throw new NotImplementedException();
-
+            id = Guid.NewGuid().ToString();
+            updated = DateTime.Now;
+            name = "";
         }
         public override string ToString()
         {
