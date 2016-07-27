@@ -9,6 +9,8 @@ using SQLMigration.Interface.Data;
 using SQLMigration.Interface.Interface.Manager;
 using SQLMigrationManager;
 using SQLMigration.Data.SchemaInfo;
+using System.Collections.Generic;
+using SQLMigration.Data.ResultInfo;
 
 namespace SQLMigration.Test
 {
@@ -16,7 +18,7 @@ namespace SQLMigration.Test
     public class TableManagerTest
     {
         [TestMethod]
-        public void GetSchemaTes()
+        public void TABLEGetchemaTes()
         {
             var dataAccess = A.Fake<IDataAccess>();
             var scriptBuilder = A.Fake<IScriptBuilder>();
@@ -88,6 +90,53 @@ namespace SQLMigration.Test
             Assert.AreEqual(schemaExpectation.CharMaxLength, schemaActual.CharMaxLength);
             Assert.AreEqual(schemaExpectation.Precision, schemaActual.Precision);
             Assert.AreEqual(schemaExpectation.Scale, schemaActual.Scale);          
+
+        }
+
+        [TestMethod]
+        public void TABLEConvertTest()
+        {
+            var dataAccess = A.Fake<IDataAccess>();
+            var scriptBuilder = A.Fake<IScriptBuilder>();
+            var schemaQuery = A.Fake<ISourceQuery>();
+
+            ITableManager tableManager = new TableManager(dataAccess, scriptBuilder, schemaQuery);
+
+            var schemaData = new TableSchemaInfoData
+            {
+                TableName = "customTableName",
+                ColumnName = "customColumnName",
+                OrdinalPosition = 1,
+                ColumnDefault = "",
+                isNullable = true,
+                Domain = "customDomain",
+                DataType = "numeric",
+                CharMaxLength = 0,
+                Precision = 8,
+                Scale = 2,
+            };
+            
+            var listSchemaInfoData = new List<TableSchemaInfoData> { schemaData };
+            const string RESULT_QUERY = "Select * from master";
+            A.CallTo(() => scriptBuilder.CreateScriptTable(schemaData, listSchemaInfoData)).Returns(RESULT_QUERY);
+
+           
+            var result = tableManager.Convert(listSchemaInfoData);
+
+
+
+            var resultActual = result[0];
+
+            var resultExpectation = new TableResultData
+            {
+                name = "customTableName",
+                sqlString = RESULT_QUERY,
+                schemaId = schemaData.id
+            };
+
+            Assert.AreEqual(resultExpectation.name, resultActual.name);
+            Assert.AreEqual(resultExpectation.sqlString, resultActual.sqlString);
+            Assert.AreEqual(resultExpectation.schemaId, resultActual.schemaId);
 
         }
     }

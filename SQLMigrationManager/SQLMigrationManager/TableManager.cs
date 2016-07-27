@@ -41,7 +41,7 @@ namespace SQLMigrationManager
             Console.WriteLine("TableManager.Convert : listSchema =>" + datasource.Count + " , start...");
             var result = datasource.Select(schemaInfoData => new TableResultData
             {
-                name = schemaInfoData.name,
+                name = schemaInfoData.TableName,
                 sqlString = scriptBuilder.CreateScriptTable(schemaInfoData, datasource),
                 schemaId = schemaInfoData.id
             }).ToList();
