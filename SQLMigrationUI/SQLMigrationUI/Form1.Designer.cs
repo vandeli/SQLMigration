@@ -45,7 +45,6 @@
             this.btnConvert = new System.Windows.Forms.Button();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.TpConfig = new System.Windows.Forms.TabPage();
-            this.btnUpdate = new System.Windows.Forms.Button();
             this.btnNew = new System.Windows.Forms.Button();
             this.btnSaveDb = new System.Windows.Forms.Button();
             this.txtPath = new System.Windows.Forms.TextBox();
@@ -211,7 +210,6 @@
             // 
             // TpConfig
             // 
-            this.TpConfig.Controls.Add(this.btnUpdate);
             this.TpConfig.Controls.Add(this.btnNew);
             this.TpConfig.Controls.Add(this.btnSaveDb);
             this.TpConfig.Controls.Add(this.txtPath);
@@ -228,16 +226,6 @@
             this.TpConfig.TabIndex = 0;
             this.TpConfig.Text = "Config";
             this.TpConfig.UseVisualStyleBackColor = true;
-            // 
-            // btnUpdate
-            // 
-            this.btnUpdate.Location = new System.Drawing.Point(175, 264);
-            this.btnUpdate.Name = "btnUpdate";
-            this.btnUpdate.Size = new System.Drawing.Size(79, 23);
-            this.btnUpdate.TabIndex = 33;
-            this.btnUpdate.Text = "Update";
-            this.btnUpdate.UseVisualStyleBackColor = true;
-            this.btnUpdate.Click += new System.EventHandler(this.btnUpdate_Click);
             // 
             // btnNew
             // 
@@ -476,7 +464,6 @@
             this.cboConfigName.Size = new System.Drawing.Size(287, 21);
             this.cboConfigName.TabIndex = 25;
             this.cboConfigName.Tag = "name";
-            this.cboConfigName.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
             this.cboConfigName.Leave += new System.EventHandler(this.comboBox1_Leave);
             // 
             // label4
@@ -597,7 +584,6 @@
         private System.Windows.Forms.Label LblLog;
         private System.Windows.Forms.TabPage tabPage10;
         private System.Windows.Forms.TextBox txtLog;
-        private System.Windows.Forms.Button btnUpdate;
     }
 }
 
