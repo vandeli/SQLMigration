@@ -3,5 +3,6 @@
     public interface ISourceQuery
     {
         string GetUDTQuery();
+        string GetTableQuery();
     }
 }

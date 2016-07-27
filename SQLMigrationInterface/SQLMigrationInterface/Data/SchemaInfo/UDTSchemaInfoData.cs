@@ -12,7 +12,6 @@ namespace SQLMigration.Data.SchemaInfo
 
         }
 
-
         public string DataType { get; set; }
         public int MaxLength { get; set; }
         public byte Precision { get; set; }

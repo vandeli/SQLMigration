@@ -50,6 +50,35 @@ namespace SQLMigration.Converter.ScriptBuilder
 
         }
 
+        public string CreateScriptTable(TableSchemaInfoData schemaInfo)
+        {
+            string result = "";
+            //var convertedDataType = GetDataTypeMap(schemaInfo.DataType);
+            ////=======================================================
+            //string[] allcolumn = getAllcolumn();
+
+            //var tableResult = "";
+            //int xs = 1;
+            //foreach (var data in GetAllTable(datasource))
+            //{
+
+            //    if (data.OrdinalPosition == 1)
+            //    {
+
+            //        tableResult = getTemplate(data, allcolumn[xs]);
+            //        result += tableResult;
+            //        xs += 1;
+            //    }
+            //}
+
+
+
+
+            ////=====================================================
+            //Console.WriteLine("PstScriptBuilder.CreateScriptTable : " + schemaInfo.name + ", Done");
+            return result;
+        }
+
         private readonly List<TablesFieldDataType> mapDataTypes = new List<TablesFieldDataType>
         {
             new TablesFieldDataType { DataType="datetime", ConvertedDataType="timestamp" },
@@ -109,6 +138,70 @@ namespace SQLMigration.Converter.ScriptBuilder
 
             return findingResult == null ? "" : findingResult.ConvertedDataType;
         }
+
+        //private string[] getAllcolumn(DataTable datasource)
+        //{
+        //    int xs = 0;
+        //    int xcount = 1;
+
+        //    foreach (var totalraw in GetAllTable(datasource))
+        //    {
+        //        if (totalraw.OrdinalPosition == 1)
+        //        {
+        //            xcount += 1;
+        //        }
+        //    }
+        //    string[] allColumn = new string[xcount];
+
+        //    foreach (var data in GetAllTable(datasource))
+        //    {
+        //        // var setData = data.GetConvertedDataType();
+
+        //        if (data.OrdinalPosition == 1)
+        //        {
+        //            xs += 1;
+        //            //  cekSuffix(data);
+        //            allColumn[xs] = data.ColumnName + " " + cekSuffix(data);
+
+        //        }
+        //        else
+        //        {
+        //            allColumn[xs] += ",\n " + data.ColumnName + "   " + cekSuffix(data);
+        //        }
+
+        //    }
+
+        //    return allColumn;
+        //}
+
+        //private string cekSuffix(mTable data)
+        //{
+        //    var cekResult = "";
+        //    if (data.Domain != "")
+        //    {
+        //        cekResult = data.Domain;
+        //    }
+        //    else
+        //    {
+        //        cekResult = data.GetConvertedDataType();
+        //    }
+
+        //    if (data.CharMaxLength != 0)
+        //    {
+        //        cekResult += " (" + data.CharMaxLength + ")";
+        //    }
+        //    else if (data.Precision != 0)
+        //    {
+        //        cekResult += " (" + data.Precision + "," + data.Scale + ")";
+        //    }
+
+        //    if (data.isNullable == false)
+        //    {
+        //        cekResult += "  NOT NULL";
+        //    }
+        //    return cekResult;
+
+        //}
 
     }
 }
