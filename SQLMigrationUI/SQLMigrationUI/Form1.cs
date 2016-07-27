@@ -27,6 +27,7 @@ namespace SQLMigration.UI
             coreDb = of.GetInstanceCoreDB(Properties.Settings.Default.configPath);
             if (!File.Exists(Properties.Settings.Default.configPath))
                 coreDb.CreateTable<ConfigData>();
+          
             InitializeComponent();
             InitComboBox();
 
@@ -142,7 +143,7 @@ namespace SQLMigration.UI
         {
             ILogger logger = of.GetInstanceLogger();
             Console.SetOut(logger.GetWriter());
-
+            txtConfigPath.Text = Properties.Settings.Default.configPath;
             logger.OnValueChange += LoggerOnOnValueChange;
 
             var listConfig = coreDb.GetList<ConfigData>();
@@ -150,20 +151,16 @@ namespace SQLMigration.UI
 
             if (listConfig.Count == 0)
                 return;
-
+            
             var selectData = listConfig[0];
             globalConfig = selectData;
-
+           
             var database = selectData.Source;
 
             BindingCboConfig();
             BindControls();
 
             comboBox1.Text = selectData.name;
-
-
-
-
 
         }
 
@@ -219,13 +216,14 @@ namespace SQLMigration.UI
         {
             var isExist = true;
             var listConfig = globalListConfig;
-
-            foreach (ConfigData configName in listConfig.Where(configName => globalConfig.name == configName.name))
+            if (listConfig.Count > 0)
             {
-                isExist = false;
-                MessageBox.Show("Config Name Already exist");
+                foreach (ConfigData configName in listConfig.Where(configName => globalConfig.name == configName.name))
+                {
+                    isExist = false;
+                    MessageBox.Show("Config Name Already exist");
+                }
             }
-
             var validate = ValidateInput();
             if (validate && isExist)
             {
@@ -248,15 +246,10 @@ namespace SQLMigration.UI
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-
-
-
         }
 
         private void BindControls()
         {
-
-
             comboBox1.DataBindings.Clear();
             txtServer.DataBindings.Clear();
             txtUsername.DataBindings.Clear();
@@ -264,11 +257,7 @@ namespace SQLMigration.UI
             txtDatabase.DataBindings.Clear();
             txtPath.DataBindings.Clear();
 
-
             if (globalConfig == null) return;
-
-
-
 
             comboBox1.DataBindings.Add("Text", globalConfig, "name", false, DataSourceUpdateMode.OnPropertyChanged);
             txtServer.DataBindings.Add("Text", globalConfig.Source, "serverName", false, DataSourceUpdateMode.OnPropertyChanged);
@@ -285,8 +274,11 @@ namespace SQLMigration.UI
         {
             var list = coreDb.GetList<ConfigData>();
             comboBox1.DataSource = new BindingSource(list, null);
-            comboBox1.DisplayMember = "name";
-            comboBox1.ValueMember = "id";
+            if (list.Count > 0)
+            {
+                comboBox1.DisplayMember = "name";
+                comboBox1.ValueMember = "id";
+            }
             comboBox1.Refresh();
         }
 
@@ -313,7 +305,6 @@ namespace SQLMigration.UI
                 };
 
                 globalConfig = configNew;
-
                 BindingCboConfig();
                 BindControls();
             }
@@ -321,7 +312,6 @@ namespace SQLMigration.UI
             {
                 ShowWarnMessage(ex.Message);
             }
-
         }
 
         private static void ShowWarnMessage(String message)
@@ -357,5 +347,7 @@ namespace SQLMigration.UI
             globalConfig = coreDb.Find<ConfigData>(selectedValue);
             BindControls();
         }
+
+       
     }
 }
