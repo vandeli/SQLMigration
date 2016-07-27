@@ -18,7 +18,7 @@ namespace SQLMigration.Converter.ScriptBuilder
 
         public string CreateScriptUDT(UDTSchemaInfoData schemaInfo)
         {
-            Console.WriteLine("CreateScriptUDT : " + schemaInfo.name + " , start...");
+            
             string result;
 
             var convertedDataType = GetDataTypeMap(schemaInfo.DataType);
@@ -44,7 +44,7 @@ namespace SQLMigration.Converter.ScriptBuilder
             }
 
 
-            Console.WriteLine("CreateScriptUDT: " + result + " , Done");
+            Console.WriteLine("PstScriptBuilder.CreateScriptUDT : " + schemaInfo.name + ", Done");
 
             return result;
 

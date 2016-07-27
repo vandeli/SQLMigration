@@ -10,12 +10,14 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using EasyTools.Interface.Controls;
 
 namespace SQLMigration.UI
 {
     public partial class Form1 : Form
     {
         private readonly UIOF of = new UIOF();
+        private IBinder binder;
         private IUDTManager udtManager;
 
         ICoreDB coreDb;
@@ -31,6 +33,8 @@ namespace SQLMigration.UI
             InitializeComponent();
             InitComboBox();
 
+            binder = of.GetInstanceBinder();
+
         }
 
         public void ProsesManager(String pilihan)
@@ -39,7 +43,7 @@ namespace SQLMigration.UI
             globalConfig.listUDTSchemaInfo = udtManager.GetSchema(globalConfig);
             globalConfig.listUDTResultInfo = udtManager.Convert(globalConfig.listUDTSchemaInfo);
             coreDb.Insert(globalConfig);
-            comboBox1.Refresh();
+            cboConfigName.Refresh();
 
             StringBuilder scriptStringBuilder = new StringBuilder();
             foreach (var udtResultData in globalConfig.listUDTResultInfo)
@@ -160,7 +164,7 @@ namespace SQLMigration.UI
             BindingCboConfig();
             BindControls();
 
-            comboBox1.Text = selectData.name;
+            cboConfigName.Text = selectData.name;
 
         }
 
@@ -185,9 +189,9 @@ namespace SQLMigration.UI
             try
             {
                 var listConfig = globalListConfig;
-                comboBox1.DisplayMember = "name";
-                comboBox1.ValueMember = "id";
-                var selectData = listConfig.Where(sumber => sumber.id == comboBox1.SelectedValue.ToString()).SingleOrDefault();
+                cboConfigName.DisplayMember = "name";
+                cboConfigName.ValueMember = "id";
+                var selectData = listConfig.SingleOrDefault(sumber => sumber.id == cboConfigName.SelectedValue.ToString());
 
                 ProsesManager(cboProcess.Text);
             }
@@ -244,42 +248,29 @@ namespace SQLMigration.UI
 
         }
 
+        
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
         }
 
+        
         private void BindControls()
         {
-            comboBox1.DataBindings.Clear();
-            txtServer.DataBindings.Clear();
-            txtUsername.DataBindings.Clear();
-            txtPassword.DataBindings.Clear();
-            txtDatabase.DataBindings.Clear();
-            txtPath.DataBindings.Clear();
-
+           
+                    
             if (globalConfig == null) return;
 
-            comboBox1.DataBindings.Add("Text", globalConfig, "name", false, DataSourceUpdateMode.OnPropertyChanged);
-            txtServer.DataBindings.Add("Text", globalConfig.Source, "serverName", false, DataSourceUpdateMode.OnPropertyChanged);
-            txtUsername.DataBindings.Add("Text", globalConfig.Source, "userName", false, DataSourceUpdateMode.OnPropertyChanged);
-            txtPassword.DataBindings.Add("Text", globalConfig.Source, "password", false, DataSourceUpdateMode.OnPropertyChanged);
-            txtDatabase.DataBindings.Add("Text", globalConfig.Source, "dbName", false, DataSourceUpdateMode.OnPropertyChanged);
-            txtPath.DataBindings.Add("Text", globalConfig, "OutputPath", false, DataSourceUpdateMode.OnPropertyChanged);
+            binder.BindControls(TpSourceMss,globalConfig.Source);
+            binder.BindControls(this,globalConfig);
+            binder.BindControls(TpConfig,globalConfig);
 
-            DGUDT.DataSource = globalConfig.listUDTSchemaInfo;
-            DGUDT.Refresh();
+            binder.BindControls(DGUDT,globalConfig.listUDTSchemaInfo);
         }
 
         private void BindingCboConfig()
         {
             var list = coreDb.GetList<ConfigData>();
-            comboBox1.DataSource = new BindingSource(list, null);
-            if (list.Count > 0)
-            {
-                comboBox1.DisplayMember = "name";
-                comboBox1.ValueMember = "id";
-            }
-            comboBox1.Refresh();
+            binder.BindControls(cboConfigName,list);
         }
 
         private void btnNew_Click(object sender, EventArgs e)
@@ -340,10 +331,10 @@ namespace SQLMigration.UI
         private void comboBox1_Leave(object sender, EventArgs e)
         {
 
-            if (comboBox1.SelectedValue == null)
+            if (cboConfigName.SelectedValue == null)
                 return;
 
-            var selectedValue = comboBox1.SelectedValue.ToString();
+            var selectedValue = cboConfigName.SelectedValue.ToString();
             globalConfig = coreDb.Find<ConfigData>(selectedValue);
             BindControls();
         }
