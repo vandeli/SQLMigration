@@ -10,6 +10,8 @@ using SQLMigrationInterface.Interface.SourceQuery;
 using SQLMigrationManager;
 using System;
 using System.Data.SqlClient;
+using EasyTools.Controls;
+using EasyTools.Interface.Controls;
 
 
 namespace SQLMigration.OF
@@ -20,6 +22,7 @@ namespace SQLMigration.OF
         static IFileManager fileManager;
         static ICoreDB coreDb;
         private static ILogger logger;
+        private static IBinder binder;
         public IUDTManager GetInstanceUdtManager()
         {
             if (udtManager != null) return udtManager;
@@ -60,6 +63,13 @@ namespace SQLMigration.OF
             if (logger != null) return logger;
             logger = new Logger();
             return logger;
-        }  
+        }
+
+        public IBinder GetInstanceBinder()
+        {
+            if (binder != null) return binder;
+            binder = new Binder();
+            return binder;
+        }
     }
 }
