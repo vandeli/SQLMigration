@@ -45,6 +45,8 @@
             this.btnConvert = new System.Windows.Forms.Button();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.TpConfig = new System.Windows.Forms.TabPage();
+            this.btnCancel = new System.Windows.Forms.Button();
+            this.btnDelete = new System.Windows.Forms.Button();
             this.btnNew = new System.Windows.Forms.Button();
             this.btnSaveDb = new System.Windows.Forms.Button();
             this.txtPath = new System.Windows.Forms.TextBox();
@@ -59,6 +61,7 @@
             this.tabPage4 = new System.Windows.Forms.TabPage();
             this.DGUDT = new System.Windows.Forms.DataGridView();
             this.tabPage5 = new System.Windows.Forms.TabPage();
+            this.DGTABLE = new System.Windows.Forms.DataGridView();
             this.tabPage6 = new System.Windows.Forms.TabPage();
             this.tabPage7 = new System.Windows.Forms.TabPage();
             this.tabPage3 = new System.Windows.Forms.TabPage();
@@ -72,10 +75,7 @@
             this.txtConfigPath = new System.Windows.Forms.TextBox();
             this.button4 = new System.Windows.Forms.Button();
             this.LblLog = new System.Windows.Forms.Label();
-            this.DGTABLE = new System.Windows.Forms.DataGridView();
-            this.btnDelete = new System.Windows.Forms.Button();
-            this.btnCancel = new System.Windows.Forms.Button();
-
+            this.DGPK = new System.Windows.Forms.DataGridView();
             ((System.ComponentModel.ISupportInitialize)(this.uDTManagerBindingSource)).BeginInit();
             this.tabControl1.SuspendLayout();
             this.TpConfig.SuspendLayout();
@@ -86,9 +86,11 @@
             this.tabPage4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DGUDT)).BeginInit();
             this.tabPage5.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.DGTABLE)).BeginInit();
+            this.tabPage6.SuspendLayout();
             this.tabPage3.SuspendLayout();
             this.tabPage10.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.DGTABLE)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.DGPK)).BeginInit();
             this.SuspendLayout();
             // 
             // label1
@@ -234,6 +236,26 @@
             this.TpConfig.TabIndex = 0;
             this.TpConfig.Text = "Config";
             this.TpConfig.UseVisualStyleBackColor = true;
+            // 
+            // btnCancel
+            // 
+            this.btnCancel.Location = new System.Drawing.Point(91, 264);
+            this.btnCancel.Name = "btnCancel";
+            this.btnCancel.Size = new System.Drawing.Size(79, 23);
+            this.btnCancel.TabIndex = 34;
+            this.btnCancel.Text = "Cancel";
+            this.btnCancel.UseVisualStyleBackColor = true;
+            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
+            // 
+            // btnDelete
+            // 
+            this.btnDelete.Location = new System.Drawing.Point(260, 264);
+            this.btnDelete.Name = "btnDelete";
+            this.btnDelete.Size = new System.Drawing.Size(79, 23);
+            this.btnDelete.TabIndex = 33;
+            this.btnDelete.Text = "Delete";
+            this.btnDelete.UseVisualStyleBackColor = true;
+            this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
             // 
             // btnNew
             // 
@@ -383,8 +405,17 @@
             this.tabPage5.Text = "Table";
             this.tabPage5.UseVisualStyleBackColor = true;
             // 
+            // DGTABLE
+            // 
+            this.DGTABLE.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.DGTABLE.Location = new System.Drawing.Point(6, 6);
+            this.DGTABLE.Name = "DGTABLE";
+            this.DGTABLE.Size = new System.Drawing.Size(697, 217);
+            this.DGTABLE.TabIndex = 1;
+            // 
             // tabPage6
             // 
+            this.tabPage6.Controls.Add(this.DGPK);
             this.tabPage6.Location = new System.Drawing.Point(4, 22);
             this.tabPage6.Name = "tabPage6";
             this.tabPage6.Padding = new System.Windows.Forms.Padding(3);
@@ -509,35 +540,13 @@
             this.LblLog.TabIndex = 29;
             this.LblLog.Text = "Log :";
             // 
-
-            // DGTABLE
+            // DGPK
             // 
-            this.DGTABLE.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.DGTABLE.Location = new System.Drawing.Point(6, 6);
-            this.DGTABLE.Name = "DGTABLE";
-            this.DGTABLE.Size = new System.Drawing.Size(697, 217);
-            this.DGTABLE.TabIndex = 1;
-
-            // btnDelete
-            // 
-            this.btnDelete.Location = new System.Drawing.Point(260, 264);
-            this.btnDelete.Name = "btnDelete";
-            this.btnDelete.Size = new System.Drawing.Size(79, 23);
-            this.btnDelete.TabIndex = 33;
-            this.btnDelete.Text = "Delete";
-            this.btnDelete.UseVisualStyleBackColor = true;
-            this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
-            // 
-            // btnCancel
-            // 
-            this.btnCancel.Location = new System.Drawing.Point(91, 264);
-            this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(79, 23);
-            this.btnCancel.TabIndex = 34;
-            this.btnCancel.Text = "Cancel";
-            this.btnCancel.UseVisualStyleBackColor = true;
-            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
-
+            this.DGPK.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.DGPK.Location = new System.Drawing.Point(6, 6);
+            this.DGPK.Name = "DGPK";
+            this.DGPK.Size = new System.Drawing.Size(697, 217);
+            this.DGPK.TabIndex = 2;
             // 
             // Form1
             // 
@@ -569,11 +578,13 @@
             this.tabPage4.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.DGUDT)).EndInit();
             this.tabPage5.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.DGTABLE)).EndInit();
+            this.tabPage6.ResumeLayout(false);
             this.tabPage3.ResumeLayout(false);
             this.tabPage3.PerformLayout();
             this.tabPage10.ResumeLayout(false);
             this.tabPage10.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.DGTABLE)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.DGPK)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -629,7 +640,7 @@
 
         private System.Windows.Forms.Button btnDelete;
         private System.Windows.Forms.Button btnCancel;
-
+        private System.Windows.Forms.DataGridView DGPK;
     }
 }
 

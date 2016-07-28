@@ -73,5 +73,48 @@ namespace SQLMigration.Test
             Assert.AreEqual(scriptExpectation, scriptActual);
         }
 
+        [TestMethod]
+        public void CreatePKScript_Ordinal1Test()
+        {
+            var scriptBuilder = new PstScriptBuilder();
+            var schemaInfo = new PKSchemaInfoData
+            {
+                PkName = "customPKName",
+                TableName = "customTableName",
+                ColumnName = "customColumnName",
+                OrdinalPosition = 1
+            };
+
+            var scriptExpectation = string.Format("ALTER TABLE {0} ADD CONSTRAINT {1} PRIMARY KEY ({2});\r\n",
+                             "customTableName", "customPKName", "customColumnName");
+
+
+
+            var scriptActual = scriptBuilder.CreateScriptPK(schemaInfo);
+
+            Assert.AreEqual(scriptExpectation, scriptActual);
+        }
+
+        [TestMethod]
+        public void CreatePKScript_Ordinal2Test()
+        {
+            var scriptBuilder = new PstScriptBuilder();
+            var schemaInfo = new PKSchemaInfoData
+            {
+                PkName = "customPKName",
+                TableName = "customTableName",
+                ColumnName = "customColumnName",
+                OrdinalPosition = 2
+            };
+
+            var scriptExpectation = string.Format("");
+
+
+            var scriptActual = scriptBuilder.CreateScriptPK(schemaInfo);
+
+            Assert.AreEqual(scriptExpectation, scriptActual);
+        }
+
+
     }
 }

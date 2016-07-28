@@ -39,10 +39,15 @@ namespace SQLMigrationManager
         public List<TableResultData> Convert(List<TableSchemaInfoData> datasource)
         {
             Console.WriteLine("TableManager.Convert : listSchema =>" + datasource.Count + " , start...");
+            //var UsedTableName = datasource.GroupBy(d => new { d.TableName })
+            //                      .Select(d => d.First())
+            //                      .ToList();
+         
+
             var result = datasource.Select(schemaInfoData => new TableResultData
-            {
+            {                
                 name = schemaInfoData.TableName,
-                sqlString = scriptBuilder.CreateScriptTable(schemaInfoData, datasource.Where(x => x.TableName == schemaInfoData.TableName).ToList()),
+                sqlString = "Select * from Master", // scriptBuilder.CreateScriptTable(schemaInfoData, datasource.Where(x => x.TableName == schemaInfoData.TableName).ToList()),
                 schemaId = schemaInfoData.id
             }).ToList();
 
@@ -73,7 +78,10 @@ namespace SQLMigrationManager
             }
 
             return result;
-        }       
+        }
+
+      
+          
 
     }
 }

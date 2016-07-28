@@ -21,6 +21,7 @@ namespace SQLMigration.UI
         private readonly IBinder binder;
         private readonly IUDTManager udtManager;
         private readonly ITableManager tableManager;
+        private readonly IPKManager pkManager;
 
         private readonly ICoreDB coreDb;
         private List<ConfigData> globalListConfig;
@@ -38,6 +39,7 @@ namespace SQLMigration.UI
             binder = of.GetInstanceBinder();
             udtManager = of.GetInstanceUdtManager();
             tableManager = of.GetInstanceTableManager();
+            pkManager = of.GetInstancePKManager();
         }
 
         public void ProsesManager(String pilihan)
@@ -73,6 +75,21 @@ namespace SQLMigration.UI
 
                     txtResult.Text = TableScriptStringBuilder.ToString();
                     binder.BindControls(DGTABLE, globalConfig.listTableSchemaInfo);
+                    break;
+
+                case "PK":
+                    globalConfig.listPKSchemaInfo = pkManager.GetSchema(globalConfig);
+                    globalConfig.listPKResultInfo = pkManager.Convert(globalConfig.listPKSchemaInfo);
+                    coreDb.Insert(globalConfig);
+                    cboConfigName.Refresh();
+
+                    var PKscriptStringBuilder = new StringBuilder();
+                    foreach (var pkResultData in globalConfig.listPKResultInfo)
+                    {
+                        PKscriptStringBuilder.AppendLine(pkResultData.sqlString);
+                    }
+                    txtResult.Text = PKscriptStringBuilder.ToString();
+                    binder.BindControls(DGPK, globalConfig.listPKSchemaInfo);
                     break;
 
                 default:

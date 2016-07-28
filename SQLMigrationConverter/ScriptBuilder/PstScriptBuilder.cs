@@ -50,31 +50,61 @@ namespace SQLMigration.Converter.ScriptBuilder
 
         }
 
-        public string CreateScriptTable(TableSchemaInfoData schemaInfo, List<TableSchemaInfoData> datasource)
+        public string CreateScriptTable(TableSchemaInfoData schemaInfo,List<TableSchemaInfoData> datasource)
         {
             string result = "";
-          
-            var allColumn = getAllcolumn(schemaInfo, datasource);
+            var convertedDataType = GetDataTypeMap(schemaInfo.DataType);
+            //   var allColumn = getAllcolumn(schemaInfo, datasource);
 
-            result = "CREATE TABLE " + schemaInfo.TableName + "(\n" +
-                     allColumn + "\n" +
-                     ");\r\n";
+            //result = "CREATE TABLE " + schemaInfo.TableName + "(\n" +
+            //         allColumn + "\n" +
+            //         ");\r\n";
+
+            if (schemaInfo.OrdinalPosition == 1)
+
+            {
+                result = string.Format("CREATE TABLE {0} ({1} {2}({3},{4}));\r\n",
+                                schemaInfo.TableName, schemaInfo.ColumnName, convertedDataType, schemaInfo.Precision,
+                                schemaInfo.Scale);
+            }
+            else { result = ""; }
 
             Console.WriteLine("PstScriptBuilder.CreateScriptTable : " + schemaInfo.name + ", Done");
             return result;
         }
 
+        public string CreateScriptPK(PKSchemaInfoData schemaInfo)
+        {
+            string result;
+
+            if (schemaInfo.OrdinalPosition == 1)
+           
+            {
+                result = string.Format("ALTER TABLE {0} ADD CONSTRAINT {1} PRIMARY KEY ({2});\r\n",
+                                   schemaInfo.TableName, schemaInfo.PkName, schemaInfo.ColumnName);
+            }
+            else { result = ""; }
+            
+
+            Console.WriteLine("PstScriptBuilder.CreateScriptUDT : " + schemaInfo.name + ", Done");
+
+            return result;
+
+        }
+
+
+
         private string getAllcolumn(TableSchemaInfoData schemaInfo, List<TableSchemaInfoData> datasource)
         {
             string allColumn = "";
-           
-          
+
+
             foreach (var getRaw in datasource)
             {
-              
+
                 if (getRaw.name == schemaInfo.name)
                 {
-                    allColumn += getRaw.ColumnName + " " + cekSuffix(getRaw) + ",\n ";
+                allColumn += getRaw.ColumnName + " " + cekSuffix(getRaw) + ",\n ";
                 }            
 
             }

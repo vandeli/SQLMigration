@@ -117,6 +117,7 @@ namespace SQLMigration.Test
             };
             
             var listSchemaInfoData = new List<TableSchemaInfoData> { schemaData };
+          //  var use = listSchemaInfoData.Where(x => x.TableName == schemaInfoData.TableName).ToList()
             const string RESULT_QUERY = "Select * from master";
             A.CallTo(() => scriptBuilder.CreateScriptTable(schemaData, listSchemaInfoData)).Returns(RESULT_QUERY);
 
