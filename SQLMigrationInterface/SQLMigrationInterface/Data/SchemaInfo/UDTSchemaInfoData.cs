@@ -9,9 +9,7 @@ namespace SQLMigration.Data.SchemaInfo
         {
             updated = DateTime.Now;
             id = Guid.NewGuid().ToString(); 
-
         }
-
 
         public string DataType { get; set; }
         public int MaxLength { get; set; }

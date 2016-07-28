@@ -18,7 +18,7 @@ namespace SQLMigration.Converter.ScriptBuilder
 
         public string CreateScriptUDT(UDTSchemaInfoData schemaInfo)
         {
-            Console.WriteLine("CreateScriptUDT : " + schemaInfo.name + " , start...");
+            
             string result;
 
             var convertedDataType = GetDataTypeMap(schemaInfo.DataType);
@@ -44,11 +44,104 @@ namespace SQLMigration.Converter.ScriptBuilder
             }
 
 
-            Console.WriteLine("CreateScriptUDT: " + result + " , Done");
+            Console.WriteLine("PstScriptBuilder.CreateScriptUDT : " + schemaInfo.name + ", Done");
 
             return result;
 
         }
+
+        public string CreateScriptTable(TableSchemaInfoData schemaInfo,List<TableSchemaInfoData> datasource)
+        {
+            string result = "";
+            var convertedDataType = GetDataTypeMap(schemaInfo.DataType);
+            //   var allColumn = getAllcolumn(schemaInfo, datasource);
+
+            //result = "CREATE TABLE " + schemaInfo.TableName + "(\n" +
+            //         allColumn + "\n" +
+            //         ");\r\n";
+
+            if (schemaInfo.OrdinalPosition == 1)
+
+            {
+                result = string.Format("CREATE TABLE {0} ({1} {2}({3},{4}));\r\n",
+                                schemaInfo.TableName, schemaInfo.ColumnName, convertedDataType, schemaInfo.Precision,
+                                schemaInfo.Scale);
+            }
+            else { result = ""; }
+
+            Console.WriteLine("PstScriptBuilder.CreateScriptTable : " + schemaInfo.name + ", Done");
+            return result;
+        }
+
+        public string CreateScriptPK(PKSchemaInfoData schemaInfo)
+        {
+            string result;
+
+            if (schemaInfo.OrdinalPosition == 1)
+           
+            {
+                result = string.Format("ALTER TABLE {0} ADD CONSTRAINT {1} PRIMARY KEY ({2});\r\n",
+                                   schemaInfo.TableName, schemaInfo.PkName, schemaInfo.ColumnName);
+            }
+            else { result = ""; }
+            
+
+            Console.WriteLine("PstScriptBuilder.CreateScriptUDT : " + schemaInfo.name + ", Done");
+
+            return result;
+
+        }
+
+
+
+        private string getAllcolumn(TableSchemaInfoData schemaInfo, List<TableSchemaInfoData> datasource)
+        {
+            string allColumn = "";
+
+
+            foreach (var getRaw in datasource)
+            {
+
+                if (getRaw.name == schemaInfo.name)
+                {
+                allColumn += getRaw.ColumnName + " " + cekSuffix(getRaw) + ",\n ";
+                }            
+
+            }
+
+            return allColumn;
+        }
+
+        private string cekSuffix(TableSchemaInfoData data)
+        {
+            var cekResult = "";
+            if (data.Domain != "")
+            {
+                cekResult = data.Domain;
+            }
+            else
+            {
+                cekResult = GetDataTypeMap(data.DataType);
+            }
+
+            if (data.CharMaxLength != 0)
+            {
+                cekResult += " (" + data.CharMaxLength + ")";
+            }
+            else if (data.Precision != 0)
+            {
+                cekResult += " (" + data.Precision + "," + data.Scale + ")";
+            }
+
+            if (data.isNullable == false)
+            {
+                cekResult += "  NOT NULL";
+            }
+            return cekResult;
+
+        }
+
+
 
         private readonly List<TablesFieldDataType> mapDataTypes = new List<TablesFieldDataType>
         {
@@ -108,7 +201,9 @@ namespace SQLMigration.Converter.ScriptBuilder
             var findingResult = mapDataTypes.SingleOrDefault(x => string.Equals(x.DataType, dataType, StringComparison.CurrentCultureIgnoreCase));
 
             return findingResult == null ? "" : findingResult.ConvertedDataType;
-        }
+        }     
+
+      
 
     }
 }

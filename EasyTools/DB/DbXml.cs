@@ -61,7 +61,8 @@ namespace EasyTools.DB
             xml = new XmlSerializer(typeof(List<T>));
             var stream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
             var list = (List<T>)xml.Deserialize(stream);
-            list = list.OrderByDescending(x => x.updated).ToList();
+            if (list.Count > 0)
+                list = list.OrderByDescending(x => x.updated).ToList();
             stream.Close();
             return list;
         }
@@ -95,12 +96,14 @@ namespace EasyTools.DB
         public void Insert<T>(T model) where T : BaseData, new()
         {
             var list = JustGetList<T>();
-            if (list.Exists(x => x.id == model.id))
+            if (list.Count > 0)
             {
-                Update(model);
-                return;
+                if (list.Exists(x => x.id == model.id))
+                {
+                    Update(model);
+                    return;
+                }
             }
-
             list.Add(model);
             var writer = GetWriter<T>();
             xml.Serialize(writer, list);

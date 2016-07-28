@@ -10,6 +10,8 @@ using SQLMigrationInterface.Interface.SourceQuery;
 using SQLMigrationManager;
 using System;
 using System.Data.SqlClient;
+using EasyTools.Controls;
+using EasyTools.Interface.Controls;
 
 
 namespace SQLMigration.OF
@@ -17,9 +19,12 @@ namespace SQLMigration.OF
     public class UIOF
     {
         static IUDTManager udtManager;
+        static ITableManager tableManager;
+        static IPKManager pkManager;
         static IFileManager fileManager;
         static ICoreDB coreDb;
         private static ILogger logger;
+        private static IBinder binder;
         public IUDTManager GetInstanceUdtManager()
         {
             if (udtManager != null) return udtManager;
@@ -34,6 +39,38 @@ namespace SQLMigration.OF
 
             return udtManager;
         }
+
+        public ITableManager GetInstanceTableManager()
+        {
+            if (tableManager != null) return tableManager;
+            var dbConn = new SqlConnection();
+            var dbCommand = new SqlCommand();
+            var dbAdapter = new SqlDataAdapter();
+
+            IDataAccess dataAccess = new DataAccess(dbConn, dbCommand, dbAdapter);
+            IScriptBuilder scriptBuilder = new PstScriptBuilder();
+            ISourceQuery schemaQuery = new MssQuery();
+            tableManager = new TableManager(dataAccess, scriptBuilder, schemaQuery);
+
+            return tableManager;
+
+        }
+
+        public IPKManager GetInstancePKManager()
+        {
+            if (pkManager != null) return pkManager;
+            var dbConn = new SqlConnection();
+            var dbCommand = new SqlCommand();
+            var dbAdapter = new SqlDataAdapter();
+
+            IDataAccess dataAccess = new DataAccess(dbConn, dbCommand, dbAdapter);
+            IScriptBuilder scriptBuilder = new PstScriptBuilder();
+            ISourceQuery schemaQuery = new MssQuery();
+            pkManager = new PKManager(dataAccess, scriptBuilder, schemaQuery);
+
+            return pkManager;
+        }
+
 
         public IFileManager GEtInstanceFileManager()
         {                                                                        
@@ -60,6 +97,13 @@ namespace SQLMigration.OF
             if (logger != null) return logger;
             logger = new Logger();
             return logger;
-        }  
+        }
+
+        public IBinder GetInstanceBinder()
+        {
+            if (binder != null) return binder;
+            binder = new Binder();
+            return binder;
+        }
     }
 }

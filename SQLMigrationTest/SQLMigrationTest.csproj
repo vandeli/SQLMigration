@@ -58,8 +58,10 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="PKManagerTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PstScriptBuilderTest.cs" />
+    <Compile Include="TableManagerTest.cs" />
     <Compile Include="UDTManagerTest.cs" />
     <Compile Include="DataAccessTest.cs" />
   </ItemGroup>

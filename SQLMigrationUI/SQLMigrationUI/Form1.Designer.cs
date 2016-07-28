@@ -44,14 +44,15 @@
             this.uDTManagerBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.btnConvert = new System.Windows.Forms.Button();
             this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.btnUpdate = new System.Windows.Forms.Button();
+            this.TpConfig = new System.Windows.Forms.TabPage();
+            this.btnCancel = new System.Windows.Forms.Button();
+            this.btnDelete = new System.Windows.Forms.Button();
             this.btnNew = new System.Windows.Forms.Button();
             this.btnSaveDb = new System.Windows.Forms.Button();
             this.txtPath = new System.Windows.Forms.TextBox();
             this.button5 = new System.Windows.Forms.Button();
             this.tabControl3 = new System.Windows.Forms.TabControl();
-            this.tabPage8 = new System.Windows.Forms.TabPage();
+            this.TpSourceMss = new System.Windows.Forms.TabPage();
             this.tabPage9 = new System.Windows.Forms.TabPage();
             this.label2 = new System.Windows.Forms.Label();
             this.tabPage2 = new System.Windows.Forms.TabPage();
@@ -60,6 +61,7 @@
             this.tabPage4 = new System.Windows.Forms.TabPage();
             this.DGUDT = new System.Windows.Forms.DataGridView();
             this.tabPage5 = new System.Windows.Forms.TabPage();
+            this.DGTABLE = new System.Windows.Forms.DataGridView();
             this.tabPage6 = new System.Windows.Forms.TabPage();
             this.tabPage7 = new System.Windows.Forms.TabPage();
             this.tabPage3 = new System.Windows.Forms.TabPage();
@@ -68,22 +70,27 @@
             this.txtResult = new System.Windows.Forms.TextBox();
             this.tabPage10 = new System.Windows.Forms.TabPage();
             this.txtLog = new System.Windows.Forms.TextBox();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.cboConfigName = new System.Windows.Forms.ComboBox();
             this.label4 = new System.Windows.Forms.Label();
             this.txtConfigPath = new System.Windows.Forms.TextBox();
             this.button4 = new System.Windows.Forms.Button();
             this.LblLog = new System.Windows.Forms.Label();
+            this.DGPK = new System.Windows.Forms.DataGridView();
             ((System.ComponentModel.ISupportInitialize)(this.uDTManagerBindingSource)).BeginInit();
             this.tabControl1.SuspendLayout();
-            this.tabPage1.SuspendLayout();
+            this.TpConfig.SuspendLayout();
             this.tabControl3.SuspendLayout();
-            this.tabPage8.SuspendLayout();
+            this.TpSourceMss.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.tabControl2.SuspendLayout();
             this.tabPage4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DGUDT)).BeginInit();
+            this.tabPage5.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.DGTABLE)).BeginInit();
+            this.tabPage6.SuspendLayout();
             this.tabPage3.SuspendLayout();
             this.tabPage10.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.DGPK)).BeginInit();
             this.SuspendLayout();
             // 
             // label1
@@ -139,6 +146,7 @@
             this.txtServer.Name = "txtServer";
             this.txtServer.Size = new System.Drawing.Size(231, 20);
             this.txtServer.TabIndex = 0;
+            this.txtServer.Tag = "ServerName";
             // 
             // txtDatabase
             // 
@@ -147,6 +155,7 @@
             this.txtDatabase.Name = "txtDatabase";
             this.txtDatabase.Size = new System.Drawing.Size(121, 20);
             this.txtDatabase.TabIndex = 1;
+            this.txtDatabase.Tag = "DBName";
             // 
             // txtUsername
             // 
@@ -155,6 +164,7 @@
             this.txtUsername.Name = "txtUsername";
             this.txtUsername.Size = new System.Drawing.Size(121, 20);
             this.txtUsername.TabIndex = 2;
+            this.txtUsername.Tag = "UserName";
             // 
             // txtPassword
             // 
@@ -163,6 +173,7 @@
             this.txtPassword.Name = "txtPassword";
             this.txtPassword.Size = new System.Drawing.Size(121, 20);
             this.txtPassword.TabIndex = 3;
+            this.txtPassword.Tag = "Password";
             this.txtPassword.UseSystemPasswordChar = true;
             // 
             // lblProcess
@@ -195,7 +206,7 @@
             // 
             // tabControl1
             // 
-            this.tabControl1.Controls.Add(this.tabPage1);
+            this.tabControl1.Controls.Add(this.TpConfig);
             this.tabControl1.Controls.Add(this.tabPage2);
             this.tabControl1.Controls.Add(this.tabPage3);
             this.tabControl1.Controls.Add(this.tabPage10);
@@ -205,35 +216,46 @@
             this.tabControl1.Size = new System.Drawing.Size(734, 365);
             this.tabControl1.TabIndex = 24;
             // 
-            // tabPage1
+            // TpConfig
             // 
-            this.tabPage1.Controls.Add(this.btnUpdate);
-            this.tabPage1.Controls.Add(this.btnNew);
-            this.tabPage1.Controls.Add(this.btnSaveDb);
-            this.tabPage1.Controls.Add(this.txtPath);
-            this.tabPage1.Controls.Add(this.button5);
-            this.tabPage1.Controls.Add(this.lblProcess);
-            this.tabPage1.Controls.Add(this.tabControl3);
-            this.tabPage1.Controls.Add(this.btnConvert);
-            this.tabPage1.Controls.Add(this.label2);
-            this.tabPage1.Controls.Add(this.cboProcess);
-            this.tabPage1.Location = new System.Drawing.Point(4, 22);
-            this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(726, 339);
-            this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "Config";
-            this.tabPage1.UseVisualStyleBackColor = true;
+            this.TpConfig.Controls.Add(this.btnCancel);
+            this.TpConfig.Controls.Add(this.btnDelete);
+            this.TpConfig.Controls.Add(this.btnNew);
+            this.TpConfig.Controls.Add(this.btnSaveDb);
+            this.TpConfig.Controls.Add(this.txtPath);
+            this.TpConfig.Controls.Add(this.button5);
+            this.TpConfig.Controls.Add(this.lblProcess);
+            this.TpConfig.Controls.Add(this.tabControl3);
+            this.TpConfig.Controls.Add(this.btnConvert);
+            this.TpConfig.Controls.Add(this.label2);
+            this.TpConfig.Controls.Add(this.cboProcess);
+            this.TpConfig.Location = new System.Drawing.Point(4, 22);
+            this.TpConfig.Name = "TpConfig";
+            this.TpConfig.Padding = new System.Windows.Forms.Padding(3);
+            this.TpConfig.Size = new System.Drawing.Size(726, 339);
+            this.TpConfig.TabIndex = 0;
+            this.TpConfig.Text = "Config";
+            this.TpConfig.UseVisualStyleBackColor = true;
             // 
-            // btnUpdate
+            // btnCancel
             // 
-            this.btnUpdate.Location = new System.Drawing.Point(175, 264);
-            this.btnUpdate.Name = "btnUpdate";
-            this.btnUpdate.Size = new System.Drawing.Size(79, 23);
-            this.btnUpdate.TabIndex = 33;
-            this.btnUpdate.Text = "Update";
-            this.btnUpdate.UseVisualStyleBackColor = true;
-            this.btnUpdate.Click += new System.EventHandler(this.btnUpdate_Click);
+            this.btnCancel.Location = new System.Drawing.Point(91, 264);
+            this.btnCancel.Name = "btnCancel";
+            this.btnCancel.Size = new System.Drawing.Size(79, 23);
+            this.btnCancel.TabIndex = 34;
+            this.btnCancel.Text = "Cancel";
+            this.btnCancel.UseVisualStyleBackColor = true;
+            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
+            // 
+            // btnDelete
+            // 
+            this.btnDelete.Location = new System.Drawing.Point(260, 264);
+            this.btnDelete.Name = "btnDelete";
+            this.btnDelete.Size = new System.Drawing.Size(79, 23);
+            this.btnDelete.TabIndex = 33;
+            this.btnDelete.Text = "Delete";
+            this.btnDelete.UseVisualStyleBackColor = true;
+            this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
             // 
             // btnNew
             // 
@@ -247,11 +269,11 @@
             // 
             // btnSaveDb
             // 
-            this.btnSaveDb.Location = new System.Drawing.Point(90, 264);
+            this.btnSaveDb.Location = new System.Drawing.Point(176, 264);
             this.btnSaveDb.Name = "btnSaveDb";
             this.btnSaveDb.Size = new System.Drawing.Size(79, 23);
             this.btnSaveDb.TabIndex = 31;
-            this.btnSaveDb.Text = "Save Db";
+            this.btnSaveDb.Text = "Save";
             this.btnSaveDb.UseVisualStyleBackColor = true;
             this.btnSaveDb.Click += new System.EventHandler(this.btnSaveDb_Click);
             // 
@@ -262,6 +284,7 @@
             this.txtPath.Name = "txtPath";
             this.txtPath.Size = new System.Drawing.Size(231, 20);
             this.txtPath.TabIndex = 22;
+            this.txtPath.Tag = "OutputPath";
             // 
             // button5
             // 
@@ -274,7 +297,7 @@
             // 
             // tabControl3
             // 
-            this.tabControl3.Controls.Add(this.tabPage8);
+            this.tabControl3.Controls.Add(this.TpSourceMss);
             this.tabControl3.Controls.Add(this.tabPage9);
             this.tabControl3.Location = new System.Drawing.Point(6, 42);
             this.tabControl3.Name = "tabControl3";
@@ -282,23 +305,23 @@
             this.tabControl3.Size = new System.Drawing.Size(714, 213);
             this.tabControl3.TabIndex = 30;
             // 
-            // tabPage8
+            // TpSourceMss
             // 
-            this.tabPage8.Controls.Add(this.txtPassword);
-            this.tabPage8.Controls.Add(this.txtServer);
-            this.tabPage8.Controls.Add(this.txtUsername);
-            this.tabPage8.Controls.Add(this.lblServer);
-            this.tabPage8.Controls.Add(this.txtDatabase);
-            this.tabPage8.Controls.Add(this.lblDatabase);
-            this.tabPage8.Controls.Add(this.lblPassword);
-            this.tabPage8.Controls.Add(this.lblUsrName);
-            this.tabPage8.Location = new System.Drawing.Point(4, 22);
-            this.tabPage8.Name = "tabPage8";
-            this.tabPage8.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage8.Size = new System.Drawing.Size(706, 187);
-            this.tabPage8.TabIndex = 0;
-            this.tabPage8.Text = "Source Mss";
-            this.tabPage8.UseVisualStyleBackColor = true;
+            this.TpSourceMss.Controls.Add(this.txtPassword);
+            this.TpSourceMss.Controls.Add(this.txtServer);
+            this.TpSourceMss.Controls.Add(this.txtUsername);
+            this.TpSourceMss.Controls.Add(this.lblServer);
+            this.TpSourceMss.Controls.Add(this.txtDatabase);
+            this.TpSourceMss.Controls.Add(this.lblDatabase);
+            this.TpSourceMss.Controls.Add(this.lblPassword);
+            this.TpSourceMss.Controls.Add(this.lblUsrName);
+            this.TpSourceMss.Location = new System.Drawing.Point(4, 22);
+            this.TpSourceMss.Name = "TpSourceMss";
+            this.TpSourceMss.Padding = new System.Windows.Forms.Padding(3);
+            this.TpSourceMss.Size = new System.Drawing.Size(706, 187);
+            this.TpSourceMss.TabIndex = 0;
+            this.TpSourceMss.Text = "Source Mss";
+            this.TpSourceMss.UseVisualStyleBackColor = true;
             // 
             // tabPage9
             // 
@@ -373,6 +396,7 @@
             // 
             // tabPage5
             // 
+            this.tabPage5.Controls.Add(this.DGTABLE);
             this.tabPage5.Location = new System.Drawing.Point(4, 22);
             this.tabPage5.Name = "tabPage5";
             this.tabPage5.Padding = new System.Windows.Forms.Padding(3);
@@ -381,8 +405,17 @@
             this.tabPage5.Text = "Table";
             this.tabPage5.UseVisualStyleBackColor = true;
             // 
+            // DGTABLE
+            // 
+            this.DGTABLE.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.DGTABLE.Location = new System.Drawing.Point(6, 6);
+            this.DGTABLE.Name = "DGTABLE";
+            this.DGTABLE.Size = new System.Drawing.Size(697, 217);
+            this.DGTABLE.TabIndex = 1;
+            // 
             // tabPage6
             // 
+            this.tabPage6.Controls.Add(this.DGPK);
             this.tabPage6.Location = new System.Drawing.Point(4, 22);
             this.tabPage6.Name = "tabPage6";
             this.tabPage6.Padding = new System.Windows.Forms.Padding(3);
@@ -463,15 +496,15 @@
             this.txtLog.TabIndex = 1;
             this.txtLog.WordWrap = false;
             // 
-            // comboBox1
+            // cboConfigName
             // 
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(106, 7);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(287, 21);
-            this.comboBox1.TabIndex = 25;
-            this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
-            this.comboBox1.Leave += new System.EventHandler(this.comboBox1_Leave);
+            this.cboConfigName.FormattingEnabled = true;
+            this.cboConfigName.Location = new System.Drawing.Point(106, 7);
+            this.cboConfigName.Name = "cboConfigName";
+            this.cboConfigName.Size = new System.Drawing.Size(287, 21);
+            this.cboConfigName.TabIndex = 25;
+            this.cboConfigName.Tag = "name";
+            this.cboConfigName.Leave += new System.EventHandler(this.comboBox1_Leave);
             // 
             // label4
             // 
@@ -507,6 +540,14 @@
             this.LblLog.TabIndex = 29;
             this.LblLog.Text = "Log :";
             // 
+            // DGPK
+            // 
+            this.DGPK.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.DGPK.Location = new System.Drawing.Point(6, 6);
+            this.DGPK.Name = "DGPK";
+            this.DGPK.Size = new System.Drawing.Size(697, 217);
+            this.DGPK.TabIndex = 2;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -516,7 +557,7 @@
             this.Controls.Add(this.button4);
             this.Controls.Add(this.txtConfigPath);
             this.Controls.Add(this.label4);
-            this.Controls.Add(this.comboBox1);
+            this.Controls.Add(this.cboConfigName);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.label1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -527,19 +568,23 @@
             this.Load += new System.EventHandler(this.Form1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.uDTManagerBindingSource)).EndInit();
             this.tabControl1.ResumeLayout(false);
-            this.tabPage1.ResumeLayout(false);
-            this.tabPage1.PerformLayout();
+            this.TpConfig.ResumeLayout(false);
+            this.TpConfig.PerformLayout();
             this.tabControl3.ResumeLayout(false);
-            this.tabPage8.ResumeLayout(false);
-            this.tabPage8.PerformLayout();
+            this.TpSourceMss.ResumeLayout(false);
+            this.TpSourceMss.PerformLayout();
             this.tabPage2.ResumeLayout(false);
             this.tabControl2.ResumeLayout(false);
             this.tabPage4.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.DGUDT)).EndInit();
+            this.tabPage5.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.DGTABLE)).EndInit();
+            this.tabPage6.ResumeLayout(false);
             this.tabPage3.ResumeLayout(false);
             this.tabPage3.PerformLayout();
             this.tabPage10.ResumeLayout(false);
             this.tabPage10.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.DGPK)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -561,7 +606,7 @@
         private System.Windows.Forms.BindingSource uDTManagerBindingSource;
         private System.Windows.Forms.Button btnConvert;
         private System.Windows.Forms.TabControl tabControl1;
-        private System.Windows.Forms.TabPage tabPage1;
+        private System.Windows.Forms.TabPage TpConfig;
         private System.Windows.Forms.TabPage tabPage2;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.TabControl tabControl2;
@@ -574,7 +619,7 @@
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button btnSaveQuery;
         private System.Windows.Forms.TextBox txtResult;
-        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.ComboBox cboConfigName;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.TextBox txtConfigPath;
         private System.Windows.Forms.Button button4;
@@ -582,7 +627,7 @@
         private System.Windows.Forms.TextBox txtPath;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TabControl tabControl3;
-        private System.Windows.Forms.TabPage tabPage8;
+        private System.Windows.Forms.TabPage TpSourceMss;
         private System.Windows.Forms.TabPage tabPage9;
 
         private System.Windows.Forms.Button btnSaveDb;
@@ -591,7 +636,11 @@
         private System.Windows.Forms.Label LblLog;
         private System.Windows.Forms.TabPage tabPage10;
         private System.Windows.Forms.TextBox txtLog;
-        private System.Windows.Forms.Button btnUpdate;
+        private System.Windows.Forms.DataGridView DGTABLE;
+
+        private System.Windows.Forms.Button btnDelete;
+        private System.Windows.Forms.Button btnCancel;
+        private System.Windows.Forms.DataGridView DGPK;
     }
 }
 
