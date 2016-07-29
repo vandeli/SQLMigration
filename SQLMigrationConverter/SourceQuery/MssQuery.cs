@@ -47,5 +47,30 @@ namespace SQLMigrationConverter.SourceQuery
             Console.WriteLine("MssQuery.GetUDTQuery : Done");
             return sql;
         }
+
+        public string GetPKQuery()
+        {
+            var sql = @"
+			SELECT CONSTRAINT_NAME AS PK_Name
+	            ,TABLE_NAME
+	            ,COLUMN_NAME
+	            ,ORDINAL_POSITION
+            FROM INFORMATION_SCHEMA.KEY_COLUMN_USAGE b
+            JOIN (
+	            SELECT NAME
+	            FROM sysobjects a
+	            WHERE xtype = 'pk'
+		            AND parent_obj IN (
+			            SELECT id
+			            FROM sysobjects
+			            WHERE xtype = 'U'
+			            )
+	            ) a ON a.NAME = b.CONSTRAINT_NAME
+            ORDER BY table_name
+	            ,ORDINAL_POSITION
+			";
+            Console.WriteLine("MssQuery.GetUDTQuery : Done");
+            return sql;          
+        }
     }
 }

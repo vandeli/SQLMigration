@@ -93,11 +93,22 @@ namespace SQLMigration.Test
                 Scale = 2,
             };
 
-            var schemaData2 = new TableSchemaInfoData
+            var scriptExpectation = string.Format("ALTER TABLE {0} ADD CONSTRAINT {1} PRIMARY KEY ({2});\r\n",
+                             "customTableName", "customPKName", "customColumnName");
+
+
+
+            var scriptActual = scriptBuilder.CreateScriptPK(schemaInfo);
+
+            Assert.AreEqual(scriptExpectation, scriptActual);
+        }
+
+        [TestMethod]
+        public void CreatePKScript_Ordinal2Test()
+        {
+            var scriptBuilder = new PstScriptBuilder();
             {
-                TableName = "BOS_SD_FDO",
-                ColumnName = "szDesc",
-                OrdinalPosition = 1,
+                TableName = "customTableName",
                 ColumnDefault = "",
                 isNullable = true,
                 Domain = "BOS_DT_SZDESC",
@@ -107,15 +118,34 @@ namespace SQLMigration.Test
                 Scale = 2,
             };
 
-            var listSchemaInfoData = new List<TableSchemaInfoData> { schemaData,schemaData2 };
 
             var scriptExpectation = @"CREATE TABLE BOS_SD_FDO(
                                         szId BOS_DT_SZID (8,2),
                                         szDesc BOS_DT_SZDESC (100),);";
 
-            var scriptActual = scriptBuilder.CreateScriptTable(schemaData,listSchemaInfoData);
 
             Assert.AreEqual(scriptExpectation, scriptActual);
         }
+
+[TestMethod]
+        public void CreatePKScript_Ordinal2Test()
+        {
+            var scriptBuilder = new PstScriptBuilder();
+            var schemaInfo = new PKSchemaInfoData
+            {
+                PkName = "customPKName",
+                TableName = "customTableName",
+                ColumnName = "customColumnName",
+                OrdinalPosition = 2
+            };
+
+            var scriptExpectation = string.Format("");
+
+
+            var scriptActual = scriptBuilder.CreateScriptPK(schemaInfo);
+
+            Assert.AreEqual(scriptExpectation, scriptActual);
+        }
+
     }
 }

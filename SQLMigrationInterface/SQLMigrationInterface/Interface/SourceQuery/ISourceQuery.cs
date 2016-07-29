@@ -4,5 +4,6 @@
     {
         string GetUDTQuery();
         string GetTableQuery();
+        string GetPKQuery();
     }
 }

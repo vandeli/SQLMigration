@@ -7,5 +7,6 @@ namespace SQLMigrationInterface.Interface.ScriptBuilder
     {
         string CreateScriptUDT(UDTSchemaInfoData schemaInfoData);
         string CreateScriptTable(TableSchemaInfoData schemaInfoData, List<TableSchemaInfoData> datasource);
+        string CreateScriptPK(PKSchemaInfoData schemaInfoData);
     }
 }
