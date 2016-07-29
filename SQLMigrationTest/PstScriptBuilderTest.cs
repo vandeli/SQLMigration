@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SQLMigration.Converter.ScriptBuilder;
 using SQLMigration.Data.SchemaInfo;
@@ -23,7 +24,7 @@ namespace SQLMigration.Test
             };
 
             var scriptExpectation = string.Format("CREATE DOMAIN {0} AS {1}({2}){3};\r\n",
-                                    schemaInfo.name, "varchar", schemaInfo.MaxLength, "");
+                schemaInfo.name, "varchar", schemaInfo.MaxLength, "");
 
             var scriptActual = scriptBuilder.CreateScriptUDT(schemaInfo);
 
@@ -45,7 +46,7 @@ namespace SQLMigration.Test
             };
 
             var scriptExpectation = string.Format("CREATE DOMAIN {0} AS {1}({2},{3}){4};\r\n",
-                schemaInfo.name, "numeric", schemaInfo.Precision, schemaInfo.Scale,"");
+                schemaInfo.name, "numeric", schemaInfo.Precision, schemaInfo.Scale, "");
 
             var scriptActual = scriptBuilder.CreateScriptUDT(schemaInfo);
 
@@ -67,7 +68,7 @@ namespace SQLMigration.Test
             };
 
             var scriptExpectation = string.Format("CREATE DOMAIN {0} AS {1}{2};\r\n",
-                schemaInfo.name, "bit(" + schemaInfo.MaxLength +")", "");
+                schemaInfo.name, "bit(" + schemaInfo.MaxLength + ")", "");
 
             var scriptActual = scriptBuilder.CreateScriptUDT(schemaInfo);
 
@@ -94,58 +95,20 @@ namespace SQLMigration.Test
             };
 
             var scriptExpectation = string.Format("ALTER TABLE {0} ADD CONSTRAINT {1} PRIMARY KEY ({2});\r\n",
-                             "customTableName", "customPKName", "customColumnName");
+                "customTableName", "customPKName", "customColumnName");
 
 
-
-            var scriptActual = scriptBuilder.CreateScriptPK(schemaInfo);
+            var scriptActual = scriptBuilder.CreateScriptTable(schemaData, new List<TableSchemaInfoData>() {schemaData});
 
             Assert.AreEqual(scriptExpectation, scriptActual);
         }
+
+
 
         [TestMethod]
         public void CreatePKScript_Ordinal2Test()
         {
-            var scriptBuilder = new PstScriptBuilder();
-            {
-                TableName = "customTableName",
-                ColumnDefault = "",
-                isNullable = true,
-                Domain = "BOS_DT_SZDESC",
-                DataType = "varchar",
-                CharMaxLength = 100,
-                Precision = 5,
-                Scale = 2,
-            };
-
-
-            var scriptExpectation = @"CREATE TABLE BOS_SD_FDO(
-                                        szId BOS_DT_SZID (8,2),
-                                        szDesc BOS_DT_SZDESC (100),);";
-
-
-            Assert.AreEqual(scriptExpectation, scriptActual);
+            Assert.Fail();
         }
-
-[TestMethod]
-        public void CreatePKScript_Ordinal2Test()
-        {
-            var scriptBuilder = new PstScriptBuilder();
-            var schemaInfo = new PKSchemaInfoData
-            {
-                PkName = "customPKName",
-                TableName = "customTableName",
-                ColumnName = "customColumnName",
-                OrdinalPosition = 2
-            };
-
-            var scriptExpectation = string.Format("");
-
-
-            var scriptActual = scriptBuilder.CreateScriptPK(schemaInfo);
-
-            Assert.AreEqual(scriptExpectation, scriptActual);
-        }
-
     }
 }
