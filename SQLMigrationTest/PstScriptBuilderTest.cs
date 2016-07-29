@@ -106,9 +106,26 @@ namespace SQLMigration.Test
 
 
         [TestMethod]
-        public void CreatePKScript_Ordinal2Test()
+        public void CreatePKScript()
         {
-            Assert.Fail();
+            var scriptBuilder = new PstScriptBuilder();
+
+            var schemaData = new PKSchemaInfoData
+            {
+                PkName = "szId_pk",
+                TableName = "BOS_NG_TEST",
+                ColumnName = "szId",
+                OrdinalPosition = 1
+
+            };
+
+            var scriptExpectation = string.Format("ALTER TABLE {0} ADD CONSTRAINT {1} PRIMARY KEY ({2});\r\n",
+                schemaData.TableName, schemaData.PkName, schemaData.ColumnName);
+
+
+            var scriptActual = scriptBuilder.CreateScriptPK(schemaData);
+
+            Assert.AreEqual(scriptExpectation, scriptActual);
         }
     }
 }
