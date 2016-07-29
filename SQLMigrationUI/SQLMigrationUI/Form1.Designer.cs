@@ -63,6 +63,7 @@
             this.tabPage5 = new System.Windows.Forms.TabPage();
             this.DGTABLE = new System.Windows.Forms.DataGridView();
             this.tabPage6 = new System.Windows.Forms.TabPage();
+            this.DGPK = new System.Windows.Forms.DataGridView();
             this.tabPage7 = new System.Windows.Forms.TabPage();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.button2 = new System.Windows.Forms.Button();
@@ -75,7 +76,7 @@
             this.txtConfigPath = new System.Windows.Forms.TextBox();
             this.button4 = new System.Windows.Forms.Button();
             this.LblLog = new System.Windows.Forms.Label();
-            this.DGPK = new System.Windows.Forms.DataGridView();
+            this.DGINDEX = new System.Windows.Forms.DataGridView();
             ((System.ComponentModel.ISupportInitialize)(this.uDTManagerBindingSource)).BeginInit();
             this.tabControl1.SuspendLayout();
             this.TpConfig.SuspendLayout();
@@ -88,9 +89,11 @@
             this.tabPage5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DGTABLE)).BeginInit();
             this.tabPage6.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.DGPK)).BeginInit();
+            this.tabPage7.SuspendLayout();
             this.tabPage3.SuspendLayout();
             this.tabPage10.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.DGPK)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.DGINDEX)).BeginInit();
             this.SuspendLayout();
             // 
             // label1
@@ -424,8 +427,17 @@
             this.tabPage6.Text = "PK";
             this.tabPage6.UseVisualStyleBackColor = true;
             // 
+            // DGPK
+            // 
+            this.DGPK.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.DGPK.Location = new System.Drawing.Point(6, 6);
+            this.DGPK.Name = "DGPK";
+            this.DGPK.Size = new System.Drawing.Size(697, 217);
+            this.DGPK.TabIndex = 2;
+            // 
             // tabPage7
             // 
+            this.tabPage7.Controls.Add(this.DGINDEX);
             this.tabPage7.Location = new System.Drawing.Point(4, 22);
             this.tabPage7.Name = "tabPage7";
             this.tabPage7.Padding = new System.Windows.Forms.Padding(3);
@@ -540,13 +552,13 @@
             this.LblLog.TabIndex = 29;
             this.LblLog.Text = "Log :";
             // 
-            // DGPK
+            // DGINDEX
             // 
-            this.DGPK.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.DGPK.Location = new System.Drawing.Point(6, 6);
-            this.DGPK.Name = "DGPK";
-            this.DGPK.Size = new System.Drawing.Size(697, 217);
-            this.DGPK.TabIndex = 2;
+            this.DGINDEX.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.DGINDEX.Location = new System.Drawing.Point(6, 6);
+            this.DGINDEX.Name = "DGINDEX";
+            this.DGINDEX.Size = new System.Drawing.Size(697, 217);
+            this.DGINDEX.TabIndex = 3;
             // 
             // Form1
             // 
@@ -580,11 +592,13 @@
             this.tabPage5.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.DGTABLE)).EndInit();
             this.tabPage6.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.DGPK)).EndInit();
+            this.tabPage7.ResumeLayout(false);
             this.tabPage3.ResumeLayout(false);
             this.tabPage3.PerformLayout();
             this.tabPage10.ResumeLayout(false);
             this.tabPage10.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.DGPK)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.DGINDEX)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -641,6 +655,7 @@
         private System.Windows.Forms.Button btnDelete;
         private System.Windows.Forms.Button btnCancel;
         private System.Windows.Forms.DataGridView DGPK;
+        private System.Windows.Forms.DataGridView DGINDEX;
     }
 }
 

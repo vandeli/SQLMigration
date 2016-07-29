@@ -22,6 +22,8 @@ namespace SQLMigration.OF
         static ITableManager tableManager;
         static IPKManager pkManager;
         static IFileManager fileManager;
+        static IIndexManager indexManager;
+
         static ICoreDB coreDb;
         private static ILogger logger;
         private static IBinder binder;
@@ -69,6 +71,21 @@ namespace SQLMigration.OF
             pkManager = new PKManager(dataAccess, scriptBuilder, schemaQuery);
 
             return pkManager;
+        }
+
+        public IIndexManager GetInstanceIndexManager()
+        {
+            if (indexManager != null) return indexManager;
+            var dbConn = new SqlConnection();
+            var dbCommand = new SqlCommand();
+            var dbAdapter = new SqlDataAdapter();
+
+            IDataAccess dataAccess = new DataAccess(dbConn, dbCommand, dbAdapter);
+            IScriptBuilder scriptBuilder = new PstScriptBuilder();
+            ISourceQuery schemaQuery = new MssQuery();
+            indexManager = new IndexManager(dataAccess, scriptBuilder, schemaQuery);
+
+            return indexManager;
         }
 
 

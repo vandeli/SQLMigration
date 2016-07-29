@@ -9,5 +9,6 @@ namespace SQLMigration.Interface.Interface.Manager
     {
         List<TableSchemaInfoData> GetSchema(ConfigData configData);
         List<TableResultData> Convert(List<TableSchemaInfoData> datasource);
+
     }
 }

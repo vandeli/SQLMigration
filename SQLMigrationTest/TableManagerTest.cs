@@ -115,11 +115,18 @@ namespace SQLMigration.Test
                 Precision = 8,
                 Scale = 2,
             };
-            
+
+            var tempSchemaData = new tempTableData
+            {
+                AllTableName = "customTableName",
+                AllColumnName = "customColumnName",
+            };
+
             var listSchemaInfoData = new List<TableSchemaInfoData> { schemaData };
-          //  var use = listSchemaInfoData.Where(x => x.TableName == schemaInfoData.TableName).ToList()
+            var listTempSchemaInfoData = new List<tempTableData> { tempSchemaData };
+        
             const string RESULT_QUERY = "Select * from master";
-            A.CallTo(() => scriptBuilder.CreateScriptTable(schemaData, listSchemaInfoData)).Returns(RESULT_QUERY);
+            A.CallTo(() => scriptBuilder.CreateScriptTable(tempSchemaData)).Returns(RESULT_QUERY);
 
            
             var result = tableManager.Convert(listSchemaInfoData);

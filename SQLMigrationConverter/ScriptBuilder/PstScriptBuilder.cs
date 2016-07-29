@@ -50,41 +50,25 @@ namespace SQLMigration.Converter.ScriptBuilder
 
         }
 
-        public string CreateScriptTable(TableSchemaInfoData schemaInfo,List<TableSchemaInfoData> datasource)
+        public string CreateScriptTable(tempTableData schemaInfo)
         {
             string result = "";
-            var convertedDataType = GetDataTypeMap(schemaInfo.DataType);
-            //   var allColumn = getAllcolumn(schemaInfo, datasource);
-
-            //result = "CREATE TABLE " + schemaInfo.TableName + "(\n" +
-            //         allColumn + "\n" +
-            //         ");\r\n";
-
-            if (schemaInfo.OrdinalPosition == 1)
-
-            {
-                result = string.Format("CREATE TABLE {0} ({1} {2}({3},{4}));\r\n",
-                                schemaInfo.TableName, schemaInfo.ColumnName, convertedDataType, schemaInfo.Precision,
-                                schemaInfo.Scale);
-            }
-            else { result = ""; }
+       
+                result = string.Format("CREATE TABLE {0} (\r\n {1} );\r\n",
+                                schemaInfo.AllTableName, schemaInfo.AllColumnName);
+         
 
             Console.WriteLine("PstScriptBuilder.CreateScriptTable : " + schemaInfo.name + ", Done");
             return result;
         }
 
-        public string CreateScriptPK(PKSchemaInfoData schemaInfo)
+        public string CreateScriptPK(tempTableData schemaInfo)
         {
             string result;
 
-            if (schemaInfo.OrdinalPosition == 1)
-           
-            {
                 result = string.Format("ALTER TABLE {0} ADD CONSTRAINT {1} PRIMARY KEY ({2});\r\n",
-                                   schemaInfo.TableName, schemaInfo.PkName, schemaInfo.ColumnName);
-            }
-            else { result = ""; }
-            
+                                   schemaInfo.AllTableName, schemaInfo.name, schemaInfo.AllColumnName);
+                     
 
             Console.WriteLine("PstScriptBuilder.CreateScriptUDT : " + schemaInfo.name + ", Done");
 
@@ -92,55 +76,20 @@ namespace SQLMigration.Converter.ScriptBuilder
 
         }
 
-
-
-        private string getAllcolumn(TableSchemaInfoData schemaInfo, List<TableSchemaInfoData> datasource)
+        public string CreateScriptIndex(tempTableData schemaInfo)
         {
-            string allColumn = "";
+            string result;
 
+          
+                result = string.Format("CREATE INDEX {0} ON {1} ({2});\r\n",
+                         schemaInfo.name, schemaInfo.AllTableName, schemaInfo.AllColumnName);              
+           
 
-            foreach (var getRaw in datasource)
-            {
+            Console.WriteLine("PstScriptBuilder.CreateScriptIndex : " + schemaInfo.name + ", Done");
 
-                if (getRaw.name == schemaInfo.name)
-                {
-                allColumn += getRaw.ColumnName + " " + cekSuffix(getRaw) + ",\n ";
-                }            
-
-            }
-
-            return allColumn;
-        }
-
-        private string cekSuffix(TableSchemaInfoData data)
-        {
-            var cekResult = "";
-            if (data.Domain != "")
-            {
-                cekResult = data.Domain;
-            }
-            else
-            {
-                cekResult = GetDataTypeMap(data.DataType);
-            }
-
-            if (data.CharMaxLength != 0)
-            {
-                cekResult += " (" + data.CharMaxLength + ")";
-            }
-            else if (data.Precision != 0)
-            {
-                cekResult += " (" + data.Precision + "," + data.Scale + ")";
-            }
-
-            if (data.isNullable == false)
-            {
-                cekResult += "  NOT NULL";
-            }
-            return cekResult;
+            return result;
 
         }
-
 
 
         private readonly List<TablesFieldDataType> mapDataTypes = new List<TablesFieldDataType>
@@ -190,7 +139,7 @@ namespace SQLMigration.Converter.ScriptBuilder
             new TablesFieldDataType { DataType="unsignedsmallint", ConvertedDataType="--" },
         };
 
-        string GetDataTypeMap(String dataType)
+        public string GetDataTypeMap(string dataType)
         {
             if (dataType == null)
             {

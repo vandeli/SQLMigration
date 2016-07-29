@@ -5,10 +5,13 @@ using SQLMigration.Interface.Data;
 using SQLMigration.Interface.Interface.Manager;
 using SQLMigrationInterface.Interface.ScriptBuilder;
 using SQLMigrationInterface.Interface.SourceQuery;
+using SQLMigration.Converter.ScriptBuilder;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
+using System.Windows.Forms;
 
 namespace SQLMigrationManager
 {
@@ -39,16 +42,29 @@ namespace SQLMigrationManager
         public List<TableResultData> Convert(List<TableSchemaInfoData> datasource)
         {
             Console.WriteLine("TableManager.Convert : listSchema =>" + datasource.Count + " , start...");
-            //var UsedTableName = datasource.GroupBy(d => new { d.TableName })
-            //                      .Select(d => d.First())
-            //                      .ToList();
-         
+     
+            var UsedTableName = datasource.GroupBy(x => x.TableName).Select(y => y.First()).ToList();
 
-            var result = datasource.Select(schemaInfoData => new TableResultData
+         
+            List<tempTableData> listTempData = new List<tempTableData>();
+            
+            foreach (var uTableName in UsedTableName)
+            {
+                tempTableData tempData = new tempTableData();
+                tempData.AllTableName = uTableName.TableName;
+                tempData.AllColumnName = getAllcolumn(datasource.Where(x => x.TableName == uTableName.TableName).ToList());
+                tempData.name = uTableName.TableName;
+                listTempData.Add(tempData);
+           
+
+            }         
+
+
+            var result = listTempData.Select(tempSchemaInfoData => new TableResultData
             {                
-                name = schemaInfoData.TableName,
-                sqlString = "Select * from Master", // scriptBuilder.CreateScriptTable(schemaInfoData, datasource.Where(x => x.TableName == schemaInfoData.TableName).ToList()),
-                schemaId = schemaInfoData.id
+                name = tempSchemaInfoData.name,
+                sqlString = scriptBuilder.CreateScriptTable(tempSchemaInfoData),
+                schemaId = tempSchemaInfoData.id
             }).ToList();
 
             Console.WriteLine("TableManager.Convert : " + result.Count + " , Done...");
@@ -80,8 +96,59 @@ namespace SQLMigrationManager
             return result;
         }
 
-      
-          
+        private string getAllcolumn(List<TableSchemaInfoData> datasource)
+        {
+            string allColumn = "";
+            var n = 0;
+
+            foreach (var getRaw in datasource)
+            {
+                n = datasource.IndexOf(getRaw);
+           
+                if ((n+1)  == datasource.Count)
+                     {
+                        allColumn += getRaw.ColumnName + " " + cekSuffix(getRaw) + "\r\n ";
+                     }
+                else
+                     {
+                         allColumn += getRaw.ColumnName + " " + cekSuffix(getRaw) + ",\r\n";
+                     }            
+            }
+
+            return allColumn;
+        }
+
+        private string cekSuffix(TableSchemaInfoData data)
+        {
+            var cekResult = "";
+            if (data.Domain != "")
+            {
+                cekResult = data.Domain;
+            }
+            else
+            {
+                cekResult = scriptBuilder.GetDataTypeMap(data.DataType);
+            }
+
+            if (data.CharMaxLength != 0)
+            {
+                cekResult += " (" + data.CharMaxLength + ")";
+            }
+            else if (data.Precision != 0)
+            {
+                cekResult += " (" + data.Precision + "," + data.Scale + ")";
+            }
+
+            if (data.isNullable == false)
+            {
+                cekResult += "  NOT NULL";
+            }
+            return cekResult;
+
+        }
+
+
+
 
     }
 }

@@ -84,8 +84,15 @@ namespace SQLMigration.Test
                 
             };
 
+            var tempSchemaData = new tempTableData
+            {
+                AllTableName = "customPKName",
+                AllColumnName = "customColumnName",
+            };
+
+
             const string RESULT_QUERY = "Select * from master";
-            A.CallTo(() => scriptBuilder.CreateScriptPK(schemaData)).Returns(RESULT_QUERY);
+            A.CallTo(() => scriptBuilder.CreateScriptPK(tempSchemaData)).Returns(RESULT_QUERY);
 
             var listSchemaInfoData = new List<PKSchemaInfoData> { schemaData };
             var result = pkManager.Convert(listSchemaInfoData);
@@ -94,7 +101,7 @@ namespace SQLMigration.Test
 
             var resultActual = result[0];
 
-            var resultExpectation = new UDTResultData
+            var resultExpectation = new PKResultData
             {
                 name = "customPKName",
                 sqlString = RESULT_QUERY,

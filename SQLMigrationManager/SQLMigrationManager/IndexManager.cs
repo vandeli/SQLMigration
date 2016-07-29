@@ -1,218 +1,108 @@
-﻿using SQLMigration.Data;
-using SQLMigrationConverter.MapAttribut;
-using SQLMigrationInterface;
+﻿using EasyTools.Interface.DB;
+using SQLMigration.Data.ResultInfo;
+using SQLMigration.Data.SchemaInfo;
+using SQLMigration.Interface.Data;
+using SQLMigration.Interface.Interface.Manager;
+using SQLMigrationInterface.Interface.ScriptBuilder;
+using SQLMigrationInterface.Interface.SourceQuery;
+using System;
 using System.Collections.Generic;
 using System.Data;
-using System.IO;
-using System.Windows.Forms;
-using System;
+using System.Linq;
 
 namespace SQLMigrationManager
 {
     public class IndexManager : IIndexManager
     {
         private readonly IDataAccess dataAccess;
+        readonly IScriptBuilder scriptBuilder;
+        readonly ISourceQuery sourceQuery;
 
-        public IndexManager(IDataAccess dataAccess)
+        public IndexManager(IDataAccess dataAccess, IScriptBuilder scriptBuilder, ISourceQuery sourceQuery)
         {
             this.dataAccess = dataAccess;
+            this.scriptBuilder = scriptBuilder;
+            this.sourceQuery = sourceQuery;
         }
 
-        public  DataTable GetSchema()
+        public List<IndexSchemaInfoData> GetSchema(ConfigData configData)
         {
-            var dataconfig = dataAccess.ReadXML();
-            var ds = new DataSet();
-            var dt = dataAccess.GetDataTable(GetQuery());
-            ds.Tables.Add(dt);
-            ds.WriteXml(dataconfig.Path + "IndexSchema.xml");
-            MessageBox.Show("Index sql Schema created " + dataconfig.Path + "IndexSchema.xml");
-            return dt;
+            Console.WriteLine("IndexManager.GetSchema : " + configData.name + " , start...");
+            var dt = dataAccess.GetDataTable(configData.Source, sourceQuery.GetIndexQuery());
+            var listSchema = GetSchemaDataFromDt(dt);
+            Console.WriteLine("IndexManager.GetSchema : listSchema => " + listSchema.Count + ", Done");
+            return listSchema;
         }
 
-        public void Convert(DataTable datasource)
+        private static List<IndexSchemaInfoData> GetSchemaDataFromDt(DataTable dt)
         {
-            var configdata = dataAccess.ReadXML();
-            var result = CreateScript(datasource);
-            DataTable resultXML = CreateResultXml(datasource);
-            var fileQuery = configdata.Path + configdata.Destination;
-
-
-            if (Directory.Exists(Path.GetDirectoryName(fileQuery)))
+            var result = new List<IndexSchemaInfoData>();
+            for (var i = 0; i < dt.Rows.Count; i++)
             {
-                File.Delete(fileQuery);
+                var schema = new IndexSchemaInfoData();
+                var data = dt.Rows[i];
+
+                schema.IndexName = data["IndexName"].ToString();
+                schema.TableName = data["TableName"].ToString();
+                schema.ColumnOrder = System.Convert.ToByte(data["ColumnOrder"]);
+                schema.IsIncluded = System.Convert.ToByte(data["IsIncluded"]);
+                schema.ColumnName = data["ColumnName"].ToString();
+                result.Add(schema);
             }
-            using (var sw = File.CreateText(fileQuery))
-            {
-                sw.Write(result);
-            }
-            MessageBox.Show("Index PGSCRIPT created " + configdata.Path + configdata.Destination);
 
-
-            if (resultXML.Rows.Count != 0)
-            {
-
-                resultXML.WriteXml(configdata.Path + "Indexresult.xml", true);
-                MessageBox.Show("Indexresult created " + configdata.Path + "Indexresult.xml");
-            }
-        }
-
-        public void SetConfig(ConfigData configdata)
-        {
-            var param = new DBData();
-            param = configdata.Source;
-            configdata.Source = param;
-            WriteConfig(configdata);
-        }
-
-        private static void WriteConfig(ConfigData configdata)
-        {
-            var writer = new System.Xml.Serialization.XmlSerializer(typeof(ConfigData));
-            var file = File.Create("Config.xml");
-
-            writer.Serialize(file, configdata);
-            file.Close();
-        }
-
-        private string GetQuery()
-        {
-            return @"
-               SELECT 
-                     i.name as IndexName, 
-                     o.name as TableName, 
-                     ic.key_ordinal as ColumnOrder,
-                     ic.is_included_column as IsIncluded, 
-                     co.[name] as ColumnName
-                FROM sys.indexes i 
-                    join sys.objects o on i.object_id = o.object_id
-                    join sys.index_columns ic on ic.object_id = i.object_id 
-                    and ic.index_id = i.index_id
-                    join sys.columns co on co.object_id = i.object_id 
-                    and co.column_id = ic.column_id
-                WHERE i.[type] = 2 
-                and i.is_unique = 0 
-                and i.is_primary_key = 0
-                and o.[type] = 'U'
-                order by o.[name], i.[name], ic.is_included_column, ic.key_ordinal
-            ";
-        }
-
-        List<T> GetDataQuery<T>(DataTable datasource) where T : Base, new()
-        {
-            var list = new List<T>();
-            if (list.Count == 0)
-            {
-              //  var dataTable = datasource;   //new DataAccess().GetDataTable(sql);
-                foreach (DataRow data in datasource.Rows)
-                {
-                    var obj = new T();
-                    obj.GetValueFromDataRow(data);
-                    list.Add(obj);
-
-                }
-            }
-            return list;
-        }
-
-        public string CreateScript(DataTable datasource)
-        {
-
-            string[] allcolumn = getAllcolumn(datasource);
-            var result = "";
-            var indexResult = "";
-            int xs = 1;
-            foreach (var data in GetAllIndex(datasource))
-            {
-
-                if (data.ColumnOrder == 1)
-                {
-                    indexResult = getTemplate(data, allcolumn[xs]);
-                    result += indexResult;
-                    xs += 1;
-                }
-            }
             return result;
-
         }
 
-        public List<mIndex> GetAllIndex(DataTable datasource)
+        public List<IndexResultData> Convert(List<IndexSchemaInfoData> datasource)
         {
-            return GetDataQuery<mIndex>(datasource);
+            Console.WriteLine("IndexManager.Convert : listSchema =>" + datasource.Count + " , start...");
 
-        }
+            var UsedIndexName = datasource.GroupBy(x => x.IndexName).Select(y => y.First()).ToList();
 
-        public DataTable CreateResultXml(DataTable datasource)
-        {
+            List<tempTableData> listTempData = new List<tempTableData>();
 
-            DataTable DTresultItem = new DataTable("ResultInfo");
-
-            DTresultItem.Columns.Add("SchemaId", typeof(int));
-            DTresultItem.Columns.Add("name", typeof(string));
-            DTresultItem.Columns.Add("sqlString", typeof(string));
-            DTresultItem.Columns.Add("ResultID", typeof(string));
-            string[] allcolumn = getAllcolumn();
-            int xs = 1;
-
-            var tableResult = "";
-            foreach (var data in GetAllIndex(datasource))
+            foreach (var uIndexName in UsedIndexName)
             {
-                if (data.ColumnOrder == 1)
-                {
-                    DataRow workRow = DTresultItem.NewRow();
-                    tableResult = getTemplate(data, allcolumn[xs]);
-                    workRow["SchemaId"] = data.SchemaID;
-                    workRow["name"] = data.TableName;
-                    workRow["sqlString"] = tableResult;
-                    workRow["ResultID"] = tableResult.GetHashCode().ToString().Replace("-", "");
-                    DTresultItem.Rows.Add(workRow);
-                    xs += 1;
-                }
+                tempTableData tempData = new tempTableData();
+                tempData.AllTableName = uIndexName.TableName;
+                tempData.AllColumnName = getAllcolumn(datasource.Where(x => x.IndexName == uIndexName.IndexName).ToList());
+                tempData.name = uIndexName.IndexName;
+                listTempData.Add(tempData);
 
             }
 
-            return DTresultItem;
+
+            var result = listTempData.Select(tempSchemaInfoData => new IndexResultData
+            {
+                name = tempSchemaInfoData.name,
+                sqlString = scriptBuilder.CreateScriptIndex(tempSchemaInfoData),
+                schemaId = tempSchemaInfoData.id
+            }).ToList();
+
+            Console.WriteLine("IndexManager.Convert : " + result.Count + " , Done...");
+            return result;
         }
 
-        private string[] getAllcolumn(DataTable datasource)
+        private string getAllcolumn(List<IndexSchemaInfoData> datasource)
         {
-            int xs = 0;
-            int xcount = 1;
+            string allColumn = "";
+            var n = 0;
 
-            foreach (var totalraw in GetAllIndex(datasource))
+            foreach (var getRaw in datasource)
             {
-                if (totalraw.ColumnOrder == 1)
-                {
-                    xcount += 1;
-                }
-            }
-            string[] allColumn = new string[xcount];
+                n = datasource.IndexOf(getRaw);
 
-            foreach (var data in GetAllIndex(datasource))
-            {
-               
-                if (data.ColumnOrder == 1)
+                if ((n + 1) == datasource.Count)
                 {
-                    xs += 1;
-                    
-                    allColumn[xs] = data.ColumnName;
-
+                    allColumn += getRaw.ColumnName;
                 }
                 else
                 {
-                    allColumn[xs] += "," + data.ColumnName;
+                    allColumn += getRaw.ColumnName + ",";
                 }
-
             }
 
             return allColumn;
-        }
-
-     
-        public string getTemplate(mIndex data, string allColumn)
-        {
-            var result = "";                  
-            result = "CREATE INDEX " + data.IndexName + " ON " + data.TableName + " (" + allColumn + ");\r\n";
-                     
-            return result;
         }
 
     }

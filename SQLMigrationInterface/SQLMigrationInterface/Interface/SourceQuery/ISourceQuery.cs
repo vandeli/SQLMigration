@@ -5,5 +5,6 @@
         string GetUDTQuery();
         string GetTableQuery();
         string GetPKQuery();
+        string GetIndexQuery();
     }
 }

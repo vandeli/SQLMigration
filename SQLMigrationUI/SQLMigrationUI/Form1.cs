@@ -22,6 +22,7 @@ namespace SQLMigration.UI
         private readonly IUDTManager udtManager;
         private readonly ITableManager tableManager;
         private readonly IPKManager pkManager;
+        private readonly IIndexManager indexManager;
 
         private readonly ICoreDB coreDb;
         private List<ConfigData> globalListConfig;
@@ -40,6 +41,7 @@ namespace SQLMigration.UI
             udtManager = of.GetInstanceUdtManager();
             tableManager = of.GetInstanceTableManager();
             pkManager = of.GetInstancePKManager();
+            indexManager = of.GetInstanceIndexManager();
         }
 
         public void ProsesManager(String pilihan)
@@ -90,6 +92,21 @@ namespace SQLMigration.UI
                     }
                     txtResult.Text = PKscriptStringBuilder.ToString();
                     binder.BindControls(DGPK, globalConfig.listPKSchemaInfo);
+                    break;
+
+                case "Index":
+                    globalConfig.listIndexSchemaInfo = indexManager.GetSchema(globalConfig);
+                    globalConfig.listIndexResultInfo = indexManager.Convert(globalConfig.listIndexSchemaInfo);
+                    coreDb.Insert(globalConfig);
+                    cboConfigName.Refresh();
+
+                    var IndexscriptStringBuilder = new StringBuilder();
+                    foreach (var indexResultData in globalConfig.listIndexResultInfo)
+                    {
+                        IndexscriptStringBuilder.AppendLine(indexResultData.sqlString);
+                    }
+                    txtResult.Text = IndexscriptStringBuilder.ToString();
+                    binder.BindControls(DGINDEX, globalConfig.listIndexSchemaInfo);
                     break;
 
                 default:
@@ -261,6 +278,9 @@ namespace SQLMigration.UI
             binder.BindControls(TpConfig, globalConfig);
 
             binder.BindControls(DGUDT, globalConfig.listUDTSchemaInfo);
+            binder.BindControls(DGTABLE, globalConfig.listTableSchemaInfo);
+            binder.BindControls(DGPK, globalConfig.listPKSchemaInfo);
+            binder.BindControls(DGINDEX, globalConfig.listIndexSchemaInfo);
         }
 
         private void BindingCboConfig()

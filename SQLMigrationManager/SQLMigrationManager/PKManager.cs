@@ -57,158 +57,53 @@ namespace SQLMigrationManager
         public List<PKResultData> Convert(List<PKSchemaInfoData> datasource)
         {
             Console.WriteLine("PKManager.Convert : listSchema =>" + datasource.Count + " , start...");
-            var result = datasource.Select(schemaInfoData => new PKResultData
+
+            var UsedTableName = datasource.GroupBy(x => x.TableName).Select(y => y.First()).ToList();
+
+            List<tempTableData> listTempData = new List<tempTableData>();
+
+            foreach (var uTableName in UsedTableName)
             {
-                name = schemaInfoData.PkName,
-                sqlString = scriptBuilder.CreateScriptPK(schemaInfoData),
-                schemaId = schemaInfoData.id
+                tempTableData tempData = new tempTableData();
+                tempData.AllTableName = uTableName.TableName;
+                tempData.AllColumnName = getAllcolumn(datasource.Where(x => x.TableName == uTableName.TableName).ToList());
+                tempData.name = uTableName.PkName;
+                listTempData.Add(tempData);
+
+            }
+
+            var result = listTempData.Select(tempSchemaInfoData => new PKResultData
+            {
+                name = tempSchemaInfoData.name,
+                sqlString = scriptBuilder.CreateScriptPK(tempSchemaInfoData),
+                schemaId = tempSchemaInfoData.id
             }).ToList();
 
             Console.WriteLine("PKManager.Convert : " + result.Count + " , Done...");
             return result;
         }
 
-       
 
-        //public void SetConfig(ConfigData configdata)
-        //{
-        //    var param = new DBData();
-        //    param = configdata.Source;           
-        //    configdata.Source = param;
-        //    WriteConfig(configdata);
-        //}
+        private string getAllcolumn(List<PKSchemaInfoData> datasource)
+        {
+            string allColumn = "";
+            var n = 0;
 
-        //private static void WriteConfig(ConfigData configdata)
-        //{
-        //    var writer = new System.Xml.Serialization.XmlSerializer(typeof(ConfigData));
-        //    var file = File.Create("Config.xml");
+            foreach (var getRaw in datasource)
+            {
+                n = datasource.IndexOf(getRaw);
 
-        //    writer.Serialize(file, configdata);
-           
-        //    file.Close();
-        //}
+                if ((n + 1) == datasource.Count)
+                {
+                    allColumn += getRaw.ColumnName ;
+                }
+                else
+                {
+                    allColumn += getRaw.ColumnName +  ",";
+                }
+            }
 
-        //private string GetQuery()
-        //{
-        //    return @"
-        //    SELECT CONSTRAINT_NAME AS PK_Name
-	       //     ,TABLE_NAME
-	       //     ,COLUMN_NAME
-	       //     ,ORDINAL_POSITION
-        //    FROM INFORMATION_SCHEMA.KEY_COLUMN_USAGE b
-        //    JOIN (
-	       //     SELECT NAME
-	       //     FROM sysobjects a
-	       //     WHERE xtype = 'pk'
-		      //      AND parent_obj IN (
-			     //       SELECT id
-			     //       FROM sysobjects
-			     //       WHERE xtype = 'U'
-			     //       )
-	       //     ) a ON a.NAME = b.CONSTRAINT_NAME
-        //    ORDER BY table_name
-	       //     ,ORDINAL_POSITION
-        //    ";
-        //}
-
-        //List<T> GetDataQuery<T>(string sql) where T : Base, new()
-        //{
-        //    var list = new List<T>();
-        //    if (list.Count == 0)
-        //    {
-        //        var dataTable = new DataAccess().GetDataTable(sql);
-        //        foreach (DataRow data in dataTable.Rows)
-        //        {
-        //            var obj = new T();
-        //            obj.GetValueFromDataRow(data);
-        //            list.Add(obj);
-        //        }
-        //    }
-        //    return list;
-        //}
-
-        //public string CreateScript()
-        //{
-        //    string[] allcolumn = new string[1000];
-        //    var result = "";
-        //    var tableResult = "";
-        //    allcolumn = getAllcolumn();
-        //    int xs = 0;
-        //    foreach (var data in GetAllPk())
-        //    {
-        //        if (data.OrdinalPosition == 1)
-        //        {
-        //            xs += 1;
-        //            tableResult = getTemplate(data, allcolumn[xs]);
-        //            result += tableResult;
-        //        }
-        //    }
-        //    return result;
-        //}
-
-        //public List<mPK> GetAllPk()
-        //{
-        //    return GetDataQuery<mPK>(GetQuery());
-
-        //}
-
-        //private string[] getAllcolumn()
-        //{
-
-        //    string[] allColumn = new string[1000];
-        //    int xs = 0;
-
-        //    foreach (var data in GetAllPk())
-        //    {
-        //        if (data.OrdinalPosition == 1)
-        //        {
-        //            xs += 1;
-        //            allColumn[xs] = data.ColumnName;
-        //        }
-        //        else
-        //        {
-        //            allColumn[xs] += "," + data.ColumnName;
-        //        }
-
-        //    }
-        //    return allColumn;
-        //}
-
-        //public DataTable CreateResultXml()
-        //{
-        //  //  ResultItemData resultItemdata = new ResultItemData();
-        //    DataTable DTresultItem = new DataTable("ResultInfo");
-        //    DTresultItem.Columns.Add("SchemaId", typeof(int));
-        //    DTresultItem.Columns.Add("name", typeof(string));
-        //    DTresultItem.Columns.Add("sqlString", typeof(string));
-        //    DTresultItem.Columns.Add("ResultID", typeof(string));
-
-        //    string[] allcolumn = getAllcolumn();
-        //    int xs = 1;
-
-        //    var tableResult = "";
-        //    foreach (var data in GetAllPk())
-        //    {
-        //        if (data.OrdinalPosition == 1)
-        //        {
-        //            DataRow workRow = DTresultItem.NewRow();
-        //            tableResult = getTemplate(data, allcolumn[xs]);
-        //            workRow["SchemaId"] = data.SchemaID;
-        //            workRow["name"] = data.PkName;
-        //            workRow["sqlString"] = tableResult;
-        //            workRow["ResultID"] = tableResult.GetHashCode().ToString().Replace("-", "");
-        //            DTresultItem.Rows.Add(workRow);
-        //            xs = xs++;
-        //        }
-        //    }
-        //    return DTresultItem;
-        //}
-
-        //public string getTemplate(mPK data, string allcolumn)
-        //{
-        //    var result = "";
-        //    result = "ALTER TABLE " + data.TableName + " ADD CONSTRAINT " + data.PkName + " PRIMARY KEY" + "(" + allcolumn + ")" + ";\r\n";
-        //    return result;
-        //}
+            return allColumn;
+        }
     }
 }
