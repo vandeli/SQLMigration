@@ -88,10 +88,10 @@ namespace SQLMigrationConverter.SourceQuery
                     and ic.index_id = i.index_id
                     join sys.columns co on co.object_id = i.object_id 
                     and co.column_id = ic.column_id
-                WHERE i.[type] = 2 
-                and i.is_unique = 0 
-                and i.is_primary_key = 0
-                and o.[type] = 'U'
+            --    WHERE i.[type] = 2 
+            --    and i.is_unique = 0 
+            --    and i.is_primary_key = 0
+                  WHERE o.[type] = 'U'
                 order by o.[name], i.[name], ic.is_included_column, ic.key_ordinal
 			";
             Console.WriteLine("MssQuery.GetUDTQuery : Done");

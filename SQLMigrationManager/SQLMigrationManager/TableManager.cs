@@ -42,10 +42,11 @@ namespace SQLMigrationManager
         public List<TableResultData> Convert(List<TableSchemaInfoData> datasource)
         {
             Console.WriteLine("TableManager.Convert : listSchema =>" + datasource.Count + " , start...");
-     
-            var UsedTableName = datasource.GroupBy(x => x.TableName).Select(y => y.First()).ToList();
 
-         
+            var UsedTableName = datasource.GroupBy(x => x.TableName).Select(y => y.First()).ToList();
+       
+
+
             List<tempTableData> listTempData = new List<tempTableData>();
             
             foreach (var uTableName in UsedTableName)
@@ -55,12 +56,12 @@ namespace SQLMigrationManager
                 tempData.AllColumnName = getAllcolumn(datasource.Where(x => x.TableName == uTableName.TableName).ToList());
                 tempData.name = uTableName.TableName;
                 listTempData.Add(tempData);
-           
+               
 
-            }         
+            }
 
-
-            var result = listTempData.Select(tempSchemaInfoData => new TableResultData
+       //     var sqlString = scriptBuilder.CreateScriptTable(tempData);
+             var result = listTempData.Select(tempSchemaInfoData => new TableResultData
             {                
                 name = tempSchemaInfoData.name,
                 sqlString = scriptBuilder.CreateScriptTable(tempSchemaInfoData),

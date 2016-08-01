@@ -94,11 +94,17 @@ namespace SQLMigration.Test
                 Scale = 2,
             };
 
+            var tempSchemaData = new tempTableData
+            {
+                AllTableName = "customTableName",
+                AllColumnName = "customColumnName",
+            };
+
             var scriptExpectation = string.Format("ALTER TABLE {0} ADD CONSTRAINT {1} PRIMARY KEY ({2});\r\n",
                 "customTableName", "customPKName", "customColumnName");
 
 
-            var scriptActual = scriptBuilder.CreateScriptTable(schemaData, new List<TableSchemaInfoData>() {schemaData});
+            var scriptActual = scriptBuilder.CreateScriptTable(tempSchemaData);
 
             Assert.AreEqual(scriptExpectation, scriptActual);
         }
@@ -118,12 +124,17 @@ namespace SQLMigration.Test
                 OrdinalPosition = 1
 
             };
+            var tempSchemaData = new tempTableData
+            {
+                AllTableName = "customTableName",
+                AllColumnName = "customColumnName",
+            };
 
             var scriptExpectation = string.Format("ALTER TABLE {0} ADD CONSTRAINT {1} PRIMARY KEY ({2});\r\n",
                 schemaData.TableName, schemaData.PkName, schemaData.ColumnName);
 
 
-            var scriptActual = scriptBuilder.CreateScriptPK(schemaData);
+            var scriptActual = scriptBuilder.CreateScriptPK(tempSchemaData);
 
             Assert.AreEqual(scriptExpectation, scriptActual);
         }
