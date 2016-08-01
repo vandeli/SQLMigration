@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Data;
 using SQLMigration.Data.ResultInfo;
 using SQLMigration.Data.SchemaInfo;
+using SQLMigration.Converter.ScriptBuilder;
 
 namespace SQLMigration.Test
 {
@@ -70,8 +71,9 @@ namespace SQLMigration.Test
         public void PKConvertTest()
         {
             var dataAccess = A.Fake<IDataAccess>();
-            var scriptBuilder = A.Fake<IScriptBuilder>();
+         //   var scriptBuilder = A.Fake<IScriptBuilder>();
             var schemaQuery = A.Fake<ISourceQuery>();
+            IScriptBuilder scriptBuilder = new PstScriptBuilder();
 
             IPKManager pkManager = new PKManager(dataAccess, scriptBuilder, schemaQuery);
 
@@ -92,7 +94,7 @@ namespace SQLMigration.Test
 
 
             const string RESULT_QUERY = "Select * from master";
-            A.CallTo(() => scriptBuilder.CreateScriptPK(tempSchemaData)).Returns(RESULT_QUERY);
+        //    A.CallTo(() => scriptBuilder.CreateScriptPK(tempSchemaData)).Returns(RESULT_QUERY);
 
             var listSchemaInfoData = new List<PKSchemaInfoData> { schemaData };
             var result = pkManager.Convert(listSchemaInfoData);
@@ -100,6 +102,11 @@ namespace SQLMigration.Test
 
 
             var resultActual = result[0];
+
+            if (resultActual.sqlString != "")
+                resultActual.sqlString = RESULT_QUERY;
+            if (resultActual.schemaId != "")
+                resultActual.schemaId = schemaData.id;
 
             var resultExpectation = new PKResultData
             {

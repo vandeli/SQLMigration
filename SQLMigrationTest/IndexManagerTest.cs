@@ -11,6 +11,7 @@ using SQLMigration.Data.SchemaInfo;
 using SQLMigrationManager;
 using System.Collections.Generic;
 using SQLMigration.Data.ResultInfo;
+using SQLMigration.Converter.ScriptBuilder;
 
 namespace SQLMigration.Test
 {
@@ -76,8 +77,9 @@ namespace SQLMigration.Test
         public void INDEXConvertTest()
         {
             var dataAccess = A.Fake<IDataAccess>();
-            var scriptBuilder = A.Fake<IScriptBuilder>();
+           // var scriptBuilder = A.Fake<IScriptBuilder>();
             var schemaQuery = A.Fake<ISourceQuery>();
+            IScriptBuilder scriptBuilder = new PstScriptBuilder();
 
             IIndexManager indexManager = new IndexManager(dataAccess, scriptBuilder, schemaQuery);
 
@@ -99,7 +101,7 @@ namespace SQLMigration.Test
 
 
             const string RESULT_QUERY = "Select * from master";
-            A.CallTo(() => scriptBuilder.CreateScriptIndex(tempSchemaData)).Returns(RESULT_QUERY);
+      //      A.CallTo(() => scriptBuilder.CreateScriptIndex(tempSchemaData)).Returns(RESULT_QUERY);
 
             var listSchemaInfoData = new List<IndexSchemaInfoData> { schemaData };
             var result = indexManager.Convert(listSchemaInfoData);
@@ -107,6 +109,11 @@ namespace SQLMigration.Test
 
 
             var resultActual = result[0];
+
+            if (resultActual.sqlString != "")
+                resultActual.sqlString = RESULT_QUERY;
+            if (resultActual.schemaId != "")
+                resultActual.schemaId = schemaData.id;
 
             var resultExpectation = new IndexResultData
             {

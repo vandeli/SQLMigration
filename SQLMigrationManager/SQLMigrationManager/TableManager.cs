@@ -108,7 +108,7 @@ namespace SQLMigrationManager
            
                 if ((n+1)  == datasource.Count)
                      {
-                        allColumn += getRaw.ColumnName + " " + cekSuffix(getRaw) + "\r\n ";
+                        allColumn += getRaw.ColumnName + " " + cekSuffix(getRaw) + "\r\n";
                      }
                 else
                      {

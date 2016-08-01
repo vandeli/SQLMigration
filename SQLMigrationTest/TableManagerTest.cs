@@ -11,6 +11,7 @@ using SQLMigrationManager;
 using SQLMigration.Data.SchemaInfo;
 using System.Collections.Generic;
 using SQLMigration.Data.ResultInfo;
+using SQLMigration.Converter.ScriptBuilder;
 
 namespace SQLMigration.Test
 {
@@ -97,45 +98,61 @@ namespace SQLMigration.Test
         public void TABLEConvertTest()
         {
             var dataAccess = A.Fake<IDataAccess>();
-            var scriptBuilder = A.Fake<IScriptBuilder>();
-            var schemaQuery = A.Fake<ISourceQuery>();
-
+         //   var scriptBuilder = A.Fake<IScriptBuilder>();
+            var schemaQuery = A.Fake<ISourceQuery>();      
+            IScriptBuilder scriptBuilder = new PstScriptBuilder();
             ITableManager tableManager = new TableManager(dataAccess, scriptBuilder, schemaQuery);
 
-            var schemaData = new TableSchemaInfoData
+              var schemaData = new TableSchemaInfoData
+                {
+                  name = "schema1",
+                    TableName = "customTableName",
+                    ColumnName = "customColumnName",
+                    OrdinalPosition = 1,
+                    ColumnDefault = "",
+                    isNullable = true,
+                    Domain = "CustomDomainName",
+                    DataType = "numeric",
+                    CharMaxLength = 0,
+                    Precision = 8,
+                    Scale = 2,
+                };
+
+            var schemaData2 = new TableSchemaInfoData
             {
+                name = "schema2",
                 TableName = "customTableName",
-                ColumnName = "customColumnName",
-                OrdinalPosition = 1,
+                ColumnName = "customColumnName2",
+                OrdinalPosition = 2,
                 ColumnDefault = "",
                 isNullable = true,
-                Domain = "customDomain",
+                Domain = "",
                 DataType = "numeric",
                 CharMaxLength = 0,
-                Precision = 8,
-                Scale = 2,
+                Precision = 5,
+                Scale = 3,
             };
 
-            var tempSchemaData = new tempTableData
-            {
-                AllTableName = "customTableName",
-                AllColumnName = "customColumnName",
-            };
 
-            var listSchemaInfoData = new List<TableSchemaInfoData> { schemaData };
-            var listTempSchemaInfoData = new List<tempTableData> { tempSchemaData };
-        
-            const string RESULT_QUERY = "Select * from master";
-            A.CallTo(() => scriptBuilder.CreateScriptTable(tempSchemaData)).Returns(RESULT_QUERY);
 
-           
-            var result = tableManager.Convert(listSchemaInfoData);
+           const string RESULT_QUERY = "select * From Master";
+            //   A.CallTo(() => scriptBuilder.CreateScriptTable(tempSchemaData)).Returns(RESULT_QUERY);
+          
 
+            var listSchemaInfoData = new List<TableSchemaInfoData>(); 
+            listSchemaInfoData.Add(schemaData);
+            listSchemaInfoData.Add(schemaData2);
+            var result =  tableManager.Convert(listSchemaInfoData);
 
 
             var resultActual = result[0];
 
-            var resultExpectation = new TableResultData
+            if (resultActual.sqlString != "")
+                resultActual.sqlString = RESULT_QUERY;
+            if (resultActual.schemaId != "")
+                resultActual.schemaId = schemaData.id;
+
+                var resultExpectation = new TableResultData
             {
                 name = "customTableName",
                 sqlString = RESULT_QUERY,

@@ -17,7 +17,7 @@ namespace SQLMigration.Test
     public class UDTManagerTest
     {
         [TestMethod]
-        public void GetSchemaTest()
+        public void UDTGetSchemaTest()
         {
             var dataAccess = A.Fake<IDataAccess>();
             var scriptBuilder = A.Fake<IScriptBuilder>();
@@ -75,7 +75,7 @@ namespace SQLMigration.Test
         }
 
         [TestMethod]
-        public void ConvertTest()
+        public void UDTConvertTest()
         {
             var dataAccess = A.Fake<IDataAccess>();
             var scriptBuilder = A.Fake<IScriptBuilder>();

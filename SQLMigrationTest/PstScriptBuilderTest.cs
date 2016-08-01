@@ -76,7 +76,7 @@ namespace SQLMigration.Test
         }
 
         [TestMethod]
-        public void CreateTableScript_DefaultTest()
+        public void CreateTableScript()
         {
             var scriptBuilder = new PstScriptBuilder();
 
@@ -96,12 +96,14 @@ namespace SQLMigration.Test
 
             var tempSchemaData = new tempTableData
             {
-                AllTableName = "customTableName",
-                AllColumnName = "customColumnName",
+                AllTableName = "BOS_SD_FDO",
+                AllColumnName = "BOS_DT_SZID (8,2) NOT NULL",
             };
 
-            var scriptExpectation = string.Format("ALTER TABLE {0} ADD CONSTRAINT {1} PRIMARY KEY ({2});\r\n",
-                "customTableName", "customPKName", "customColumnName");
+      //      var scriptExpectation = string.Format("ALTER TABLE {0} ADD CONSTRAINT {1} PRIMARY KEY ({2});\r\n",
+       //         "BOS_SD_FDO", "customPKName", "customColumnName");
+            var scriptExpectation = string.Format("CREATE TABLE {0} (\r\n {1} );\r\n",
+                               tempSchemaData.AllTableName, tempSchemaData.AllColumnName);
 
 
             var scriptActual = scriptBuilder.CreateScriptTable(tempSchemaData);
@@ -109,32 +111,44 @@ namespace SQLMigration.Test
             Assert.AreEqual(scriptExpectation, scriptActual);
         }
 
-
-
         [TestMethod]
         public void CreatePKScript()
         {
             var scriptBuilder = new PstScriptBuilder();
 
-            var schemaData = new PKSchemaInfoData
-            {
-                PkName = "szId_pk",
-                TableName = "BOS_NG_TEST",
-                ColumnName = "szId",
-                OrdinalPosition = 1
-
-            };
             var tempSchemaData = new tempTableData
             {
+                name = "customPKname",
                 AllTableName = "customTableName",
                 AllColumnName = "customColumnName",
             };
 
             var scriptExpectation = string.Format("ALTER TABLE {0} ADD CONSTRAINT {1} PRIMARY KEY ({2});\r\n",
-                schemaData.TableName, schemaData.PkName, schemaData.ColumnName);
+                                   tempSchemaData.AllTableName, tempSchemaData.name, tempSchemaData.AllColumnName);
 
-
+  
             var scriptActual = scriptBuilder.CreateScriptPK(tempSchemaData);
+
+            Assert.AreEqual(scriptExpectation, scriptActual);
+        }
+
+        [TestMethod]
+        public void CreateIndexScript()
+        {
+            var scriptBuilder = new PstScriptBuilder();
+
+            var tempSchemaData = new tempTableData
+            {
+                name = "customINDEXname",
+                AllTableName = "customTableName",
+                AllColumnName = "customColumnName",
+            };
+
+            var scriptExpectation = string.Format("CREATE INDEX {0} ON {1} ({2});\r\n",
+                         tempSchemaData.name, tempSchemaData.AllTableName, tempSchemaData.AllColumnName);
+
+            
+            var scriptActual = scriptBuilder.CreateScriptIndex(tempSchemaData);
 
             Assert.AreEqual(scriptExpectation, scriptActual);
         }
