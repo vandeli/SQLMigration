@@ -99,7 +99,7 @@ namespace SQLMigration.Test
             };
                 
             var scriptExpectation = string.Format("CREATE TABLE {0} (\r\n {1} );\r\n",
-                               schemaData.TableName, "CustomColumnName numeric (8,2)  NOT NULL\r\n");
+                               schemaData.TableName, "CustomColumnName  numeric (8,2)  NOT NULL\r\n");
 
             var scriptActual = scriptBuilder.CreateScriptTable(schemaData);
 
