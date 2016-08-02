@@ -50,24 +50,56 @@ namespace SQLMigration.Converter.ScriptBuilder
 
         }
 
-        public string CreateScriptTable(tempTableData schemaInfo)
+        public string CreateScriptTable(TableSchemaInfoData schemaInfo)
         {
-            string result = "";
-       
-                result = string.Format("CREATE TABLE {0} (\r\n {1} );\r\n",
-                                schemaInfo.AllTableName, schemaInfo.AllColumnName);
+            string result;
+            var usedColum = "";
+            var n = 0;
+        
+            foreach (var eachColumn in schemaInfo.usedColumnList)
+            {
+                n = schemaInfo.usedColumnList.IndexOf(eachColumn);
+
+                if ((n + 1) == schemaInfo.usedColumnList.Count)
+                {
+                    usedColum += eachColumn.ColumnName + "  " +  cekSuffix(eachColumn) + "\r\n";
+                }
+                else
+                {
+                    usedColum += eachColumn.ColumnName + "  " +  cekSuffix(eachColumn) + ",\r\n";
+                }
+            }
+            result = string.Format("CREATE TABLE {0} (\r\n {1} );\r\n",
+                                schemaInfo.TableName, usedColum);
          
+           
 
             Console.WriteLine("PstScriptBuilder.CreateScriptTable : " + schemaInfo.name + ", Done");
             return result;
         }
 
-        public string CreateScriptPK(tempTableData schemaInfo)
+        public string CreateScriptPK(PKSchemaInfoData schemaInfo)
         {
             string result;
+            var usedColum = "";
+            var n = 0;
 
-                result = string.Format("ALTER TABLE {0} ADD CONSTRAINT {1} PRIMARY KEY ({2});\r\n",
-                                   schemaInfo.AllTableName, schemaInfo.name, schemaInfo.AllColumnName);
+            foreach (var eachColumn in schemaInfo.usedColumnList)
+            {
+                n = schemaInfo.usedColumnList.IndexOf(eachColumn);
+
+                if ((n + 1) == schemaInfo.usedColumnList.Count)
+                {
+                    usedColum += eachColumn.ColumnName;
+                }
+                else
+                {
+                    usedColum += eachColumn.ColumnName + ", ";
+                }
+            }
+
+            result = string.Format("ALTER TABLE {0} ADD CONSTRAINT {1} PRIMARY KEY ({2});\r\n",
+                                   schemaInfo.TableName, schemaInfo.PkName, usedColum);
                      
 
             Console.WriteLine("PstScriptBuilder.CreateScriptUDT : " + schemaInfo.name + ", Done");
@@ -76,13 +108,29 @@ namespace SQLMigration.Converter.ScriptBuilder
 
         }
 
-        public string CreateScriptIndex(tempTableData schemaInfo)
+        public string CreateScriptIndex(IndexSchemaInfoData schemaInfo)
         {
             string result;
+            var usedColum = "";
+            var n = 0;
 
-          
-                result = string.Format("CREATE INDEX {0} ON {1} ({2});\r\n",
-                         schemaInfo.name, schemaInfo.AllTableName, schemaInfo.AllColumnName);              
+            foreach (var eachColumn in schemaInfo.usedColumnList)
+            {
+                n = schemaInfo.usedColumnList.IndexOf(eachColumn);
+
+                if ((n + 1) == schemaInfo.usedColumnList.Count)
+                {
+                    usedColum += eachColumn.ColumnName;
+                }
+                else
+                {
+                    usedColum += eachColumn.ColumnName + ", ";
+                }
+            }
+
+
+            result = string.Format("CREATE INDEX {0} ON {1} ({2});\r\n",
+                         schemaInfo.IndexName, schemaInfo.TableName, usedColum);              
            
 
             Console.WriteLine("PstScriptBuilder.CreateScriptIndex : " + schemaInfo.name + ", Done");
@@ -150,9 +198,38 @@ namespace SQLMigration.Converter.ScriptBuilder
             var findingResult = mapDataTypes.SingleOrDefault(x => string.Equals(x.DataType, dataType, StringComparison.CurrentCultureIgnoreCase));
 
             return findingResult == null ? "" : findingResult.ConvertedDataType;
-        }     
+        }
 
-      
+        private string cekSuffix(UsedColumn data)
+        {
+            var cekResult = "";
+            if (data.Domain != "")
+            { 
+                cekResult = data.Domain;
+            }
+            else
+            {
+                cekResult = GetDataTypeMap(data.DataType);
+            }
+
+            if (data.CharMaxLength != 0)
+            {
+                cekResult += " (" + data.CharMaxLength + ")";
+            }
+            else if (data.Precision != 0)
+            {
+                cekResult += " (" + data.Precision + "," + data.Scale + ")";
+            }
+
+            if (data.isNullable == false)
+            {
+                cekResult += "  NOT NULL";
+            }
+            return cekResult;
+
+        }
+
+
 
     }
 }

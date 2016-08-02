@@ -37,16 +37,37 @@ namespace SQLMigrationManager
         private static List<IndexSchemaInfoData> GetSchemaDataFromDt(DataTable dt)
         {
             var result = new List<IndexSchemaInfoData>();
+            var tempResult = new List<IndexTempSource>();
             for (var i = 0; i < dt.Rows.Count; i++)
             {
-                var schema = new IndexSchemaInfoData();
+                var tempSchema = new IndexTempSource();
                 var data = dt.Rows[i];
 
-                schema.IndexName = data["IndexName"].ToString();
-                schema.TableName = data["TableName"].ToString();
-                schema.ColumnOrder = System.Convert.ToByte(data["ColumnOrder"]);
-                schema.IsIncluded = System.Convert.ToByte(data["IsIncluded"]);
-                schema.ColumnName = data["ColumnName"].ToString();
+                tempSchema.IndexName = data["IndexName"].ToString();
+                tempSchema.TableName = data["TableName"].ToString();
+                tempSchema.ColumnOrder = System.Convert.ToByte(data["ColumnOrder"]);
+                tempSchema.IsIncluded = System.Convert.ToByte(data["IsIncluded"]);
+                tempSchema.ColumnName = data["ColumnName"].ToString();
+                tempResult.Add(tempSchema);
+            }
+            var UsedTableName = tempResult.GroupBy(x => x.IndexName).Select(y => y.First()).ToList();
+
+            foreach (var uTableName in UsedTableName)
+            {
+                var listColumnUsed = new List<UsedColumn>();
+                var schema = new IndexSchemaInfoData();
+                schema.TableName = uTableName.TableName;
+                schema.IndexName = uTableName.IndexName;
+                schema.name = uTableName.IndexName;
+                foreach (var uColumnName in tempResult.Where(x => x.IndexName == uTableName.IndexName).ToList())
+                {
+                    var tempData = new UsedColumn();
+
+                    tempData.ColumnName = uColumnName.ColumnName;
+                   
+                    listColumnUsed.Add(tempData);
+                }
+                schema.usedColumnList = new List<UsedColumn>(listColumnUsed);
                 result.Add(schema);
             }
 
@@ -57,53 +78,17 @@ namespace SQLMigrationManager
         {
             Console.WriteLine("IndexManager.Convert : listSchema =>" + datasource.Count + " , start...");
 
-            var UsedIndexName = datasource.GroupBy(x => x.IndexName).Select(y => y.First()).ToList();
-
-            List<tempTableData> listTempData = new List<tempTableData>();
-
-            foreach (var uIndexName in UsedIndexName)
+            var result = datasource.Select(schemaInfoData => new IndexResultData
             {
-                tempTableData tempData = new tempTableData();
-                tempData.AllTableName = uIndexName.TableName;
-                tempData.AllColumnName = getAllcolumn(datasource.Where(x => x.IndexName == uIndexName.IndexName).ToList());
-                tempData.name = uIndexName.IndexName;
-                listTempData.Add(tempData);
-
-            }
-
-
-            var result = listTempData.Select(tempSchemaInfoData => new IndexResultData
-            {
-                name = tempSchemaInfoData.name,
-                sqlString = scriptBuilder.CreateScriptIndex(tempSchemaInfoData),
-                schemaId = tempSchemaInfoData.id
+                name = schemaInfoData.IndexName,
+                sqlString = scriptBuilder.CreateScriptIndex(schemaInfoData),
+                schemaId = schemaInfoData.id
             }).ToList();
 
             Console.WriteLine("IndexManager.Convert : " + result.Count + " , Done...");
             return result;
         }
 
-        private string getAllcolumn(List<IndexSchemaInfoData> datasource)
-        {
-            string allColumn = "";
-            var n = 0;
-
-            foreach (var getRaw in datasource)
-            {
-                n = datasource.IndexOf(getRaw);
-
-                if ((n + 1) == datasource.Count)
-                {
-                    allColumn += getRaw.ColumnName;
-                }
-                else
-                {
-                    allColumn += getRaw.ColumnName + ",";
-                }
-            }
-
-            return allColumn;
-        }
 
     }
 }

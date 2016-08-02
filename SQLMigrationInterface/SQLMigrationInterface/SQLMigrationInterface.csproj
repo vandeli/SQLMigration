@@ -44,10 +44,13 @@
     <Compile Include="Data\ResultInfo\UDTResultData.cs" />
     <Compile Include="Data\SchemaInfo\AllSchemaInfoData.cs" />
     <Compile Include="Data\SchemaInfo\IndexSchemaInfoData.cs" />
+    <Compile Include="Data\SchemaInfo\IndexTempSource.cs" />
     <Compile Include="Data\SchemaInfo\PKSchemaInfoData.cs" />
+    <Compile Include="Data\SchemaInfo\PKTempSource.cs" />
     <Compile Include="Data\SchemaInfo\TableSchemaInfoData.cs" />
-    <Compile Include="Data\SchemaInfo\tempTableData.cs" />
+    <Compile Include="Data\SchemaInfo\TableTempSource.cs" />
     <Compile Include="Data\SchemaInfo\UDTSchemaInfoData.cs" />
+    <Compile Include="Data\SchemaInfo\UsedColumn.cs" />
     <Compile Include="Interface\Manager\IIndexManager.cs" />
     <Compile Include="Interface\Manager\IPKManager.cs" />
     <Compile Include="Interface\Manager\ITableManager.cs" />

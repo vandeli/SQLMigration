@@ -53,6 +53,20 @@ namespace SQLMigration.Test
 
             resultDataAccess.Rows.Add(dataRow);
 
+            var usedList = new UsedColumn()
+            {
+                ColumnName = "customColumnName",
+                OrdinalPosition = 1,
+                ColumnDefault = "",
+                isNullable = true,
+                Domain = "customDomain",
+                DataType = "numeric",
+                CharMaxLength = 0,
+                Precision = 8,
+                Scale = 2
+            };
+
+           
 
             var configData = new ConfigData { name = "Config1" };
 
@@ -68,6 +82,35 @@ namespace SQLMigration.Test
             var schemaExpectation = new TableSchemaInfoData
             {
                 TableName = "customTableName",
+                usedColumnList = new List<UsedColumn> { usedList }
+            };
+
+            var schemaActual = listSchema[0];
+
+            Assert.AreEqual(schemaExpectation.TableName, schemaActual.TableName);
+            Assert.AreEqual(schemaExpectation.usedColumnList[0].ColumnName, schemaActual.usedColumnList[0].ColumnName);
+            Assert.AreEqual(schemaExpectation.usedColumnList[0].OrdinalPosition, schemaActual.usedColumnList[0].OrdinalPosition);
+            Assert.AreEqual(schemaExpectation.usedColumnList[0].ColumnDefault, schemaActual.usedColumnList[0].ColumnDefault);
+            Assert.AreEqual(schemaExpectation.usedColumnList[0].isNullable, schemaActual.usedColumnList[0].isNullable);
+            Assert.AreEqual(schemaExpectation.usedColumnList[0].Domain, schemaActual.usedColumnList[0].Domain);
+            Assert.AreEqual(schemaExpectation.usedColumnList[0].DataType, schemaActual.usedColumnList[0].DataType);
+            Assert.AreEqual(schemaExpectation.usedColumnList[0].CharMaxLength, schemaActual.usedColumnList[0].CharMaxLength);
+            Assert.AreEqual(schemaExpectation.usedColumnList[0].Precision, schemaActual.usedColumnList[0].Precision);
+            Assert.AreEqual(schemaExpectation.usedColumnList[0].Scale, schemaActual.usedColumnList[0].Scale);          
+
+        }
+
+        [TestMethod]
+        public void TABLEConvertTest()
+        {
+            var dataAccess = A.Fake<IDataAccess>();
+            var scriptBuilder = A.Fake<IScriptBuilder>();
+            var schemaQuery = A.Fake<ISourceQuery>();
+
+            ITableManager tableManager = new TableManager(dataAccess, scriptBuilder, schemaQuery);
+
+            var usedList = new UsedColumn()
+            {
                 ColumnName = "customColumnName",
                 OrdinalPosition = 1,
                 ColumnDefault = "",
@@ -76,83 +119,28 @@ namespace SQLMigration.Test
                 DataType = "numeric",
                 CharMaxLength = 0,
                 Precision = 8,
-                Scale = 2,
-        };
-
-            var schemaActual = listSchema[0];
-
-            Assert.AreEqual(schemaExpectation.TableName, schemaActual.TableName);
-            Assert.AreEqual(schemaExpectation.ColumnName, schemaActual.ColumnName);
-            Assert.AreEqual(schemaExpectation.OrdinalPosition, schemaActual.OrdinalPosition);
-            Assert.AreEqual(schemaExpectation.ColumnDefault, schemaActual.ColumnDefault);
-            Assert.AreEqual(schemaExpectation.isNullable, schemaActual.isNullable);
-            Assert.AreEqual(schemaExpectation.Domain, schemaActual.Domain);
-            Assert.AreEqual(schemaExpectation.DataType, schemaActual.DataType);
-            Assert.AreEqual(schemaExpectation.CharMaxLength, schemaActual.CharMaxLength);
-            Assert.AreEqual(schemaExpectation.Precision, schemaActual.Precision);
-            Assert.AreEqual(schemaExpectation.Scale, schemaActual.Scale);          
-
-        }
-
-        [TestMethod]
-        public void TABLEConvertTest()
-        {
-            var dataAccess = A.Fake<IDataAccess>();
-         //   var scriptBuilder = A.Fake<IScriptBuilder>();
-            var schemaQuery = A.Fake<ISourceQuery>();      
-            IScriptBuilder scriptBuilder = new PstScriptBuilder();
-            ITableManager tableManager = new TableManager(dataAccess, scriptBuilder, schemaQuery);
-
-              var schemaData = new TableSchemaInfoData
-                {
-                  name = "schema1",
-                    TableName = "customTableName",
-                    ColumnName = "customColumnName",
-                    OrdinalPosition = 1,
-                    ColumnDefault = "",
-                    isNullable = true,
-                    Domain = "CustomDomainName",
-                    DataType = "numeric",
-                    CharMaxLength = 0,
-                    Precision = 8,
-                    Scale = 2,
+                Scale = 2
+            };
+            var schemaData = new TableSchemaInfoData
+            {
+                name = "customTableName",
+                TableName = "customTableName",
+                usedColumnList = new List<UsedColumn> { usedList }
                 };
 
-            var schemaData2 = new TableSchemaInfoData
-            {
-                name = "schema2",
-                TableName = "customTableName",
-                ColumnName = "customColumnName2",
-                OrdinalPosition = 2,
-                ColumnDefault = "",
-                isNullable = true,
-                Domain = "",
-                DataType = "numeric",
-                CharMaxLength = 0,
-                Precision = 5,
-                Scale = 3,
-            };
-
-
-
+       
            const string RESULT_QUERY = "select * From Master";
-            //   A.CallTo(() => scriptBuilder.CreateScriptTable(tempSchemaData)).Returns(RESULT_QUERY);
+           A.CallTo(() => scriptBuilder.CreateScriptTable(schemaData)).Returns(RESULT_QUERY);
           
 
-            var listSchemaInfoData = new List<TableSchemaInfoData>(); 
-            listSchemaInfoData.Add(schemaData);
-            listSchemaInfoData.Add(schemaData2);
+            var listSchemaInfoData = new List<TableSchemaInfoData> { schemaData }; 
             var result =  tableManager.Convert(listSchemaInfoData);
 
 
             var resultActual = result[0];
 
-            if (resultActual.sqlString != "")
-                resultActual.sqlString = RESULT_QUERY;
-            if (resultActual.schemaId != "")
-                resultActual.schemaId = schemaData.id;
-
-                var resultExpectation = new TableResultData
+           
+            var resultExpectation = new TableResultData
             {
                 name = "customTableName",
                 sqlString = RESULT_QUERY,

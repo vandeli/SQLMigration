@@ -43,29 +43,11 @@ namespace SQLMigrationManager
         {
             Console.WriteLine("TableManager.Convert : listSchema =>" + datasource.Count + " , start...");
 
-            var UsedTableName = datasource.GroupBy(x => x.TableName).Select(y => y.First()).ToList();
-       
-
-
-            List<tempTableData> listTempData = new List<tempTableData>();
-            
-            foreach (var uTableName in UsedTableName)
-            {
-                tempTableData tempData = new tempTableData();
-                tempData.AllTableName = uTableName.TableName;
-                tempData.AllColumnName = getAllcolumn(datasource.Where(x => x.TableName == uTableName.TableName).ToList());
-                tempData.name = uTableName.TableName;
-                listTempData.Add(tempData);
-               
-
-            }
-
-       //     var sqlString = scriptBuilder.CreateScriptTable(tempData);
-             var result = listTempData.Select(tempSchemaInfoData => new TableResultData
+             var result = datasource.Select(schemaInfoData => new TableResultData
             {                
-                name = tempSchemaInfoData.name,
-                sqlString = scriptBuilder.CreateScriptTable(tempSchemaInfoData),
-                schemaId = tempSchemaInfoData.id
+                name = schemaInfoData.name,
+                sqlString = scriptBuilder.CreateScriptTable(schemaInfoData),
+                schemaId = schemaInfoData.id
             }).ToList();
 
             Console.WriteLine("TableManager.Convert : " + result.Count + " , Done...");
@@ -76,77 +58,59 @@ namespace SQLMigrationManager
         private static List<TableSchemaInfoData> GetSchemaDataFromDt(DataTable dt)
         {
             var result = new List<TableSchemaInfoData>();
+            var tempResult = new List<TableTempSource>();
             for (var i = 0; i < dt.Rows.Count; i++)
             {
-                var schema = new TableSchemaInfoData();
+                var tempSchema = new TableTempSource();
                 var data = dt.Rows[i];
-                schema.TableName = data["TABLE_NAME"].ToString();
-                schema.ColumnName = data["COLUMN_NAME"].ToString();
-                schema.OrdinalPosition = System.Convert.ToInt32(data["ORDINAL_POSITION"]);
-                schema.ColumnDefault = data["COLUMN_DEFAULT"].ToString();
-                schema.isNullable = System.Convert.ToBoolean(data["IS_NULLABLE"].ToString() == "1");
-                schema.Domain = data["DOMAIN_NAME"].ToString();
-                schema.DataType = data["DATA_TYPE"].ToString();
-                schema.CharMaxLength = System.Convert.ToInt32(data["CHARACTER_MAXIMUM_LENGTH"].GetType() == typeof(DBNull) ? 0: data["CHARACTER_MAXIMUM_LENGTH"]);
-                schema.Precision = System.Convert.ToInt32(data["NUMERIC_PRECISION"].GetType() == typeof(DBNull) ? 0 : data["NUMERIC_PRECISION"]);
-                schema.Scale = System.Convert.ToInt32(data["NUMERIC_SCALE"].GetType() == typeof(DBNull) ? 0 : data["NUMERIC_SCALE"]);
+                tempSchema.TableName = data["TABLE_NAME"].ToString();
+                tempSchema.ColumnName = data["COLUMN_NAME"].ToString();
+                tempSchema.OrdinalPosition = System.Convert.ToInt32(data["ORDINAL_POSITION"]);
+                tempSchema.ColumnDefault = data["COLUMN_DEFAULT"].ToString();
+                tempSchema.isNullable = System.Convert.ToBoolean(data["IS_NULLABLE"].ToString() == "1");
+                tempSchema.Domain = data["DOMAIN_NAME"].ToString();
+                tempSchema.DataType = data["DATA_TYPE"].ToString();
+                tempSchema.CharMaxLength = System.Convert.ToInt32(data["CHARACTER_MAXIMUM_LENGTH"].GetType() == typeof(DBNull) ? 0: data["CHARACTER_MAXIMUM_LENGTH"]);
+                tempSchema.Precision = System.Convert.ToInt32(data["NUMERIC_PRECISION"].GetType() == typeof(DBNull) ? 0 : data["NUMERIC_PRECISION"]);
+                tempSchema.Scale = System.Convert.ToInt32(data["NUMERIC_SCALE"].GetType() == typeof(DBNull) ? 0 : data["NUMERIC_SCALE"]);
                 
-                result.Add(schema);
+                tempResult.Add(tempSchema);
             }
 
+            var UsedTableName = tempResult.GroupBy(x => x.TableName).Select(y => y.First()).ToList();           
+           
+
+            foreach (var uTableName in UsedTableName)
+            {
+                var listColumnUsed = new List<UsedColumn>();
+                var schema = new TableSchemaInfoData();
+                schema.TableName = uTableName.TableName;
+                schema.name = uTableName.TableName; 
+                foreach (var uColumnName in tempResult.Where(x => x.TableName == uTableName.TableName).ToList())
+                {
+                    var tempData = new UsedColumn();
+
+                    tempData.ColumnName = uColumnName.ColumnName;
+                    tempData.OrdinalPosition = uColumnName.OrdinalPosition;
+                    tempData.ColumnDefault = uColumnName.ColumnDefault;
+                    tempData.isNullable = uColumnName.isNullable;
+                    tempData.Domain = uColumnName.Domain;
+                    tempData.DataType = uColumnName.DataType;
+                    tempData.CharMaxLength = uColumnName.CharMaxLength;
+                    tempData.Precision = uColumnName.Precision;
+                    tempData.Scale = uColumnName.Scale;
+
+                    listColumnUsed.Add(tempData);
+               
+                }
+                schema.usedColumnList = new List<UsedColumn>(listColumnUsed);
+               
+                result.Add(schema);
+            }
             return result;
         }
 
-        private string getAllcolumn(List<TableSchemaInfoData> datasource)
-        {
-            string allColumn = "";
-            var n = 0;
-
-            foreach (var getRaw in datasource)
-            {
-                n = datasource.IndexOf(getRaw);
-           
-                if ((n+1)  == datasource.Count)
-                     {
-                        allColumn += getRaw.ColumnName + " " + cekSuffix(getRaw) + "\r\n";
-                     }
-                else
-                     {
-                         allColumn += getRaw.ColumnName + " " + cekSuffix(getRaw) + ",\r\n";
-                     }            
-            }
-
-            return allColumn;
-        }
-
-        private string cekSuffix(TableSchemaInfoData data)
-        {
-            var cekResult = "";
-            if (data.Domain != "")
-            {
-                cekResult = data.Domain;
-            }
-            else
-            {
-                cekResult = scriptBuilder.GetDataTypeMap(data.DataType);
-            }
-
-            if (data.CharMaxLength != 0)
-            {
-                cekResult += " (" + data.CharMaxLength + ")";
-            }
-            else if (data.Precision != 0)
-            {
-                cekResult += " (" + data.Precision + "," + data.Scale + ")";
-            }
-
-            if (data.isNullable == false)
-            {
-                cekResult += "  NOT NULL";
-            }
-            return cekResult;
-
-        }
+       
 
 
 

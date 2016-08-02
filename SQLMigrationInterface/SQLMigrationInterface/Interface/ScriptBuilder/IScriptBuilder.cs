@@ -6,9 +6,9 @@ namespace SQLMigrationInterface.Interface.ScriptBuilder
     public interface IScriptBuilder
     {
         string CreateScriptUDT(UDTSchemaInfoData schemaInfoData);
-        string CreateScriptTable(tempTableData schemaInfoData);
-        string CreateScriptPK(tempTableData schemaInfoData);
-        string CreateScriptIndex(tempTableData schemaInfoData);
+        string CreateScriptTable(TableSchemaInfoData schemaInfoData);
+        string CreateScriptPK(PKSchemaInfoData schemaInfoData);
+        string CreateScriptIndex(IndexSchemaInfoData schemaInfoData);
         string GetDataTypeMap(string dataType);
     }
 }
