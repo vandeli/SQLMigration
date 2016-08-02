@@ -6,8 +6,8 @@
     <ProjectGuid>{4FB4C581-ED23-408E-A53D-F008ACAC7D0F}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SQLMigrationTest</RootNamespace>
-    <AssemblyName>SQLMigrationTest</AssemblyName>
+    <RootNamespace>SQLMigration.Test</RootNamespace>
+    <AssemblyName>SQLMigration.Test</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -35,7 +35,13 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="FakeItEasy, Version=2.2.0.0, Culture=neutral, PublicKeyToken=eff28e2146d5fd2c, processorArchitecture=MSIL">
+      <HintPath>..\packages\FakeItEasy.2.2.0\lib\net40\FakeItEasy.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <Choose>
     <When Condition="('$(VisualStudioVersion)' == '10.0' or '$(VisualStudioVersion)' == '') and '$(TargetFrameworkVersion)' == 'v3.5'">
@@ -45,23 +51,45 @@
     </When>
     <Otherwise>
       <ItemGroup>
-        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework" />
+        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework">
+          <Private>False</Private>
+        </Reference>
       </ItemGroup>
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="IndexManagerTest.cs" />
+    <Compile Include="PKManagerTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="PstScriptBuilderTest.cs" />
+    <Compile Include="TableManagerTest.cs" />
     <Compile Include="UDTManagerTest.cs" />
+    <Compile Include="DataAccessTest.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\SQLMigration.csproj">
-      <Project>{FB4DC7FA-63A2-4A11-89EA-7426EF8C7035}</Project>
-      <Name>SQLMigration</Name>
+    <ProjectReference Include="..\EasyTools.Interface\EasyTools.Interface.csproj">
+      <Project>{ff47ff05-a601-46ce-a295-7e3cf798e52b}</Project>
+      <Name>EasyTools.Interface</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EasyTools\EasyTools.csproj">
+      <Project>{38AD047C-AE85-4CAE-A2C4-1077CEC245AC}</Project>
+      <Name>EasyTools</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SQLMigrationConverter\SQLMigrationConverter.csproj">
+      <Project>{eb95b286-b62f-4c42-a018-5e18803699e7}</Project>
+      <Name>SQLMigrationConverter</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SQLMigrationInterface\SQLMigrationInterface\SQLMigrationInterface.csproj">
+      <Project>{25658975-7316-4bdf-9fbc-3dc32955d44d}</Project>
+      <Name>SQLMigrationInterface</Name>
     </ProjectReference>
     <ProjectReference Include="..\SQLMigrationManager\SQLMigrationManager\SQLMigrationManager.csproj">
       <Project>{e6f8cc7b-b6b8-43b7-a061-da9ae23e0573}</Project>
       <Name>SQLMigrationManager</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

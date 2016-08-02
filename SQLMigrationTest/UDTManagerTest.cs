@@ -1,142 +1,119 @@
-﻿//using System;
-//using Microsoft.VisualStudio.TestTools.UnitTesting;
-//using SQLMigrationInterface;
-//using SQLMigrationManager;
-//using SQLMigration.Data;
+﻿using EasyTools.Interface.DB;
+using FakeItEasy;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using SQLMigration.Interface.Data;
+using SQLMigration.Interface.Interface.Manager;
+using SQLMigrationInterface.Interface.ScriptBuilder;
+using SQLMigrationInterface.Interface.SourceQuery;
+using SQLMigrationManager;
+using System.Collections.Generic;
+using System.Data;
+using SQLMigration.Data.ResultInfo;
+using SQLMigration.Data.SchemaInfo;
 
-//namespace SQLMigrationTest
-//{
-//    [TestClass]
-//    public class UDTManagerTest
-//    {
-//        private readonly IManager udtManager;
+namespace SQLMigration.Test
+{
+    [TestClass]
+    public class UDTManagerTest
+    {
+        [TestMethod]
+        public void UDTGetSchemaTest()
+        {
+            var dataAccess = A.Fake<IDataAccess>();
+            var scriptBuilder = A.Fake<IScriptBuilder>();
+            var schemaQuery = A.Fake<ISourceQuery>();
+
+            DataTable resultDataAccess = new DataTable("DataTable");
+            resultDataAccess.Columns.Add("NAME");
+            resultDataAccess.Columns.Add("data_type");
+            resultDataAccess.Columns.Add("max_length");
+            resultDataAccess.Columns.Add("precision");
+            resultDataAccess.Columns.Add("scale");
+            resultDataAccess.Columns.Add("is_nullable");
+
+            DataRow dataRow = resultDataAccess.NewRow();
+            dataRow["NAME"] = "customVar";
+            dataRow["data_type"] = "varchar";
+            dataRow["max_length"] = "50";
+            dataRow["precision"] = "0";
+            dataRow["scale"] = "0";
+            dataRow["is_nullable"] = "1";
+
+            resultDataAccess.Rows.Add(dataRow);
 
 
-//        public UDTManagerTest()
-//        {
-//            udtManager = new UDTManager();
-//        }
+            var configData = new ConfigData { name = "Config1" };
 
-//        [TestMethod]
-//        public void GetSource()
-//        {
-//            var param = new DBData
-//            {
-//                dbName = "Padma_Live",
-//                password = "12345",
-//                serverName = @"KEA-IBNU\SQLSERVER2012",
-//                userName = "sa"
+            var resultQuery = "";
 
-//            };
-//            udtManager.GetSchema(param);
-//            Assert.IsFalse(true);
-//        }
+            A.CallTo(() => schemaQuery.GetUDTQuery()).Returns(resultQuery);
+            A.CallTo(() => dataAccess.GetDataTable(configData.Source, resultQuery)).Returns(resultDataAccess);
 
-//        [TestMethod]
-//        public void Restore_null()
-//        {
-//            try
-//            {
-//                udtManager.GetSchema(null);
-//                Assert.IsFalse(true);
-//            }
-//            catch (Exception ex)
-//            {
-//                Assert.AreEqual(new ArgumentNullException("param").Message, ex.Message);
-//            }
+            IUDTManager udtManager = new UDTManager(dataAccess, scriptBuilder, schemaQuery);
 
-//        }
+            var listSchema = udtManager.GetSchema(configData);
 
-//        [TestMethod]
-//        public void Restore_DbnameEmpty()
-//        {
-//            try
-//            {
-//                var param = new DBData
-//                {
-//                    dbName = "",
-//                    password = "123456",
-//                    serverName = @"localhost\sqlserver2012",
-//                    userName = "sa"
+            var schemaExpectation = new UDTSchemaInfoData
+            {
+                name = "customVar",
+                DataType = "varchar",
+                MaxLength = 50,
+                Precision = 0,
+                Scale = 0,
+                IsNullable = true
+            };
 
-//                };
-//                udtManager.GetSchema(param);
-//                Assert.IsFalse(true);
-//            }
-//            catch (Exception ex)
-//            {
-//                Assert.AreEqual(new ArgumentNullException("param.dbName").Message, ex.Message);
-//            }
+            var schemaActual = listSchema[0];
 
-//        }
+            Assert.AreEqual(schemaExpectation.name, schemaActual.name);
+            Assert.AreEqual(schemaExpectation.DataType, schemaActual.DataType);
+            Assert.AreEqual(schemaExpectation.MaxLength, schemaActual.MaxLength);
+            Assert.AreEqual(schemaExpectation.Precision, schemaActual.Precision);
+            Assert.AreEqual(schemaExpectation.Scale, schemaActual.Scale);
+            Assert.AreEqual(schemaExpectation.IsNullable, schemaActual.IsNullable);
 
-//        [TestMethod]
-//        public void Restore_PasswordEmpty()
-//        {
-//            try
-//            {
-//                var param = new DBData
-//                {
-//                    dbName = "TestRestore",
-//                    password = "",
-//                    serverName = @"localhost\sqlserver2012",
-//                    userName = "sa"
+        }
 
-//                };
-//                udtManager.GetSchema(param);
-//                Assert.IsFalse(true);
-//            }
-//            catch (Exception ex)
-//            {
-//                Assert.AreEqual(new ArgumentNullException("param.password").Message, ex.Message);
-//            }
+        [TestMethod]
+        public void UDTConvertTest()
+        {
+            var dataAccess = A.Fake<IDataAccess>();
+            var scriptBuilder = A.Fake<IScriptBuilder>();
+            var schemaQuery = A.Fake<ISourceQuery>();
 
-//        }
+            IUDTManager udtManager = new UDTManager(dataAccess, scriptBuilder, schemaQuery);
 
-//        [TestMethod]
-//        public void Restore_ServerNameEmpty()
-//        {
-//            try
-//            {
-//                var param = new DBData
-//                {
-//                    dbName = "TestRestore",
-//                    password = "123456",
-//                    serverName = @"",
-//                    userName = "sa"
+            var schemaData = new UDTSchemaInfoData
+            {
+                name = "customVar",
+                DataType = "varchar",
+                MaxLength = 50,
+                Precision = 0,
+                Scale = 0,
+                IsNullable = true
+            };
 
-//                };
-//                udtManager.GetSchema(param);
-//                Assert.IsFalse(true);
-//            }
-//            catch (Exception ex)
-//            {
-//                Assert.AreEqual(new ArgumentNullException("param.serverName").Message, ex.Message);
-//            }
-//        }
+            const string RESULT_QUERY = "Select * from master";
+            A.CallTo(() => scriptBuilder.CreateScriptUDT(schemaData)).Returns(RESULT_QUERY);
+
+            var listSchemaInfoData = new List<UDTSchemaInfoData> { schemaData };
+            var result = udtManager.Convert(listSchemaInfoData);
 
 
 
-//        [TestMethod]
-//        public void Restore_UsernameEmpty()
-//        {
-//            try
-//            {
-//                var param = new DBData
-//                {
-//                    dbName = "TestRestore",
-//                    password = "123456",
-//                    serverName = @"localhost\sqlserver2012",
-//                    userName = ""
+            var resultActual = result[0];
 
-//                };
-//                udtManager.GetSchema(param);
-//                Assert.IsFalse(true);
-//            }
-//            catch (Exception ex)
-//            {
-//                Assert.AreEqual(new ArgumentNullException("param.userName").Message, ex.Message);
-//            }
-//        }
-//    }
-//}
+            var resultExpectation = new UDTResultData
+            {
+                name = "customVar",
+                sqlString = RESULT_QUERY,
+                schemaId = schemaData.id
+            };
+
+            Assert.AreEqual(resultExpectation.name, resultActual.name);
+            Assert.AreEqual(resultExpectation.sqlString, resultActual.sqlString);
+            Assert.AreEqual(resultExpectation.schemaId, resultActual.schemaId);
+
+        }
+    }
+}

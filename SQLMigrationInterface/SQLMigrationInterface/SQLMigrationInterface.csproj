@@ -7,8 +7,8 @@
     <ProjectGuid>{25658975-7316-4BDF-9FBC-3DC32955D44D}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SQLMigrationInterface</RootNamespace>
-    <AssemblyName>SQLMigrationInterface</AssemblyName>
+    <RootNamespace>SQLMigration.Interface</RootNamespace>
+    <AssemblyName>SQLMigration.Interface</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -33,20 +33,37 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IBaseConverter.cs" />
-    <Compile Include="IIndexManager.cs" />
-    <Compile Include="IManager.cs" />
-    <Compile Include="IPKManager.cs" />
-    <Compile Include="ITableManager.cs" />
-    <Compile Include="IUDTManager.cs" />
+    <Compile Include="Data\ConfigData.cs" />
+    <Compile Include="Data\ResultInfo\AllResultData.cs" />
+    <Compile Include="Data\ResultInfo\IndexResultData.cs" />
+    <Compile Include="Data\ResultInfo\PKResultData.cs" />
+    <Compile Include="Data\ResultInfo\TableResultData.cs" />
+    <Compile Include="Data\ResultInfo\UDTResultData.cs" />
+    <Compile Include="Data\SchemaInfo\AllSchemaInfoData.cs" />
+    <Compile Include="Data\SchemaInfo\IndexSchemaInfoData.cs" />
+    <Compile Include="Data\SchemaInfo\PKSchemaInfoData.cs" />
+    <Compile Include="Data\SchemaInfo\TableSchemaInfoData.cs" />
+    <Compile Include="Data\SchemaInfo\tempTableData.cs" />
+    <Compile Include="Data\SchemaInfo\UDTSchemaInfoData.cs" />
+    <Compile Include="Interface\Manager\IIndexManager.cs" />
+    <Compile Include="Interface\Manager\IPKManager.cs" />
+    <Compile Include="Interface\Manager\ITableManager.cs" />
+    <Compile Include="Interface\ScriptBuilder\IScriptBuilder.cs" />
+    <Compile Include="Interface\SourceQuery\ISourceQuery.cs" />
+    <Compile Include="Interface\Manager\IUDTManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\SQLMigration.csproj">
-      <Project>{FB4DC7FA-63A2-4A11-89EA-7426EF8C7035}</Project>
-      <Name>SQLMigration</Name>
+    <ProjectReference Include="..\..\EasyTools.Interface\EasyTools.Interface.csproj">
+      <Project>{ff47ff05-a601-46ce-a295-7e3cf798e52b}</Project>
+      <Name>EasyTools.Interface</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\EasyTools\EasyTools.csproj">
+      <Project>{38ad047c-ae85-4cae-a2c4-1077cec245ac}</Project>
+      <Name>EasyTools</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

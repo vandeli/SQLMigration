@@ -7,8 +7,8 @@
     <ProjectGuid>{EA8CA1E6-7D96-4891-BE98-E0E38D4EADAC}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SQLMigrationUI</RootNamespace>
-    <AssemblyName>SQLMigrationUI</AssemblyName>
+    <RootNamespace>SQLMigration.UI</RootNamespace>
+    <AssemblyName>SQLMigration.UI</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -32,7 +32,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject>SQLMigrationUI.Program</StartupObject>
+    <StartupObject>SQLMigration.UI.Program</StartupObject>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>1469425809_1-47.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -62,6 +65,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <None Include="Properties\DataSources\SQLMigrationManager.TestManager.datasource" />
     <None Include="Properties\DataSources\SQLMigrationManager.UDTManager.datasource" />
@@ -79,22 +83,21 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\SQLMigration.csproj">
-      <Project>{fb4dc7fa-63a2-4a11-89ea-7426ef8c7035}</Project>
-      <Name>SQLMigration</Name>
+    <ProjectReference Include="..\..\EasyTools.Interface\EasyTools.Interface.csproj">
+      <Project>{ff47ff05-a601-46ce-a295-7e3cf798e52b}</Project>
+      <Name>EasyTools.Interface</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\SQLMigrationInterface\SQLMigrationInterface\SQLMigrationInterface.csproj">
       <Project>{25658975-7316-4bdf-9fbc-3dc32955d44d}</Project>
       <Name>SQLMigrationInterface</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\SQLMigrationManager\SQLMigrationManager\SQLMigrationManager.csproj">
-      <Project>{e6f8cc7b-b6b8-43b7-a061-da9ae23e0573}</Project>
-      <Name>SQLMigrationManager</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\SQLMigrationOF\SQLMigrationOF\SQLMigrationOF.csproj">
       <Project>{DEBD9A6B-2E77-4DCF-9ED3-0E755B82ABA0}</Project>
       <Name>SQLMigrationOF</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="1469425809_1-47.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -5,6 +5,6 @@ namespace SQLMigrationInterface
 {
     public interface IBaseConvert
     {       
-        DataTable CreateResultXml();
+        
     }
 }

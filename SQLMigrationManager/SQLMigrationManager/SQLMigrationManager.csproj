@@ -8,7 +8,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>SQLMigrationManager</RootNamespace>
-    <AssemblyName>SQLMigrationManager</AssemblyName>
+    <AssemblyName>SQLMigration.Manager</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -33,22 +33,21 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
+    <Reference Include="System.DirectoryServices" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Manager.cs" />
+    <Compile Include="IndexManager.cs" />
+    <Compile Include="PKManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TableManager.cs" />
     <Compile Include="UDTManager.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\SQLMigration.csproj">
-      <Project>{FB4DC7FA-63A2-4A11-89EA-7426EF8C7035}</Project>
-      <Name>SQLMigration</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\SQLMigrationConstants\SQLMigrationConstants\SQLMigrationConstants.csproj">
-      <Project>{fc3f95a8-afcc-42d9-93c4-80bb709e0afe}</Project>
-      <Name>SQLMigrationConstants</Name>
+    <ProjectReference Include="..\..\EasyTools.Interface\EasyTools.Interface.csproj">
+      <Project>{ff47ff05-a601-46ce-a295-7e3cf798e52b}</Project>
+      <Name>EasyTools.Interface</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\SQLMigrationConverter\SQLMigrationConverter.csproj">
       <Project>{eb95b286-b62f-4c42-a018-5e18803699e7}</Project>

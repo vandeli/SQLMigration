@@ -1,226 +1,134 @@
-﻿using SQLMigration.Data;
-using SQLMigrationConverter.MapAttribut;
-using SQLMigrationInterface;
+﻿using EasyTools.Interface.DB;
+using SQLMigration.Data.ResultInfo;
+using SQLMigration.Data.SchemaInfo;
+using SQLMigration.Interface.Data;
+using SQLMigration.Interface.Interface.Manager;
+using SQLMigrationInterface.Interface.ScriptBuilder;
+using SQLMigrationInterface.Interface.SourceQuery;
+using SQLMigration.Converter.ScriptBuilder;
+using System;
 using System.Collections.Generic;
 using System.Data;
-using System.IO;
+using System.Data.SqlClient;
+using System.Linq;
 using System.Windows.Forms;
-using System;
 
 namespace SQLMigrationManager
 {
     public class TableManager : ITableManager
     {
-      
         private readonly IDataAccess dataAccess;
+        readonly IScriptBuilder scriptBuilder;
+        readonly ISourceQuery sourceQuery;
 
-        public TableManager(IDataAccess dataAccess)
-        {
-            this.dataAccess = dataAccess;    
-
-        }
-
-        public DataTable GetSchema()
-        {
-            var dataconfig = dataAccess.ReadXML();
-            var ds = new DataSet();         
-            var dt = dataAccess.GetDataTable(GetQuery());
-            ds.Tables.Add(dt);
-            ds.WriteXml(dataconfig.Path + "TableSchema.xml");
-            MessageBox.Show("Table sql Schema created " + dataconfig.Path + "TableSchema.xml");
-            return dt;
-        }
-
-        public void Convert(DataTable datasource)
-        {
-           
-            var configdata = dataAccess.ReadXML();
-            var result = CreateScript(datasource);
-            DataTable resultXML = CreateResultXml(datasource);
-            var fileQuery = configdata.Path + configdata.Destination;
-
-
-            if (Directory.Exists(Path.GetDirectoryName(fileQuery)))
-            {
-                File.Delete(fileQuery);
-            }
-            using (var sw = File.CreateText(fileQuery))
-            {
-                sw.Write(result);
-            }
-            MessageBox.Show("Table PGSCRIPT created " + configdata.Path + configdata.Destination);
-
-
-            if (resultXML.Rows.Count != 0)
-            {
-
-                resultXML.WriteXml(configdata.Path + "Tableresult.xml", true);
-                MessageBox.Show("Tableresult created " + configdata.Path + "Tableresult.xml");
-            }
-        }
-
-        public void SetConfig(ConfigData configdata)
-        {
-            var param = new DBData();
-            param = configdata.Source;
-            configdata.Source = param;
-            WriteConfig(configdata);
-        }
-
-        private static void WriteConfig(ConfigData configdata)
-        {
-            var writer = new System.Xml.Serialization.XmlSerializer(typeof(ConfigData));
-            var file = File.Create("Config.xml");
-
-            writer.Serialize(file, configdata);
        
 
-            file.Close();
+        public TableManager(IDataAccess dataAccess, IScriptBuilder scriptBuilder, ISourceQuery sourceQuery)
+        {
+            this.dataAccess = dataAccess;
+            this.scriptBuilder = scriptBuilder;
+            this.sourceQuery = sourceQuery;
         }
 
-        private string GetQuery()
+        public List<TableSchemaInfoData> GetSchema(ConfigData configData)
         {
-            return @"
-            SELECT a.TABLE_NAME
-	            ,a.COLUMN_NAME
-	            ,a.ORDINAL_POSITION
-	            ,a.COLUMN_DEFAULT
-	            ,a.IS_NULLABLE
-	            ,a.DOMAIN_NAME
-	            ,a.DATA_TYPE
-	            ,a.CHARACTER_MAXIMUM_LENGTH
-	            ,a.NUMERIC_PRECISION
-	            ,a.NUMERIC_SCALE
-            FROM INFORMATION_SCHEMA.columns a
-            JOIN INFORMATION_SCHEMA.Tables b ON a.TABLE_NAME = b.TABLE_NAME
-            WHERE TABLE_TYPE = 'BASE TABLE'
-            ORDER BY table_name
-	            ,ORDINAL_POSITION
-            ";
+            Console.WriteLine("TableManager.GetSchema : " + configData.name + " , start...");
+            var dt = dataAccess.GetDataTable(configData.Source, sourceQuery.GetTableQuery());
+            var listSchema = GetSchemaDataFromDt(dt);
+            Console.WriteLine("TableManager.GetSchema : listSchema => " + listSchema.Count + ", Done");
+            return listSchema;
         }
 
-        List<T> GetDataQuery<T>(DataTable datasource) where T : Base, new()
+        public List<TableResultData> Convert(List<TableSchemaInfoData> datasource)
         {
-            var list = new List<T>();
-            if (list.Count == 0)
-            {
-              //  var dataTable = new DataAccess().GetDataTable(sql);
-                foreach (DataRow data in datasource.Rows)
-                {
-                    var obj = new T();
-                    obj.GetValueFromDataRow(data);
-                    list.Add(obj);
-               
-                }
-            }
-            return list;
-        }
+            Console.WriteLine("TableManager.Convert : listSchema =>" + datasource.Count + " , start...");
 
-        public string CreateScript(DataTable datasource)
-        {
+            var UsedTableName = datasource.GroupBy(x => x.TableName).Select(y => y.First()).ToList();
+       
+
+
+            List<tempTableData> listTempData = new List<tempTableData>();
             
-            string[] allcolumn = getAllcolumn();
-            var result = "";
-            var tableResult = "";
-            int xs = 1;
-            foreach (var data in GetAllTable(datasource))
+            foreach (var uTableName in UsedTableName)
             {
+                tempTableData tempData = new tempTableData();
+                tempData.AllTableName = uTableName.TableName;
+                tempData.AllColumnName = getAllcolumn(datasource.Where(x => x.TableName == uTableName.TableName).ToList());
+                tempData.name = uTableName.TableName;
+                listTempData.Add(tempData);
+               
 
-                if (data.OrdinalPosition == 1)
-                {
-                
-                    tableResult = getTemplate(data,allcolumn[xs]);
-                    result += tableResult;
-                    xs += 1;
-                }
             }
+
+       //     var sqlString = scriptBuilder.CreateScriptTable(tempData);
+             var result = listTempData.Select(tempSchemaInfoData => new TableResultData
+            {                
+                name = tempSchemaInfoData.name,
+                sqlString = scriptBuilder.CreateScriptTable(tempSchemaInfoData),
+                schemaId = tempSchemaInfoData.id
+            }).ToList();
+
+            Console.WriteLine("TableManager.Convert : " + result.Count + " , Done...");
             return result;
 
         }
 
-        public List<mTable> GetAllTable(DataTable datasource)
+        private static List<TableSchemaInfoData> GetSchemaDataFromDt(DataTable dt)
         {
-            return GetDataQuery<mTable>(datasource);
-
-        }
-
-        public DataTable CreateResultXml(DataTable datasource)
-        {
-          
-            DataTable DTresultItem = new DataTable("ResultInfo");
-
-            DTresultItem.Columns.Add("SchemaId", typeof(int));
-            DTresultItem.Columns.Add("name", typeof(string));
-            DTresultItem.Columns.Add("sqlString", typeof(string));
-            DTresultItem.Columns.Add("ResultID", typeof(string));
-            string[] allcolumn = getAllcolumn();
-             int xs = 1;
-
-            var tableResult = "";
-            foreach (var data in GetAllTable(datasource))
+            var result = new List<TableSchemaInfoData>();
+            for (var i = 0; i < dt.Rows.Count; i++)
             {
-                if (data.OrdinalPosition == 1)
-                {                    
-                    DataRow workRow = DTresultItem.NewRow();
-                    tableResult = getTemplate(data, allcolumn[xs]);
-                    workRow["SchemaId"] = data.SchemaID;
-                    workRow["name"] = data.TableName;
-                    workRow["sqlString"] = tableResult;
-                    workRow["ResultID"] = tableResult.GetHashCode().ToString().Replace("-", "");
-                    DTresultItem.Rows.Add(workRow);
-                    xs += 1;
-                }
+                var schema = new TableSchemaInfoData();
+                var data = dt.Rows[i];
+                schema.TableName = data["TABLE_NAME"].ToString();
+                schema.ColumnName = data["COLUMN_NAME"].ToString();
+                schema.OrdinalPosition = System.Convert.ToInt32(data["ORDINAL_POSITION"]);
+                schema.ColumnDefault = data["COLUMN_DEFAULT"].ToString();
+                schema.isNullable = System.Convert.ToBoolean(data["IS_NULLABLE"].ToString() == "1");
+                schema.Domain = data["DOMAIN_NAME"].ToString();
+                schema.DataType = data["DATA_TYPE"].ToString();
+                schema.CharMaxLength = System.Convert.ToInt32(data["CHARACTER_MAXIMUM_LENGTH"].GetType() == typeof(DBNull) ? 0: data["CHARACTER_MAXIMUM_LENGTH"]);
+                schema.Precision = System.Convert.ToInt32(data["NUMERIC_PRECISION"].GetType() == typeof(DBNull) ? 0 : data["NUMERIC_PRECISION"]);
+                schema.Scale = System.Convert.ToInt32(data["NUMERIC_SCALE"].GetType() == typeof(DBNull) ? 0 : data["NUMERIC_SCALE"]);
                 
+                result.Add(schema);
             }
 
-            return DTresultItem;
+            return result;
         }
 
-        private string[] getAllcolumn(DataTable datasource)
+        private string getAllcolumn(List<TableSchemaInfoData> datasource)
         {
-            int xs = 0;
-            int xcount = 1;
-            
-            foreach (var totalraw in GetAllTable(datasource))
-            {
-                if (totalraw.OrdinalPosition == 1)
-                {
-                    xcount += 1;                    
-                }
-            }
-            string[] allColumn = new string[xcount];
+            string allColumn = "";
+            var n = 0;
 
-            foreach (var data in GetAllTable(datasource))
+            foreach (var getRaw in datasource)
             {
-               // var setData = data.GetConvertedDataType();
-
-                if (data.OrdinalPosition == 1)
-                {
-                    xs += 1;
-                  //  cekSuffix(data);
-                    allColumn[xs] = data.ColumnName + " " + cekSuffix(data) ;
-                    
-                }
+                n = datasource.IndexOf(getRaw);
+           
+                if ((n+1)  == datasource.Count)
+                     {
+                        allColumn += getRaw.ColumnName + " " + cekSuffix(getRaw) + "\r\n";
+                     }
                 else
-                {
-                    allColumn[xs] += ",\n " + data.ColumnName + "   " + cekSuffix(data);
-                }
-
+                     {
+                         allColumn += getRaw.ColumnName + " " + cekSuffix(getRaw) + ",\r\n";
+                     }            
             }
 
             return allColumn;
         }
 
-        private string cekSuffix(mTable data)
+        private string cekSuffix(TableSchemaInfoData data)
         {
             var cekResult = "";
             if (data.Domain != "")
             {
                 cekResult = data.Domain;
             }
-            else 
+            else
             {
-                cekResult = data.GetConvertedDataType();
+                cekResult = scriptBuilder.GetDataTypeMap(data.DataType);
             }
 
             if (data.CharMaxLength != 0)
@@ -237,21 +145,11 @@ namespace SQLMigrationManager
                 cekResult += "  NOT NULL";
             }
             return cekResult;
-            
+
         }
 
-        public string getTemplate(mTable data, string allColumn)
-        {
-            var result = "";
-            var infodata = data.GetConvertedDataType();
 
-            result = "CREATE TABLE " + data.TableName + "(\n" +
-                      allColumn + "\n" +                        
-                      ");\r\n";
-            
-            
-            return result;
-        }
+
 
     }
 }
