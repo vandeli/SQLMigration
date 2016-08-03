@@ -139,6 +139,49 @@ namespace SQLMigration.Converter.ScriptBuilder
 
         }
 
+        public string CreateScriptSP(SPSchemaInfoData schemaInfo)
+        {
+            string result;
+            var usedParameter = "";
+            var n = 0;
+
+            foreach (var eachParameter in schemaInfo.usedParameterList)
+            {
+                n = schemaInfo.usedParameterList.IndexOf(eachParameter);
+
+                if ((n + 1) == schemaInfo.usedParameterList.Count)
+                {
+                    usedParameter += eachParameter.ParameterName + "  " + cekParameter(eachParameter) + "\r\n";
+                }
+                else
+                {
+                    usedParameter += eachParameter.ParameterName + "  " + cekParameter(eachParameter) + ",\r\n";
+                }
+            }
+            result = string.Format("CREATE OR REPLACE FUNCTION {0} (\r\n {1} )\r\n BEGIN\r\n END;\r\n $$ LANGUAGE plpgsql;\r\n",
+                                schemaInfo.SPName, usedParameter);
+
+    
+
+            Console.WriteLine("PstScriptBuilder.CreateScriptTable : " + schemaInfo.name + ", Done");
+            return result;
+        }
+
+        private string cekParameter(UsedParameter data)
+        {
+            var cekResult = "";
+            if (data.DomainType.Substring(0,3) == "BOS")
+            {
+                cekResult = data.DomainType;
+            }
+            else
+            {
+                cekResult = GetDataTypeMap(data.DataType);
+            }
+
+           
+            return cekResult;
+        }
 
         private readonly List<TablesFieldDataType> mapDataTypes = new List<TablesFieldDataType>
         {

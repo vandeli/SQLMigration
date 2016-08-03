@@ -9,6 +9,7 @@ namespace SQLMigrationInterface.Interface.ScriptBuilder
         string CreateScriptTable(TableSchemaInfoData schemaInfoData);
         string CreateScriptPK(PKSchemaInfoData schemaInfoData);
         string CreateScriptIndex(IndexSchemaInfoData schemaInfoData);
+        string CreateScriptSP(SPSchemaInfoData schemaInfoData);
         string GetDataTypeMap(string dataType);
     }
 }

@@ -72,7 +72,7 @@ namespace SQLMigration.Test
 
             var resultQuery = "";
 
-            A.CallTo(() => schemaQuery.GetTableQuery()).Returns(resultQuery);
+            A.CallTo(() => schemaQuery.GetSPQuery()).Returns(resultQuery);
             A.CallTo(() => dataAccess.GetDataTable(configData.Source, resultQuery)).Returns(resultDataAccess);
 
             ITableManager udtManager = new TableManager(dataAccess, scriptBuilder, schemaQuery);

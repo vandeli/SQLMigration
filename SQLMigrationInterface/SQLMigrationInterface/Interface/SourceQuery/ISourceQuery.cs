@@ -6,5 +6,6 @@
         string GetTableQuery();
         string GetPKQuery();
         string GetIndexQuery();
+        string GetSPQuery();
     }
 }

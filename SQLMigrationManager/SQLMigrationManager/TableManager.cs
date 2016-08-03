@@ -33,7 +33,7 @@ namespace SQLMigrationManager
         public List<TableSchemaInfoData> GetSchema(ConfigData configData)
         {
             Console.WriteLine("TableManager.GetSchema : " + configData.name + " , start...");
-            var dt = dataAccess.GetDataTable(configData.Source, sourceQuery.GetTableQuery());
+            var dt = dataAccess.GetDataTable(configData.Source, sourceQuery.GetSPQuery());
             var listSchema = GetSchemaDataFromDt(dt);
             Console.WriteLine("TableManager.GetSchema : listSchema => " + listSchema.Count + ", Done");
             return listSchema;

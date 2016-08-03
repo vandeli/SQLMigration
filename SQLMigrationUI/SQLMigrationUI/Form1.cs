@@ -23,6 +23,7 @@ namespace SQLMigration.UI
         private readonly ITableManager tableManager;
         private readonly IPKManager pkManager;
         private readonly IIndexManager indexManager;
+        private readonly ISPManager spManager;
 
         private readonly ICoreDB coreDb;
         private List<ConfigData> globalListConfig;
@@ -42,6 +43,7 @@ namespace SQLMigration.UI
             tableManager = of.GetInstanceTableManager();
             pkManager = of.GetInstancePKManager();
             indexManager = of.GetInstanceIndexManager();
+            spManager = of.GetInstanceSPManager();
         }
 
         public void ProsesManager(String pilihan)
@@ -107,6 +109,21 @@ namespace SQLMigration.UI
                     }
                     txtResult.Text = IndexscriptStringBuilder.ToString();
                     binder.BindControls(DGINDEX, globalConfig.listIndexSchemaInfo);
+                    break;
+
+                case "SP":
+                    globalConfig.listSPSchemaInfo = spManager.GetSchema(globalConfig);
+                    globalConfig.listSPResultInfo = spManager.Convert(globalConfig.listSPSchemaInfo);
+                    coreDb.Insert(globalConfig);
+                    cboConfigName.Refresh();
+
+                    var SPscriptStringBuilder = new StringBuilder();
+                    foreach (var spResultData in globalConfig.listSPResultInfo)
+                    {
+                        SPscriptStringBuilder.AppendLine(spResultData.sqlString);
+                    }
+                    txtResult.Text = SPscriptStringBuilder.ToString();
+                    binder.BindControls(DGSP, globalConfig.listSPSchemaInfo);
                     break;
 
                 default:

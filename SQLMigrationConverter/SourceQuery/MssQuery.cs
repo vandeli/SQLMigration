@@ -44,7 +44,7 @@ namespace SQLMigrationConverter.SourceQuery
             ORDER BY table_name
 	            ,ORDINAL_POSITION
 			";
-            Console.WriteLine("MssQuery.GetUDTQuery : Done");
+            Console.WriteLine("MssQuery.GetTableQuery : Done");
             return sql;
         }
 
@@ -69,7 +69,7 @@ namespace SQLMigrationConverter.SourceQuery
             ORDER BY table_name
 	            ,ORDINAL_POSITION
 			";
-            Console.WriteLine("MssQuery.GetUDTQuery : Done");
+            Console.WriteLine("MssQuery.GetPKQuery : Done");
             return sql;          
         }
 
@@ -94,7 +94,48 @@ namespace SQLMigrationConverter.SourceQuery
                   WHERE o.[type] = 'U'
                 order by o.[name], i.[name], ic.is_included_column, ic.key_ordinal
 			";
-            Console.WriteLine("MssQuery.GetUDTQuery : Done");
+            Console.WriteLine("MssQuery.GetIndexQuery : Done");
+            return sql;
+        }
+
+        public string GetSPQuery()
+        {
+            var sql = @"
+			   SELECT SCHEMA_NAME(SCHEMA_ID) AS [Schema],
+                SO.name AS [ObjectName],
+                SO.Type_Desc AS [ObjectType (UDF/SP)],
+                P.parameter_id AS [ParameterID],
+                P.name AS [ParameterName],
+                TYPE_NAME (P.system_type_id) AS [DataType],
+                TYPE_NAME(P.user_type_id) AS [DomainType],
+                P.max_length AS [ParameterMaxBytes],
+                P.is_output AS [IsOutPutParameter]
+                FROM sys.objects AS SO
+                INNER JOIN sys.parameters AS P 
+                ON SO.OBJECT_ID = P.OBJECT_ID
+                WHERE SO.OBJECT_ID IN ( SELECT OBJECT_ID 
+                FROM sys.objects
+                WHERE TYPE IN ('P','FN') AND SO.type_desc = 'SQL_STORED_PROCEDURE')
+                ORDER BY [Schema], SO.name, P.parameter_id
+			";
+            Console.WriteLine("MssQuery.GetSPQuery : Done");
+            return sql;
+            
+        }
+
+        public string GetSPCode()
+        {
+            var sql = @"
+			   SELECT SCHEMA_NAME(SCHEMA_ID) AS [Schema],
+                SO.name AS [ObjectName],
+                OBJECT_DEFINITION (OBJECT_ID(SO.name)) AS Code 
+                FROM sys.objects AS SO
+                WHERE SO.OBJECT_ID IN ( SELECT OBJECT_ID 
+                FROM sys.objects
+                WHERE TYPE IN ('P','FN'))
+                ORDER BY [Schema], SO.name
+			";
+            Console.WriteLine("MssQuery.GetSPCode : Done");
             return sql;
         }
     }
