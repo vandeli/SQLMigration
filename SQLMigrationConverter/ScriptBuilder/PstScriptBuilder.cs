@@ -167,10 +167,65 @@ namespace SQLMigration.Converter.ScriptBuilder
             return result;
         }
 
+        //public string generateProcScript()
+        //{
+        //    var result = "";
+
+        //    foreach (var proc in SqlServer.Info.getAllProcName())
+        //    {
+        //        var comments = "";
+        //        foreach (var data in SqlServer.Info.getAllProcComments().Where(x => x.ProcName == proc))
+        //        {
+        //            comments += data.RawComment;
+        //        }
+        //        comments = Tools.PoorMansUtils.beautifySQL(comments);
+        //        var resultsetOutputs = SqlServer.Info.getAllProcOutputs().Where(x => x.ProcName == proc);
+        //        var singleOutputs = SqlServer.Info.getAllParameters().SingleOrDefault(x => x.IsResult == true && x.Name == proc);
+        //        var xml = Tools.PoorMansUtils.getXml(comments).DocumentElement;
+        //        var keyword = new ToPostgres.Keyword(xml);
+        //        var outputString = "";
+        //        if (singleOutputs != null)
+        //        {
+        //            outputString = " " + singleOutputs.getConvertedDataTypeWithoutAttribute() + " ";
+        //            keyword.ReturnKind = ToPostgres.Keyword.enProcReturnKind.Single;
+        //        }
+        //        else if (resultsetOutputs.Count() != 0)
+        //        {
+        //            outputString = " SETOF " + proc + "_rs ";
+        //            keyword.ReturnKind = ToPostgres.Keyword.enProcReturnKind.Resultset;
+        //        }
+        //        else
+        //        {
+        //            outputString = " VOID ";
+        //            keyword.ReturnKind = ToPostgres.Keyword.enProcReturnKind.Void;
+        //        }
+
+        //        keyword.convertSqlStatement();
+        //        XmlDocument xmlDoc = new XmlDocument();
+        //        xmlDoc.LoadXml(keyword.Element.ToString());
+        //        var script = Tools.PoorMansUtils.getString(xmlDoc);
+        //        script = script.Replace(@"@", "m_");
+        //        var splittedText = Regex.Split(script, "\r\nas\r\n", RegexOptions.IgnoreCase).ToList().Skip(1).ToArray();
+
+        //        var parameters = SqlServer.Info.getAllParameters().Where(x => x.IsResult == false && x.Name == proc);
+        //        var parameter = parameters.ToList().Aggregate(new StringBuilder(), (sb, i) => sb.Append("m_" + i.ParamName.Substring(1, i.ParamName.Length - 1) + " " + i.getConvertedDataType() + "\r\n,")).ToString();
+        //        parameter = parameter.Substring(0, parameter.Length - 1);
+        //        script = "CREATE OR REPLACE FUNCTION " + proc + "\r\n(" +
+        //            parameter +
+        //             ")\r\n RETURNS " + outputString + " \r\n LANGUAGE plpgsql \r\n AS $$ \r\n " +
+        //             splittedText.Aggregate(new StringBuilder(), (sb, i) => sb.Append(i)).ToString() + "  \r\n  \r\n ";
+
+        //        OnGeneratePerObject(this, new ProcsEventArgs() { Script = script });
+        //        result += script;
+        //    }
+        //    OnEndGenerate(this, new ProcsEventArgs() { Script = result });
+        //    return result;
+        //}
+
         private string cekParameter(UsedParameter data)
         {
             var cekResult = "";
-            if (data.DomainType.Substring(0,3) == "BOS")
+            if (data.DomainType != "")
             {
                 cekResult = data.DomainType;
             }

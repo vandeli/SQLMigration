@@ -13,7 +13,7 @@ namespace SQLMigration.Data.SchemaInfo
         }
 
 
-        public string TableName { get; set; }
+        public string TableName { get; set; }        
         public List<UsedColumn> usedColumnList { get; set; }
 
         public override string ToString()

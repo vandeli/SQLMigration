@@ -101,22 +101,12 @@ namespace SQLMigrationConverter.SourceQuery
         public string GetSPQuery()
         {
             var sql = @"
-			   SELECT SCHEMA_NAME(SCHEMA_ID) AS [Schema],
-                SO.name AS [ObjectName],
-                SO.Type_Desc AS [ObjectType (UDF/SP)],
-                P.parameter_id AS [ParameterID],
-                P.name AS [ParameterName],
-                TYPE_NAME (P.system_type_id) AS [DataType],
-                TYPE_NAME(P.user_type_id) AS [DomainType],
-                P.max_length AS [ParameterMaxBytes],
-                P.is_output AS [IsOutPutParameter]
-                FROM sys.objects AS SO
-                INNER JOIN sys.parameters AS P 
-                ON SO.OBJECT_ID = P.OBJECT_ID
-                WHERE SO.OBJECT_ID IN ( SELECT OBJECT_ID 
-                FROM sys.objects
-                WHERE TYPE IN ('P','FN') AND SO.type_desc = 'SQL_STORED_PROCEDURE')
-                ORDER BY [Schema], SO.name, P.parameter_id
+			   select specific_name,OBJECT_DEFINITION (OBJECT_ID(SO.name)) AS SqlCode , parameter_name,ORDINAL_POSITION,PARAMETER_MODE,IS_RESULT,USER_DEFINED_TYPE_NAME,DATA_TYPE,CHARACTER_MAXIMUM_LENGTH,NUMERIC_PRECISION,NUMERIC_SCALE 
+                from INFORMATION_SCHEMA.PARAMETERS
+                INNER JOIN sys.objects AS SO
+                ON SO.name = SPECIFIC_NAME
+                where SO.type_desc = 'SQL_STORED_PROCEDURE'
+                order by specific_name,ORDINAL_POSITION
 			";
             Console.WriteLine("MssQuery.GetSPQuery : Done");
             return sql;
@@ -132,7 +122,7 @@ namespace SQLMigrationConverter.SourceQuery
                 FROM sys.objects AS SO
                 WHERE SO.OBJECT_ID IN ( SELECT OBJECT_ID 
                 FROM sys.objects
-                WHERE TYPE IN ('P','FN'))
+                WHERE TYPE IN ('P','FN') AND SO.type_desc = 'SQL_STORED_PROCEDURE')
                 ORDER BY [Schema], SO.name
 			";
             Console.WriteLine("MssQuery.GetSPCode : Done");

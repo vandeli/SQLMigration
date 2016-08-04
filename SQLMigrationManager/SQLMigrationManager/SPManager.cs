@@ -60,14 +60,16 @@ namespace SQLMigrationManager
             {
                 var tempSchema = new SPTempSource();
                 var data = dt.Rows[i];
-             
-                tempSchema.SPName = data["ObjectName"].ToString();
-                tempSchema.ParameterNumber = System.Convert.ToInt32(data["ParameterID"]);
-                tempSchema.ParameterName = data["ParameterName"].ToString();
-                tempSchema.DataType = data["DataType"].ToString();
-                tempSchema.DomainType = data["DomainType"].ToString();
-                tempSchema.ParameterMaxBytes = System.Convert.ToInt32(data["ParameterMaxBytes"]);
-               
+              
+                tempSchema.SPName = data["specific_name"].ToString();
+                tempSchema.SqlCode = data["SqlCode"].ToString();
+                tempSchema.ParameterNumber = System.Convert.ToInt32(data["ORDINAL_POSITION"]);
+                tempSchema.ParameterName = data["parameter_name"].ToString();
+                tempSchema.DataType = data["DATA_TYPE"].ToString();
+                tempSchema.DomainType = data["USER_DEFINED_TYPE_NAME"].ToString();
+                tempSchema.ParameterMaxBytes = System.Convert.ToInt32(data["CHARACTER_MAXIMUM_LENGTH"].GetType() == typeof(DBNull) ? 0 : data["CHARACTER_MAXIMUM_LENGTH"]);
+                tempSchema.NumericPrecision = System.Convert.ToInt32(data["NUMERIC_PRECISION"].GetType() == typeof(DBNull) ? 0 : data["NUMERIC_PRECISION"]);
+                tempSchema.NumericScale = System.Convert.ToInt32(data["NUMERIC_SCALE"].GetType() == typeof(DBNull) ? 0 : data["NUMERIC_SCALE"]);
                 tempResult.Add(tempSchema);
             }
 
@@ -79,6 +81,7 @@ namespace SQLMigrationManager
                 var listParameterUsed = new List<UsedParameter>();
                 var schema = new SPSchemaInfoData();
                 schema.SPName = uSPName.SPName;
+                schema.SqlCode = uSPName.SqlCode;
                 schema.name = uSPName.SPName;
                 foreach (var uParameterName in tempResult.Where(x => x.SPName == uSPName.SPName).ToList())
                 {
@@ -89,7 +92,8 @@ namespace SQLMigrationManager
                     tempData.DataType = uParameterName.DataType;
                     tempData.DomainType = uParameterName.DomainType;
                     tempData.ParameterMaxBytes = uParameterName.ParameterMaxBytes;
-                   
+                    tempData.NumericPrecision = uParameterName.NumericPrecision;
+                    tempData.NumericScale = uParameterName.NumericScale;                   
 
                     listParameterUsed.Add(tempData);
 
@@ -101,7 +105,7 @@ namespace SQLMigrationManager
             return result;
         }
 
-
+     
 
     }
 }
