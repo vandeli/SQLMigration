@@ -1,9 +1,14 @@
 ﻿
 using SQLMigration.Data.SchemaInfo;
 using SQLMigrationInterface.Interface.ScriptBuilder;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
+using System.Text.RegularExpressions;
+using System.Windows.Forms;
+using System.Xml;
 
 namespace SQLMigration.Converter.ScriptBuilder
 {
@@ -139,7 +144,7 @@ namespace SQLMigration.Converter.ScriptBuilder
 
         }
 
-        public string CreateScriptSP(SPSchemaInfoData schemaInfo)
+        public string CreateScriptSP2(SPSchemaInfoData schemaInfo)
         {
             string result;
             var usedParameter = "";
@@ -167,60 +172,63 @@ namespace SQLMigration.Converter.ScriptBuilder
             return result;
         }
 
-        //public string generateProcScript()
-        //{
-        //    var result = "";
+        public string CreateScriptSP(SPSchemaInfoData schemaInfo)
+        {
+            var result = "";
+           
+            var Tools = new PoorMansUtils();
+                var comments = schemaInfo.SqlCode;
+                
+                comments = Tools.beautifySQL(comments);
+                var resultsetOutputs = schemaInfo.SPOutputList;
+                var singleOutputs = schemaInfo.usedParameterList;
+                var xml = Tools.getXml(comments).DocumentElement;
+                var keyword = new Keyword(xml);
 
-        //    foreach (var proc in SqlServer.Info.getAllProcName())
-        //    {
-        //        var comments = "";
-        //        foreach (var data in SqlServer.Info.getAllProcComments().Where(x => x.ProcName == proc))
-        //        {
-        //            comments += data.RawComment;
-        //        }
-        //        comments = Tools.PoorMansUtils.beautifySQL(comments);
-        //        var resultsetOutputs = SqlServer.Info.getAllProcOutputs().Where(x => x.ProcName == proc);
-        //        var singleOutputs = SqlServer.Info.getAllParameters().SingleOrDefault(x => x.IsResult == true && x.Name == proc);
-        //        var xml = Tools.PoorMansUtils.getXml(comments).DocumentElement;
-        //        var keyword = new ToPostgres.Keyword(xml);
-        //        var outputString = "";
-        //        if (singleOutputs != null)
-        //        {
-        //            outputString = " " + singleOutputs.getConvertedDataTypeWithoutAttribute() + " ";
-        //            keyword.ReturnKind = ToPostgres.Keyword.enProcReturnKind.Single;
-        //        }
-        //        else if (resultsetOutputs.Count() != 0)
-        //        {
-        //            outputString = " SETOF " + proc + "_rs ";
-        //            keyword.ReturnKind = ToPostgres.Keyword.enProcReturnKind.Resultset;
-        //        }
-        //        else
-        //        {
-        //            outputString = " VOID ";
-        //            keyword.ReturnKind = ToPostgres.Keyword.enProcReturnKind.Void;
-        //        }
+                var parameter = "";
+                var outputString = "";
+                if (singleOutputs != null)
+                {
+                    outputString = " " + cekParameter(singleOutputs[0]) + " ";
+                    keyword.ReturnKind =  Keyword.enProcReturnKind.Single;
+                }
+                else if (resultsetOutputs.Count() != 0)
+                {
+                    outputString = " SETOF " + schemaInfo.SPName + "_rs ";
+                    keyword.ReturnKind = Keyword.enProcReturnKind.Resultset;
+                }
+                else
+                {
+                    outputString = " VOID ";
+                    keyword.ReturnKind = Keyword.enProcReturnKind.Void;
+                }
+           
 
-        //        keyword.convertSqlStatement();
-        //        XmlDocument xmlDoc = new XmlDocument();
-        //        xmlDoc.LoadXml(keyword.Element.ToString());
-        //        var script = Tools.PoorMansUtils.getString(xmlDoc);
-        //        script = script.Replace(@"@", "m_");
-        //        var splittedText = Regex.Split(script, "\r\nas\r\n", RegexOptions.IgnoreCase).ToList().Skip(1).ToArray();
+               keyword.convertSqlStatement();
+                XmlDocument xmlDoc = new XmlDocument();
+                xmlDoc.LoadXml(keyword.Element.ToString());
+                var script = Tools.getString(xmlDoc);
+                script = script.Replace(@"@", "m_");
+                var splittedText = Regex.Split(script, "\r\nas\r\n", RegexOptions.IgnoreCase).ToList().Skip(1).ToArray();
 
-        //        var parameters = SqlServer.Info.getAllParameters().Where(x => x.IsResult == false && x.Name == proc);
-        //        var parameter = parameters.ToList().Aggregate(new StringBuilder(), (sb, i) => sb.Append("m_" + i.ParamName.Substring(1, i.ParamName.Length - 1) + " " + i.getConvertedDataType() + "\r\n,")).ToString();
-        //        parameter = parameter.Substring(0, parameter.Length - 1);
-        //        script = "CREATE OR REPLACE FUNCTION " + proc + "\r\n(" +
-        //            parameter +
-        //             ")\r\n RETURNS " + outputString + " \r\n LANGUAGE plpgsql \r\n AS $$ \r\n " +
-        //             splittedText.Aggregate(new StringBuilder(), (sb, i) => sb.Append(i)).ToString() + "  \r\n  \r\n ";
+             //   var parameters = getAllParameters().Where(x => x.IsResult == false && x.Name == proc);
+             //   var parameter = parameters.ToList().Aggregate(new StringBuilder(), (sb, i) => sb.Append("m_" + i.ParamName.Substring(1, i.ParamName.Length - 1) + " " + i.getConvertedDataType() + "\r\n,")).ToString();
+             //   parameter = parameter.Substring(0, parameter.Length - 1);
+                foreach (var allparam in singleOutputs)
+                 {
+                        parameter += allparam.ParameterName + "\r\n";
+                 }
+                parameter = parameter.Replace(@"@", "m_");
+                result = "CREATE OR REPLACE FUNCTION " + schemaInfo.SPName + "\r\n(" +
+                    parameter +
+                     ")\r\n RETURNS " + outputString + " \r\n LANGUAGE plpgsql \r\n AS $$ \r\n " +
+                     splittedText.Aggregate(new StringBuilder(), (sb, i) => sb.Append(i)).ToString() + "  \r\n  \r\n ";
 
-        //        OnGeneratePerObject(this, new ProcsEventArgs() { Script = script });
-        //        result += script;
-        //    }
-        //    OnEndGenerate(this, new ProcsEventArgs() { Script = result });
-        //    return result;
-        //}
+          //  MessageBox.Show(result);
+            return result;
+        }
+
+       
 
         private string cekParameter(UsedParameter data)
         {

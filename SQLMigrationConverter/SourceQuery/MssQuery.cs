@@ -113,12 +113,26 @@ namespace SQLMigrationConverter.SourceQuery
             
         }
 
-        public string GetSPCode()
+        public string getSPOutput(String spname)
+        {
+               
+             var sql = @"
+			    SELECT *
+                FROM sys.dm_exec_describe_first_result_set_for_object
+                (
+                  OBJECT_ID('" + spname + "'),\r\n" +
+                  "NULL" + 
+                ");" 
+			;
+            Console.WriteLine("MssQuery.GetSPOutput : Done");
+            return sql;
+        }
+
+        public string GetSPName()
         {
             var sql = @"
 			   SELECT SCHEMA_NAME(SCHEMA_ID) AS [Schema],
-                SO.name AS [ObjectName],
-                OBJECT_DEFINITION (OBJECT_ID(SO.name)) AS Code 
+                SO.name AS [ObjectName] 
                 FROM sys.objects AS SO
                 WHERE SO.OBJECT_ID IN ( SELECT OBJECT_ID 
                 FROM sys.objects

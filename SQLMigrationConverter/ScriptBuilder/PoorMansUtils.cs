@@ -9,9 +9,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 
-namespace SqlServerToPostgresLib.Tools
+namespace SQLMigration.Converter.ScriptBuilder
 {
-    public static class PoorMansUtils
+    public class PoorMansUtils
     {
         static void StripCommentsFromSqlTree(XmlDocument sqlTree)
         {
@@ -25,7 +25,7 @@ namespace SqlServerToPostgresLib.Tools
             foreach (XmlElement deletionCandidate in deletionCandidates)
                 deletionCandidate.ParentNode.RemoveChild(deletionCandidate);
         }
-        public static XmlDocument getXml(string sql)
+        public XmlDocument getXml(string sql)
         {
             TSqlStandardFormatter _standardFormatter = new TSqlStandardFormatter(new TSqlStandardFormatterOptions
             {
@@ -40,7 +40,7 @@ namespace SqlServerToPostgresLib.Tools
             string obfuscatedSql = _obfuscatingFormatter.FormatSQLTree(parsedOriginal);
             return _parser.ParseSQL(_tokenizer.TokenizeSQL(obfuscatedSql));
         }
-        public static string getString(XmlDocument xml)
+        public string getString(XmlDocument xml)
         {
             TSqlStandardFormatter _standardFormatter = new TSqlStandardFormatter(new TSqlStandardFormatterOptions
             {
@@ -51,7 +51,7 @@ namespace SqlServerToPostgresLib.Tools
             return parsedSql;
         }
 
-        public static string beautifySQL(string sql)
+        public string beautifySQL(string sql)
         {
 
             TSqlStandardFormatter _standardFormatter = new TSqlStandardFormatter(new TSqlStandardFormatterOptions

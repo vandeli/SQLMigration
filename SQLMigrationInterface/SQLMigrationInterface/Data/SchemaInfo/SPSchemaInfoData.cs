@@ -19,6 +19,7 @@ namespace SQLMigration.Data.SchemaInfo
         public string SPName { get; set; }
         public string SqlCode { get; set; }
         public List<UsedParameter> usedParameterList { get; set; }
+        public List<SPOutputAttribute> SPOutputList { get; set; }
 
         public override string ToString()
         {

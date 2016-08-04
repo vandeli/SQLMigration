@@ -31,7 +31,8 @@ namespace SQLMigrationManager
         {
             Console.WriteLine("SPManager.GetSchema : " + configData.name + " , start...");
             var dt = dataAccess.GetDataTable(configData.Source, sourceQuery.GetSPQuery());
-            var listSchema = GetSchemaDataFromDt(dt);
+            var dtSP = dataAccess.GetDataTable(configData.Source, sourceQuery.GetSPName());
+            var listSchema = GetSchemaDataFromDt(dt,dtSP, configData);
             Console.WriteLine("SPManager.GetSchema : listSchema => " + listSchema.Count + ", Done");
             return listSchema;
         }
@@ -52,10 +53,15 @@ namespace SQLMigrationManager
 
         }
 
-        private static List<SPSchemaInfoData> GetSchemaDataFromDt(DataTable dt)
+        private List<SPSchemaInfoData> GetSchemaDataFromDt(DataTable dt, DataTable dtSP, ConfigData configData)
         {
             var result = new List<SPSchemaInfoData>();
             var tempResult = new List<SPTempSource>();
+            var SPname = new List<SPNameInfo>();
+            var SPOutputList = new List<SPOutputAttribute>();
+
+           
+
             for (var i = 0; i < dt.Rows.Count; i++)
             {
                 var tempSchema = new SPTempSource();
@@ -79,6 +85,7 @@ namespace SQLMigrationManager
             foreach (var uSPName in UsedParameterName)
             {
                 var listParameterUsed = new List<UsedParameter>();
+                var listSPOutput = new List<SPOutputAttribute>();
                 var schema = new SPSchemaInfoData();
                 schema.SPName = uSPName.SPName;
                 schema.SqlCode = uSPName.SqlCode;
@@ -98,8 +105,21 @@ namespace SQLMigrationManager
                     listParameterUsed.Add(tempData);
 
                 }
-                schema.usedParameterList = new List<UsedParameter>(listParameterUsed);
 
+                var dtOutput = dataAccess.GetDataTable(configData.Source, sourceQuery.getSPOutput(uSPName.SPName));
+                for (var i = 0; i < dtOutput.Rows.Count; i++)
+                {
+                    var tempSPOutput = new SPOutputAttribute();
+                    var data = dtOutput.Rows[i];
+
+                    tempSPOutput.GetValueFromDataRow(data);
+                    tempSPOutput.ProcName = uSPName.SPName;
+                    if (!tempSPOutput.IsVoid)
+                        SPOutputList.Add(tempSPOutput);
+                }
+
+                schema.usedParameterList = new List<UsedParameter>(listParameterUsed);
+                schema.SPOutputList = new List<SPOutputAttribute>(SPOutputList);
                 result.Add(schema);
             }
             return result;

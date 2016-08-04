@@ -48,7 +48,8 @@
     <Compile Include="Data\SchemaInfo\IndexTempSource.cs" />
     <Compile Include="Data\SchemaInfo\PKSchemaInfoData.cs" />
     <Compile Include="Data\SchemaInfo\PKTempSource.cs" />
-    <Compile Include="Data\SchemaInfo\SPCodeInfoData.cs" />
+    <Compile Include="Data\SchemaInfo\SPNameInfo.cs" />
+    <Compile Include="Data\SchemaInfo\SPOutputAttribute.cs" />
     <Compile Include="Data\SchemaInfo\SPSchemaInfoData.cs" />
     <Compile Include="Data\SchemaInfo\SPTempSource.cs" />
     <Compile Include="Data\SchemaInfo\TableSchemaInfoData.cs" />
