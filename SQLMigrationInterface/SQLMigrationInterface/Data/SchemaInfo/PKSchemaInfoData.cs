@@ -1,5 +1,6 @@
 ﻿using EasyTools.Data;
 using System;
+using System.Collections.Generic;
 
 namespace SQLMigration.Data.SchemaInfo
 {
@@ -13,13 +14,13 @@ namespace SQLMigration.Data.SchemaInfo
       
         public string PkName { get; set; }
         public string TableName { get; set; }
-        public string ColumnName { get; set; }
-        public int OrdinalPosition { get; set; }
+        public List<UsedColumn> usedColumnList { get; set; }
+
 
         public override string ToString()
         {
-            return string.Format("PKSchemaInfo => {0], PkName: {1}, TableName: {2}, ColumnName: {3}, OrdinalPosition: {4}",
-                base.ToString(), PkName, TableName, ColumnName, OrdinalPosition);
+            return string.Format("PKSchemaInfo => {0], PkName: {1}, TableName: {2}, ColumnName: {3}",
+                base.ToString(), PkName, TableName,usedColumnList);
         }
     }
 }

@@ -44,7 +44,7 @@ namespace SQLMigrationConverter.SourceQuery
             ORDER BY table_name
 	            ,ORDINAL_POSITION
 			";
-            Console.WriteLine("MssQuery.GetUDTQuery : Done");
+            Console.WriteLine("MssQuery.GetTableQuery : Done");
             return sql;
         }
 
@@ -69,7 +69,7 @@ namespace SQLMigrationConverter.SourceQuery
             ORDER BY table_name
 	            ,ORDINAL_POSITION
 			";
-            Console.WriteLine("MssQuery.GetUDTQuery : Done");
+            Console.WriteLine("MssQuery.GetPKQuery : Done");
             return sql;          
         }
 
@@ -94,7 +94,38 @@ namespace SQLMigrationConverter.SourceQuery
                   WHERE o.[type] = 'U'
                 order by o.[name], i.[name], ic.is_included_column, ic.key_ordinal
 			";
-            Console.WriteLine("MssQuery.GetUDTQuery : Done");
+            Console.WriteLine("MssQuery.GetIndexQuery : Done");
+            return sql;
+        }
+
+        public string GetSPQuery()
+        {
+            var sql = @"
+			   select specific_name,OBJECT_DEFINITION (OBJECT_ID(SO.name)) AS SqlCode , parameter_name,ORDINAL_POSITION,PARAMETER_MODE,IS_RESULT,USER_DEFINED_TYPE_NAME,DATA_TYPE,CHARACTER_MAXIMUM_LENGTH,NUMERIC_PRECISION,NUMERIC_SCALE 
+                from INFORMATION_SCHEMA.PARAMETERS
+                INNER JOIN sys.objects AS SO
+                ON SO.name = SPECIFIC_NAME
+                where SO.type_desc = 'SQL_STORED_PROCEDURE'
+                order by specific_name,ORDINAL_POSITION
+			";
+            Console.WriteLine("MssQuery.GetSPQuery : Done");
+            return sql;
+            
+        }
+
+        public string GetSPCode()
+        {
+            var sql = @"
+			   SELECT SCHEMA_NAME(SCHEMA_ID) AS [Schema],
+                SO.name AS [ObjectName],
+                OBJECT_DEFINITION (OBJECT_ID(SO.name)) AS Code 
+                FROM sys.objects AS SO
+                WHERE SO.OBJECT_ID IN ( SELECT OBJECT_ID 
+                FROM sys.objects
+                WHERE TYPE IN ('P','FN') AND SO.type_desc = 'SQL_STORED_PROCEDURE')
+                ORDER BY [Schema], SO.name
+			";
+            Console.WriteLine("MssQuery.GetSPCode : Done");
             return sql;
         }
     }

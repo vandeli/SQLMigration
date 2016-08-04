@@ -38,19 +38,41 @@ namespace SQLMigrationManager
         private static List<PKSchemaInfoData> GetSchemaDataFromDt(DataTable dt)
         {
             var result = new List<PKSchemaInfoData>();
+            var tempResult = new List<PKTempSource>();
             for (var i = 0; i < dt.Rows.Count; i++)
             {
-                var schema = new PKSchemaInfoData();
+                var tempSchema = new PKTempSource();
                 var data = dt.Rows[i];
+
+                tempSchema.PkName = data["PK_Name"].ToString();
+                tempSchema.TableName = data["TABLE_NAME"].ToString();
+                tempSchema.ColumnName = data["COLUMN_NAME"].ToString();
+                tempSchema.OrdinalPosition = System.Convert.ToByte(data["ORDINAL_POSITION"]);
                
-                schema.PkName = data["PK_Name"].ToString();
-                schema.TableName = data["TABLE_NAME"].ToString();
-                schema.ColumnName = data["COLUMN_NAME"].ToString();
-                schema.OrdinalPosition = System.Convert.ToByte(data["ORDINAL_POSITION"]);
-               
-                result.Add(schema);
+                tempResult.Add(tempSchema);
             }
 
+            var UsedTableName = tempResult.GroupBy(x => x.TableName).Select(y => y.First()).ToList();
+
+            foreach (var uTableName in UsedTableName)
+            {
+                var listColumnUsed = new List<UsedColumn>();
+                var schema = new PKSchemaInfoData();
+                schema.TableName = uTableName.TableName;
+                schema.PkName = uTableName.PkName;
+                schema.name = uTableName.PkName;
+                foreach (var uColumnName in tempResult.Where(x => x.TableName == uTableName.TableName).ToList())
+                {
+                    var tempData = new UsedColumn();
+
+                    tempData.ColumnName = uColumnName.ColumnName;
+                    tempData.OrdinalPosition = uColumnName.OrdinalPosition;
+
+                    listColumnUsed.Add(tempData);
+                }
+                schema.usedColumnList = new List<UsedColumn>(listColumnUsed);
+                result.Add(schema);
+            }
             return result;
         }
 
@@ -58,52 +80,16 @@ namespace SQLMigrationManager
         {
             Console.WriteLine("PKManager.Convert : listSchema =>" + datasource.Count + " , start...");
 
-            var UsedTableName = datasource.GroupBy(x => x.TableName).Select(y => y.First()).ToList();
-
-            List<tempTableData> listTempData = new List<tempTableData>();
-
-            foreach (var uTableName in UsedTableName)
+            var result = datasource.Select(schemaInfoData => new PKResultData
             {
-                tempTableData tempData = new tempTableData();
-                tempData.AllTableName = uTableName.TableName;
-                tempData.AllColumnName = getAllcolumn(datasource.Where(x => x.TableName == uTableName.TableName).ToList());
-                tempData.name = uTableName.PkName;
-                listTempData.Add(tempData);
-
-            }
-
-            var result = listTempData.Select(tempSchemaInfoData => new PKResultData
-            {
-                name = tempSchemaInfoData.name,
-                sqlString = scriptBuilder.CreateScriptPK(tempSchemaInfoData),
-                schemaId = tempSchemaInfoData.id
+                name = schemaInfoData.PkName,                
+                sqlString = scriptBuilder.CreateScriptPK(schemaInfoData),
+                schemaId = schemaInfoData.id
             }).ToList();
 
             Console.WriteLine("PKManager.Convert : " + result.Count + " , Done...");
             return result;
         }
-
-
-        private string getAllcolumn(List<PKSchemaInfoData> datasource)
-        {
-            string allColumn = "";
-            var n = 0;
-
-            foreach (var getRaw in datasource)
-            {
-                n = datasource.IndexOf(getRaw);
-
-                if ((n + 1) == datasource.Count)
-                {
-                    allColumn += getRaw.ColumnName ;
-                }
-                else
-                {
-                    allColumn += getRaw.ColumnName +  ",";
-                }
-            }
-
-            return allColumn;
-        }
+        
     }
 }

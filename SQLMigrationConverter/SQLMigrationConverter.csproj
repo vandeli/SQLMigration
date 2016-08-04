@@ -31,6 +31,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="PoorMansTSqlFormatterLib35">
+      <HintPath>lib\PoorMansTSqlFormatterLib35.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Windows.Forms" />
@@ -43,6 +46,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ScriptBuilder\Keyword.cs" />
+    <Compile Include="ScriptBuilder\PoorMansUtils.cs" />
     <Compile Include="ScriptBuilder\PstScriptBuilder.cs" />
     <Compile Include="SourceQuery\MssQuery.cs" />
   </ItemGroup>

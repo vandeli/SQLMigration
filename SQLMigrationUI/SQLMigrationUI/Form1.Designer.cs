@@ -65,6 +65,7 @@
             this.tabPage6 = new System.Windows.Forms.TabPage();
             this.DGPK = new System.Windows.Forms.DataGridView();
             this.tabPage7 = new System.Windows.Forms.TabPage();
+            this.DGINDEX = new System.Windows.Forms.DataGridView();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.button2 = new System.Windows.Forms.Button();
             this.btnSaveQuery = new System.Windows.Forms.Button();
@@ -76,7 +77,8 @@
             this.txtConfigPath = new System.Windows.Forms.TextBox();
             this.button4 = new System.Windows.Forms.Button();
             this.LblLog = new System.Windows.Forms.Label();
-            this.DGINDEX = new System.Windows.Forms.DataGridView();
+            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.DGSP = new System.Windows.Forms.DataGridView();
             ((System.ComponentModel.ISupportInitialize)(this.uDTManagerBindingSource)).BeginInit();
             this.tabControl1.SuspendLayout();
             this.TpConfig.SuspendLayout();
@@ -91,9 +93,11 @@
             this.tabPage6.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DGPK)).BeginInit();
             this.tabPage7.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.DGINDEX)).BeginInit();
             this.tabPage3.SuspendLayout();
             this.tabPage10.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.DGINDEX)).BeginInit();
+            this.tabPage1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.DGSP)).BeginInit();
             this.SuspendLayout();
             // 
             // label1
@@ -372,6 +376,7 @@
             this.tabControl2.Controls.Add(this.tabPage5);
             this.tabControl2.Controls.Add(this.tabPage6);
             this.tabControl2.Controls.Add(this.tabPage7);
+            this.tabControl2.Controls.Add(this.tabPage1);
             this.tabControl2.Location = new System.Drawing.Point(3, 3);
             this.tabControl2.Name = "tabControl2";
             this.tabControl2.SelectedIndex = 0;
@@ -445,6 +450,14 @@
             this.tabPage7.TabIndex = 3;
             this.tabPage7.Text = "Index";
             this.tabPage7.UseVisualStyleBackColor = true;
+            // 
+            // DGINDEX
+            // 
+            this.DGINDEX.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.DGINDEX.Location = new System.Drawing.Point(6, 6);
+            this.DGINDEX.Name = "DGINDEX";
+            this.DGINDEX.Size = new System.Drawing.Size(697, 217);
+            this.DGINDEX.TabIndex = 3;
             // 
             // tabPage3
             // 
@@ -552,13 +565,23 @@
             this.LblLog.TabIndex = 29;
             this.LblLog.Text = "Log :";
             // 
-            // DGINDEX
+            // tabPage1
             // 
-            this.DGINDEX.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.DGINDEX.Location = new System.Drawing.Point(6, 6);
-            this.DGINDEX.Name = "DGINDEX";
-            this.DGINDEX.Size = new System.Drawing.Size(697, 217);
-            this.DGINDEX.TabIndex = 3;
+            this.tabPage1.Controls.Add(this.DGSP);
+            this.tabPage1.Location = new System.Drawing.Point(4, 22);
+            this.tabPage1.Name = "tabPage1";
+            this.tabPage1.Size = new System.Drawing.Size(709, 229);
+            this.tabPage1.TabIndex = 4;
+            this.tabPage1.Text = "SP";
+            this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // DGSP
+            // 
+            this.DGSP.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.DGSP.Location = new System.Drawing.Point(6, 6);
+            this.DGSP.Name = "DGSP";
+            this.DGSP.Size = new System.Drawing.Size(697, 217);
+            this.DGSP.TabIndex = 4;
             // 
             // Form1
             // 
@@ -594,11 +617,13 @@
             this.tabPage6.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.DGPK)).EndInit();
             this.tabPage7.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.DGINDEX)).EndInit();
             this.tabPage3.ResumeLayout(false);
             this.tabPage3.PerformLayout();
             this.tabPage10.ResumeLayout(false);
             this.tabPage10.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.DGINDEX)).EndInit();
+            this.tabPage1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.DGSP)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -656,6 +681,8 @@
         private System.Windows.Forms.Button btnCancel;
         private System.Windows.Forms.DataGridView DGPK;
         private System.Windows.Forms.DataGridView DGINDEX;
+        private System.Windows.Forms.TabPage tabPage1;
+        private System.Windows.Forms.DataGridView DGSP;
     }
 }
 

@@ -43,6 +43,12 @@ namespace SQLMigration.Test
 
             resultDataAccess.Rows.Add(dataRow);
 
+            var usedList = new UsedColumn()
+            {
+                ColumnName = "customColumnName"             
+
+            };
+
             var configData = new ConfigData { name = "Config1" };
 
             var resultQuery = "";
@@ -58,50 +64,41 @@ namespace SQLMigration.Test
             {
                IndexName = "customIndexName",
                 TableName = "customTableName",
-                ColumnOrder = 1,
-                IsIncluded = 1,
-                ColumnName = "customColumnName",
-             };
+                usedColumnList = new List<UsedColumn> { usedList }
+            };
 
             var schemaActual = listSchema[0];
 
             Assert.AreEqual(schemaExpectation.IndexName, schemaActual.IndexName);
             Assert.AreEqual(schemaExpectation.TableName, schemaActual.TableName);
-            Assert.AreEqual(schemaExpectation.ColumnName, schemaActual.ColumnName);
-            Assert.AreEqual(schemaExpectation.ColumnOrder, schemaActual.ColumnOrder);
-            Assert.AreEqual(schemaExpectation.IsIncluded, schemaActual.IsIncluded);
-
+            Assert.AreEqual(schemaExpectation.usedColumnList[0].ColumnName, schemaActual.usedColumnList[0].ColumnName);
+           
         }
 
         [TestMethod]
         public void INDEXConvertTest()
         {
             var dataAccess = A.Fake<IDataAccess>();
-           // var scriptBuilder = A.Fake<IScriptBuilder>();
+            var scriptBuilder = A.Fake<IScriptBuilder>();
             var schemaQuery = A.Fake<ISourceQuery>();
-            IScriptBuilder scriptBuilder = new PstScriptBuilder();
-
+          
             IIndexManager indexManager = new IndexManager(dataAccess, scriptBuilder, schemaQuery);
 
+            var usedList = new UsedColumn()
+            {
+                ColumnName = "customColumnName",
+
+            };
             var schemaData = new IndexSchemaInfoData
             {
                 IndexName = "customIndexName",
                 TableName = "customTableName",
-                ColumnOrder = 1,
-                IsIncluded = 1,
-                ColumnName = "customColumnName",
+                usedColumnList = new List<UsedColumn> { usedList }
 
             };
-
-            var tempSchemaData = new tempTableData
-            {
-                AllTableName = "customIndexName",
-                AllColumnName = "customColumnName",
-            };
-
 
             const string RESULT_QUERY = "Select * from master";
-      //      A.CallTo(() => scriptBuilder.CreateScriptIndex(tempSchemaData)).Returns(RESULT_QUERY);
+            A.CallTo(() => scriptBuilder.CreateScriptIndex(schemaData)).Returns(RESULT_QUERY);
 
             var listSchemaInfoData = new List<IndexSchemaInfoData> { schemaData };
             var result = indexManager.Convert(listSchemaInfoData);
@@ -109,11 +106,6 @@ namespace SQLMigration.Test
 
 
             var resultActual = result[0];
-
-            if (resultActual.sqlString != "")
-                resultActual.sqlString = RESULT_QUERY;
-            if (resultActual.schemaId != "")
-                resultActual.schemaId = schemaData.id;
 
             var resultExpectation = new IndexResultData
             {
