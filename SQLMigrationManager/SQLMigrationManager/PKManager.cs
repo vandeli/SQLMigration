@@ -44,7 +44,8 @@ namespace SQLMigrationManager
                 var tempSchema = new PKTempSource();
                 var data = dt.Rows[i];
 
-                tempSchema.PkName = data["PK_Name"].ToString();
+                tempSchema.PkName = data["PK_Name"].ToString().Replace("[", "").Replace("]", "");
+                tempSchema.PkName = tempSchema.PkName.Replace(".", "_");
                 tempSchema.TableName = data["TABLE_NAME"].ToString();
                 tempSchema.ColumnName = data["COLUMN_NAME"].ToString();
                 tempSchema.OrdinalPosition = System.Convert.ToByte(data["ORDINAL_POSITION"]);

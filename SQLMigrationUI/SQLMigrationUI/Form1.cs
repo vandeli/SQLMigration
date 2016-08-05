@@ -24,6 +24,7 @@ namespace SQLMigration.UI
         private readonly IPKManager pkManager;
         private readonly IIndexManager indexManager;
         private readonly ISPManager spManager;
+        private readonly IRecordManager recordManager;
 
         private readonly ICoreDB coreDb;
         private List<ConfigData> globalListConfig;
@@ -44,6 +45,7 @@ namespace SQLMigration.UI
             pkManager = of.GetInstancePKManager();
             indexManager = of.GetInstanceIndexManager();
             spManager = of.GetInstanceSPManager();
+            recordManager = of.GetInstanceRecordManager();
         }
 
         public void ProsesManager(String pilihan)
@@ -124,6 +126,21 @@ namespace SQLMigration.UI
                     }
                     txtResult.Text = SPscriptStringBuilder.ToString();
                     binder.BindControls(DGSP, globalConfig.listSPSchemaInfo);
+                    break;
+
+                case "Record":
+                    globalConfig.listRecordSchemaInfo = recordManager.GetSchema(globalConfig);
+                    globalConfig.listRecordResultInfo = recordManager.Convert(globalConfig.listRecordSchemaInfo);
+                    coreDb.Insert(globalConfig);
+                    cboConfigName.Refresh();
+
+                    var RecordscriptStringBuilder = new StringBuilder();
+                    foreach (var recordResultData in globalConfig.listRecordResultInfo)
+                    {
+                        RecordscriptStringBuilder.AppendLine(recordResultData.sqlString);
+                    }
+                    txtResult.Text = RecordscriptStringBuilder.ToString();
+                    binder.BindControls(RDSP, globalConfig.listRecordSchemaInfo);
                     break;
 
                 default:

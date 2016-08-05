@@ -228,7 +228,62 @@ namespace SQLMigration.Converter.ScriptBuilder
             return result;
         }
 
-       
+        public string CreateScriptRecord(RecordSchemaInfoData schemaInfo)
+        {
+
+            string result = "";
+            var nColumn = schemaInfo.listRow[0].Length;
+            var nRow = schemaInfo.listRow.Count;
+            if (nRow != 0 && nColumn != 0)
+            {
+                result = "INSERT INTO " + schemaInfo.name + " VALUES\r\n";
+
+                for (int i = 0; i < nRow; i++)
+                {
+                    result += "( ";
+                    for (int n = 0; n < nColumn; n++)
+                    {
+                        if (schemaInfo.listRow[i][n] != null)
+                        {
+                            if (n == (nColumn - 1))
+                            {
+                                result += schemaInfo.listRow[i][n].GetType() == typeof(String) ? "'" + schemaInfo.listRow[i][n] + "'" : schemaInfo.listRow[i][n].ToString();
+                            }
+                            else
+                            {
+                                result += schemaInfo.listRow[i][n].GetType() == typeof(String) ? "'" + schemaInfo.listRow[i][n] + "'" + "," : schemaInfo.listRow[i][n].ToString() + ",";
+                            }
+                        }
+                        else
+                        {
+                            if (n == (nColumn - 1))
+                            {
+                                result += " ";
+                            }
+                            else
+                            {
+                                result += " ,";
+                            }
+                        }
+                    }
+                    if (i == (nRow - 1))
+                    {
+                        result += ");\r\n";
+                    }
+                    else
+                    {
+                        result += "),\r\n";
+                    }
+                }
+
+            }
+            Console.WriteLine("PstScriptBuilder.CreateScriptRecord : " + schemaInfo.name + ", Done");
+
+            return result;
+
+        }
+
+
 
         private string cekParameter(UsedParameter data)
         {
@@ -309,27 +364,29 @@ namespace SQLMigration.Converter.ScriptBuilder
         private string cekSuffix(UsedColumn data)
         {
             var cekResult = "";
-            if (data.Domain != "")
-            { 
-                cekResult = data.Domain;
-            }
-            else
-            {
-                cekResult = GetDataTypeMap(data.DataType);
-            }
+           
 
-            if (data.CharMaxLength != 0)
+            if (data.CharMaxLength != 0 && data.CharMaxLength != -1 && data.CharMaxLength < 10485760 )
             {
-                cekResult += " (" + data.CharMaxLength + ")";
+                cekResult = " (" + data.CharMaxLength + ")";
             }
-            else if (data.Precision != 0)
+            else if (data.Scale != 0)
             {
-                cekResult += " (" + data.Precision + "," + data.Scale + ")";
+                cekResult = " (" + data.Precision + "," + data.Scale + ")";
             }
 
             if (data.isNullable == false)
             {
                 cekResult += "  NOT NULL";
+            }
+
+            if (data.Domain != "")
+            {
+                cekResult = data.Domain;
+            }
+            else
+            {
+                cekResult = GetDataTypeMap(data.DataType) + cekResult;
             }
             return cekResult;
 

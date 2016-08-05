@@ -43,7 +43,8 @@ namespace SQLMigrationManager
                 var tempSchema = new IndexTempSource();
                 var data = dt.Rows[i];
 
-                tempSchema.IndexName = data["IndexName"].ToString();
+                tempSchema.IndexName = data["IndexName"].ToString().Replace("[", "").Replace("]", "");
+                tempSchema.IndexName = tempSchema.IndexName.Replace(".", "_");
                 tempSchema.TableName = data["TableName"].ToString();
                 tempSchema.ColumnOrder = System.Convert.ToByte(data["ColumnOrder"]);
                 tempSchema.IsIncluded = System.Convert.ToByte(data["IsIncluded"]);

@@ -40,6 +40,7 @@
     <Compile Include="Data\ResultInfo\AllResultData.cs" />
     <Compile Include="Data\ResultInfo\IndexResultData.cs" />
     <Compile Include="Data\ResultInfo\PKResultData.cs" />
+    <Compile Include="Data\ResultInfo\RecordResultData.cs" />
     <Compile Include="Data\ResultInfo\SPResultData.cs" />
     <Compile Include="Data\ResultInfo\TableResultData.cs" />
     <Compile Include="Data\ResultInfo\UDTResultData.cs" />
@@ -48,6 +49,7 @@
     <Compile Include="Data\SchemaInfo\IndexTempSource.cs" />
     <Compile Include="Data\SchemaInfo\PKSchemaInfoData.cs" />
     <Compile Include="Data\SchemaInfo\PKTempSource.cs" />
+    <Compile Include="Data\SchemaInfo\RecordSchemaInfoData.cs" />
     <Compile Include="Data\SchemaInfo\SPNameInfo.cs" />
     <Compile Include="Data\SchemaInfo\SPOutputAttribute.cs" />
     <Compile Include="Data\SchemaInfo\SPSchemaInfoData.cs" />
@@ -59,6 +61,7 @@
     <Compile Include="Data\SchemaInfo\UsedParameter.cs" />
     <Compile Include="Interface\Manager\IIndexManager.cs" />
     <Compile Include="Interface\Manager\IPKManager.cs" />
+    <Compile Include="Interface\Manager\IRecordManager.cs" />
     <Compile Include="Interface\Manager\ISPManager.cs" />
     <Compile Include="Interface\Manager\ITableManager.cs" />
     <Compile Include="Interface\ScriptBuilder\IScriptBuilder.cs" />

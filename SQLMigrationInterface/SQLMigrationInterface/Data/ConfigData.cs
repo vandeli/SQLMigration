@@ -23,12 +23,14 @@ namespace SQLMigration.Interface.Data
             listPKSchemaInfo = new List<PKSchemaInfoData>();
             listIndexSchemaInfo = new List<IndexSchemaInfoData>();
             listSPSchemaInfo = new List<SPSchemaInfoData>();
+            listRecordSchemaInfo = new List<RecordSchemaInfoData>();
 
             listUDTResultInfo = new List<UDTResultData>();          
             listTableResultInfo = new List<TableResultData>();
             listPKResultInfo = new List<PKResultData>();
             listIndexResultInfo = new List<IndexResultData>();
             listSPResultInfo = new List<SPResultData>();
+            listRecordResultInfo = new List<RecordResultData>();
             //allSchemaInfo = new AllSchemaInfoData();
             //allResultInfo = new AllResultData(); 
 
@@ -45,26 +47,28 @@ namespace SQLMigration.Interface.Data
         public List<PKSchemaInfoData> listPKSchemaInfo { get; set; }
         public List<IndexSchemaInfoData> listIndexSchemaInfo { get; set; }
         public List<SPSchemaInfoData> listSPSchemaInfo { get; set; }
+        public List<RecordSchemaInfoData> listRecordSchemaInfo { get; set; }
 
         public List<UDTResultData> listUDTResultInfo { get; set; }       
         public List<TableResultData> listTableResultInfo { get; set; }
         public List<PKResultData> listPKResultInfo { get; set; }
         public List<IndexResultData> listIndexResultInfo { get; set; }
         public List<SPResultData> listSPResultInfo { get; set; }
-
+        public List<RecordResultData> listRecordResultInfo { get; set; }
         //public AllSchemaInfoData allSchemaInfo { get; set; }
         //public AllResultData allResultInfo { get; set; }
 
         public override string ToString()
         {
-            return string.Format("ConfigData => {0} OutputPath: {12} , \r\n " +
-                                 "Destination: {1}, Source: {13}, \r\n" +
+            return string.Format("ConfigData => {0} OutputPath: {14} , \r\n " +
+                                 "Destination: {1}, Source: {15}, \r\n" +
                                  "listUDTResultInfo: {2}, listTableResultInfo: {3}" +
-                                 "listUDTSchemaInfo: {4}, listTableSchemaInfo: {5}" +
+                                 "listTableSchemaInfo: {4}, listTableSchemaInfo: {5}" +
                                  "listPKSchemaInfo: {6}, listPKSchemaInfo: {7}",
                                  "listIndexSchemaInfo: {8}, listIndexSchemaInfo: {9}",
-                                 "listIndexSchemaInfo: {10}, listIndexSchemaInfo: {11}",
-                base.ToString(), Destination, listUDTResultInfo.Count,listTableResultInfo.Count, listPKResultInfo.Count, listIndexResultInfo.Count, listSPResultInfo.Count,listUDTSchemaInfo.Count, listTableSchemaInfo.Count, listPKSchemaInfo.Count, listIndexSchemaInfo.Count,listSPSchemaInfo , OutputPath, Source);
+                                 "listSPSchemaInfo: {10}, listSPSchemaInfo: {11}",
+                                 "listRecordSchemaInfo: {12}, listRecordSchemaInfo: {13}",
+                base.ToString(), Destination, listUDTResultInfo.Count,listTableResultInfo.Count, listPKResultInfo.Count, listIndexResultInfo.Count, listSPResultInfo.Count, listRecordResultInfo.Count, listUDTSchemaInfo.Count, listTableSchemaInfo.Count, listPKSchemaInfo.Count, listIndexSchemaInfo.Count,listSPSchemaInfo, listRecordSchemaInfo, OutputPath, Source);
         }
     }
 }

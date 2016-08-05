@@ -88,10 +88,10 @@ namespace SQLMigrationConverter.SourceQuery
                     and ic.index_id = i.index_id
                     join sys.columns co on co.object_id = i.object_id 
                     and co.column_id = ic.column_id
-            --    WHERE i.[type] = 2 
-            --    and i.is_unique = 0 
-            --    and i.is_primary_key = 0
-                  WHERE o.[type] = 'U'
+                WHERE i.[type] = 2 
+                and i.is_unique = 0 
+                and i.is_primary_key = 0
+                and o.[type] = 'U'
                 order by o.[name], i.[name], ic.is_included_column, ic.key_ordinal
 			";
             Console.WriteLine("MssQuery.GetIndexQuery : Done");
@@ -141,6 +141,34 @@ namespace SQLMigrationConverter.SourceQuery
 			";
             Console.WriteLine("MssQuery.GetSPCode : Done");
             return sql;
+        }
+
+        public string GetTableRecord()
+        {
+          
+             var sql = @"
+			  SELECT t.name, s.row_count from sys.tables t
+                JOIN sys.dm_db_partition_stats s
+                ON t.object_id = s.object_id
+                AND t.type_desc = 'USER_TABLE'
+                AND t.name not like '%dss%'
+                AND s.index_id IN (0, 1)
+                ORDER by t.name
+			";
+            Console.WriteLine("MssQuery.GetTableRecord : Done");
+            return sql;
+
+        }
+
+        public string GetDataRecord(String tableName)
+        {
+
+            var sql = @"
+			  SELECT * FROM " + tableName  
+			;
+            Console.WriteLine("MssQuery.GetDataRecord : Done");
+            return sql;
+
         }
     }
 }

@@ -41,6 +41,7 @@
     <Compile Include="IndexManager.cs" />
     <Compile Include="PKManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RecordManager.cs" />
     <Compile Include="SPManager.cs" />
     <Compile Include="TableManager.cs" />
     <Compile Include="UDTManager.cs" />
