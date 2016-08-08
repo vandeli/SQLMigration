@@ -1,6 +1,7 @@
 ﻿using System;
 using EasyTools.Data;
 using System.Collections.Generic;
+using System.Data;
 
 namespace SQLMigration.Data.SchemaInfo
 {
@@ -14,7 +15,7 @@ namespace SQLMigration.Data.SchemaInfo
        
         public string TableName { get; set; }
         public Int32 DataRow { get; set; }
-        public List<Object[]> listRow { get; set; }
+      //  public DataTable listRow { get; set; }
 
         public override string ToString()
         {

@@ -41,36 +41,33 @@ namespace SQLMigrationManager
         {
                     
             var result = new List<RecordSchemaInfoData>();
+            string[] tableName = new String[dt.Rows.Count];
+            var nQuery = "";
+            for (var i = 0; i < dt.Rows.Count; i++)
+            {
+                var tableData = dt.Rows[i];
+                tableName[i] = tableData["name"].ToString();
+                nQuery += "SELECT * FROM "+ tableData["name"].ToString() +";\r\n";
+            }
+           
+          dataAccess.GetDataSet(configData.Source, nQuery, tableName);
+           
+            //===========================================================
+
+
             for (var i = 0; i < dt.Rows.Count; i++)
             {
                 try
                 {
+
                     var schema = new RecordSchemaInfoData();
                     var data = dt.Rows[i];
                     schema.name = data["name"].ToString();
+                    schema.TableName = data["name"].ToString();
                     schema.DataRow = System.Convert.ToInt32(data["row_count"]);
 
-                    var dtRow = dataAccess.GetDataTable(configData.Source, sourceQuery.GetDataRecord(schema.name));
-                    var sumColumn = dtRow.Columns.Count;
-                    List<Object[]> tempRow = new List<Object[]>();
-
-                    for (var n = 0; n < dtRow.Rows.Count; n++)
-                    {
-                        var tempColumn = new Object[sumColumn];
-                        var nRow = dtRow.Rows[n];
-                        for (int a = 0; a < sumColumn; a++)
-                        {
-                            tempColumn[a] = nRow[a]; //.ToString(); 
-                        }
-
-                        tempRow.Add(tempColumn);
-                        //   GC.Collect();
-                        //   Array.Clear(tempColumn, 0, tempColumn.Length);
-                    }
-
-                    schema.listRow = new List<object[]>(tempRow);
                     result.Add(schema);
-                    dtRow.Dispose();
+                
                  
                 }
                 catch (OutOfMemoryException)

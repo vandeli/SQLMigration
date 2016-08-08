@@ -4,11 +4,14 @@ using SQLMigrationInterface.Interface.ScriptBuilder;
 
 using System;
 using System.Collections.Generic;
+using System.Data;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using System.Xml;
+using System.Xml.Serialization;
 
 namespace SQLMigration.Converter.ScriptBuilder
 {
@@ -230,50 +233,89 @@ namespace SQLMigration.Converter.ScriptBuilder
 
         public string CreateScriptRecord(RecordSchemaInfoData schemaInfo)
         {
-
             string result = "";
-            var nColumn = schemaInfo.listRow[0].Length;
-            var nRow = schemaInfo.listRow.Count;
-            if (nRow != 0 && nColumn != 0)
-            {
-                result = "INSERT INTO " + schemaInfo.name + " VALUES\r\n";
+            var dtSet = new DataSet();
+            foreach (DataTable dataTable in dtSet.Tables)
+                dataTable.BeginLoadData();
 
-                for (int i = 0; i < nRow; i++)
+            dtSet.ReadXml("D:\\tempMigration\\" + schemaInfo.TableName + ".xml");
+
+            foreach (DataTable dataTable in dtSet.Tables)
+                dataTable.EndLoadData();
+            //================================================
+            //Type table = Type.GetType("Table");
+            //XmlSerializer xs = new XmlSerializer(yourType);
+            //XmlSerializer xmlser = new XmlSerializer(table);
+            //StreamReader srdr = new StreamReader(@"C:\serialize.xml");
+            // List<table> p = (List<Item>)xmlser.Deserialize(srdr);
+            //var tname = xmlser.Deserialize(srdr);
+            //srdr.Close();
+
+            //==============================================
+            if (dtSet.Tables.Count != 0)
+            { 
+            
+            var nColumn = dtSet.Tables["Table"].Columns.Count;  //.listRow[0].Length;
+            var nRow = dtSet.Tables["Table"].Rows.Count;
+
+            var columnName = ""; // new String[nColumn];
+            var nValues = "";
+            var p = 0;
+
+
+
+
+                if (nRow != 0 && nColumn != 0)
                 {
-                    result += "( ";
-                    for (int n = 0; n < nColumn; n++)
+                    foreach (DataColumn c in dtSet.Tables["Table"].Columns)
                     {
-                        if (schemaInfo.listRow[i][n] != null)
+                        if (p == (nColumn - 1))
                         {
-                            if (n == (nColumn - 1))
-                            {
-                                result += schemaInfo.listRow[i][n].GetType() == typeof(String) ? "'" + schemaInfo.listRow[i][n] + "'" : schemaInfo.listRow[i][n].ToString();
-                            }
-                            else
-                            {
-                                result += schemaInfo.listRow[i][n].GetType() == typeof(String) ? "'" + schemaInfo.listRow[i][n] + "'" + "," : schemaInfo.listRow[i][n].ToString() + ",";
-                            }
+                            columnName += c.ColumnName;
                         }
                         else
                         {
-                            if (n == (nColumn - 1))
+                            columnName += c.ColumnName + ",";
+                        }
+
+                        p += 1;
+                    }
+                    p = 0;
+                    foreach (DataRow row in dtSet.Tables["Table"].Rows)
+                    {
+                        nValues += "(";
+                        foreach (DataColumn column in dtSet.Tables["Table"].Columns)
+                        {
+                            if (column.Ordinal == (nColumn - 1))
                             {
-                                result += " ";
+                                nValues += "'" + row[column].ToString() + "'";
                             }
                             else
                             {
-                                result += " ,";
+                                nValues += "'" + row[column].ToString() + "',";
                             }
+
                         }
+                        if (dtSet.Tables["Table"].Rows.IndexOf(row) == (nRow - 1))
+                        {
+                            nValues += ");\r\n";
+                        }
+                        else
+                        {
+                            nValues += "),\r\n";
+                        }
+
                     }
-                    if (i == (nRow - 1))
-                    {
-                        result += ");\r\n";
-                    }
-                    else
-                    {
-                        result += "),\r\n";
-                    }
+                    //   INSERT INTO products(product_no, name, price) VALUES
+                    //   (1, 'Cheese', 9.99),
+                    //    (2, 'Bread', 1.99),
+                    //     (3, 'Milk', 2.99);
+                    result = "INSERT INTO " + schemaInfo.name + "(" + columnName + ") " + "VALUES\r\n";
+                    result += nValues;
+                }
+                else
+                {
+                    result = "";
                 }
 
             }
