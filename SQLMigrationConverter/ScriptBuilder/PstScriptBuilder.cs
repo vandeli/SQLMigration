@@ -1,4 +1,5 @@
 ﻿
+using SQLMigration.Converter.ScriptBuilder;
 using SQLMigration.Data.SchemaInfo;
 using SQLMigrationInterface.Interface.ScriptBuilder;
 
@@ -11,6 +12,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using System.Xml;
+using System.Xml.Linq;
 using System.Xml.Serialization;
 
 namespace SQLMigration.Converter.ScriptBuilder
@@ -24,6 +26,7 @@ namespace SQLMigration.Converter.ScriptBuilder
             public string ConvertedDataType { get; set; }
         }
 
+        
         public string CreateScriptUDT(UDTSchemaInfoData schemaInfo)
         {
             
@@ -234,98 +237,106 @@ namespace SQLMigration.Converter.ScriptBuilder
         public string CreateScriptRecord(RecordSchemaInfoData schemaInfo)
         {
             string result = "";
+            var columnName = "";
+            var nValues = "";
             var dtSet = new DataSet();
             foreach (DataTable dataTable in dtSet.Tables)
-                dataTable.BeginLoadData();
+                dataTable.BeginLoadData(); 
 
-            dtSet.ReadXml("D:\\tempMigration\\" + schemaInfo.TableName + ".xml");
+       
 
-            foreach (DataTable dataTable in dtSet.Tables)
-                dataTable.EndLoadData();
-            //================================================
-            //Type table = Type.GetType("Table");
-            //XmlSerializer xs = new XmlSerializer(yourType);
-            //XmlSerializer xmlser = new XmlSerializer(table);
-            //StreamReader srdr = new StreamReader(@"C:\serialize.xml");
-            // List<table> p = (List<Item>)xmlser.Deserialize(srdr);
-            //var tname = xmlser.Deserialize(srdr);
-            //srdr.Close();
+            var path = "D:\\tempMigration\\" + schemaInfo.TableName + ".xml";
+            var pathResult = "D:\\tempMigration\\result\\" + schemaInfo.TableName + "_Result.txt";
 
-            //==============================================
-            if (dtSet.Tables.Count != 0)
-            { 
-            
-            var nColumn = dtSet.Tables["Table"].Columns.Count;  //.listRow[0].Length;
-            var nRow = dtSet.Tables["Table"].Rows.Count;
+            try
+            {
+                if (!File.Exists(path))
+                    throw new FileNotFoundException();
 
-            var columnName = ""; // new String[nColumn];
-            var nValues = "";
-            var p = 0;
-
-
-
-
-                if (nRow != 0 && nColumn != 0)
+                using (StreamWriter sw = new StreamWriter(pathResult))
                 {
-                    foreach (DataColumn c in dtSet.Tables["Table"].Columns)
-                    {
-                        if (p == (nColumn - 1))
-                        {
-                            columnName += c.ColumnName;
-                        }
-                        else
-                        {
-                            columnName += c.ColumnName + ",";
-                        }
 
-                        p += 1;
-                    }
-                    p = 0;
-                    foreach (DataRow row in dtSet.Tables["Table"].Rows)
+                    XmlDocument nData = new XmlDocument();
+                    nData.Load(path);
+                    XmlNodeList list = nData.DocumentElement.GetElementsByTagName("Table");
+                    if (list.Count != 0)
                     {
-                        nValues += "(";
-                        foreach (DataColumn column in dtSet.Tables["Table"].Columns)
+                        for (int i = 0; i < list[0].ChildNodes.Count; i++)
                         {
-                            if (column.Ordinal == (nColumn - 1))
+                            if (i == (list[0].ChildNodes.Count - 1))
                             {
-                                nValues += "'" + row[column].ToString() + "'";
+                                columnName += list[0].ChildNodes[i].Name;
                             }
                             else
                             {
-                                nValues += "'" + row[column].ToString() + "',";
+                                columnName += list[0].ChildNodes[i].Name + ",";
                             }
 
                         }
-                        if (dtSet.Tables["Table"].Rows.IndexOf(row) == (nRow - 1))
+                      sw.WriteLine("INSERT INTO " + schemaInfo.name + "(" + columnName + ") " + "VALUES");
+
+                        for (int p = 0; p < list.Count; p++)
                         {
-                            nValues += ");\r\n";
-                        }
-                        else
-                        {
-                            nValues += "),\r\n";
+
+                            nValues += "(";
+                            //==== mulai value kolom
+                            for (int i = 0; i < list[p].ChildNodes.Count; i++)
+                            {
+                                var nColumn = list[p].ChildNodes[i].InnerText;
+                                //   nValues += nColumn;
+                                if (i == (list[p].ChildNodes.Count - 1))
+                                {
+                                    nValues += "'" + nColumn + "'";
+                                }
+                                else
+                                {
+                                    nValues += "'" + nColumn + "',";
+                                }
+                            }
+                            //========last value
+                            if (p == (list.Count - 1))
+                            {
+                                nValues += ");\r\n";
+                            }
+                            else
+                            {
+                                nValues += "),";
+                            }
+                            sw.WriteLine(nValues);
+                            nValues = "";
                         }
 
+
+                        //   result = "INSERT INTO " + schemaInfo.name + "(" + columnName + ") " + "VALUES\r\n";
+                        //   result += nValues;
+                        result = pathResult;
+                        sw.Dispose();
                     }
-                    //   INSERT INTO products(product_no, name, price) VALUES
-                    //   (1, 'Cheese', 9.99),
-                    //    (2, 'Bread', 1.99),
-                    //     (3, 'Milk', 2.99);
-                    result = "INSERT INTO " + schemaInfo.name + "(" + columnName + ") " + "VALUES\r\n";
-                    result += nValues;
+                    else
+                    {
+                        result = "";
+                    }
                 }
-                else
-                {
-                    result = "";
-                }
-
             }
-            Console.WriteLine("PstScriptBuilder.CreateScriptRecord : " + schemaInfo.name + ", Done");
+            catch (FileNotFoundException)
+            {
+                MessageBox.Show("The " + schemaInfo.TableName + ".xml, is missing..!");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
 
+        
+
+           
+            Console.WriteLine("PstScriptBuilder.CreateScriptRecord : " + schemaInfo.name + ", Done");
+            
             return result;
 
         }
 
-
+       
 
         private string cekParameter(UsedParameter data)
         {
@@ -434,7 +445,9 @@ namespace SQLMigration.Converter.ScriptBuilder
 
         }
 
-
-
+        private class nTable
+        {
+            public string[] nColumn { get; set; }
+        }
     }
 }

@@ -133,11 +133,15 @@ namespace SQLMigration.UI
                     globalConfig.listRecordResultInfo = recordManager.Convert(globalConfig.listRecordSchemaInfo);
                     coreDb.Insert(globalConfig);
                     cboConfigName.Refresh();
-
+                   
                     var RecordscriptStringBuilder = new StringBuilder();
                     foreach (var recordResultData in globalConfig.listRecordResultInfo)
                     {
-                        RecordscriptStringBuilder.AppendLine(recordResultData.sqlString);
+                        if (recordResultData.sqlString != "")
+                        {
+                            RecordscriptStringBuilder.AppendLine(recordResultData.sqlString);
+                        }
+                        
                     }
                     txtResult.Text = RecordscriptStringBuilder.ToString();
                     binder.BindControls(RDSP, globalConfig.listRecordSchemaInfo);
