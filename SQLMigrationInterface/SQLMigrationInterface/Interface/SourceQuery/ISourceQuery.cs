@@ -13,5 +13,6 @@ namespace SQLMigrationInterface.Interface.SourceQuery
         string getSPOutput(String spname);
         string GetTableRecord();
         string GetDataRecord(String tableName);
+        string GetFunction();
     }
 }

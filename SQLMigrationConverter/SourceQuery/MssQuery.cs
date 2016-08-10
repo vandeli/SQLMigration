@@ -170,5 +170,19 @@ namespace SQLMigrationConverter.SourceQuery
             return sql;
 
         }
+
+        public string GetFunction()
+        {
+            var sql = @"
+			    select specific_name,OBJECT_DEFINITION (OBJECT_ID(SO.name)) AS SqlCode , parameter_name,ORDINAL_POSITION,PARAMETER_MODE,IS_RESULT,USER_DEFINED_TYPE_NAME,DATA_TYPE,CHARACTER_MAXIMUM_LENGTH,NUMERIC_PRECISION,NUMERIC_SCALE 
+                from INFORMATION_SCHEMA.PARAMETERS
+                INNER JOIN sys.objects AS SO
+                ON SO.name = SPECIFIC_NAME
+                where SO.type_desc = 'SQL_SCALAR_FUNCTION'
+                order by specific_name,ORDINAL_POSITION
+			";
+            Console.WriteLine("MssQuery.GetFunction : Done");
+            return sql;
+        }
     }
 }

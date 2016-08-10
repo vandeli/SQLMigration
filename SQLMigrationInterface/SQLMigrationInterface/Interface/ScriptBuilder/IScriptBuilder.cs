@@ -11,6 +11,7 @@ namespace SQLMigrationInterface.Interface.ScriptBuilder
         string CreateScriptIndex(IndexSchemaInfoData schemaInfoData);
         string CreateScriptSP(SPSchemaInfoData schemaInfoData);
         string CreateScriptRecord(RecordSchemaInfoData schemaInfoData);
+        string CreateScriptFunction(FunctionSchemaInfoData schemaInfo);
         string GetDataTypeMap(string dataType);
     }
 }

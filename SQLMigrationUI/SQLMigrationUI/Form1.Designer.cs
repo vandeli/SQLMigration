@@ -68,6 +68,8 @@
             this.DGINDEX = new System.Windows.Forms.DataGridView();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.DGSP = new System.Windows.Forms.DataGridView();
+            this.tabPage8 = new System.Windows.Forms.TabPage();
+            this.RDSP = new System.Windows.Forms.DataGridView();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.button2 = new System.Windows.Forms.Button();
             this.btnSaveQuery = new System.Windows.Forms.Button();
@@ -79,8 +81,8 @@
             this.txtConfigPath = new System.Windows.Forms.TextBox();
             this.button4 = new System.Windows.Forms.Button();
             this.LblLog = new System.Windows.Forms.Label();
-            this.tabPage8 = new System.Windows.Forms.TabPage();
-            this.RDSP = new System.Windows.Forms.DataGridView();
+            this.tabPage11 = new System.Windows.Forms.TabPage();
+            this.DGFN = new System.Windows.Forms.DataGridView();
             ((System.ComponentModel.ISupportInitialize)(this.uDTManagerBindingSource)).BeginInit();
             this.tabControl1.SuspendLayout();
             this.TpConfig.SuspendLayout();
@@ -98,10 +100,12 @@
             ((System.ComponentModel.ISupportInitialize)(this.DGINDEX)).BeginInit();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DGSP)).BeginInit();
-            this.tabPage3.SuspendLayout();
-            this.tabPage10.SuspendLayout();
             this.tabPage8.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.RDSP)).BeginInit();
+            this.tabPage3.SuspendLayout();
+            this.tabPage10.SuspendLayout();
+            this.tabPage11.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.DGFN)).BeginInit();
             this.SuspendLayout();
             // 
             // label1
@@ -382,6 +386,7 @@
             this.tabControl2.Controls.Add(this.tabPage7);
             this.tabControl2.Controls.Add(this.tabPage1);
             this.tabControl2.Controls.Add(this.tabPage8);
+            this.tabControl2.Controls.Add(this.tabPage11);
             this.tabControl2.Location = new System.Drawing.Point(3, 3);
             this.tabControl2.Name = "tabControl2";
             this.tabControl2.SelectedIndex = 0;
@@ -481,6 +486,24 @@
             this.DGSP.Name = "DGSP";
             this.DGSP.Size = new System.Drawing.Size(697, 217);
             this.DGSP.TabIndex = 4;
+            // 
+            // tabPage8
+            // 
+            this.tabPage8.Controls.Add(this.RDSP);
+            this.tabPage8.Location = new System.Drawing.Point(4, 22);
+            this.tabPage8.Name = "tabPage8";
+            this.tabPage8.Size = new System.Drawing.Size(709, 229);
+            this.tabPage8.TabIndex = 5;
+            this.tabPage8.Text = "RecordData";
+            this.tabPage8.UseVisualStyleBackColor = true;
+            // 
+            // RDSP
+            // 
+            this.RDSP.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.RDSP.Location = new System.Drawing.Point(6, 6);
+            this.RDSP.Name = "RDSP";
+            this.RDSP.Size = new System.Drawing.Size(697, 217);
+            this.RDSP.TabIndex = 5;
             // 
             // tabPage3
             // 
@@ -588,23 +611,23 @@
             this.LblLog.TabIndex = 29;
             this.LblLog.Text = "Log :";
             // 
-            // tabPage8
+            // tabPage11
             // 
-            this.tabPage8.Controls.Add(this.RDSP);
-            this.tabPage8.Location = new System.Drawing.Point(4, 22);
-            this.tabPage8.Name = "tabPage8";
-            this.tabPage8.Size = new System.Drawing.Size(709, 229);
-            this.tabPage8.TabIndex = 5;
-            this.tabPage8.Text = "RecordData";
-            this.tabPage8.UseVisualStyleBackColor = true;
+            this.tabPage11.Controls.Add(this.DGFN);
+            this.tabPage11.Location = new System.Drawing.Point(4, 22);
+            this.tabPage11.Name = "tabPage11";
+            this.tabPage11.Size = new System.Drawing.Size(709, 229);
+            this.tabPage11.TabIndex = 6;
+            this.tabPage11.Text = "Function";
+            this.tabPage11.UseVisualStyleBackColor = true;
             // 
-            // RDSP
+            // DGFN
             // 
-            this.RDSP.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.RDSP.Location = new System.Drawing.Point(6, 6);
-            this.RDSP.Name = "RDSP";
-            this.RDSP.Size = new System.Drawing.Size(697, 217);
-            this.RDSP.TabIndex = 5;
+            this.DGFN.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.DGFN.Location = new System.Drawing.Point(6, 6);
+            this.DGFN.Name = "DGFN";
+            this.DGFN.Size = new System.Drawing.Size(697, 217);
+            this.DGFN.TabIndex = 5;
             // 
             // Form1
             // 
@@ -643,12 +666,14 @@
             ((System.ComponentModel.ISupportInitialize)(this.DGINDEX)).EndInit();
             this.tabPage1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.DGSP)).EndInit();
+            this.tabPage8.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.RDSP)).EndInit();
             this.tabPage3.ResumeLayout(false);
             this.tabPage3.PerformLayout();
             this.tabPage10.ResumeLayout(false);
             this.tabPage10.PerformLayout();
-            this.tabPage8.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.RDSP)).EndInit();
+            this.tabPage11.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.DGFN)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -710,6 +735,8 @@
         private System.Windows.Forms.DataGridView DGSP;
         private System.Windows.Forms.TabPage tabPage8;
         private System.Windows.Forms.DataGridView RDSP;
+        private System.Windows.Forms.TabPage tabPage11;
+        private System.Windows.Forms.DataGridView DGFN;
     }
 }
 

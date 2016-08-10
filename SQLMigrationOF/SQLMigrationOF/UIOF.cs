@@ -25,6 +25,7 @@ namespace SQLMigration.OF
         static IIndexManager indexManager;
         static ISPManager spManager;
         static IRecordManager recordManager;
+        static IFunctionManager functionManager;
 
         static ICoreDB coreDb;
         private static ILogger logger;
@@ -119,6 +120,22 @@ namespace SQLMigration.OF
             recordManager = new RecordManager(dataAccess, scriptBuilder, schemaQuery);
 
             return recordManager;
+
+        }
+
+        public IFunctionManager GetInstanceFunctionManager()
+        {
+            if (functionManager != null) return functionManager;
+            var dbConn = new SqlConnection();
+            var dbCommand = new SqlCommand();
+            var dbAdapter = new SqlDataAdapter();
+
+            IDataAccess dataAccess = new DataAccess(dbConn, dbCommand, dbAdapter);
+            IScriptBuilder scriptBuilder = new PstScriptBuilder();
+            ISourceQuery schemaQuery = new MssQuery();
+            functionManager = new FunctionManager(dataAccess, scriptBuilder, schemaQuery);
+
+            return functionManager;
 
         }
 

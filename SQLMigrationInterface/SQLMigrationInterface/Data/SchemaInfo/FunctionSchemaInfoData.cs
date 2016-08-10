@@ -7,24 +7,23 @@ using System.Threading.Tasks;
 
 namespace SQLMigration.Data.SchemaInfo
 {
-    public class SPSchemaInfoData : BaseData
+    public class FunctionSchemaInfoData : BaseData
     {
-        public SPSchemaInfoData()
+        public FunctionSchemaInfoData()
         {
             updated = DateTime.Now;
             id = Guid.NewGuid().ToString();
         }
-
-
-        public string SPName { get; set; }
+        public string FnName { get; set; }
         public string SqlCode { get; set; }
         public List<UsedParameter> usedParameterList { get; set; }
-        public List<SPOutputAttribute> SPOutputList { get; set; }
 
         public override string ToString()
         {
-            return string.Format("SPSchemaInfoData => {0}, SPName: {1}, Parameter: {2}",
-                 base.ToString(), SPName, usedParameterList);
+            return string.Format("FunctionSchemaInfoData => {0}, FunctionName: {1}, Parameter: {2}",
+                 base.ToString(), FnName, usedParameterList);
         }
     }
+    
+    
 }

@@ -49,7 +49,6 @@
     <Compile Include="ScriptBuilder\Keyword.cs" />
     <Compile Include="ScriptBuilder\PoorMansUtils.cs" />
     <Compile Include="ScriptBuilder\PstScriptBuilder.cs" />
-    <Compile Include="ScriptBuilder\XmlConfig.cs" />
     <Compile Include="SourceQuery\MssQuery.cs" />
   </ItemGroup>
   <ItemGroup />

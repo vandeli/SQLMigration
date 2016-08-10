@@ -336,6 +336,110 @@ namespace SQLMigration.Converter.ScriptBuilder
 
         }
 
+        public string CreateScriptFunction(FunctionSchemaInfoData schemaInfo)
+        {
+            var result = "";
+            var hasDeclare = false;
+            var hasBody = false;
+            var beginBody = "";
+
+            var FnName = schemaInfo.FnName;
+            var nReturn = "";
+            var parName = "";
+            var declareName = "";
+            var declareDT = "";
+            StringReader strReader = new StringReader(schemaInfo.SqlCode);
+
+
+            using (StringReader reader = new StringReader(schemaInfo.SqlCode))
+            {
+                string line = string.Empty;
+                do
+                {
+                    line = reader.ReadLine();
+                    if (line != null)
+                    {
+                        var lines = line.TrimStart();
+                        if (lines.Contains("declare"))
+                        {
+                            hasDeclare = true;
+                            string[] words = lines.Split(' ');
+                            declareName = words[1].Replace(@"@", "d_");
+                            declareDT = words[2];
+                        }
+
+                        
+                        else if (lines.Contains("END"))
+                            hasBody = false;
+
+                        if (hasBody == true)
+                            beginBody += "--" + lines + "\r\n";
+                        if (lines.Contains("BEGIN"))
+                            hasBody = true;
+
+                    }
+
+                } while (line != null);
+            }
+           
+
+            for (var i = 0; i < schemaInfo.usedParameterList.Count; i++)
+            {
+                if (schemaInfo.usedParameterList[i].ParameterName != "")
+                {
+                    parName += schemaInfo.usedParameterList[i].ParameterName.Replace(@"@", "p_");
+                    if (schemaInfo.usedParameterList[i].DomainType != "")
+                    {
+                        parName += " " + schemaInfo.usedParameterList[i].DomainType;
+                    }
+                    else
+                    {
+                        parName += " " + GetDataTypeMap(schemaInfo.usedParameterList[i].DataType);
+                    }
+                   
+
+                    if (i < (schemaInfo.usedParameterList.Count - 1))
+                        parName += ",";
+                }
+                else
+                {
+                    if (schemaInfo.usedParameterList[i].DomainType != "")
+                    {
+                        nReturn = schemaInfo.usedParameterList[i].DomainType;
+                    }
+                    else if (schemaInfo.usedParameterList[i].DataType == "datetime" || schemaInfo.usedParameterList[i].DataType == "bit")
+                    {
+                        nReturn = schemaInfo.usedParameterList[i].DataType;
+                    }
+                    else if (schemaInfo.usedParameterList[i].ParameterMaxBytes != 0)
+                    {
+                        nReturn = GetDataTypeMap(schemaInfo.usedParameterList[i].DataType) + "(" + schemaInfo.usedParameterList[i].ParameterMaxBytes + ")";
+                    }
+                    else
+                    {
+                        nReturn = GetDataTypeMap(schemaInfo.usedParameterList[i].DataType) + "(" + schemaInfo.usedParameterList[i].NumericPrecision + ")";
+                    }
+
+                       
+                }
+                
+            }
+
+            result = "CREATE OR REPLACE FUNCTION " + FnName + "(" + parName + ")\r\n" +
+                     "RETURNS " + nReturn + " AS $$\r\n";
+            if (hasDeclare == true)
+                result += "DECLARE " + " " + declareName + " " + declareDT + ";\r\n";
+
+            result += "BEGIN\r\n" +
+                      beginBody +
+                  
+            "RETURN " + declareName + ";\r\n" + 
+            "END;\r\n" +
+            "$$  LANGUAGE plpgsql;\r\n"+
+            "\r\n";
+            return result;
+        }
+
        
 
         private string cekParameter(UsedParameter data)

@@ -38,6 +38,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FunctionManager.cs" />
     <Compile Include="IndexManager.cs" />
     <Compile Include="PKManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
