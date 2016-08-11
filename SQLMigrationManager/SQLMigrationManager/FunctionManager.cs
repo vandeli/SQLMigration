@@ -14,60 +14,59 @@ using System.Threading.Tasks;
 
 namespace SQLMigrationManager
 {
-    public class SPManager  : ISPManager
+    public class FunctionManager : IFunctionManager
     {
         private readonly IDataAccess dataAccess;
         readonly IScriptBuilder scriptBuilder;
         readonly ISourceQuery sourceQuery;
 
-        public SPManager(IDataAccess dataAccess, IScriptBuilder scriptBuilder, ISourceQuery sourceQuery)
+        public FunctionManager(IDataAccess dataAccess, IScriptBuilder scriptBuilder, ISourceQuery sourceQuery)
         {
             this.dataAccess = dataAccess;
             this.scriptBuilder = scriptBuilder;
             this.sourceQuery = sourceQuery;
         }
 
-        public List<SPSchemaInfoData> GetSchema(ConfigData configData)
+        public List<FunctionSchemaInfoData> GetSchema(ConfigData configData)
         {
-            Console.WriteLine("SPManager.GetSchema : " + configData.name + " , start...");
-            var dt = dataAccess.GetDataTable(configData.Source, sourceQuery.GetSPQuery());
-            var dtSP = dataAccess.GetDataTable(configData.Source, sourceQuery.GetSPName());
-            var listSchema = GetSchemaDataFromDt(dt,dtSP, configData);
-            Console.WriteLine("SPManager.GetSchema : listSchema => " + listSchema.Count + ", Done");
+            Console.WriteLine("FunctionManager.GetSchema : " + configData.name + " , start...");
+            var dt = dataAccess.GetDataTable(configData.Source, sourceQuery.GetFunction());
+            var listSchema = GetSchemaDataFromDt(dt);
+            Console.WriteLine("FunctionManager.GetSchema : listSchema => " + listSchema.Count + ", Done");
             return listSchema;
         }
 
-        public List<SPResultData> Convert(List<SPSchemaInfoData> datasource)
+        public List<FunctionResultData> Convert(List<FunctionSchemaInfoData> datasource)
         {
-            Console.WriteLine("SPManager.Convert : listSchema =>" + datasource.Count + " , start...");
+            Console.WriteLine("FunctionManager.Convert : listSchema =>" + datasource.Count + " , start...");
 
-            var result = datasource.Select(schemaInfoData => new SPResultData
+            var result = datasource.Select(schemaInfoData => new FunctionResultData
             {
-                name = schemaInfoData.SPName,
-                sqlString = scriptBuilder.CreateScriptSP(schemaInfoData),
+                name = schemaInfoData.FnName,
+                sqlString = scriptBuilder.CreateScriptFunction(schemaInfoData),
                 schemaId = schemaInfoData.id
             }).ToList();
 
-            Console.WriteLine("SPManager.Convert : " + result.Count + " , Done...");
+            Console.WriteLine("FunctionManager.Convert : " + result.Count + " , Done...");
             return result;
 
         }
 
-        private List<SPSchemaInfoData> GetSchemaDataFromDt(DataTable dt, DataTable dtSP, ConfigData configData)
+        private List<FunctionSchemaInfoData> GetSchemaDataFromDt(DataTable dt)
         {
-            var result = new List<SPSchemaInfoData>();
-            var tempResult = new List<SPTempSource>();
-            var SPname = new List<SPNameInfo>();
-            var SPOutputList = new List<SPOutputAttribute>();
+            var result = new List<FunctionSchemaInfoData>();
+            var tempResult = new List<FunctionTempSource>();
+           // var SPname = new List<SPNameInfo>();
+           // var SPOutputList = new List<SPOutputAttribute>();
 
-           
+
 
             for (var i = 0; i < dt.Rows.Count; i++)
             {
-                var tempSchema = new SPTempSource();
+                var tempSchema = new FunctionTempSource();
                 var data = dt.Rows[i];
-              
-                tempSchema.SPName = data["specific_name"].ToString();
+
+                tempSchema.FnName = data["specific_name"].ToString();
                 tempSchema.SqlCode = data["SqlCode"].ToString();
                 tempSchema.ParameterNumber = System.Convert.ToInt32(data["ORDINAL_POSITION"]);
                 tempSchema.ParameterName = data["parameter_name"].ToString();
@@ -79,18 +78,18 @@ namespace SQLMigrationManager
                 tempResult.Add(tempSchema);
             }
 
-            var UsedParameterName = tempResult.GroupBy(x => x.SPName).Select(y => y.First()).ToList();
+            var UsedParameterName = tempResult.GroupBy(x => x.FnName).Select(y => y.First()).ToList();
 
 
             foreach (var uSPName in UsedParameterName)
             {
                 var listParameterUsed = new List<UsedParameter>();
-                var listSPOutput = new List<SPOutputAttribute>();
-                var schema = new SPSchemaInfoData();
-                schema.SPName = uSPName.SPName;
+            //    var listSPOutput = new List<SPOutputAttribute>();
+                var schema = new FunctionSchemaInfoData();
+                schema.FnName = uSPName.FnName;
                 schema.SqlCode = uSPName.SqlCode;
-                schema.name = uSPName.SPName;
-                foreach (var uParameterName in tempResult.Where(x => x.SPName == uSPName.SPName).ToList())
+                schema.name = uSPName.FnName;
+                foreach (var uParameterName in tempResult.Where(x => x.FnName == uSPName.FnName).ToList())
                 {
                     var tempData = new UsedParameter();
 
@@ -100,32 +99,31 @@ namespace SQLMigrationManager
                     tempData.DomainType = uParameterName.DomainType;
                     tempData.ParameterMaxBytes = uParameterName.ParameterMaxBytes;
                     tempData.NumericPrecision = uParameterName.NumericPrecision;
-                    tempData.NumericScale = uParameterName.NumericScale;                   
+                    tempData.NumericScale = uParameterName.NumericScale;
 
                     listParameterUsed.Add(tempData);
 
                 }
 
-                var dtOutput = dataAccess.GetDataTable(configData.Source, sourceQuery.getSPOutput(uSPName.SPName));
-                for (var i = 0; i < dtOutput.Rows.Count; i++)
-                {
-                    var tempSPOutput = new SPOutputAttribute();
-                    var data = dtOutput.Rows[i];
+                //var dtOutput = dataAccess.GetDataTable(configData.Source, sourceQuery.getSPOutput(uSPName.SPName));
+                //for (var i = 0; i < dtOutput.Rows.Count; i++)
+                //{
+                //    var tempSPOutput = new SPOutputAttribute();
+                //    var data = dtOutput.Rows[i];
 
-                    tempSPOutput.GetValueFromDataRow(data);
-                    tempSPOutput.ProcName = uSPName.SPName;
-                    if (!tempSPOutput.IsVoid)
-                        SPOutputList.Add(tempSPOutput);
-                }
+                //    tempSPOutput.GetValueFromDataRow(data);
+                //    tempSPOutput.ProcName = uSPName.SPName;
+                //    if (!tempSPOutput.IsVoid)
+                //        SPOutputList.Add(tempSPOutput);
+                //}
 
                 schema.usedParameterList = new List<UsedParameter>(listParameterUsed);
-                schema.SPOutputList = new List<SPOutputAttribute>(SPOutputList);
+              //  schema.SPOutputList = new List<SPOutputAttribute>(SPOutputList);
                 result.Add(schema);
             }
             return result;
         }
 
-     
 
     }
 }

@@ -24,6 +24,8 @@ namespace SQLMigration.UI
         private readonly IPKManager pkManager;
         private readonly IIndexManager indexManager;
         private readonly ISPManager spManager;
+        private readonly IRecordManager recordManager;
+        private readonly IFunctionManager functionManager;
 
         private readonly ICoreDB coreDb;
         private List<ConfigData> globalListConfig;
@@ -44,6 +46,8 @@ namespace SQLMigration.UI
             pkManager = of.GetInstancePKManager();
             indexManager = of.GetInstanceIndexManager();
             spManager = of.GetInstanceSPManager();
+            recordManager = of.GetInstanceRecordManager();
+            functionManager = of.GetInstanceFunctionManager();
         }
 
         public void ProsesManager(String pilihan)
@@ -126,6 +130,40 @@ namespace SQLMigration.UI
                     binder.BindControls(DGSP, globalConfig.listSPSchemaInfo);
                     break;
 
+                case "Record":
+                    globalConfig.listRecordSchemaInfo = recordManager.GetSchema(globalConfig);
+                    globalConfig.listRecordResultInfo = recordManager.Convert(globalConfig.listRecordSchemaInfo);
+                    coreDb.Insert(globalConfig);
+                    cboConfigName.Refresh();
+                   
+                    var RecordscriptStringBuilder = new StringBuilder();
+                    foreach (var recordResultData in globalConfig.listRecordResultInfo)
+                    {
+                        if (recordResultData.sqlString != "")
+                        {
+                            RecordscriptStringBuilder.AppendLine(recordResultData.sqlString);
+                        }
+                        
+                    }
+                    txtResult.Text = RecordscriptStringBuilder.ToString();
+                    binder.BindControls(RDSP, globalConfig.listRecordSchemaInfo);
+                    break;
+
+                case "Function":
+                    globalConfig.listFunctionSchemaInfo = functionManager.GetSchema(globalConfig);
+                    globalConfig.listFunctionResultInfo = functionManager.Convert(globalConfig.listFunctionSchemaInfo);
+                    coreDb.Insert(globalConfig);
+                    cboConfigName.Refresh();
+
+                    var FunctionscriptStringBuilder = new StringBuilder();
+                    foreach (var functionResultData in globalConfig.listFunctionResultInfo)
+                    {
+                        FunctionscriptStringBuilder.AppendLine(functionResultData.sqlString);
+                    }
+                    txtResult.Text = FunctionscriptStringBuilder.ToString();
+                    binder.BindControls(DGFN, globalConfig.listFunctionSchemaInfo);
+                    break;
+
                 default:
                     MessageBox.Show("Pilihan belum tersedia");
                     break;
@@ -141,6 +179,8 @@ namespace SQLMigration.UI
             cboProcess.Items.Add("PK");
             cboProcess.Items.Add("SP");
             cboProcess.Items.Add("Record");
+            cboProcess.Items.Add("Function");
+
         }
 
         private void cboProcess_KeyPress(object sender, KeyPressEventArgs e)

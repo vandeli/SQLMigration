@@ -1,4 +1,6 @@
-﻿namespace SQLMigrationInterface.Interface.SourceQuery
+﻿using System;
+
+namespace SQLMigrationInterface.Interface.SourceQuery
 {
     public interface ISourceQuery
     {
@@ -7,5 +9,10 @@
         string GetPKQuery();
         string GetIndexQuery();
         string GetSPQuery();
+        string GetSPName();
+        string getSPOutput(String spname);
+        string GetTableRecord();
+        string GetDataRecord(String tableName);
+        string GetFunction();
     }
 }
