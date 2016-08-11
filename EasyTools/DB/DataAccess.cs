@@ -78,7 +78,8 @@ namespace EasyTools.DB
                 {
                     return;
                 }
-                dataSet.WriteXml("D:\\tempMigration\\" + tableName[n] + ".xml");
+                dataSet.WriteXmlSchema("D:\\tempMigration\\" + tableName[n] + ".xsd");
+                dataSet.WriteXml("D:\\tempMigration\\" + tableName[n] + ".xml");//, XmlWriteMode.WriteSchema);
                 dbCommand.Dispose();
                 dataSet.Clear();
                 n += 1;

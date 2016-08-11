@@ -13,6 +13,7 @@ using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using System.Xml;
 using System.Xml.Linq;
+using System.Xml.Schema;
 using System.Xml.Serialization;
 
 namespace SQLMigration.Converter.ScriptBuilder
@@ -237,6 +238,10 @@ namespace SQLMigration.Converter.ScriptBuilder
         public string CreateScriptRecord(RecordSchemaInfoData schemaInfo)
         {
             string result = "";
+            string[] rColumnDT = null;
+            string[] rColumnName = null;
+            var r = 0;
+          //  var getType = "";
             var columnName = "";
             var nValues = "";
             var dtSet = new DataSet();
@@ -246,7 +251,8 @@ namespace SQLMigration.Converter.ScriptBuilder
        
 
             var path = "D:\\tempMigration\\" + schemaInfo.TableName + ".xml";
-            var pathResult = "D:\\tempMigration\\result\\" + schemaInfo.TableName + "_Result.txt";
+           var SchemaPath = "D:\\tempMigration\\" + schemaInfo.TableName + ".xsd";
+            var pathResult = "D:\\tempMigration\\result\\" + schemaInfo.TableName + "_Result.sql";
 
             try
             {
@@ -255,10 +261,72 @@ namespace SQLMigration.Converter.ScriptBuilder
 
                 using (StreamWriter sw = new StreamWriter(pathResult))
                 {
-
+               
                     XmlDocument nData = new XmlDocument();
-                    nData.Load(path);
+                    XmlSchemaSet schemaSet = new XmlSchemaSet();
+                    schemaSet.Add("http://www.w3.org/2001/XMLSchema", SchemaPath);
+                    schemaSet.Compile();
+                    XmlSchema xmlSchema = null;
+                    foreach (XmlSchema schema in schemaSet.Schemas())
+                    {
+                        xmlSchema = schema;
+                    }
+                    foreach (object item in xmlSchema.Items)
+                    {
+                        XmlSchemaElement schemaElement = item as XmlSchemaElement;
+                        XmlSchemaComplexType complexType = item as XmlSchemaComplexType;
+                        if (schemaElement != null)
+                        {
+                           //MessageBox.Show(schemaElement.Name);
+
+                            XmlSchemaType schemaType = schemaElement.SchemaType;
+                            XmlSchemaComplexType schemaComplexType = schemaType as XmlSchemaComplexType;
+                           
+                            if (schemaComplexType != null)
+                            {
+                                XmlSchemaParticle particle = schemaComplexType.Particle;
+                                XmlSchemaChoice schemaChoice = particle as XmlSchemaChoice;
+                              
+                                var item2 = schemaChoice.Items[0];
+                                    XmlSchemaElement schemaElement2 = item2 as XmlSchemaElement;
+                                if (schemaElement2 != null)
+                                {
+                                //    MessageBox.Show(schemaElement2.Name);
+                                    XmlSchemaType schemaType2 = schemaElement2.SchemaType;
+                                    XmlSchemaComplexType schemaComplexType2 = schemaType2 as XmlSchemaComplexType;
+                                     if (schemaComplexType2 != null)
+                                    {
+                                        XmlSchemaParticle particle2 = schemaComplexType2.Particle;
+                                        XmlSchemaSequence sequence2 = particle2 as XmlSchemaSequence;
+                                        if (sequence2 != null)
+                                        {
+                                          //  r = 0;
+                                            rColumnName = new string[sequence2.Items.Count];
+                                            rColumnDT = new string[sequence2.Items.Count];
+                                            foreach (XmlSchemaElement childElement in sequence2.Items)
+                                            {
+                                                rColumnName[r] = childElement.Name;
+                                                rColumnDT[r] = childElement.SchemaTypeName.Name;
+                                                //   MessageBox.Show(childElement.Name + " " + childElement.SchemaTypeName.Name);
+                                                r++;
+                                            }
+
+                                        }
+                                    }
+                                   
+                                }
+                               
+                               
+                            }
+
+                        }
+                    }
+
+                        nData.Load(path);
+
+                   
                     XmlNodeList list = nData.DocumentElement.GetElementsByTagName("Table");
+                   
                     if (list.Count != 0)
                     {
                         for (int i = 0; i < list[0].ChildNodes.Count; i++)
@@ -277,7 +345,7 @@ namespace SQLMigration.Converter.ScriptBuilder
 
                         for (int p = 0; p < list.Count; p++)
                         {
-
+                              
                             nValues += "(";
                             //==== mulai value kolom
                             for (int i = 0; i < list[p].ChildNodes.Count; i++)
@@ -286,11 +354,21 @@ namespace SQLMigration.Converter.ScriptBuilder
                                 //   nValues += nColumn;
                                 if (i == (list[p].ChildNodes.Count - 1))
                                 {
-                                    nValues += "'" + nColumn + "'";
+                                   
+                                    if (rColumnDT[i] != "string" && rColumnDT[i] != "dateTime")
+                                        nValues += nColumn;
+                                    else
+                                        nValues += "'" + nColumn + "'";
+
                                 }
                                 else
                                 {
-                                    nValues += "'" + nColumn + "',";
+                                
+                                //    getType = getType.GetMember(list[p].ChildNodes[i].Name).GetType();
+                                    if ( rColumnDT[i] != "string" && rColumnDT[i] != "dateTime")  
+                                        nValues += nColumn + ",";
+                                    else
+                                        nValues += "'" + nColumn + "',";
                                 }
                             }
                             //========last value
