@@ -179,7 +179,7 @@ namespace SQLMigration.Converter.ScriptBuilder
             return result;
         }
 
-        public string CreateScriptSP(SPSchemaInfoData schemaInfo)
+        public string CreateScriptSP3(SPSchemaInfoData schemaInfo)
         {
             var result = "";
            
@@ -233,6 +233,104 @@ namespace SQLMigration.Converter.ScriptBuilder
 
           //  MessageBox.Show(result);
             return result;
+        }
+
+        public string CreateScriptSP(SPSchemaInfoData schemaInfo)
+        {
+            var result = "";
+          
+            var FnName = schemaInfo.SPName;
+            var spType = "Other";
+            var nReturn = "";
+            var parName = "";
+           
+            
+
+        //    StringReader strReader = new StringReader(schemaInfo.SqlCode);
+
+
+            using (StringReader reader = new StringReader(schemaInfo.SqlCode))
+            {
+                string line = string.Empty;
+                do
+                {
+                    line = reader.ReadLine();
+                    if (line != null)
+                    {
+                        var lines = line.TrimStart();
+                        if (lines.Contains("Update"))
+                        { spType = "update";}
+                        else if (lines.Contains("insert"))
+                        { spType = "insert"; }
+                        else if (lines.Contains("delete"))
+                        { spType = "delete"; }
+                        else if (lines.Contains("select"))
+                        { spType = "select"; }
+                        //else
+                        //{ spType = "other"; }
+
+                    }
+
+                } while (line != null);
+            }
+
+
+            for (var i = 0; i < schemaInfo.usedParameterList.Count; i++)
+            {
+                if (schemaInfo.usedParameterList[i].ParameterName != "")
+                {
+                    parName += schemaInfo.usedParameterList[i].ParameterName.Replace(@"@", "p_");
+                    if (schemaInfo.usedParameterList[i].DomainType != "")
+                    {
+                        parName += " " + schemaInfo.usedParameterList[i].DomainType;
+                    }
+                    else
+                    {
+                        parName += " " + GetDataTypeMap(schemaInfo.usedParameterList[i].DataType);
+                    }
+
+
+                    if (i < (schemaInfo.usedParameterList.Count - 1))
+                        parName += ",";
+                }
+                else
+                {
+                    if (schemaInfo.usedParameterList[i].DomainType != "")
+                    {
+                        nReturn = schemaInfo.usedParameterList[i].DomainType;
+                    }
+                    else if (schemaInfo.usedParameterList[i].DataType == "datetime" || schemaInfo.usedParameterList[i].DataType == "bit")
+                    {
+                        nReturn = schemaInfo.usedParameterList[i].DataType;
+                    }
+                    else if (schemaInfo.usedParameterList[i].ParameterMaxBytes != 0)
+                    {
+                        nReturn = GetDataTypeMap(schemaInfo.usedParameterList[i].DataType) + "(" + schemaInfo.usedParameterList[i].ParameterMaxBytes + ")";
+                    }
+                    else
+                    {
+                        nReturn = GetDataTypeMap(schemaInfo.usedParameterList[i].DataType) + "(" + schemaInfo.usedParameterList[i].NumericPrecision + ")";
+                    }
+
+
+                }
+
+            }
+          
+           var sqlResult = SqlQueryCheck(schemaInfo.SqlCode, spType);
+                   
+            
+            result = "CREATE OR REPLACE FUNCTION " + FnName + "(" + parName + ")\r\n" +
+                     "RETURNS void AS\r\n" +
+                     "$BODY$\r\n" +
+                     "BEGIN\r\n" +
+                        sqlResult + "\r\n"+
+                     "END;\r\n" +
+                     "$BODY$\r\n" +
+                    "LANGUAGE plpgsql;\r\n" +
+                    "\r\n";
+            return result;
+           
         }
 
         public string CreateScriptRecord(RecordSchemaInfoData schemaInfo)
@@ -354,21 +452,33 @@ namespace SQLMigration.Converter.ScriptBuilder
                                 //   nValues += nColumn;
                                 if (i == (list[p].ChildNodes.Count - 1))
                                 {
-                                   
+
                                     if (rColumnDT[i] != "string" && rColumnDT[i] != "dateTime")
-                                        nValues += nColumn;
+                                    { nValues += nColumn; }
+                                    else if (rColumnDT[i] == "dateTime")
+                                    {
+                                        nColumn = nColumn.Remove(nColumn.Length - 6);
+                                        nColumn = nColumn.Replace(@"T", " ");
+                                        nValues += "'" + nColumn + "'"; }
                                     else
-                                        nValues += "'" + nColumn + "'";
+                                    { nValues += "'" + nColumn + "'"; }
+
 
                                 }
                                 else
                                 {
-                                
-                                //    getType = getType.GetMember(list[p].ChildNodes[i].Name).GetType();
-                                    if ( rColumnDT[i] != "string" && rColumnDT[i] != "dateTime")  
-                                        nValues += nColumn + ",";
+
+
+                                    if (rColumnDT[i] != "string" && rColumnDT[i] != "dateTime")
+                                    {                                     
+                                        nValues += nColumn + ","; }
+                                    else if (rColumnDT[i] == "dateTime")
+                                    {
+                                        nColumn = nColumn.Remove(nColumn.Length - 6);
+                                        nColumn = nColumn.Replace(@"T", " ");
+                                        nValues += "'" + nColumn + "',"; }
                                     else
-                                        nValues += "'" + nColumn + "',";
+                                    { nValues += "'" + nColumn + "',"; }
                                 }
                             }
                             //========last value
@@ -518,6 +628,104 @@ namespace SQLMigration.Converter.ScriptBuilder
             return result;
         }
 
+        public string SqlQueryCheck(String sql, String sptype)
+        {
+            var result = "";
+            string nUpdate, nInsert, nDelete;
+            switch (sptype)
+            {
+                case "update":
+                    nUpdate = "";
+                    string uTableName = "";
+                    string wKolom= "";
+                    string[] sKolom;
+                    string[] allLines;
+                    int sIndex = 0;
+                    int sLine = 0;
+
+                    int totalLines = CountLines(sql);
+                    allLines = new string[totalLines];
+                    using (StringReader reader2 = new StringReader(sql))
+                    {
+                        string line = string.Empty;
+                        do
+                        {
+                            line = reader2.ReadLine();
+                            if (line != null)
+                            {
+                                allLines[sLine] = line.TrimStart();
+                                sLine++;
+                            }
+                        } while (line != null);
+                    }
+
+
+                   
+                   
+
+                    for (var s = 0; s < allLines.Length; s++)
+                    {
+                        if (allLines[s].TrimStart() == "Set")
+                            sIndex = s;
+                        if (allLines[s].TrimStart() == "Where")
+                            sIndex = s - sIndex - 1;                       
+                    }
+
+                    sKolom = new string[sIndex];
+
+                    for (var i = 0; i < allLines.Length; i++)
+                    {
+                        if (allLines[i] == "Update")
+                        {
+                            uTableName = allLines[i + 1].TrimStart();
+                        }
+                        else if (allLines[i] == "Set")
+                        {
+                            for (var n = 0; n < sIndex; n++)
+                            {
+                                sKolom[n] = allLines[i + n + 1].TrimStart();
+                                sKolom[n] = sKolom[n].Replace(@"@", "p_");
+                            }
+                            
+                        }
+                        else if (allLines[i] == "Where")
+                        {
+                            wKolom = allLines[i + 1].TrimStart();
+                            wKolom = wKolom.Replace(@"@", "p_");
+                        }
+
+
+                    }
+                    nUpdate = "UPDATE " + uTableName + "\r\n" +
+                              "SET \r\n";
+                              for (var n = 0; n < sIndex; n++)
+                                {
+                                    nUpdate += sKolom[n] + "\r\n";
+                                }
+                    nUpdate += "WHERE \r\n" + wKolom + "\r\n";
+                    result = nUpdate;    
+                    //UPDATE BOS_AP_ApTrans
+                    //SET decRemain = decRemain + '@p_decAmount'
+                    //WHERE szTrnId = '@p_szTrnId' And szDocId = '@p_szDocId' And szSuppId = '@p_szSuppId' And shRevNo = '@p_shRevNo';
+                    break;
+
+                case "insert":
+                    nInsert = "not set yet";
+                    result = nInsert;
+                    break;
+
+                case "delete":
+                    nDelete = "not set yet ";
+                    result = nDelete;
+                    break;
+
+                default:
+                    result = "not set yet ";
+                    break;
+            }
+            return result;
+        }
+
        
 
         private string cekParameter(UsedParameter data)
@@ -630,6 +838,23 @@ namespace SQLMigration.Converter.ScriptBuilder
         private class nTable
         {
             public string[] nColumn { get; set; }
+        }
+
+        private  static int CountLines(string text)
+        {
+            int count = 0;
+            if (!string.IsNullOrEmpty(text))
+            {
+                count = text.Length - text.Replace("\n", string.Empty).Length;
+
+               
+                if (text[text.Length - 1] != '\n')
+                {
+                    ++count;
+                }
+            }
+
+            return count;
         }
     }
 }
