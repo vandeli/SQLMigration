@@ -2,6 +2,7 @@
 using EasyTools.Interface.DB;
 using System;
 using System.Data;
+using System.Data.SqlClient;
 using System.Text.RegularExpressions;
 
 namespace EasyTools.DB
@@ -107,6 +108,8 @@ namespace EasyTools.DB
      //       return dataSet;
 
         }
+
+       
 
         public void Execute(DBData dbData, string sql)
         {

@@ -8,7 +8,8 @@ namespace EasyTools.Interface.DB
   {
       DataTable GetDataTable(DBData dbData, string sql);
       void GetDataSet(DBData dbData, string sql, String[] tableName);
-      void Execute(DBData dbData, string sql);
+      
+        void Execute(DBData dbData, string sql);
 
   }
 }

@@ -3,6 +3,8 @@ using System.Diagnostics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SQLMigration.Converter.ScriptBuilder;
 using SQLMigration.Data.SchemaInfo;
+using System.Data;
+using System.IO;
 
 namespace SQLMigration.Test
 {
@@ -156,6 +158,62 @@ namespace SQLMigration.Test
             var scriptActual = scriptBuilder.CreateScriptIndex(schemaData);
 
             Assert.AreEqual(scriptExpectation, scriptActual);
+        }
+
+        [TestMethod]
+        public void CreateRecordScript_Test()
+        {
+            var scriptBuilder = new PstScriptBuilder();
+            DataSet RecordSet = new DataSet("DataQuery");
+            var schemaInfo = new RecordSchemaInfoData
+            {
+                name = "customTableName",
+                TableName = "customTableName",
+                DataRow = 50,
+
+            };
+            DataColumn colString1 = new DataColumn("SupID");
+            DataColumn colString2 = new DataColumn("CyID");
+            DataColumn colString3 = new DataColumn("Amount");
+            colString1.DataType = System.Type.GetType("System.String");
+            colString2.DataType = System.Type.GetType("System.String");
+            colString3.DataType = System.Type.GetType("System.Int32");
+
+            DataTable RecordData = new DataTable("Table");
+            RecordData.Columns.Add(colString1);
+            RecordData.Columns.Add(colString2);
+            RecordData.Columns.Add(colString3);
+            
+
+            DataRow recordRow = RecordData.NewRow();
+            recordRow["SupID"] = "001";
+            recordRow["CyID"] = "111";
+            recordRow["Amount"] = "15000";
+
+            RecordData.Rows.Add(recordRow);
+            RecordSet.Tables.Add(RecordData);
+
+            var SchemaPath = "D:\\tempMigration\\" + schemaInfo.TableName + ".xsd";
+            var path = "D:\\tempMigration\\" + schemaInfo.TableName + ".xml";
+            RecordSet.WriteXmlSchema(SchemaPath);
+            RecordSet.WriteXml(path);
+
+           
+            //  var sqlPath = schemaInfo.TableName + "_Result.sql";
+            var scriptExpectation = "INSERT INTO " + schemaInfo.name + "(SupID,CyID,Amount) " + "VALUES\r\n" +
+                                    "('001','111',15000);\r\n";
+            var pathResult = "D:\\tempMigration\\result\\" + schemaInfo.TableName + "_Result.sql";
+            var pathActual = scriptBuilder.CreateScriptRecord(schemaInfo);
+
+          //  var resultActual = scriptBuilder.GetRecodScript(schemaInfo, path, SchemaPath);
+            var nValue = scriptBuilder.GetRecodScript(schemaInfo, path, SchemaPath);
+            using (StreamWriter sw = new StreamWriter(pathResult))
+            {
+                sw.Write(nValue);
+            }
+            var resultActual = nValue;
+            Assert.AreEqual(pathResult, pathActual);
+            Assert.AreEqual(scriptExpectation, resultActual);
         }
     }
 }
