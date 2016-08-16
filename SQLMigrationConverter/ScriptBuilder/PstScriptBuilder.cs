@@ -690,7 +690,7 @@ namespace SQLMigration.Converter.ScriptBuilder
                             if (i == (list[p].ChildNodes.Count - 1))
                             {
 
-                                if (rColumnDT[i] != "string" && rColumnDT[i] != "dateTime")
+                                if (rColumnDT[i] != "string" && rColumnDT[i] != "dateTime" && rColumnDT[i] != "base64Binary")
                                 { nValues += nColumn; }
                                 else if (rColumnDT[i] == "dateTime")
                                 {
@@ -707,7 +707,7 @@ namespace SQLMigration.Converter.ScriptBuilder
                             {
 
 
-                                if (rColumnDT[i] != "string" && rColumnDT[i] != "dateTime")
+                                if (rColumnDT[i] != "string" && rColumnDT[i] != "dateTime" && rColumnDT[i] != "base64Binary")
                                 {
                                     nValues += nColumn + ",";
                                 }

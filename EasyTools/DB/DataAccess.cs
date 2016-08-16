@@ -2,8 +2,12 @@
 using EasyTools.Interface.DB;
 using System;
 using System.Data;
+
 using System.Data.SqlClient;
+using System.IO;
+using System.Text;
 using System.Text.RegularExpressions;
+using System.Windows.Forms;
 
 namespace EasyTools.DB
 {
@@ -12,6 +16,7 @@ namespace EasyTools.DB
         private readonly IDbConnection dbConnection;
         private readonly IDbCommand dbCommand;
         private readonly IDbDataAdapter dbDataAdapter;
+      
 
         public DataAccess(IDbConnection dbConnection, IDbCommand dbCommand, IDbDataAdapter dbDataAdapter)
         {
@@ -72,8 +77,10 @@ namespace EasyTools.DB
                     return;
                 }
                 DataSet dataSet = new DataSet("DataQuery");
+                
                 dbCommand.CommandText = sqlCommand;
                 dbDataAdapter.SelectCommand = dbCommand;
+              
                 dbDataAdapter.Fill(dataSet);
                 if (dataSet == null)
                 {
@@ -109,7 +116,86 @@ namespace EasyTools.DB
 
         }
 
-       
+        //public string GetDataSet(DBData dbData, string sql, String[] tableName)
+        //{
+        //    var result = "";
+        //    Console.WriteLine("DataAccess.GetDataTable : " + dbData.name + ", Start");
+        //    Validate(dbData);
+
+        //    //DataSet dataSet = new DataSet("DataQuery");
+
+        //    string strConnection = @"Server=" + dbData.serverName + ";Database=" + dbData.dbName + ";User Id=" +
+        //                           dbData.userName + ";Password=" + dbData.password + ";";
+
+        //    var nquery = sql + tableName[0];
+            
+        //    SqlConnection SqlCon = new SqlConnection(strConnection);
+
+        //    SqlDataReader SqlDr;
+          
+        //    SqlCon.Open();
+        //    SqlCommand SqlCmd = SqlCon.CreateCommand();
+
+        //    SqlCmd.CommandText = sql;
+
+        //    SqlDr = SqlCmd.ExecuteReader();
+        //    SqlDr.Read();
+        //    //string sampleText = "ini deli";
+
+        //    //byte[] byteData = Encoding.UTF8.GetBytes(sampleText);
+        //    //SqlCommand insertCommand = new SqlCommand(sql, SqlCon);
+        //    //SqlParameter sqlParam = insertCommand.Parameters.AddWithValue("@BinData", byteData);
+        //    //sqlParam.DbType = DbType.Binary;
+        //    //insertCommand.ExecuteNonQuery();
+
+        //    // int i = 0;
+        //    //  var bnColumn = "";
+        //    //while (i < SqlDr.FieldCount)
+        //    //{
+        //    //    if (SqlDr.GetDataTypeName(i) == "binary")
+        //    //    {
+        //    //        bnColumn = SqlDr.GetName(i).ToString();
+        //    //    }
+        //    //    i++;
+        //    //}
+        //    //if (SqlDr.Read())
+        //    //{
+        //    //byte[] byteData = (byte[])SqlDr[0];
+        //    //string strData = Encoding.UTF8.GetString(byteData);
+        //    //  MessageBox.Show(strData);
+        //    //   }
+        //    //byte[] myBytes = new byte[50];
+        //    //long bytesRead = SqlDr.GetBytes(SqlDr.GetOrdinal("binar"), 0, myBytes, 0, 50);
+        //    //byte[] byteData = (byte[])SqlDr[0];
+        //    //string strData = Encoding.UTF8.GetString(byteData);
+        //    //MessageBox.Show(strData);
+        //    //   FileStream fs = new FileStream("D:\\tempMigration\\1textVersion.txt", FileMode.Create);
+        //    //  fs.Write(myBytes, 0, (int)bytesRead);
+        //    //{ System.Windows.Forms.MessageBox.Show(SqlDr.GetName(i) + " " + SqlDr.GetDataTypeName(i)); i++; }
+
+
+
+        //    using (SqlDr)
+        //    {
+
+        //        DataTable dtTesting = new DataTable("DTBinary");
+        //        dtTesting.Load(SqlDr);
+
+        //        dtTesting.WriteXml("D:\\tempMigration\\" + "1testing" + ".xml");
+        //    }
+
+
+        //    //if (SqlDr.FieldCount != 0)
+        //    //    result = "ada";
+        //    //else
+        //    //    result = "kosong";
+
+        //    SqlCon.Close();
+
+        //    return result;
+        //}
+
+
 
         public void Execute(DBData dbData, string sql)
         {

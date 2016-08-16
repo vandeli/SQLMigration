@@ -64,7 +64,7 @@ namespace SQLMigration.Test
             var nQuery = "SELECT * FROM " + RecordData;
 
             A.CallTo(() => schemaQuery.GetTableRecord()).Returns(resultQuery);
-            A.CallTo(() => dataAccess.GetDataSet(configData.Source, nQuery, TableList)).DoesNothing(); //.Returns(RecordSet);
+         //   A.CallTo(() => dataAccess.GetDataSet(configData.Source, nQuery, TableList)).DoesNothing(); //.Returns(RecordSet);
             A.CallTo(() => dataAccess.GetDataTable(configData.Source, resultQuery)).Returns(resultDataAccess);
             IRecordManager recordManager = new RecordManager(dataAccess, scriptBuilder, schemaQuery);
 

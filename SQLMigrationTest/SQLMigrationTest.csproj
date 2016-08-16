@@ -58,6 +58,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="GetDataSetTest.cs" />
     <Compile Include="IndexManagerTest.cs" />
     <Compile Include="PKManagerTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
