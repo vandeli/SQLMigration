@@ -685,7 +685,9 @@ namespace SQLMigration.Converter.ScriptBuilder
                 using (StreamWriter sw = new StreamWriter(pathResult))
                 {
                     //  sw.Write(nValue);
-
+                    if (schemaInfo.name == "BOS_INV_StockTransferType")
+                        Console.WriteLine("test");
+                    
                     getValue += "INSERT INTO " + schemaInfo.name + "(" + columnName + ") " + "VALUES\r\n";
                     //    sw.WriteLine("INSERT INTO " + schemaInfo.name + "(" + columnName + ") " + "VALUES");
                     sw.Write(getValue);
@@ -700,7 +702,7 @@ namespace SQLMigration.Converter.ScriptBuilder
                             var nColumn = list[p].ChildNodes[i].InnerText;
                              nColumn = nColumn.Replace(@"'", "''");
                             //   nValues += nColumn;
-                            if (nColumn == "")
+                            if (nColumn == "" || nColumn == null)
                             {
                                 if (i == (list[p].ChildNodes.Count - 1))
                                 {
