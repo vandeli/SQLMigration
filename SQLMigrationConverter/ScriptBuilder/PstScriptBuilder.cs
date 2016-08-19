@@ -356,12 +356,13 @@ namespace SQLMigration.Converter.ScriptBuilder
             {
                 if (!File.Exists(path))
                     throw new FileNotFoundException();
-                    var nValue = GetRecodScript(schemaInfo,path, SchemaPath);
+                //var nValue = 
+                GetRecodScript(schemaInfo,path, SchemaPath);
                 result = pathResult;
-                using (StreamWriter sw = new StreamWriter(pathResult))
-                {
-                    sw.Write(nValue);
-                }
+                //using (StreamWriter sw = new StreamWriter(pathResult))
+                //{
+                //    sw.Write(nValue);
+                //}
 
 
                 }
@@ -585,8 +586,9 @@ namespace SQLMigration.Converter.ScriptBuilder
             return result;
         }
 
-        public string GetRecodScript(RecordSchemaInfoData schemaInfo, string path, string SchemaPath)
+        public void GetRecodScript(RecordSchemaInfoData schemaInfo, string path, string SchemaPath)
         {
+            var pathResult = "D:\\tempMigration\\result\\" + schemaInfo.TableName + "_Result.sql";
             string[] rColumnDT = null;
             string[] rColumnName = null;
             var r = 0;
@@ -594,7 +596,9 @@ namespace SQLMigration.Converter.ScriptBuilder
             var columnName = "";
             var nValues = "";
             var getValue = "";
-          
+            var itsBinary = false;
+            //if (schemaInfo.name == "BOS_AR_ArTrans")
+            //    Console.WriteLine(schemaInfo.name);
 
                 XmlDocument nData = new XmlDocument();
                 XmlSchemaSet schemaSet = new XmlSchemaSet();
@@ -641,7 +645,10 @@ namespace SQLMigration.Converter.ScriptBuilder
                                         {
                                             rColumnName[r] = childElement.Name;
                                             rColumnDT[r] = childElement.SchemaTypeName.Name;
-                                            //   MessageBox.Show(childElement.Name + " " + childElement.SchemaTypeName.Name);
+                                        //   MessageBox.Show(childElement.Name + " " + childElement.SchemaTypeName.Name);
+                                            if (rColumnDT[r] == "base64Binary")
+                                               { itsBinary = true; }
+
                                             r++;
                                         }
 
@@ -661,64 +668,98 @@ namespace SQLMigration.Converter.ScriptBuilder
 
                 XmlNodeList list = nData.DocumentElement.GetElementsByTagName("Table");
 
-                if (list.Count != 0)
+            if (list.Count != 0)
+            {
+                for (int i = 0; i < list[0].ChildNodes.Count; i++)
                 {
-                    for (int i = 0; i < list[0].ChildNodes.Count; i++)
+                    if (i == (list[0].ChildNodes.Count - 1))
                     {
-                        if (i == (list[0].ChildNodes.Count - 1))
-                        {
-                            columnName += list[0].ChildNodes[i].Name;
-                        }
-                        else
-                        {
-                            columnName += list[0].ChildNodes[i].Name + ",";
-                        }
-
+                        columnName += list[0].ChildNodes[i].Name;
                     }
-                getValue += "INSERT INTO " + schemaInfo.name + "(" + columnName + ") " + "VALUES\r\n";
-                //    sw.WriteLine("INSERT INTO " + schemaInfo.name + "(" + columnName + ") " + "VALUES");
+                    else
+                    {
+                        columnName += list[0].ChildNodes[i].Name + ",";
+                    }
 
+                }
+                using (StreamWriter sw = new StreamWriter(pathResult))
+                {
+                    //  sw.Write(nValue);
+
+                    getValue += "INSERT INTO " + schemaInfo.name + "(" + columnName + ") " + "VALUES\r\n";
+                    //    sw.WriteLine("INSERT INTO " + schemaInfo.name + "(" + columnName + ") " + "VALUES");
+                    sw.Write(getValue);
                     for (int p = 0; p < list.Count; p++)
                     {
 
                         nValues += "(";
                         //==== mulai value kolom
+
                         for (int i = 0; i < list[p].ChildNodes.Count; i++)
                         {
                             var nColumn = list[p].ChildNodes[i].InnerText;
+                             nColumn = nColumn.Replace(@"'", "''");
                             //   nValues += nColumn;
-                            if (i == (list[p].ChildNodes.Count - 1))
+                            if (nColumn == "")
                             {
-
-                                if (rColumnDT[i] != "string" && rColumnDT[i] != "dateTime" && rColumnDT[i] != "base64Binary")
-                                { nValues += nColumn; }
-                                else if (rColumnDT[i] == "dateTime")
+                                if (i == (list[p].ChildNodes.Count - 1))
                                 {
-                                    nColumn = nColumn.Remove(nColumn.Length - 6);
-                                    nColumn = nColumn.Replace(@"T", " ");
-                                    nValues += "'" + nColumn + "'";
+                                    if (rColumnDT[i] != "string" && rColumnDT[i] != "base64Binary" && rColumnDT[i] != "dateTime")
+                                    { nValues += nColumn; }
+                                    else
+                                    { nValues += "''"; }
                                 }
                                 else
-                                { nValues += "'" + nColumn + "'"; }
-
-
+                                {
+                                    if (rColumnDT[i] != "string" && rColumnDT[i] != "base64Binary" && rColumnDT[i] != "dateTime")
+                                    { nValues += nColumn + ","; }
+                                    else
+                                    { nValues += "'',"; }
+                                }
                             }
                             else
                             {
+                                if (i == (list[p].ChildNodes.Count - 1))
+                                {
+                                    switch (rColumnDT[i])
+                                    {
+                                        case "string":
+                                        case "base64Binary":
+                                            nValues += "'" + nColumn + "'";
+                                            break;
+                                        case "dateTime":
+                                            nColumn = nColumn.Remove(nColumn.Length - 6);
+                                            nColumn = nColumn.Replace(@"T", " ");
+                                            nValues += "'" + nColumn + "'";
+                                            break;
+
+                                        default:
+                                            nValues += nColumn;
+                                            break;
+                                    }
 
 
-                                if (rColumnDT[i] != "string" && rColumnDT[i] != "dateTime" && rColumnDT[i] != "base64Binary")
-                                {
-                                    nValues += nColumn + ",";
-                                }
-                                else if (rColumnDT[i] == "dateTime")
-                                {
-                                    nColumn = nColumn.Remove(nColumn.Length - 6);
-                                    nColumn = nColumn.Replace(@"T", " ");
-                                    nValues += "'" + nColumn + "',";
                                 }
                                 else
-                                { nValues += "'" + nColumn + "',"; }
+                                {
+
+                                    switch (rColumnDT[i])
+                                    {
+                                        case "string":
+                                        case "base64Binary":
+                                            nValues += "'" + nColumn + "',";
+                                            break;
+                                        case "dateTime":
+                                            nColumn = nColumn.Remove(nColumn.Length - 6);
+                                            nColumn = nColumn.Replace(@"T", " ");
+                                            nValues += "'" + nColumn + "',";
+                                            break;
+
+                                        default:
+                                            nValues += nColumn + ",";
+                                            break;
+                                    }
+                                }
                             }
                         }
                         //========last value
@@ -728,21 +769,22 @@ namespace SQLMigration.Converter.ScriptBuilder
                         }
                         else
                         {
-                            nValues += "),";
+                            nValues += "),\r\n";
                         }
-                       getValue += nValues;
-                   // sw.WriteLine(nValues);
+                        //   getValue += nValues;
+                        sw.Write(nValues);
                         nValues = "";
                     }
 
 
                 }
-                else
-                {
-                    getValue = "";
-                }
+            }
+            else
+            {
+                getValue = "";
+            }
             
-            return getValue;
+           // return getValue;
         }
 
        
@@ -845,6 +887,17 @@ namespace SQLMigration.Converter.ScriptBuilder
             if (data.Domain != "")
             {
                 cekResult = data.Domain;
+            }
+            else if (data.DataType == "binary")
+            {
+                cekResult = GetDataTypeMap(data.DataType);
+                if (data.isNullable == false)
+                {
+                    cekResult = GetDataTypeMap(data.DataType) + "  NOT NULL";
+                }else
+                {
+                    cekResult = GetDataTypeMap(data.DataType);
+                }
             }
             else
             {

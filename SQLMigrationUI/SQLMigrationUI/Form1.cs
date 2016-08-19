@@ -294,13 +294,52 @@ namespace SQLMigration.UI
         {
             try
             {
-                var save = new SaveFileDialog {FileName = cboProcess.Text + "_PgSQL.sql", Filter = "Sql File | *.sql"};
-                if (save.ShowDialog() != DialogResult.OK) return;
-                var writer = new StreamWriter(save.OpenFile());
-                writer.Write(txtResult.Text);
+               
+                switch (cboProcess.Text)
+                {
+                    case "Record":
+                     //   StringReader strReader = new StringReader(schemaInfo.SqlCode);
+                        var save = new SaveFileDialog { FileName = cboProcess.Text + "_PgSQL.sql", Filter = "Sql File | *.sql" };
+                        if (save.ShowDialog() != DialogResult.OK) return;
+                        var writer = new StreamWriter(save.OpenFile());
+                        //   writer.Write(txtResult.Text);
 
-                writer.Dispose();
-                writer.Close();
+                        using (StringReader reader = new StringReader(txtResult.Text))
+                        {
+                            string line = string.Empty;
+                            do
+                            {
+                                line = reader.ReadLine();
+                                if (line != null)
+                                {
+                                    var tempPath = line;
+
+                                    if (!File.Exists(tempPath))
+                                        { writer.Write("\r\n"); }
+                                    else
+                                        foreach (var myString in File.ReadAllLines(tempPath))
+                                            writer.Write(myString + "\r\n");
+
+                                }
+                            } while (line != null);
+                        }
+
+
+                        writer.Dispose();
+                        writer.Close();
+                        break;
+
+                    default:
+                        var save2 = new SaveFileDialog { FileName = cboProcess.Text + "_PgSQL.sql", Filter = "Sql File | *.sql" };
+                        if (save2.ShowDialog() != DialogResult.OK) return;
+                        var writer2 = new StreamWriter(save2.OpenFile());
+                        writer2.Write(txtResult.Text);
+
+                        writer2.Dispose();
+                        writer2.Close();
+                        break;
+                }
+                
             }
             catch (Exception ex)
             {
