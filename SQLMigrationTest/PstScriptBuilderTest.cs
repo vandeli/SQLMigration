@@ -205,8 +205,8 @@ namespace SQLMigration.Test
             var pathResult = "D:\\tempMigration\\result\\" + schemaInfo.TableName + "_Result.sql";
             var pathActual = scriptBuilder.CreateScriptRecord(schemaInfo);
 
-          //  var resultActual = scriptBuilder.GetRecodScript(schemaInfo, path, SchemaPath);
-            var nValue = scriptBuilder.GetRecodScript(schemaInfo, path, SchemaPath);
+            //  var resultActual = scriptBuilder.GetRecodScript(schemaInfo, path, SchemaPath);
+            var nValue = "";//scriptBuilder.GetRecodScript(schemaInfo, path, SchemaPath);
             using (StreamWriter sw = new StreamWriter(pathResult))
             {
                 sw.Write(nValue);

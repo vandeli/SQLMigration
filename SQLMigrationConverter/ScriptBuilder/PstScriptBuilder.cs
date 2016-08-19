@@ -596,7 +596,7 @@ namespace SQLMigration.Converter.ScriptBuilder
             var columnName = "";
             var nValues = "";
             var getValue = "";
-            var itsBinary = false;
+          //  var itsBinary = false;
             //if (schemaInfo.name == "BOS_AR_ArTrans")
             //    Console.WriteLine(schemaInfo.name);
 
@@ -646,8 +646,8 @@ namespace SQLMigration.Converter.ScriptBuilder
                                             rColumnName[r] = childElement.Name;
                                             rColumnDT[r] = childElement.SchemaTypeName.Name;
                                         //   MessageBox.Show(childElement.Name + " " + childElement.SchemaTypeName.Name);
-                                            if (rColumnDT[r] == "base64Binary")
-                                               { itsBinary = true; }
+                                        //    if (rColumnDT[r] == "base64Binary")
+                                        //       { itsBinary = true; }
 
                                             r++;
                                         }
@@ -685,8 +685,8 @@ namespace SQLMigration.Converter.ScriptBuilder
                 using (StreamWriter sw = new StreamWriter(pathResult))
                 {
                     //  sw.Write(nValue);
-                    if (schemaInfo.name == "BOS_INV_StockTransferType")
-                        Console.WriteLine("test");
+                   // if (schemaInfo.name == "BOS_INV_StockTransferType")
+                    //    Console.WriteLine("test");
                     
                     getValue += "INSERT INTO " + schemaInfo.name + "(" + columnName + ") " + "VALUES\r\n";
                     //    sw.WriteLine("INSERT INTO " + schemaInfo.name + "(" + columnName + ") " + "VALUES");
