@@ -49,9 +49,9 @@ namespace SQLMigrationManager
                 tableName[i] = tableData["name"].ToString();
                 nQuery += "SELECT * FROM "+ tableData["name"].ToString() +";\r\n";
             }
-           
-           dataAccess.GetDataSet(configData.Source, nQuery, tableName);
-           
+            
+       //   dataAccess.GetDataSet(configData.Source, nQuery, tableName);
+
             //===========================================================
 
 

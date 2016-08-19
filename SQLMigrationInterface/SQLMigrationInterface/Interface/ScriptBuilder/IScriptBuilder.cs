@@ -13,5 +13,6 @@ namespace SQLMigrationInterface.Interface.ScriptBuilder
         string CreateScriptRecord(RecordSchemaInfoData schemaInfoData);
         string CreateScriptFunction(FunctionSchemaInfoData schemaInfo);
         string GetDataTypeMap(string dataType);
+        void GetRecodScript(RecordSchemaInfoData schemaInfo, string path, string SchemaPath);
     }
 }

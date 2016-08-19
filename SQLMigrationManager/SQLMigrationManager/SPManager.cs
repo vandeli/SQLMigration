@@ -31,8 +31,8 @@ namespace SQLMigrationManager
         {
             Console.WriteLine("SPManager.GetSchema : " + configData.name + " , start...");
             var dt = dataAccess.GetDataTable(configData.Source, sourceQuery.GetSPQuery());
-            var dtSP = dataAccess.GetDataTable(configData.Source, sourceQuery.GetSPName());
-            var listSchema = GetSchemaDataFromDt(dt,dtSP, configData);
+         //   var dtSP = dataAccess.GetDataTable(configData.Source, sourceQuery.GetSPName());
+            var listSchema = GetSchemaDataFromDt(dt);
             Console.WriteLine("SPManager.GetSchema : listSchema => " + listSchema.Count + ", Done");
             return listSchema;
         }
@@ -53,7 +53,7 @@ namespace SQLMigrationManager
 
         }
 
-        private List<SPSchemaInfoData> GetSchemaDataFromDt(DataTable dt, DataTable dtSP, ConfigData configData)
+        private List<SPSchemaInfoData> xxGetSchemaDataFromDt(DataTable dt, DataTable dtSP, ConfigData configData)
         {
             var result = new List<SPSchemaInfoData>();
             var tempResult = new List<SPTempSource>();
@@ -125,7 +125,62 @@ namespace SQLMigrationManager
             return result;
         }
 
-     
+        private List<SPSchemaInfoData> GetSchemaDataFromDt(DataTable dt)
+        {
+            var result = new List<SPSchemaInfoData>();
+            var tempResult = new List<SPTempSource>();
+          
+            for (var i = 0; i < dt.Rows.Count; i++)
+            {
+                var tempSchema = new SPTempSource();
+                var data = dt.Rows[i];
+
+                tempSchema.SPName = data["specific_name"].ToString();
+                tempSchema.SqlCode = data["SqlCode"].ToString();
+                tempSchema.ParameterNumber = System.Convert.ToInt32(data["ORDINAL_POSITION"]);
+                tempSchema.ParameterName = data["parameter_name"].ToString();
+                tempSchema.DataType = data["DATA_TYPE"].ToString();
+                tempSchema.DomainType = data["USER_DEFINED_TYPE_NAME"].ToString();
+                tempSchema.ParameterMaxBytes = System.Convert.ToInt32(data["CHARACTER_MAXIMUM_LENGTH"].GetType() == typeof(DBNull) ? 0 : data["CHARACTER_MAXIMUM_LENGTH"]);
+                tempSchema.NumericPrecision = System.Convert.ToInt32(data["NUMERIC_PRECISION"].GetType() == typeof(DBNull) ? 0 : data["NUMERIC_PRECISION"]);
+                tempSchema.NumericScale = System.Convert.ToInt32(data["NUMERIC_SCALE"].GetType() == typeof(DBNull) ? 0 : data["NUMERIC_SCALE"]);
+                tempResult.Add(tempSchema);
+            }
+
+            var UsedParameterName = tempResult.GroupBy(x => x.SPName).Select(y => y.First()).ToList();
+
+
+            foreach (var uSPName in UsedParameterName)
+            {
+                var listParameterUsed = new List<UsedParameter>();
+                //    var listSPOutput = new List<SPOutputAttribute>();
+                var schema = new SPSchemaInfoData();
+                schema.SPName = uSPName.SPName;
+                schema.SqlCode = uSPName.SqlCode;
+                schema.name = uSPName.SPName;
+                foreach (var uParameterName in tempResult.Where(x => x.SPName == uSPName.SPName).ToList())
+                {
+                    var tempData = new UsedParameter();
+
+                    tempData.ParameterName = uParameterName.ParameterName;
+                    tempData.ParameterNumber = uParameterName.ParameterNumber;
+                    tempData.DataType = uParameterName.DataType;
+                    tempData.DomainType = uParameterName.DomainType;
+                    tempData.ParameterMaxBytes = uParameterName.ParameterMaxBytes;
+                    tempData.NumericPrecision = uParameterName.NumericPrecision;
+                    tempData.NumericScale = uParameterName.NumericScale;
+
+                    listParameterUsed.Add(tempData);
+
+                }
+
+
+                schema.usedParameterList = new List<UsedParameter>(listParameterUsed);
+              
+                result.Add(schema);
+            }
+            return result;
+        }
 
     }
 }

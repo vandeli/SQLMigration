@@ -13,6 +13,7 @@ using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using System.Xml;
 using System.Xml.Linq;
+using System.Xml.Schema;
 using System.Xml.Serialization;
 
 namespace SQLMigration.Converter.ScriptBuilder
@@ -178,7 +179,7 @@ namespace SQLMigration.Converter.ScriptBuilder
             return result;
         }
 
-        public string CreateScriptSP(SPSchemaInfoData schemaInfo)
+        public string CreateScriptSP3(SPSchemaInfoData schemaInfo)
         {
             var result = "";
            
@@ -234,11 +235,113 @@ namespace SQLMigration.Converter.ScriptBuilder
             return result;
         }
 
+        public string CreateScriptSP(SPSchemaInfoData schemaInfo)
+        {
+            var result = "";
+          
+            var FnName = schemaInfo.SPName;
+            var spType = "Other";
+            var nReturn = "";
+            var parName = "";
+           
+            
+
+        //    StringReader strReader = new StringReader(schemaInfo.SqlCode);
+
+
+            using (StringReader reader = new StringReader(schemaInfo.SqlCode))
+            {
+                string line = string.Empty;
+                do
+                {
+                    line = reader.ReadLine();
+                    if (line != null)
+                    {
+                        var lines = line.TrimStart();
+                        if (lines.Contains("Update"))
+                        { spType = "update";}
+                        else if (lines.Contains("insert"))
+                        { spType = "insert"; }
+                        else if (lines.Contains("delete"))
+                        { spType = "delete"; }
+                        else if (lines.Contains("select"))
+                        { spType = "select"; }
+                        //else
+                        //{ spType = "other"; }
+
+                    }
+
+                } while (line != null);
+            }
+
+
+            for (var i = 0; i < schemaInfo.usedParameterList.Count; i++)
+            {
+                if (schemaInfo.usedParameterList[i].ParameterName != "")
+                {
+                    parName += schemaInfo.usedParameterList[i].ParameterName.Replace(@"@", "p_");
+                    if (schemaInfo.usedParameterList[i].DomainType != "")
+                    {
+                        parName += " " + schemaInfo.usedParameterList[i].DomainType;
+                    }
+                    else
+                    {
+                        parName += " " + GetDataTypeMap(schemaInfo.usedParameterList[i].DataType);
+                    }
+
+
+                    if (i < (schemaInfo.usedParameterList.Count - 1))
+                        parName += ",";
+                }
+                else
+                {
+                    if (schemaInfo.usedParameterList[i].DomainType != "")
+                    {
+                        nReturn = schemaInfo.usedParameterList[i].DomainType;
+                    }
+                    else if (schemaInfo.usedParameterList[i].DataType == "datetime" || schemaInfo.usedParameterList[i].DataType == "bit")
+                    {
+                        nReturn = schemaInfo.usedParameterList[i].DataType;
+                    }
+                    else if (schemaInfo.usedParameterList[i].ParameterMaxBytes != 0)
+                    {
+                        nReturn = GetDataTypeMap(schemaInfo.usedParameterList[i].DataType) + "(" + schemaInfo.usedParameterList[i].ParameterMaxBytes + ")";
+                    }
+                    else
+                    {
+                        nReturn = GetDataTypeMap(schemaInfo.usedParameterList[i].DataType) + "(" + schemaInfo.usedParameterList[i].NumericPrecision + ")";
+                    }
+
+
+                }
+
+            }
+          
+           var sqlResult = SqlQueryCheck(schemaInfo.SqlCode, spType);
+                   
+            
+            result = "CREATE OR REPLACE FUNCTION " + FnName + "(" + parName + ")\r\n" +
+                     "RETURNS void AS\r\n" +
+                     "$BODY$\r\n" +
+                     "BEGIN\r\n" +
+                        sqlResult + "\r\n"+
+                     "END;\r\n" +
+                     "$BODY$\r\n" +
+                    "LANGUAGE plpgsql;\r\n" +
+                    "\r\n";
+            return result;
+           
+        }
+
         public string CreateScriptRecord(RecordSchemaInfoData schemaInfo)
         {
             string result = "";
-            var columnName = "";
-            var nValues = "";
+          //  string[] rColumnDT = null;
+          //  string[] rColumnName = null;
+          //  var r = 0;
+          ////  var getType = "";
+          //  var columnName = "";
+          //  var nValues = "";
             var dtSet = new DataSet();
             foreach (DataTable dataTable in dtSet.Tables)
                 dataTable.BeginLoadData(); 
@@ -246,78 +349,23 @@ namespace SQLMigration.Converter.ScriptBuilder
        
 
             var path = "D:\\tempMigration\\" + schemaInfo.TableName + ".xml";
-            var pathResult = "D:\\tempMigration\\result\\" + schemaInfo.TableName + "_Result.txt";
+           var SchemaPath = "D:\\tempMigration\\" + schemaInfo.TableName + ".xsd";
+            var pathResult = "D:\\tempMigration\\result\\" + schemaInfo.TableName + "_Result.sql";
 
             try
             {
                 if (!File.Exists(path))
                     throw new FileNotFoundException();
-
-                using (StreamWriter sw = new StreamWriter(pathResult))
-                {
-
-                    XmlDocument nData = new XmlDocument();
-                    nData.Load(path);
-                    XmlNodeList list = nData.DocumentElement.GetElementsByTagName("Table");
-                    if (list.Count != 0)
-                    {
-                        for (int i = 0; i < list[0].ChildNodes.Count; i++)
-                        {
-                            if (i == (list[0].ChildNodes.Count - 1))
-                            {
-                                columnName += list[0].ChildNodes[i].Name;
-                            }
-                            else
-                            {
-                                columnName += list[0].ChildNodes[i].Name + ",";
-                            }
-
-                        }
-                      sw.WriteLine("INSERT INTO " + schemaInfo.name + "(" + columnName + ") " + "VALUES");
-
-                        for (int p = 0; p < list.Count; p++)
-                        {
-
-                            nValues += "(";
-                            //==== mulai value kolom
-                            for (int i = 0; i < list[p].ChildNodes.Count; i++)
-                            {
-                                var nColumn = list[p].ChildNodes[i].InnerText;
-                                //   nValues += nColumn;
-                                if (i == (list[p].ChildNodes.Count - 1))
-                                {
-                                    nValues += "'" + nColumn + "'";
-                                }
-                                else
-                                {
-                                    nValues += "'" + nColumn + "',";
-                                }
-                            }
-                            //========last value
-                            if (p == (list.Count - 1))
-                            {
-                                nValues += ");\r\n";
-                            }
-                            else
-                            {
-                                nValues += "),";
-                            }
-                            sw.WriteLine(nValues);
-                            nValues = "";
-                        }
+                //var nValue = 
+                GetRecodScript(schemaInfo,path, SchemaPath);
+                result = pathResult;
+                //using (StreamWriter sw = new StreamWriter(pathResult))
+                //{
+                //    sw.Write(nValue);
+                //}
 
 
-                        //   result = "INSERT INTO " + schemaInfo.name + "(" + columnName + ") " + "VALUES\r\n";
-                        //   result += nValues;
-                        result = pathResult;
-                        sw.Dispose();
-                    }
-                    else
-                    {
-                        result = "";
-                    }
                 }
-            }
             catch (FileNotFoundException)
             {
                 MessageBox.Show("The " + schemaInfo.TableName + ".xml, is missing..!");
@@ -440,6 +488,305 @@ namespace SQLMigration.Converter.ScriptBuilder
             return result;
         }
 
+        public string SqlQueryCheck(String sql, String sptype)
+        {
+            var result = "";
+            string nUpdate, nInsert, nDelete;
+            switch (sptype)
+            {
+                case "update":
+                    nUpdate = "";
+                    string uTableName = "";
+                    string wKolom= "";
+                    string[] sKolom;
+                    string[] allLines;
+                    int sIndex = 0;
+                    int sLine = 0;
+
+                    int totalLines = CountLines(sql);
+                    allLines = new string[totalLines];
+                    using (StringReader reader2 = new StringReader(sql))
+                    {
+                        string line = string.Empty;
+                        do
+                        {
+                            line = reader2.ReadLine();
+                            if (line != null)
+                            {
+                                allLines[sLine] = line.TrimStart();
+                                sLine++;
+                            }
+                        } while (line != null);
+                    }
+
+
+                   
+                   
+
+                    for (var s = 0; s < allLines.Length; s++)
+                    {
+                        if (allLines[s].TrimStart() == "Set")
+                            sIndex = s;
+                        if (allLines[s].TrimStart() == "Where")
+                            sIndex = s - sIndex - 1;                       
+                    }
+
+                    sKolom = new string[sIndex];
+
+                    for (var i = 0; i < allLines.Length; i++)
+                    {
+                        if (allLines[i] == "Update")
+                        {
+                            uTableName = allLines[i + 1].TrimStart();
+                        }
+                        else if (allLines[i] == "Set")
+                        {
+                            for (var n = 0; n < sIndex; n++)
+                            {
+                                sKolom[n] = allLines[i + n + 1].TrimStart();
+                                sKolom[n] = sKolom[n].Replace(@"@", "p_");
+                            }
+                            
+                        }
+                        else if (allLines[i] == "Where")
+                        {
+                            wKolom = allLines[i + 1].TrimStart();
+                            wKolom = wKolom.Replace(@"@", "p_");
+                        }
+
+
+                    }
+                    nUpdate = "UPDATE " + uTableName + "\r\n" +
+                              "SET \r\n";
+                              for (var n = 0; n < sIndex; n++)
+                                {
+                                    nUpdate += sKolom[n] + "\r\n";
+                                }
+                    nUpdate += "WHERE \r\n" + wKolom + "\r\n";
+                    result = nUpdate;    
+                    //UPDATE BOS_AP_ApTrans
+                    //SET decRemain = decRemain + '@p_decAmount'
+                    //WHERE szTrnId = '@p_szTrnId' And szDocId = '@p_szDocId' And szSuppId = '@p_szSuppId' And shRevNo = '@p_shRevNo';
+                    break;
+
+                case "insert":
+                    nInsert = "not set yet";
+                    result = nInsert;
+                    break;
+
+                case "delete":
+                    nDelete = "not set yet ";
+                    result = nDelete;
+                    break;
+
+                default:
+                    result = "not set yet ";
+                    break;
+            }
+            return result;
+        }
+
+        public void GetRecodScript(RecordSchemaInfoData schemaInfo, string path, string SchemaPath)
+        {
+            var pathResult = "D:\\tempMigration\\result\\" + schemaInfo.TableName + "_Result.sql";
+            string[] rColumnDT = null;
+            string[] rColumnName = null;
+            var r = 0;
+            //  var getType = "";
+            var columnName = "";
+            var nValues = "";
+            var getValue = "";
+            var itsBinary = false;
+            //if (schemaInfo.name == "BOS_AR_ArTrans")
+            //    Console.WriteLine(schemaInfo.name);
+
+                XmlDocument nData = new XmlDocument();
+                XmlSchemaSet schemaSet = new XmlSchemaSet();
+                schemaSet.Add("http://www.w3.org/2001/XMLSchema", SchemaPath);
+                schemaSet.Compile();
+                XmlSchema xmlSchema = null;
+                foreach (XmlSchema schema in schemaSet.Schemas())
+                {
+                    xmlSchema = schema;
+                }
+                foreach (object item in xmlSchema.Items)
+                {
+                    XmlSchemaElement schemaElement = item as XmlSchemaElement;
+                    XmlSchemaComplexType complexType = item as XmlSchemaComplexType;
+                    if (schemaElement != null)
+                    {
+                        //MessageBox.Show(schemaElement.Name);
+
+                        XmlSchemaType schemaType = schemaElement.SchemaType;
+                        XmlSchemaComplexType schemaComplexType = schemaType as XmlSchemaComplexType;
+
+                        if (schemaComplexType != null)
+                        {
+                            XmlSchemaParticle particle = schemaComplexType.Particle;
+                            XmlSchemaChoice schemaChoice = particle as XmlSchemaChoice;
+
+                            var item2 = schemaChoice.Items[0];
+                            XmlSchemaElement schemaElement2 = item2 as XmlSchemaElement;
+                            if (schemaElement2 != null)
+                            {
+                                //    MessageBox.Show(schemaElement2.Name);
+                                XmlSchemaType schemaType2 = schemaElement2.SchemaType;
+                                XmlSchemaComplexType schemaComplexType2 = schemaType2 as XmlSchemaComplexType;
+                                if (schemaComplexType2 != null)
+                                {
+                                    XmlSchemaParticle particle2 = schemaComplexType2.Particle;
+                                    XmlSchemaSequence sequence2 = particle2 as XmlSchemaSequence;
+                                    if (sequence2 != null)
+                                    {
+                                        //  r = 0;
+                                        rColumnName = new string[sequence2.Items.Count];
+                                        rColumnDT = new string[sequence2.Items.Count];
+                                        foreach (XmlSchemaElement childElement in sequence2.Items)
+                                        {
+                                            rColumnName[r] = childElement.Name;
+                                            rColumnDT[r] = childElement.SchemaTypeName.Name;
+                                        //   MessageBox.Show(childElement.Name + " " + childElement.SchemaTypeName.Name);
+                                            if (rColumnDT[r] == "base64Binary")
+                                               { itsBinary = true; }
+
+                                            r++;
+                                        }
+
+                                    }
+                                }
+
+                            }
+
+
+                        }
+
+                    }
+                }
+
+                nData.Load(path);
+
+
+                XmlNodeList list = nData.DocumentElement.GetElementsByTagName("Table");
+
+            if (list.Count != 0)
+            {
+                for (int i = 0; i < list[0].ChildNodes.Count; i++)
+                {
+                    if (i == (list[0].ChildNodes.Count - 1))
+                    {
+                        columnName += list[0].ChildNodes[i].Name;
+                    }
+                    else
+                    {
+                        columnName += list[0].ChildNodes[i].Name + ",";
+                    }
+
+                }
+                using (StreamWriter sw = new StreamWriter(pathResult))
+                {
+                    //  sw.Write(nValue);
+
+                    getValue += "INSERT INTO " + schemaInfo.name + "(" + columnName + ") " + "VALUES\r\n";
+                    //    sw.WriteLine("INSERT INTO " + schemaInfo.name + "(" + columnName + ") " + "VALUES");
+                    sw.Write(getValue);
+                    for (int p = 0; p < list.Count; p++)
+                    {
+
+                        nValues += "(";
+                        //==== mulai value kolom
+
+                        for (int i = 0; i < list[p].ChildNodes.Count; i++)
+                        {
+                            var nColumn = list[p].ChildNodes[i].InnerText;
+                             nColumn = nColumn.Replace(@"'", "''");
+                            //   nValues += nColumn;
+                            if (nColumn == "")
+                            {
+                                if (i == (list[p].ChildNodes.Count - 1))
+                                {
+                                    if (rColumnDT[i] != "string" && rColumnDT[i] != "base64Binary" && rColumnDT[i] != "dateTime")
+                                    { nValues += nColumn; }
+                                    else
+                                    { nValues += "''"; }
+                                }
+                                else
+                                {
+                                    if (rColumnDT[i] != "string" && rColumnDT[i] != "base64Binary" && rColumnDT[i] != "dateTime")
+                                    { nValues += nColumn + ","; }
+                                    else
+                                    { nValues += "'',"; }
+                                }
+                            }
+                            else
+                            {
+                                if (i == (list[p].ChildNodes.Count - 1))
+                                {
+                                    switch (rColumnDT[i])
+                                    {
+                                        case "string":
+                                        case "base64Binary":
+                                            nValues += "'" + nColumn + "'";
+                                            break;
+                                        case "dateTime":
+                                            nColumn = nColumn.Remove(nColumn.Length - 6);
+                                            nColumn = nColumn.Replace(@"T", " ");
+                                            nValues += "'" + nColumn + "'";
+                                            break;
+
+                                        default:
+                                            nValues += nColumn;
+                                            break;
+                                    }
+
+
+                                }
+                                else
+                                {
+
+                                    switch (rColumnDT[i])
+                                    {
+                                        case "string":
+                                        case "base64Binary":
+                                            nValues += "'" + nColumn + "',";
+                                            break;
+                                        case "dateTime":
+                                            nColumn = nColumn.Remove(nColumn.Length - 6);
+                                            nColumn = nColumn.Replace(@"T", " ");
+                                            nValues += "'" + nColumn + "',";
+                                            break;
+
+                                        default:
+                                            nValues += nColumn + ",";
+                                            break;
+                                    }
+                                }
+                            }
+                        }
+                        //========last value
+                        if (p == (list.Count - 1))
+                        {
+                            nValues += ");\r\n";
+                        }
+                        else
+                        {
+                            nValues += "),\r\n";
+                        }
+                        //   getValue += nValues;
+                        sw.Write(nValues);
+                        nValues = "";
+                    }
+
+
+                }
+            }
+            else
+            {
+                getValue = "";
+            }
+            
+           // return getValue;
+        }
+
        
 
         private string cekParameter(UsedParameter data)
@@ -541,6 +888,17 @@ namespace SQLMigration.Converter.ScriptBuilder
             {
                 cekResult = data.Domain;
             }
+            else if (data.DataType == "binary")
+            {
+                cekResult = GetDataTypeMap(data.DataType);
+                if (data.isNullable == false)
+                {
+                    cekResult = GetDataTypeMap(data.DataType) + "  NOT NULL";
+                }else
+                {
+                    cekResult = GetDataTypeMap(data.DataType);
+                }
+            }
             else
             {
                 cekResult = GetDataTypeMap(data.DataType) + cekResult;
@@ -552,6 +910,23 @@ namespace SQLMigration.Converter.ScriptBuilder
         private class nTable
         {
             public string[] nColumn { get; set; }
+        }
+
+        private  static int CountLines(string text)
+        {
+            int count = 0;
+            if (!string.IsNullOrEmpty(text))
+            {
+                count = text.Length - text.Replace("\n", string.Empty).Length;
+
+               
+                if (text[text.Length - 1] != '\n')
+                {
+                    ++count;
+                }
+            }
+
+            return count;
         }
     }
 }
