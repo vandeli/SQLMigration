@@ -62,6 +62,7 @@
     <Compile Include="Data\SchemaInfo\UDTSchemaInfoData.cs" />
     <Compile Include="Data\SchemaInfo\UsedColumn.cs" />
     <Compile Include="Data\SchemaInfo\UsedParameter.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Interface\Manager\IFunctionManager.cs" />
     <Compile Include="Interface\Manager\IIndexManager.cs" />
     <Compile Include="Interface\Manager\IPKManager.cs" />
