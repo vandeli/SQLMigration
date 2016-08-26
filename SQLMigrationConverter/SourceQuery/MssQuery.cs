@@ -101,12 +101,33 @@ namespace SQLMigrationConverter.SourceQuery
         public string GetSPQuery()
         {
             var sql = @"
-			   select specific_name,OBJECT_DEFINITION (OBJECT_ID(SO.name)) AS SqlCode , parameter_name,ORDINAL_POSITION,PARAMETER_MODE,IS_RESULT,USER_DEFINED_TYPE_NAME,DATA_TYPE,CHARACTER_MAXIMUM_LENGTH,NUMERIC_PRECISION,NUMERIC_SCALE 
-                from INFORMATION_SCHEMA.PARAMETERS
-                INNER JOIN sys.objects AS SO
-                ON SO.name = SPECIFIC_NAME
-                where SO.type_desc = 'SQL_STORED_PROCEDURE'
-                order by specific_name,ORDINAL_POSITION
+			   
+                 select * FROM
+                (select name,OBJECT_DEFINITION (OBJECT_ID(SO.name)) AS SqlCode , parameter_name,ORDINAL_POSITION,PARAMETER_MODE,IS_RESULT,USER_DEFINED_TYPE_NAME,DATA_TYPE,CHARACTER_MAXIMUM_LENGTH,NUMERIC_PRECISION,NUMERIC_SCALE 
+                                from INFORMATION_SCHEMA.PARAMETERS
+                                INNER JOIN sys.objects AS SO
+                                ON SO.name = SPECIFIC_NAME
+                                where SO.type_desc = 'SQL_STORED_PROCEDURE'
+          
+		
+		                UNION ALL
+	                SELECT 
+                       name,
+	                   OBJECT_DEFINITION (OBJECT_ID(pr.name)) AS SqlCode, 
+	                   'none' AS parameter_name,
+	                   NULL AS ORDINAL_POSITION,
+	                   NULL AS PARAMETER_MODE,
+	                   NULL AS IS_RESULT,
+	                   NULL AS USER_DEFINED_TYPE_NAME,
+	                   NULL AS DATA_TYPE,
+	                   NULL AS CHARACTER_MAXIMUM_LENGTH,
+	                   NULL AS NUMERIC_PRECISION,
+	                   NULL AS NUMERIC_SCALE
+                FROM   sys.procedures pr
+                WHERE  NOT EXISTS(SELECT *
+                                  FROM   sys.parameters p
+                                  WHERE  p.object_id = pr.object_id) )	a ORDER by a.name, a.ORDINAL_POSITION		
+   
 			";
             Console.WriteLine("MssQuery.GetSPQuery : Done");
             return sql;
