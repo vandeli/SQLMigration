@@ -267,10 +267,12 @@ namespace SQLMigration.Converter.ScriptBuilder
                         { spType = "insert"; breakFlag = true; break; }
                         else if (Regex.IsMatch(lines, @"\b(delete|Delete|DELETE)\b"))
                         { spType = "delete"; breakFlag = true; break; }
+                        else if (Regex.IsMatch(lines, @"\b(if|If|IF)\b"))
+                        { spType = "ifclause"; breakFlag = true; break; }
                         else if (Regex.IsMatch(lines, @"\b(select|Select|SELECT)\b"))
                         { spType = "select"; breakFlag = true; break; }
-                        //else
-                        //{ spType = "other"; }
+                        else if (Regex.IsMatch(lines, @"\b(exec|Exec|EXEC)\b"))
+                        { spType = "exec"; breakFlag = true; break; }
 
                     }
                     else
@@ -320,9 +322,9 @@ namespace SQLMigration.Converter.ScriptBuilder
                 }
 
             }
-            //  string txtSQLcode = File.ReadAllText(@"D:\BOSNET\Project\BOSNET\BOSNETLINUX\sampleSQL.txt", Encoding.UTF8);
+          //    string txtSQLcode = File.ReadAllText(@"D:\BOSNET\Project\BOSNET\BOSNETLINUX\sampleSQL.txt", Encoding.UTF8);
 
-            //  var sqlResult = SqlQueryCheck(txtSQLcode, "delete");
+        //      var sqlResult = SqlQueryCheck(txtSQLcode, "insert");
             //if (FnName == "BOS_CAS_Cash_DEV_DeleteALL")
             //{ var aa = ""; }
 
@@ -527,8 +529,8 @@ namespace SQLMigration.Converter.ScriptBuilder
                     break;
 
                 case "insert":
-                      //  var nInsert = SPInsertPattern(sql);//" INSERT PATTERN not set";
-                  //  result = SPInsertPattern(sql);
+                 
+                      result = SPInsertPattern(sql);
                         break;
 
                 case "delete":
@@ -536,11 +538,22 @@ namespace SQLMigration.Converter.ScriptBuilder
                         break;
 
                 case "select":
-                     var nSelect = " SELECT PATTERN not set";
-                     result = nSelect;
-                     break;
+                         var nSelect = " SELECT PATTERN not set";
+                         result = nSelect;
+                        //result = SPSelectPattern(sql);
+                        break;
 
-                default:
+                    case "ifclause":
+                        var nIf = " IF CLAUSE PATTERN not set";
+                        result = nIf;
+                        break;
+
+                    case "exec":
+                        var nExec = " EXEC PATTERN not set";
+                        result = nExec;
+                        break;
+
+                    default:
                     result = "--NOT DEFINED PATTERN ";
                     break;
             }
@@ -554,22 +567,22 @@ namespace SQLMigration.Converter.ScriptBuilder
             return result;
         }
 
-        //private string SPInsertPattern(string sql)
+        //private string SPSelectPattern(string sql)
         //{
-        //    string nInsert;
+        //    string nSelect;
         //    int tAS = 0;
-        //    int tSET = 0;
-        //    int tINSERT = 0;
-        //    int tVALUE = 0;
-        //    int insertType = 0;
-        //    nInsert = "";
+        //    int tFROM = 0;
+        //    int tSELECT = 0;
+        //    int tWHERE = 0;
+        //    int updateType = 0;
+        //    nSelect = "";
         //    string uTableName = "";
+           
         //    string wKolom = "";
+            
         //    string[] sKolom;
-        //    string[] vKolom;
         //    string[] allLines;
         //    int sIndex = 0;
-        //    int vIndex = 0;
         //    int sLine = 0;
 
         //    int totalLines = CountLines(sql);
@@ -590,6 +603,8 @@ namespace SQLMigration.Converter.ScriptBuilder
 
         //    //for (var x = 0; x < allLines.Length; x++)
         //    //{
+        //    //    allLines[x] = allLines[x].TrimEnd();
+        //    //    allLines[x] = allLines[x].TrimStart();
         //    //    if (Regex.IsMatch(allLines[x], @"\b(update|Update|UPDATE)\b"))
         //    //    {
         //    //        updateType += 1;
@@ -600,58 +615,78 @@ namespace SQLMigration.Converter.ScriptBuilder
         //    //{
 
         //        var tsIndex = 0;
-        //    for (var s = 0; s < allLines.Length; s++)
-        //    {
+        //        //for (var s = 0; s < allLines.Length; s++)
+        //        //{
+        //        //    allLines[s] = allLines[s].TrimEnd();
+        //        //    allLines[s] = allLines[s].TrimStart();
+        //        //    if (Regex.IsMatch(allLines[s], @"\b(set|Set|SET)\b"))  //|| (Regex.IsMatch(allLines[s], "Set")) || (Regex.IsMatch(allLines[s], "SET")))
+        //        //    {
+        //        //        if (tsIndex == 0)
+        //        //        {
+        //        //            sIndex = s;
+        //        //            tsIndex = 1;
+        //        //        }
+        //        //    }
+        //        //    if (Regex.IsMatch(allLines[s], @"\b(where|Where|WHERE)\b"))  // || (Regex.IsMatch(allLines[s], "Where")) || (Regex.IsMatch(allLines[s], "WHERE")))
+        //        //    { sIndex = s - sIndex - 1; }
+        //        //}
 
-        //        if (Regex.IsMatch(allLines[s], @"\b(insert|Insert|INSERT)\b"))  //|| (Regex.IsMatch(allLines[s], "Set")) || (Regex.IsMatch(allLines[s], "SET")))
+        //        //if (sIndex != 0)
+        //        //{ sKolom = new string[sIndex]; }
+        //        //else
+        //        //{ sKolom = new string[1]; }
+
+        //        for (var i = 0; i < allLines.Length; i++)
         //        {
-        //            //save pos dsini cari count insert jika cuma 2 sIndex di lebihin 1
-        //            var iA = allLines[s].Split(' ').Count();
-        //            if (tsIndex == 0)
-        //            {
-        //                sIndex = s;
-        //                tsIndex = 1;
-        //            }
-        //        }
-        //        if (Regex.IsMatch(allLines[s], @"\b(values|Values|VALUES)\b"))  // || (Regex.IsMatch(allLines[s], "Where")) || (Regex.IsMatch(allLines[s], "WHERE")))
-        //        { sIndex = s - sIndex - 1; vIndex = allLines.Length - s; }
-        //    }
-
-        //    if (sIndex != 0)
-        //    { sKolom = new string[sIndex]; }
-        //    else
-        //    { sKolom = new string[1]; }
-        //    vKolom = new string[vIndex];
-
-        //    for (var i = 0; i < allLines.Length; i++)
-        //        {
+        //            allLines[i] = allLines[i].TrimEnd();
+        //            allLines[i] = allLines[i].TrimStart();
         //            //  var tess = allLines[i].Split(' ').Count();
         //            if ((allLines[i].Split(' ').First() == "as") || (allLines[i].Split(' ').First() == "As") || (allLines[i].Split(' ').First() == "AS"))
         //            {
         //                if (tAS == 0)
         //                {
         //                    var iAS = allLines[i].Split(' ').Count();
-
-        //                    switch (iAS)
+        //                    string[] AS_array = allLines[i].Split(' ');
+        //                switch (iAS)
         //                    {
         //                        case 1:
         //                            break;
-                              
+        //                        case 2:
+        //                        // uTableName = allLines[i + 1].TrimStart();
+        //                        //### save sampai disini ( cari array skolom  disini,
+        //                        for (var n = i; n < allLines.Length; n++)
+        //                        {
+        //                            if (allLines[n + 1].Split(' ').Contains("FROM") == true)
+        //                            {
+        //                                break;
+        //                            }
+        //                            else
+        //                            { sIndex++; }
+                                    
+        //                        }
+        //                        sKolom = new string[sIndex];
+        //                        for (var n = 0; n < sIndex; n++)
+        //                        {
+        //                            sKolom[n] = allLines[i + n + 1].TrimStart();
+        //                            sKolom[n] = sKolom[n].Replace(@"@", "p_");
+        //                        }
+
+        //                            tSELECT = 1;
+        //                            break;
+        //                        case 3:
+        //                            uTableName = allLines[i].Split(' ').Last();
+        //                            tSELECT = 1;
+        //                            break;
         //                        case 4:
-                                   
-        //                             uTableName = allLines[i].Split(' ').Last();
+        //                            string[] nTN = allLines[i].Split(' ');
+        //                            uTableName = nTN[2];
         //                            for (var n = 0; n < sIndex; n++)
         //                            {
-                                        
         //                                sKolom[n] = allLines[i + n + 1].TrimStart();
-                                        
-        //                                sKolom[n] = sKolom[n].Replace(@"(", "");
-        //                                sKolom[n] = sKolom[n].Replace(@")", "");
-        //                                sKolom[n] = sKolom[n].Replace(@",", "");
-
+        //                                sKolom[n] = sKolom[n].Replace(@"@", "p_");
         //                            }
-        //                            tINSERT = 1;
-                                   
+        //                            tUPDATE = 1;
+        //                            tSET = 1;
         //                            break;
         //                        default:
         //                            break;
@@ -661,12 +696,12 @@ namespace SQLMigration.Converter.ScriptBuilder
 
         //            }
 
-        //            if ((allLines[i].Split(' ').First() == "insert") || (allLines[i].Split(' ').First() == "Insert") || (allLines[i].Split(' ').First() == "INSERT"))
+        //            if ((allLines[i].Split(' ').First() == "Update") || (allLines[i].Split(' ').First() == "update") || (allLines[i].Split(' ').First() == "UPDATE"))
         //            {
-        //                if (tINSERT == 0)
+        //                if (tUPDATE == 0)
         //                {
-        //                    var iINSERT = allLines[i].Split(' ').Count();
-        //                    switch (iINSERT)
+        //                    var iUPDATE = allLines[i].Split(' ').Count();
+        //                    switch (iUPDATE)
         //                    {
         //                        case 1:
         //                            uTableName = allLines[i + 1].TrimStart();
@@ -758,25 +793,296 @@ namespace SQLMigration.Converter.ScriptBuilder
 
 
         //        }
-        //        nInsert = "INSERT INTO" + uTableName + "\r\n" +
-        //                  "(\r\n";
-               
+        //        nSelect = "SELECT " + uTableName + "\r\n" +
+        //                  "FROM \r\n";
+        //        if (sIndex != 0)
+        //        {
         //            for (var n = 0; n < sIndex; n++)
         //            {
-        //                nInsert += sKolom[n] + "\r\n";
+        //                nSelect += sKolom[n] + "\r\n";
         //            }
-        //            nInsert += ")\r\n";
+        //        }
+        //        else
+        //        {
+        //            nSelect += sKolom[0] + "\r\n";
+        //        }
 
-        //            nInsert+= "VALUES\r\n" +
-        //                "(\r\n";
-        //            for (var z = 0; z < sIndex; z++)
-        //            {
-        //                nInsert += wKolom[z] + "\r\n";
-        //            }
-        //            nInsert += ")\r\n";
-            
-        //    return nInsert;
+        //        nSelect += "WHERE \r\n" + wKolom + "\r\n";
+        //    //}
+        //    //else //## another type
+        //    //{
+        //    //    nUpdate = "-- ### 2 update #####";
+        //    //}
+        //    return nSelect;
         //}
+
+        private string SPInsertPattern(string sql)
+        {
+            string nInsert;
+            int tAS = 0;
+            int tSET = 0;
+            int tINSERT = 0;
+            int tVALUES = 0;
+            int insertType = 0;
+            nInsert = "";
+            string uTableName = "";
+            string wKolom = "";
+            string[] sKolom;
+            string[] vKolom;
+            string[] allLines;
+            int sIndex = 0;
+            int vIndex = 0;
+            int sLine = 0;
+
+            int totalLines = CountLines(sql);
+            allLines = new string[totalLines];
+            using (StringReader reader2 = new StringReader(sql))
+            {
+                string line = string.Empty;
+                do
+                {
+                    line = reader2.ReadLine();
+                    if (line != null)
+                    {
+                        allLines[sLine] = line.TrimStart();
+                        sLine++;
+                    }
+                } while (line != null);
+            }
+
+
+            var tsIndex = 0;
+            for (var s = 0; s < allLines.Length; s++)
+            {
+
+                if (Regex.IsMatch(allLines[s], @"\b(insert|Insert|INSERT)\b"))  //|| (Regex.IsMatch(allLines[s], "Set")) || (Regex.IsMatch(allLines[s], "SET")))
+                {
+              
+                    var iA = allLines[s].TrimEnd().Split(' ').Count();
+                    if (tsIndex == 0)
+                    {
+                        if ((iA == 2)|| (iA == 1))
+                        {
+                            sIndex = s+1;
+                            tsIndex = 1;
+                        }
+                        else
+                        {
+                            sIndex = s;
+                            tsIndex = 1;
+                        }
+                    }
+                }
+                if (Regex.IsMatch(allLines[s], @"\b(values|Values|VALUES)\b"))  // || (Regex.IsMatch(allLines[s], "Where")) || (Regex.IsMatch(allLines[s], "WHERE")))
+                { sIndex = s - sIndex - 1; vIndex = allLines.Length - s-1; }
+            }
+
+            if (sIndex != 0)
+            { sKolom = new string[sIndex]; }
+            else
+            { sKolom = new string[1]; }
+            vKolom = new string[vIndex];
+
+            for (var i = 0; i < allLines.Length; i++)
+            {
+                allLines[i] = allLines[i].Replace(@"(", "");
+                allLines[i] = allLines[i].Replace(@")", "");
+                allLines[i] = allLines[i].TrimStart();
+                allLines[i] = allLines[i].TrimEnd();
+
+                //  var tess = allLines[i].Split(' ').Count();
+                if ((allLines[i].Split(' ').First() == "as") || (allLines[i].Split(' ').First() == "As") || (allLines[i].Split(' ').First() == "AS"))
+                {
+                    if (tAS == 0)
+                    {
+                        var iAS = allLines[i].TrimEnd().Split(' ').Count();
+
+                        switch (iAS)
+                        {
+                            case 1:
+                                break;
+
+                            case 4:
+
+                                uTableName = allLines[i].Split(' ').Last();
+                                for (var n = 0; n < sIndex; n++)
+                                {
+
+                                    sKolom[n] = allLines[i + n + 1].TrimStart();
+
+                                    sKolom[n] = sKolom[n].Replace(@"(", "");
+                                    sKolom[n] = sKolom[n].Replace(@")", "");
+                                    sKolom[n] = sKolom[n].Replace(@",", "");
+                                    sKolom[n] = sKolom[n].Replace(@"@", "p_");
+
+                                }
+                                tINSERT = 1;
+
+                                break;
+                            default:
+                                break;
+                        }
+                        tAS = 1;
+                    }
+
+                }
+
+                if ((allLines[i].Split(' ').First() == "insert") || (allLines[i].Split(' ').First() == "Insert") || (allLines[i].Split(' ').First() == "INSERT"))
+                {
+                    if (tINSERT == 0)
+                    {
+                        var iINSERT = allLines[i].TrimEnd().Split(' ').Count();
+                        switch (iINSERT)
+                        {
+                            case 1:
+                                uTableName = allLines[i + 1].TrimStart();
+                                for (var n = 0; n < sIndex; n++)
+                                {
+                                    sKolom[n] = allLines[i + n + 2].TrimStart();
+                                    sKolom[n] = allLines[i + n + 2].TrimEnd();
+                                    sKolom[n] = sKolom[n].Replace(@"(", "");
+                                    sKolom[n] = sKolom[n].Replace(@")", "");
+                                    sKolom[n] = sKolom[n].Replace(@",", "");
+                                    sKolom[n] = sKolom[n].Replace(@"@", "p_");
+                                }
+                                tINSERT = 1;
+                                break;
+                            case 2:
+                                uTableName = allLines[i + 1].TrimStart();
+                                for (var n = 0; n < sIndex; n++)
+                                {
+                                    sKolom[n] = allLines[i + n + 2].TrimStart();
+                                    sKolom[n] = allLines[i + n + 2].TrimEnd();
+                                    sKolom[n] = sKolom[n].Replace(@"(", "");
+                                    sKolom[n] = sKolom[n].Replace(@")", "");
+                                    sKolom[n] = sKolom[n].Replace(@",", "");
+                                    sKolom[n] = sKolom[n].Replace(@"@", "p_");
+                                }
+                                tINSERT = 1;
+                                break;
+                            case 3:
+                                uTableName = allLines[i].Split(' ').Last();
+                                for (var n = 0; n < sIndex; n++)
+                                {
+                                    sKolom[n] = allLines[i + n + 1].TrimStart();
+                                    sKolom[n] = allLines[i + n + 1].TrimEnd();
+                                    sKolom[n] = sKolom[n].Replace(@"(", "");
+                                    sKolom[n] = sKolom[n].Replace(@")", "");
+                                    sKolom[n] = sKolom[n].Replace(@",", "");
+                                    sKolom[n] = sKolom[n].Replace(@"@", "p_");
+                                }
+                                tINSERT = 1;
+                               
+                                break;
+
+                            default:
+                                break;
+                        }
+                      
+                        tINSERT = 1;
+                    }
+                }
+                else if ((allLines[i].Split(' ').First() == "Values") || (allLines[i].Split(' ').First() == "values") || (allLines[i].Split(' ').First() == "VALUES"))
+                {
+                    if (tVALUES == 0)
+                    {
+                      
+                        var iVALUES = allLines[i].TrimEnd().Split(' ').Count();
+                        var kValues = allLines[i].Split(' ').First();
+                        switch (iVALUES)
+                        {
+                            case 1:
+
+                                for (var n = 0;  n < vIndex; n++)
+                                {
+                                    vKolom[n] = allLines[i + n + 1].TrimStart();
+                                    vKolom[n] = allLines[i + n + 1].TrimEnd();
+                                    vKolom[n] = vKolom[n].Replace(@"(", "");
+                                    vKolom[n] = vKolom[n].Replace(@")", "");
+                                    vKolom[n] = vKolom[n].Replace(@",", "");
+                                    vKolom[n] = vKolom[n].Replace(@"@", "p_");
+                                }
+
+                                tVALUES = 1;
+                                break;
+
+                            default:
+
+
+                                tVALUES = 1;
+                                break;
+                        }
+                        tSET = 1;
+                    }
+                }
+                else if ((allLines[i].Split(' ').First() == "Values(") || (allLines[i].Split(' ').First() == "values(") || (allLines[i].Split(' ').First() == "VALUES("))
+                {
+                    if (tVALUES == 0)
+                    {
+
+                        var iVALUES = allLines[i].TrimEnd().Split(' ').Count();
+                        var kValues = allLines[i].Split(' ').First();
+                        switch (iVALUES)
+                        {
+                            case 1:
+
+                                for (var n = 0; n < vIndex; n++)
+                                {
+                                    vKolom[n] = allLines[i + n + 1].TrimStart();
+                                    vKolom[n] = allLines[i + n + 1].TrimEnd();
+                                    vKolom[n] = vKolom[n].Replace(@"(", "");
+                                    vKolom[n] = vKolom[n].Replace(@")", "");
+                                    vKolom[n] = vKolom[n].Replace(@",", "");
+                                    vKolom[n] = vKolom[n].Replace(@"@", "p_");
+                                }
+
+                                tVALUES = 1;
+                                break;
+
+                            default:
+
+
+                                tVALUES = 1;
+                                break;
+                        }
+                        tSET = 1;
+                    }
+                }
+            }
+                
+
+                
+            nInsert = "INSERT INTO " + uTableName + "\r\n" +
+                      "(\r\n";
+
+            for (var n = 0; n < sIndex; n++)
+            {
+                if (sKolom[n] != "")
+                {
+                    if (n == sIndex - 2)
+                    { nInsert += sKolom[n] + "\r\n"; }
+                    else
+                    { nInsert += sKolom[n] + ",\r\n"; }
+                }
+            }
+            nInsert += ")\r\n";
+
+            nInsert += "VALUES\r\n" +
+                "(\r\n";
+            for (var z = 0; z < vIndex; z++)
+            {
+                if ((vKolom[z] != "") && (vKolom[z] != "set ANSI_NULLS ON"))
+                {
+                    if (z == vIndex - 2)
+                    { nInsert += vKolom[z] + "\r\n"; }
+                    else
+                    { nInsert += vKolom[z] + ",\r\n"; }
+                }
+            }
+            nInsert += ")\r\n";
+
+            return nInsert;
+        }
 
         private string SPDeletePattern(string sql)
         {
@@ -814,6 +1120,8 @@ namespace SQLMigration.Converter.ScriptBuilder
 
             for (var x = 0; x < allLines.Length; x++)
             {
+                allLines[x] = allLines[x].TrimEnd();
+                allLines[x] = allLines[x].TrimStart();
                 if ((allLines[x].Split(' ').First() == "delete") || (allLines[x].Split(' ').First() == "Delete") || (allLines[x].Split(' ').First() == "DELETE"))
                 {
                     deleteType += 1;
@@ -832,8 +1140,10 @@ namespace SQLMigration.Converter.ScriptBuilder
             tWHERE = 1;
             for (var i = 0; i < allLines.Length; i++)
                 {
-                    //  var tess = allLines[i].Split(' ').Count();
-                    if ((allLines[i].Split(' ').First() == "delete") || (allLines[i].Split(' ').First() == "Delete") || (allLines[i].Split(' ').First() == "DELETE"))
+                    allLines[i] = allLines[i].TrimEnd();
+                    allLines[i] = allLines[i].TrimStart();
+                //  var tess = allLines[i].Split(' ').Count();
+                if ((allLines[i].Split(' ').First() == "delete") || (allLines[i].Split(' ').First() == "Delete") || (allLines[i].Split(' ').First() == "DELETE"))
                     {
 
                     var kSet = allLines[i].Split(' ').First();
@@ -1016,6 +1326,8 @@ namespace SQLMigration.Converter.ScriptBuilder
 
             for (var x = 0; x < allLines.Length; x++)
             {
+                allLines[x] = allLines[x].TrimEnd();
+                allLines[x] = allLines[x].TrimStart();
                 if (Regex.IsMatch(allLines[x], @"\b(update|Update|UPDATE)\b"))
                 {
                     updateType += 1;
@@ -1028,7 +1340,8 @@ namespace SQLMigration.Converter.ScriptBuilder
                 var tsIndex = 0;
                 for (var s = 0; s < allLines.Length; s++)
                 {
-
+                    allLines[s] = allLines[s].TrimEnd();
+                    allLines[s] = allLines[s].TrimStart();
                     if (Regex.IsMatch(allLines[s], @"\b(set|Set|SET)\b"))  //|| (Regex.IsMatch(allLines[s], "Set")) || (Regex.IsMatch(allLines[s], "SET")))
                     {
                         if (tsIndex == 0)
@@ -1048,6 +1361,8 @@ namespace SQLMigration.Converter.ScriptBuilder
 
                 for (var i = 0; i < allLines.Length; i++)
                 {
+                    allLines[i] = allLines[i].TrimEnd();
+                    allLines[i] = allLines[i].TrimStart();
                     //  var tess = allLines[i].Split(' ').Count();
                     if ((allLines[i].Split(' ').First() == "as") || (allLines[i].Split(' ').First() == "As") || (allLines[i].Split(' ').First() == "AS"))
                     {
