@@ -218,9 +218,7 @@ namespace SQLMigration.Converter.ScriptBuilder
                 script = script.Replace(@"@", "m_");
                 var splittedText = Regex.Split(script, "\r\nas\r\n", RegexOptions.IgnoreCase).ToList().Skip(1).ToArray();
 
-             //   var parameters = getAllParameters().Where(x => x.IsResult == false && x.Name == proc);
-             //   var parameter = parameters.ToList().Aggregate(new StringBuilder(), (sb, i) => sb.Append("m_" + i.ParamName.Substring(1, i.ParamName.Length - 1) + " " + i.getConvertedDataType() + "\r\n,")).ToString();
-             //   parameter = parameter.Substring(0, parameter.Length - 1);
+   
                 foreach (var allparam in singleOutputs)
                  {
                         parameter += allparam.ParameterName + "\r\n";
@@ -246,9 +244,7 @@ namespace SQLMigration.Converter.ScriptBuilder
 
 
 
-            //    StringReader strReader = new StringReader(schemaInfo.SqlCode);
-
-         //   string txtSQLcode = File.ReadAllText(@"D:\BOSNET\Project\BOSNET\BOSNETLINUX\sampleSQL.txt", Encoding.UTF8);
+         
             using (StringReader reader = new StringReader(schemaInfo.SqlCode))
             {
                 string line = string.Empty;
@@ -322,12 +318,11 @@ namespace SQLMigration.Converter.ScriptBuilder
                 }
 
             }
-         //     string txtSQLcode = File.ReadAllText(@"D:\BOSNET\Project\BOSNET\BOSNETLINUX\sampleSQL.txt", Encoding.UTF8);
+            //## testing here //
+          //   string txtSQLcode = File.ReadAllText(@"D:\BOSNET\Project\BOSNET\BOSNETLINUX\sampleSQL.txt", Encoding.UTF8);
 
-         //     var sqlResult = SqlQueryCheck(txtSQLcode, "select");
-            //if (FnName == "BOS_CAS_Cash_DEV_DeleteALL")
-            //{ var aa = ""; }
-
+        //     var sqlResult = SqlQueryCheck(txtSQLcode, "select");
+         
           var sqlResult = SqlQueryCheck(schemaInfo.SqlCode, spType);
 
             if (parName == "")
@@ -539,8 +534,7 @@ namespace SQLMigration.Converter.ScriptBuilder
                         break;
 
                     case "ifclause":
-                        var nIf = " IF CLAUSE PATTERN not set";
-                        result = nIf;
+                        result = SPifclausePattern(sql);
                         break;
 
                     case "exec":
@@ -562,33 +556,15 @@ namespace SQLMigration.Converter.ScriptBuilder
             return result;
         }
 
-        private string SPSelectPattern(string sql)
+        private string SPifclausePattern(string sql)
         {
             string nSelect;
-            int tAS = 0;
-            int tFROM = 0;
-            int tSELECT = 0;
-            int tWHERE = 0;
-            int updateType = 0;
             nSelect = "";
-            string uTableName = "";
-
-            string wKolom = "";
-            string[] AS_array;
-            string[] sKolom;
-            string[] sFrom;
-            string[] sWhere;
-            string[] allLines;
-            int sIndex = 0;
-            int ssIndex = 0;
-            int fIndex = 0;
-            int wIndex = 0;
             int sLine = 0;
-            bool cLine;
-            cLine = false;
-
+            var start = 0;
+            var scek = false;
             int totalLines = CountLines(sql);
-            allLines = new string[totalLines];
+            var allLines = new string[totalLines];
             using (StringReader reader2 = new StringReader(sql))
             {
                 string line = string.Empty;
@@ -604,371 +580,679 @@ namespace SQLMigration.Converter.ScriptBuilder
             }
 
 
-             var tsIndex = 0;
-            for (var s = 0; s < allLines.Length; s++)
-            {
-                allLines[s] = allLines[s].TrimEnd();
-                allLines[s] = allLines[s].TrimStart();
-                if (Regex.IsMatch(allLines[s], @"\b(select|Select|SELECT)\b"))
-                {
-                  
-                    if (tsIndex == 0)
-                    {
-                        sIndex = s;
-                        tsIndex = 1;
-                    }
-                  
-                }
-                if (Regex.IsMatch(allLines[s], @"\b(from|From|FROM)\b")) 
-                {
-                    if (s == sIndex)
-                    {
-                        sIndex = 1;
-                        fIndex = s;
-                    }
-                    else { sIndex = s - sIndex - 1; fIndex = s; }
-                }
-                if (Regex.IsMatch(allLines[s], @"\b(where|Where|WHERE)\b"))
-                {
-                    if (s == fIndex)
-                    {
-                        fIndex = 1;
-                        //wIndex = s;
-                    }
-                    else { fIndex = s - fIndex - 1; }
-
-                    for (var i = s; i < allLines.Length; i++)
-                    {
-                        wIndex++;
-                    }
-                }
-
-
-            }
-          
-            sKolom = new string[sIndex];
-            sFrom = new string[fIndex];
-            sWhere = new string[wIndex];
-
             for (var i = 0; i < allLines.Length; i++)
             {
-                allLines[i] = allLines[i].TrimEnd();
-                allLines[i] = allLines[i].TrimStart();
-          
-                if ((allLines[i].Split(' ').First() == "as") || (allLines[i].Split(' ').First() == "As") || (allLines[i].Split(' ').First() == "AS"))
+                if (Regex.IsMatch(allLines[i], @"\b(as|As|AS)\b"))
                 {
-                    if (tAS == 0)
+                    if (scek == false)
                     {
-                        var iAS = allLines[i].Split(' ').Count();
-            
-                        switch (iAS)
-                        {
-                            case 1:
-                                break;
-                            case 2:
-                            
-                                for (var n = 0; n < sIndex; n++)
-                                {
-                                    sKolom[n] = allLines[i + n + 1].TrimStart();
-                                  //  sKolom[n] = sKolom[n].Replace(@",", "");
-                                    sKolom[n] = sKolom[n].Replace(@"@", "p_");
-                                }
+                        start = i;
+                        scek = true;
+                    }
+                }
+            }
+            var nIf = 0;
+            for (var i = start + 1; i < allLines.Length; i++)
+            {
 
-                                tSELECT = 1;
-                                break;
-                            case 3:
-                             
-                                sKolom[0] = allLines[i].Split(' ').Last();
-                                tSELECT = 1;
-                                break;
-                           
-                            default:
-                                AS_array = allLines[i].Split(' ');
-                               
-                                if (Regex.IsMatch(allLines[i], @"\b(from|From|FROM)\b"))
-                                {
-                               
-//####################3                                 //   {
-                                   for (var a = 2; a < AS_array.Length; a++)
+                var rText = allLines[i];
+                rText = rText.Replace(@"IsNull", "COALESCE");
+                rText = rText.Replace(@"@", "p_");
+                if ((allLines[i].Split(' ').First() == "If") || (allLines[i].Split(' ').First() == "if") || (allLines[i].Split(' ').First() == "IF"))
+                {
+                    if (nIf == 0)
+                    {
+                        rText = rText + "\r\n" + "  THEN";
+                        nIf++;
+                    }
+                    else
+                    {
+                        rText = "END IF\r\n" + rText;
+                        rText = rText + "\r\n" + "  THEN";
+                    }
+                    
+                }
+
+                nSelect += rText + "\r\n";
+
+                if(i == allLines.Length-1)
+                {
+                    nSelect = nSelect + "\r\n" + "END IF";
+                }
+                     
+            }
+            return nSelect;
+        }
+
+        private string SPSelectPattern(string sql)
+        {
+            string nSelect;
+            int tAS = 0;
+            int tFROM = 0;
+            int tSELECT = 0;
+            int tWHERE = 0;
+            int tORDER = 0;
+            int updateType = 0;
+            nSelect = "";
+            string uTableName = "";
+
+            string wKolom = "";
+            string[] AS_array;
+            string[] sKolom;
+            string[] sFrom;
+            string[] sWhere;
+            string[] sOrder;
+            string[] allLines;
+            int totSelect = 0;
+            int totJoin = 0;
+            int sIndex = 0;
+            int ssIndex = 0;
+            int fIndex = 0;
+            int wIndex = 0;
+            int oIndex = 0;
+            int sLine = 0;
+            bool cLine;
+            cLine = false;
+            var getAll = false;
+            var isDist = false;
+            var isLimit = false;
+            var LimitValue = "";
+            int totalLines = CountLines(sql);
+            allLines = new string[totalLines];
+            using (StringReader reader2 = new StringReader(sql))
+            {
+                string line = string.Empty;
+                do
+                {
+                    line = reader2.ReadLine();
+                    if (line != null)
+                    {
+                        allLines[sLine] = line.TrimStart();
+                        sLine++;
+                    }
+                } while (line != null);
+            }
+            for (var x = 0; x < allLines.Length; x++)
+            {
+                if (Regex.IsMatch(allLines[x], @"\b(select|Select|SELECT)\b"))
+                {
+                    totSelect++;
+                }
+                if (Regex.IsMatch(allLines[x], @"\b(join|join|JOIN)\b"))
+                {
+                    totJoin++;
+                }
+
+            }
+            if ((totSelect > 1) ||(totJoin > 1) )
+            { getAll = true; }
+
+             var tsIndex = 0;
+            if (getAll != true)
+            {
+                for (var s = 0; s < allLines.Length; s++)
+                {
+                    allLines[s] = allLines[s].TrimEnd();
+                    allLines[s] = allLines[s].TrimStart();
+                    if (Regex.IsMatch(allLines[s], @"\b(select|Select|SELECT)\b"))
+                    {
+                        var iSELECT = allLines[s].Split(' ').Count();
+                        if(Regex.IsMatch(allLines[s], @"\b(from|From|FROM)\b"))
+                        {
+                            fIndex = 1;
+                        }
+
+                        if (tsIndex == 0)
+                        {
+                            sIndex = s;
+                            tsIndex = 1;
+                            if (iSELECT > 1)
+                            {
+                                sIndex = 1;
+                            }
+                        }
+
+                    }
+                    if ((allLines[s].Split(' ').Last() == "From") || (allLines[s].Split(' ').Last() == "from") || (allLines[s].Split(' ').Last() == "FROM"))
+                    {
+                        fIndex = s;
+                    }
+                        if ((allLines[s].Split(' ').First() == "From") || (allLines[s].Split(' ').First() == "from") || (allLines[s].Split(' ').First() == "FROM"))
+                    {
+                        var iFROM = allLines[s].Split(' ').Count();
+                        if (s == sIndex)
+                        {
+                            sIndex = 1;
+                            fIndex = s;
+                        }
+                        else
+                        {
+                            if (sIndex > 1)
+                            {
+                                sIndex = s - sIndex - 1; fIndex = s;
+                            }
+                        }
+                        if (iFROM > 1)
+                        {
+                            fIndex = 1;
+                        }
+
+                    }
+                    if (Regex.IsMatch(allLines[s], @"\b(where|Where|WHERE)\b"))
+                    {
+                        var iWhere = allLines[s].Split(' ').Count();
+
+                        if (s == fIndex)
+                        {
+                            fIndex = 1;
+                            //wIndex = s;
+                        }
+                        else { fIndex = s - fIndex - 1; }
+
+                        if (iWhere > 1)
+                        {
+                            wIndex = 1;
+                        }
+                        else
+                        {
+                            for (var i = s; i < allLines.Length; i++)
+                            {
+                                if (Regex.IsMatch(allLines[i], @"\b(order|Order|ORDER)\b"))
+                                { break; }
+                                else
+                                { wIndex++; }
+
+                            }
+                        }
+                    }
+                    if (Regex.IsMatch(allLines[s], @"\b(order|Order|ORDER)\b"))
+                    {
+                        var iOrder = allLines[s].Split(' ').Count();
+                        if (iOrder > 2)
+                        {
+                            oIndex = 1;
+                        }
+                        else
+                        {
+                            for (var i = s; i < allLines.Length; i++)
+                            {
+                                if (i > allLines.Length - 1)
+                                { break; }
+                                else { oIndex++; }
+
+                            }
+                        }
+                    }
+
+
+                }
+                if (wIndex == 0)
+                {
+                    if (fIndex > 1)
+                    {
+                        var fIndexTemp = fIndex;
+                        fIndex = 0;
+                        for (var i = fIndexTemp; i < allLines.Length; i++)
+                        {
+                            allLines[i] = allLines[i].TrimEnd();
+                            allLines[i] = allLines[i].TrimStart();
+                            fIndex++;
+                        }
+                    }
+                }
+
+                sKolom = new string[sIndex];
+                sFrom = new string[fIndex];
+                sWhere = new string[wIndex];
+                sOrder = new string[oIndex];
+
+                for (var i = 0; i < allLines.Length; i++)
+                {
+                    allLines[i] = allLines[i].TrimEnd();
+                    allLines[i] = allLines[i].TrimStart();
+
+                    if ((allLines[i].Split(' ').First() == "as") || (allLines[i].Split(' ').First() == "As") || (allLines[i].Split(' ').First() == "AS"))
+                    {
+                        if (tAS == 0)
+                        {
+                            var iAS = allLines[i].Split(' ').Count();
+
+                            switch (iAS)
+                            {
+                                case 1:
+                                    break;
+                                case 2:
+
+                                    for (var n = 0; n < sIndex; n++)
                                     {
-                                        if (Regex.IsMatch(AS_array[a], @"\b(from|From|FROM)\b"))
-                                        { break; }
-                                        sKolom[0] += AS_array[a] + " ";
-                                       
+                                        sKolom[n] = allLines[i + n + 1].TrimStart();
+                                        sKolom[n] = sKolom[n].Replace(@"@", "p_");
                                     }
-                                    
+
+                                    tSELECT = 1;
+                                    break;
+                                case 3:
+
+                                    sKolom[0] = allLines[i].Split(' ').Last();
+                                    tSELECT = 1;
+                                    break;
+
+                                default:
+                                    AS_array = allLines[i].Split(' ');
+
+                                    if (Regex.IsMatch(allLines[i], @"\b(from|From|FROM)\b"))
+                                    {
+
+                                        //####################3                                 //   {
+                                        for (var a = 2; a < AS_array.Length; a++)
+                                        {
+                                            if (Regex.IsMatch(AS_array[a], @"\b(from|From|FROM)\b"))
+                                            { break; }
+                                            sKolom[0] += AS_array[a] + " ";
+
+                                        }
+
                                         sKolom[0] = sKolom[0].Replace(@"@", "p_");
-                                    if(Regex.IsMatch(allLines[i].Split(' ').Last(), @"\b(from|From|FROM)\b"))
-                                    {
-                                        for (var s = 0; s< fIndex; s++)
+                                        if (Regex.IsMatch(allLines[i].Split(' ').Last(), @"\b(from|From|FROM)\b"))
                                         {
-                                            sFrom[s] = allLines[i + s + 1].TrimStart();
-                                          //  sFrom[s] = sFrom[s].Replace(@",", "");
-                                            sFrom[s] = sFrom[s].Replace(@"@", "p_");
+                                            for (var s = 0; s < fIndex; s++)
+                                            {
+                                                sFrom[s] = allLines[i + s + 1].TrimStart();
+                                                //  sFrom[s] = sFrom[s].Replace(@",", "");
+                                                sFrom[s] = sFrom[s].Replace(@"@", "p_");
+                                            }
+                                        }
+                                        else
+                                        {
+                                            var more = new bool();
+                                            more = false;
+                                            for (var a = 0; a < AS_array.Length; a++)
+                                            {
+                                                if (more == true)
+                                                {
+                                                    sFrom[0] += AS_array[a] + " ";
+                                                    //  sFrom[0] = sFrom[0].Replace(@",", "");
+                                                    sFrom[0] = sFrom[0].Replace(@"@", "p_");
+                                                }
+
+                                                if (Regex.IsMatch(AS_array[a], @"\b(from|From|FROM)\b"))
+                                                {
+                                                    more = true;
+                                                }
+
+                                            }
+
+                                        }
+                                        tFROM = 1;
+                                    }
+                                    else
+                                    {
+                                        for (var a = 2; a < AS_array.Length; a++)
+                                        {
+                                            sKolom[0] += AS_array[a] + " ";
+
+                                        }
+
+                                        sKolom[0] = sKolom[0].Replace(@"@", "p_");
+
+                                    }
+                                    tSELECT = 1;
+
+                                    break;
+                            }
+                            tAS = 1;
+                        }
+
+                    }
+
+                    if ((allLines[i].Split(' ').First() == "Select") || (allLines[i].Split(' ').First() == "select") || (allLines[i].Split(' ').First() == "SELECT"))
+                    {
+                        if (tSELECT == 0)
+                        {
+                            //  string[] AS_array = allLines[i].Split(' ');
+                            var iSELECT = allLines[i].Split(' ').Count();
+                            switch (iSELECT)
+                            {
+                                case 1:
+
+                                    for (var n = 0; n < sIndex; n++)
+                                    {
+                                        sKolom[n] = allLines[i + n + 1].TrimStart();
+                                        sKolom[n] = sKolom[n].Replace(@"@", "p_");
+                                    }
+
+                                    tSELECT = 1;
+
+                                    break;
+                                case 2:
+                                    if (Regex.IsMatch(allLines[i].Split(' ').Last(), @"\b(distinct|Distinct|DISTINCT)\b"))
+                                    {
+                                        isDist = true;
+
+                                        for (var n = 0; n < sIndex; n++)
+                                        {
+                                            sKolom[n] = allLines[i + n + 1].TrimStart();
+                                            sKolom[n] = sKolom[n].Replace(@"@", "p_");
                                         }
                                     }
                                     else
                                     {
-                                        var more = new bool();
-                                        more = false;
-                                        for (var a = 0; a < AS_array.Length; a++)
-                                        {                                            
-                                            if (more == true)
-                                            {
-                                                sFrom[0] += AS_array[a] + " ";
-                                              //  sFrom[0] = sFrom[0].Replace(@",", "");
-                                                sFrom[0] = sFrom[0].Replace(@"@", "p_");
-                                            }
+                                        sKolom[0] = allLines[i].Split(' ').Last();
+                                    }
+                                    tSELECT = 1;
+                                    break;
 
+
+                                default:
+                                    AS_array = allLines[i].Split(' ');
+                                    if (Regex.IsMatch(allLines[i], @"\b(top|Top|TOP)\b"))
+                                    {
+                                        isLimit = true;
+                                        LimitValue = allLines[i];
+                                        for (var n = 0; n < sIndex; n++)
+                                        {
+                                            sKolom[n] = allLines[i + n + 1].TrimStart();
+                                            sKolom[n] = sKolom[n].Replace(@"@", "p_");
+                                        }
+                                        tSELECT = 1;
+                                    }
+
+                                    if (Regex.IsMatch(allLines[i], @"\b(from|From|FROM)\b"))
+                                    {
+
+                                        for (var a = 1; a < AS_array.Length; a++)
+                                        {
                                             if (Regex.IsMatch(AS_array[a], @"\b(from|From|FROM)\b"))
-                                            {
-                                                more = true;
-                                            }
+                                            { break; }
+                                            sKolom[0] += AS_array[a] + " ";
 
                                         }
-                                       // sFrom[0] = allLines[i].Split(' ').Last();
+
+                                        sKolom[0] = sKolom[0].Replace(@"@", "p_");
+                                        if (Regex.IsMatch(allLines[i].Split(' ').Last(), @"\b(from|From|FROM)\b"))
+                                        {
+                                            for (var s = 0; s < fIndex; s++)
+                                            {
+                                                sFrom[s] = allLines[i + s + 1].TrimStart();
+                                                sFrom[s] = sFrom[s].Replace(@"@", "p_");
+                                            }
+                                        }
+                                        else
+                                        {
+                                            var more = new bool();
+                                            more = false;
+                                            for (var a = 0; a < AS_array.Length; a++)
+                                            {
+                                                if (more == true)
+                                                {
+                                                    sFrom[0] += AS_array[a] + " ";
+                                                    sFrom[0] = sFrom[0].Replace(@"@", "p_");
+                                                }
+
+                                                if (Regex.IsMatch(AS_array[a], @"\b(from|From|FROM)\b"))
+                                                {
+                                                    more = true;
+                                                }
+
+                                            }
+                                            // sFrom[0] = allLines[i].Split(' ').Last();
+                                        }
+                                        tFROM = 1;
                                     }
-                                    tFROM = 1;
-                                }
-                                else
-                                {
-                                    for (var a = 2; a < AS_array.Length; a++)
+                                    else
                                     {
-                                        sKolom[0] += AS_array[a] + " ";
-
+                                        if (tSELECT == 0)
+                                        {
+                                            sKolom[0] = allLines[i].Replace(@"SELECT", "");
+                                            sKolom[0] = sKolom[0].Replace(@"@", "p_");
+                                        }
                                     }
-                                 
-                                    sKolom[0] = sKolom[0].Replace(@"@", "p_");
+                                    tSELECT = 1;
 
-                                }
-                                tSELECT = 1;
-                               
-                                break;
+
+                                    break;
+                            }
+
+                            tSELECT = 1;
                         }
-                        tAS = 1;
                     }
 
-                }
-
-                if ((allLines[i].Split(' ').First() == "Select") || (allLines[i].Split(' ').First() == "select") || (allLines[i].Split(' ').First() == "SELECT"))
-                {
-                    if (tSELECT == 0)
+                    else if ((allLines[i].Split(' ').First() == "From") || (allLines[i].Split(' ').First() == "from") || (allLines[i].Split(' ').First() == "FROM"))
                     {
-                      //  string[] AS_array = allLines[i].Split(' ');
-                        var iSELECT = allLines[i].Split(' ').Count();
-                        switch (iSELECT)
+                        if (tFROM == 0)
                         {
-                            case 1:
-                              
-                                for (var n = 0; n < sIndex; n++)
-                                {
-                                    sKolom[n] = allLines[i + n + 1].TrimStart();
-                                  //  sKolom[n] = sKolom[n].Replace(@",", "");
-                                    sKolom[n] = sKolom[n].Replace(@"@", "p_");
-                                }
 
-                                tSELECT = 1;
-                                
-                                break;
-                            case 2:
-                          //      sKolom = new string[1];
-                                sKolom[0] = allLines[i].Split(' ').Last();
-                                tSELECT = 1;
-                                break;
-                            
+                            var iFROM = allLines[i].Split(' ').Count();
+                            var kFrom = allLines[i].Split(' ').First();
+                            switch (iFROM)
+                            {
+                                case 1:
 
-                            default:
-                                AS_array = allLines[i].Split(' ');
-
-                                if (Regex.IsMatch(allLines[i], @"\b(from|From|FROM)\b"))
-                                {
-                                  
-                                    for (var a = 1; a < AS_array.Length; a++)
+                                    for (var n = 0; n < fIndex; n++)
                                     {
-                                        if (Regex.IsMatch(AS_array[a], @"\b(from|From|FROM)\b"))
+                                        if (i + n + 1 > allLines.Length - 1)
+                                        {
+                                            break;
+                                        }
+                                        else
+                                        {
+                                            sFrom[n] = allLines[i + n + 1].TrimStart();
+                                            sFrom[n] = sFrom[n].Replace(@"@", "p_");
+                                        }
+
+                                    }
+                                    break;
+
+                                case 2:
+
+                                    sFrom[0] = allLines[i].Replace(kFrom, "");
+                                    sFrom[0] = sFrom[0].TrimStart();
+                                    sFrom[0] = sFrom[0].Replace(@"@", "p_");
+                                    break;
+
+                                default:
+                                    sFrom[0] = allLines[i].Replace(kFrom, "");
+                                    sFrom[0] = sFrom[0].TrimStart();
+                                    sFrom[0] = sFrom[0].Replace(@"@", "p_");
+                                    break;
+                            }
+                            tFROM = 1;
+                        }
+
+
+                    }
+                    else if ((allLines[i].Split(' ').First() == "Where") || (allLines[i].Split(' ').First() == "where") || (allLines[i].Split(' ').First() == "WHERE"))
+                    {
+                        if (tWHERE == 0)
+                        {
+                            var iWHERE = allLines[i].Split(' ').Count();
+                            var kWHERE = allLines[i].Split(' ').First();
+                            switch (iWHERE)
+                            {
+                                case 1:
+
+                                    for (var n = 0; n + 1 < wIndex; n++)
+                                    {
+                                        sWhere[n] = allLines[i + n + 1].TrimStart();
+                                        sWhere[n] = sWhere[n].Replace(@"@", "p_");
+                                    }
+                                    break;
+
+                                default:
+
+                                    sWhere[0] = allLines[i].Replace(kWHERE, "");
+                                    sWhere[0] = sWhere[0].Replace(@"@", "p_");
+                                    break;
+                            }
+                        }
+
+                    }
+
+                    else if ((allLines[i].Split(' ').First() == "Order") || (allLines[i].Split(' ').First() == "order") || (allLines[i].Split(' ').First() == "ORDER"))
+                    {
+                        if (tORDER == 0)
+                        {
+                            var iORDER = allLines[i].Split(' ').Count();
+                            var kORDER = allLines[i].Split(' ').First();
+                            switch (iORDER)
+                            {
+                                case 2:
+
+                                    for (var n = 0; n < oIndex; n++)
+                                    {
+                                        if (i + n + 1 > allLines.Length - 1)
                                         { break; }
-                                        sKolom[0] += AS_array[a] + " ";
-
-                                    }
-
-                                    sKolom[0] = sKolom[0].Replace(@"@", "p_");
-                                    if (Regex.IsMatch(allLines[i].Split(' ').Last(), @"\b(from|From|FROM)\b"))
-                                    {
-                                        for (var s = 0; s < fIndex; s++)
+                                        else
                                         {
-                                            sFrom[s] = allLines[i + s + 1].TrimStart();
-                                          //  sFrom[s] = sFrom[s].Replace(@",", "");
-                                            sFrom[s] = sFrom[s].Replace(@"@", "p_");
+                                            sOrder[n] = allLines[i + n + 1].TrimStart();
+                                            sOrder[n] = sOrder[n].Replace(@"@", "p_");
                                         }
                                     }
-                                    else
-                                    {
-                                        var more = new bool();
-                                        more = false;
-                                        for (var a = 0; a < AS_array.Length; a++)
-                                        {
-                                            if (more == true)
-                                            {
-                                                sFrom[0] += AS_array[a] + " ";
-                                             //   sFrom[0] = sFrom[0].Replace(@",", "");
-                                                sFrom[0] = sFrom[0].Replace(@"@", "p_");
-                                            }
+                                    break;
 
-                                            if (Regex.IsMatch(AS_array[a], @"\b(from|From|FROM)\b"))
-                                            {
-                                                more = true;
-                                            }
+                                default:
 
-                                        }
-                                        // sFrom[0] = allLines[i].Split(' ').Last();
-                                    }
-                                    tFROM = 1;
+                                    sOrder[0] = allLines[i].Replace(kORDER + " BY", "");
+                                    sOrder[0] = sOrder[0].Replace(@"@", "p_");
+                                    break;
+                            }
+                        }
+
+                    }
+                }
+
+
+                if (isDist == true)
+                { nSelect = "SELECT DISTINCT\r\n"; }
+                else
+                { nSelect = "SELECT \r\n"; }
+
+
+                if (sIndex > 1)
+                {
+                    for (var n = 0; n < sIndex; n++)
+                    {
+                        if (sKolom[n] != null)
+                        {
+
+                            sKolom[n] = sKolom[n].Replace(@"IsNull", "COALESCE");
+                            nSelect += sKolom[n] + "\r\n";
+
+                        }
+                    }
+                }
+                else
+                {
+                    sKolom[0] = sKolom[0].Replace(@"IsNull", "COALESCE");
+                    nSelect += sKolom[0] + "\r\n";
+                }
+                //==========================
+                nSelect += "\r\n";
+                nSelect += "FROM \r\n";
+
+                if (fIndex > 1)
+                {
+                    for (var n = 0; n < fIndex; n++)
+                    {
+                        if (sFrom[n] != null)
+                        {
+                            if (sFrom[n].Contains("JOIN"))
+                            {
+                                sFrom[n] += sFrom[n] + ";";
+                            }
+                            nSelect += sFrom[n] + "\r\n";
+                        }
+                    }
+                }
+                else
+                {
+                    if (sFrom[0].Contains("JOIN"))
+                    {
+                        sFrom[0] += sFrom[0] + ";";
+                    }
+                    nSelect += sFrom[0] + "\r\n";
+                }
+
+
+                //========================================
+                if (wIndex != 0)
+                {
+                    nSelect += "WHERE \r\n";
+                    if (wIndex > 1)
+                    {
+                        for (var n = 0; n < wIndex; n++)
+                        {
+                            if ((sWhere[n] != null) && (sWhere[n] != ""))
+                            {
+                                if (sWhere[n].Length > 1)
+                                {
+                                    var text = sWhere[n].Substring(0, 2);
+                                    if (text != "--")
+                                    { nSelect += sWhere[n] + " "; }
                                 }
                                 else
-                                {
-                                    //for (var a = 1; a < AS_array.Length; a++)
-                                    //{
-                                    //    sKolom[0] += AS_array[a] + " ";
-
-                                    //}
-                                    sKolom[0] = allLines[i].Replace(@"SELECT", "");
-                                    sKolom[0] = sKolom[0].Replace(@"@", "p_");
-
-                                }
-                                tSELECT = 1;
-
-
-                                break;
+                                { nSelect += sWhere[n] + " "; }
+                            }
+                            
                         }
-                        // uTableName = allLines[i + 1].TrimStart();
-                        tSELECT = 1;
+                        nSelect += ";";
+
                     }
-                }
-                
-                else if ((allLines[i].Split(' ').First() == "From") || (allLines[i].Split(' ').First() == "from") || (allLines[i].Split(' ').First() == "FROM"))
-                {
-                    if (tFROM == 0)
+                    else
                     {
-                       
-                        var iFROM = allLines[i].Split(' ').Count();
-                        var kFrom = allLines[i].Split(' ').First();
-                        switch (iFROM)
-                        {
-                            case 1:
-                             
-                                for (var n = 0; n < fIndex; n++)
-                                {
-                                    sFrom[n] = allLines[i + n + 1].TrimStart();
-                                 
-                                    sFrom[n] = sFrom[n].Replace(@"@", "p_");
-                                }
-                                break;
-
-                            case 2:
-                               
-                                sFrom[0] = allLines[i].Replace(kFrom, "");
-                                sFrom[0] = sFrom[0].TrimStart();                              
-                                sFrom[0] = sFrom[0].Replace(@"@", "p_");
-                                break;
-
-                            default:
-                                sFrom[0] = allLines[i].Replace(kFrom, "");
-                                sFrom[0] = sFrom[0].TrimStart();                            
-                                sFrom[0] = sFrom[0].Replace(@"@", "p_");
-                                break;
-                        }
-                        tFROM = 1;
+                        nSelect += sWhere[0] + ";\r\n";
                     }
-
-
                 }
-                else if ((allLines[i].Split(' ').First() == "Where") || (allLines[i].Split(' ').First() == "where") || (allLines[i].Split(' ').First() == "WHERE"))
+                //==========================================
+                if (oIndex != 0)
                 {
-                    if (tWHERE == 0)
+                    nSelect += "ORDER BY \r\n";
+                    if (oIndex > 1)
                     {
-                        var iWHERE = allLines[i].Split(' ').Count();
-                        var kWHERE = allLines[i].Split(' ').First();
-                        switch (iWHERE)
+                        for (var n = 0; n < oIndex; n++)
                         {
-                            case 1:
-                              
-                                for (var n = 0; n+1 < wIndex; n++)
-                                {
-                                    sWhere[n] = allLines[i + n + 1].TrimStart();
-                                 
-                                    sWhere[n] = sWhere[n].Replace(@"@", "p_");
-                                }
-                                break;
-
-                            default:
-                              
-                                sWhere[0] = allLines[i].Replace(kWHERE, "");
-                                sWhere[0] = wKolom.Replace(@"@", "p_");
-                                break;
+                            if (sOrder[n] != null)
+                            {
+                                nSelect += sOrder[n] + "\r\n";
+                            }
                         }
                     }
-
+                    else
+                    {
+                        nSelect += sOrder[0] + "\r\n";
+                    }
                 }
 
+                if (isLimit == true)
+                {
+                    nSelect += "LIMIT " + LimitValue.Split(' ').Last();
+                }
 
             }
-            nSelect = "SELECT \r\n";                        
+            else
+            {
+                var start = 0;
+                var scek = false;
+                for (var i = 0; i < allLines.Length; i++)
+                {
+                    if (Regex.IsMatch(allLines[i], @"\b(as|As|AS)\b"))
+                    {
+                        if (scek == false)
+                        {
+                            start = i;
+                            scek = true;
+                        }
+                    }
+                }
+
+                    for (var i = start+1; i < allLines.Length; i++)
+                {
                    
-            if (sIndex > 1)
-            {
-                for (var n = 0; n < sIndex; n++)
-                {
-                    if (sKolom[n] != "")
-                    {
-                        
-                        sKolom[n] = sKolom[n].Replace(@"IsNull", "COALESCE");
-                        nSelect += sKolom[n] + "\r\n";
-
-                    }
+                    var rText = allLines[i];
+                    rText = rText.Replace(@"IsNull", "COALESCE");
+                    rText = rText.Replace(@"@", "p_");
+                    nSelect += allLines[i] + "\r\n";
                 }
-            }
-            else
-            {
-                sKolom[0] = sKolom[0].Replace(@"IsNull", "COALESCE");
-                nSelect += sKolom[0] + "\r\n";
-            }
-            //==========================
-            nSelect += "\r\n";
-            nSelect += "FROM \r\n";
-
-            if (fIndex > 1)
-            {
-                for (var n = 0; n < fIndex; n++)
-                {
-                    if (sFrom[n].Contains("JOIN"))
-                    {
-                        sFrom[n] += sFrom[n] + ";";
-                    }
-                    nSelect += sFrom[n] + "\r\n";
-                }
-            }
-            else
-            {
-                if (sFrom[0].Contains("JOIN"))
-                {
-                    sFrom[0] += sFrom[0] + ";";
-                }
-                nSelect += sFrom[0] + "\r\n";
-            }
-
-
-            //========================================
-            nSelect += "WHERE \r\n" ;
-            if (wIndex > 1)
-            {
-                for (var n = 0; n < wIndex; n++)
-                {
-                    nSelect += sWhere[n] + "\r\n";
-                }
-            }
-            else
-            {
-                nSelect += sWhere[0] + "\r\n";
             }
             return nSelect;
         }
@@ -1236,7 +1520,7 @@ namespace SQLMigration.Converter.ScriptBuilder
                     { nInsert += vKolom[z] + ",\r\n"; }
                 }
             }
-            nInsert += ")\r\n";
+            nInsert += ");\r\n";
 
             return nInsert;
         }
@@ -1375,7 +1659,7 @@ namespace SQLMigration.Converter.ScriptBuilder
                                             }
                                             else
                                             {
-                                                uWhere[tWHERE - 1] += allLines[y + 1].TrimStart() + "\r\n";
+                                                uWhere[tWHERE - 1] += allLines[y + 1].TrimStart() ;
                                             }
                                         }
                                        
@@ -1389,7 +1673,7 @@ namespace SQLMigration.Converter.ScriptBuilder
                                     for (var y = i; y < allLines.Length; y++)
                                     {
                                         if (y != allLines.Length - 1)
-                                        { uWhere[tWHERE - 1] += allLines[y + 1].TrimStart() + "\r\n"; }
+                                        { uWhere[tWHERE - 1] += allLines[y + 1].TrimStart() ; }
                                     }
                                     uWhere[tWHERE - 1] = uWhere[tWHERE - 1].Replace(@"@", "p_");
                                 }
@@ -1415,13 +1699,13 @@ namespace SQLMigration.Converter.ScriptBuilder
                     {
                       if (whereType == 0)
                         {
-                             nDelete = "DELETE \r\n" + uTableName[0] + "\r\n";
+                             nDelete = "DELETE \r\n" + uTableName[0] + ";\r\n";
                         }
                       else
                 {
                     nDelete = "DELETE \r\n" + uTableName[0] + "\r\n" +
                                    "WHERE\r\n" +
-                                   uWhere[0];
+                                   uWhere[0] + ";";
                 }
                        
                     }
@@ -1430,7 +1714,7 @@ namespace SQLMigration.Converter.ScriptBuilder
                 {
                     for (var y = 0; y < deleteType; y++)
                     {
-                    nDelete += "DELETE \r\n" + uTableName[y] + "\r\n";
+                    nDelete += "DELETE \r\n" + uTableName[y] + ";\r\n";
                     }
                     
                 }
@@ -1440,7 +1724,7 @@ namespace SQLMigration.Converter.ScriptBuilder
                         {
                              nDelete += "DELETE \r\n" + uTableName[y] + "\r\n" +
                                          "WHERE\r\n" +
-                                        uWhere[y] ;
+                                        uWhere[y] + ";";
                           }
                     }
 
@@ -1669,7 +1953,7 @@ namespace SQLMigration.Converter.ScriptBuilder
                     nUpdate += sKolom[0] + "\r\n";
                 }
 
-                nUpdate += "WHERE \r\n" + wKolom + "\r\n";
+                nUpdate += "WHERE \r\n" + wKolom + ";\r\n";
             }
             else //## another type
             {
