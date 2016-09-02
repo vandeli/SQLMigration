@@ -24520,7 +24520,7 @@ BEGIN
 INSERT INTO BOS_GEN_ApprovalGroup
 (szApprovalId, btLevel, szGroupId)
 VALUES
-(@szApprovalId, @btLevel, @szGroupId);
+(p_szApprovalId, p_btLevel, p_szGroupId);
 
 END;
 $BODY$
@@ -24537,7 +24537,7 @@ BEGIN
 INSERT INTO BOS_GEN_ApprovalLevel
 (szApprovalId, btLevel, bAllowSkipToNext)
 VALUES
-(@szApprovalId, @btLevel, @bAllowSkipToNext);
+(p_szApprovalId, p_btLevel, p_bAllowSkipToNext);
 
 END;
 $BODY$
@@ -25584,10 +25584,10 @@ UPDATE BOS_GEN_Closing
 SET 
 dtmClosing = dtmClosing
 WHERE 
-szWorkplaceId = @szWorkplaceId AND
-	szClosingType = @szClosingType AND
-	szLocationType = @szLocationType AND
-	szLocationId = @szLocationId;
+szWorkplaceId = p_szWorkplaceId AND
+	szClosingType = p_szClosingType AND
+	szLocationType = p_szLocationType AND
+	szLocationId = p_szLocationId;
 
 END;
 $BODY$
@@ -25608,9 +25608,9 @@ SET
 dtmClosing = p_dtmClosing
 WHERE 
 szWorkplaceId = p_szWorkplaceId AND
-szClosingType = @szClosingType AND
-	szLocationType = @szLocationType AND
-	szLocationId = @szLocationId;
+szClosingType = p_szClosingType AND
+	szLocationType = p_szLocationType AND
+	szLocationId = p_szLocationId;
 
 END;
 $BODY$
@@ -25630,7 +25630,7 @@ BEGIN
 INSERT INTO BOS_GEN_Counter
 (szCounterId, lngLastCounterNumber, lngMaxNumber, szDescription, dtmLastUpdated, bAlreadyTransferred)
 VALUES
-(@szCounterId, @lngLastCounterNumber, @lngMaxNumber, @szDescription, @dtmLastUpdated, @bAlreadyTransferred);
+(p_szCounterId, p_lngLastCounterNumber, p_lngMaxNumber, p_szDescription, p_dtmLastUpdated, p_bAlreadyTransferred);
 
 END;
 $BODY$
@@ -25650,7 +25650,7 @@ BEGIN
 INSERT INTO BOS_GEN_Counter
 (szCounterId, lngLastCounterNumber, lngMaxNumber, szDescription, dtmLastUpdated, bAlreadyTransferred)
 VALUES
-(@szCounterId, @lngLastCounterNumber, @lngMaxNumber, @szDescription, @dtmLastUpdated, @bAlreadyTransferred);
+(p_szCounterId, p_lngLastCounterNumber, p_lngMaxNumber, p_szDescription, p_dtmLastUpdated, p_bAlreadyTransferred);
 
 END;
 $BODY$
@@ -25676,7 +25676,7 @@ RETURNS void AS
 $BODY$
 BEGIN
 SELECT 
-select lngLastCounterNumber, lngMaxNumber, szDescription, dtmLastUpdated, bAlreadyTransferred
+lngLastCounterNumber, lngMaxNumber, szDescription, dtmLastUpdated, bAlreadyTransferred
 
 FROM 
 BOS_GEN_Counter
@@ -25694,7 +25694,7 @@ RETURNS void AS
 $BODY$
 BEGIN
 SELECT 
-select lngLastCounterNumber, lngMaxNumber, szDescription, dtmLastUpdated, bAlreadyTransferred
+lngLastCounterNumber, lngMaxNumber, szDescription, dtmLastUpdated, bAlreadyTransferred
 
 FROM 
 BOS_GEN_Counter
@@ -25933,7 +25933,7 @@ BEGIN
 DELETE 
  From BOS_GEN_DataTrf
 WHERE
-szWpId = p_szWpId AndszDataTrfId = p_szDataTrfId;
+szWpId = p_szWpId And szDataTrfId = p_szDataTrfId;
 END;
 $BODY$
 LANGUAGE plpgsql;
@@ -25948,7 +25948,7 @@ BEGIN
 DELETE 
  From BOS_GEN_DataTrfItem
 WHERE
-szWpId = p_szWpId AndszDataTrfId = p_szDataTrfId;
+szWpId = p_szWpId And szDataTrfId = p_szDataTrfId;
 END;
 $BODY$
 LANGUAGE plpgsql;
@@ -26006,8 +26006,9 @@ bUnexportedDataOnly
 FROM 
 BOS_GEN_DataTrfItem
 WHERE 
-szWpId = p_szWpId And szDataTrfId = p_szDataTrfId ;ORDER BY 
-shItemNumber
+szWpId = p_szWpId And szDataTrfId = p_szDataTrfId 
+ORDER BY 
+shItemNumber;
 
 END;
 $BODY$
@@ -26027,8 +26028,9 @@ szFlexiKeyId
 FROM 
 BOS_GEN_DataTrf
 WHERE 
-szWpId = p_szWpId ;ORDER BY 
-szDataTrfId
+szWpId = p_szWpId 
+ORDER BY 
+szDataTrfId;
 
 END;
 $BODY$
@@ -26063,7 +26065,8 @@ UPDATE BOS_GEN_DataTrf
 SET 
 szDescription = szDescription
 WHERE 
-szWpId = p_szWpId And;
+szWpId = p_szWpId And
+szDataTrfId = p_szDataTrfId;
 
 END;
 $BODY$
@@ -26083,7 +26086,8 @@ SET
 szDescription = p_szDescription,
 szFlexiKeyId = p_szFlexiKeyId
 WHERE 
-szWpId = p_szWpId And;
+szWpId = p_szWpId And
+szDataTrfId = p_szDataTrfId;
 
 END;
 $BODY$
@@ -26294,7 +26298,7 @@ szWorkplaceId,
 szTaxEntityId,
 bNeedApproval,
 gdApprovedId,
-szFJournalId,
+szFJournalId
 )
 VALUES
 (
@@ -26364,10 +26368,12 @@ BOS_GEN_Approved.szApprovalId,
 BOS_GL_FJournalTrans.szFJournalId
 
 FROM
-BOS_GEN_FClosing LEFT JOIN BOS_GEN_Approved ON BOS_GEN_FClosing.gdApprovedId = BOS_GEN_Approved.gdApprovedId
-LEFT JOIN BOS_GL_FJournalTrans ON BOS_GEN_FClosing.szFJournalId = BOS_GL_FJournalTrans.szFJournalId
+BOS_GEN_FClosing LEFT JOIN BOS_GEN_Approved ON 
+BOS_GEN_FClosing.gdApprovedId = BOS_GEN_Approved.gdApprovedId
+LEFT JOIN BOS_GL_FJournalTrans ON 
+BOS_GEN_FClosing.szFJournalId = BOS_GL_FJournalTrans.szFJournalId
 WHERE
-BOS_GEN_FClosing.szFClosingId = p_szFClosingId
+BOS_GEN_FClosing.szFClosingId = p_szFClosingId;
 
 END;
 $BODY$
@@ -26383,7 +26389,7 @@ SELECT
 szFClosingId, dtmClosing 
 
 FROM 
-BOS_GEN_FClosing 
+BOS_GEN_FClosing; 
 
 END;
 $BODY$
@@ -26693,7 +26699,7 @@ LEFT JOIN BOS_GL_FJournalTrans ON BOS_GEN_FDataTrfSettlement.szFJournalId = BOS_
 LEFT JOIN BOS_GL_Company On BOS_GEN_FDataTrfSettlement.szCompanyId = BOS_GL_Company.szCompanyId
 LEFT JOIN BOS_GL_Workplace On BOS_GEN_FDataTrfSettlement.szWorkplaceId = BOS_GL_Workplace.szWorkplaceId
 where
-BOS_GEN_FDataTrfSettlement.szFDataTrfSettlementId = p_szFDataTrfSettlementId
+BOS_GEN_FDataTrfSettlement.szFDataTrfSettlementId = p_szFDataTrfSettlementId;
 
 END;
 $BODY$
@@ -26726,10 +26732,10 @@ RETURNS void AS
 $BODY$
 BEGIN
 SELECT 
-select szFDataTrfSettlementId, szDocWorkplaceId
+szFDataTrfSettlementId, szDocWorkplaceId
 
 FROM 
-BOS_GEN_FDataTrfSettlement
+BOS_GEN_FDataTrfSettlement;
 
 END;
 $BODY$
@@ -26751,7 +26757,13 @@ szFDataTrfSettlementId
 FROM 
 BOS_GEN_FDataTrfSettlement
 WHERE 
- ((dtmFrom >= p_dtmFrom And dtmTo < DateAdd(Day, 1, p_dtmTo)) Or;
+ ((dtmFrom >= p_dtmFrom And dtmTo < DateAdd(Day, 1, p_dtmTo)) Or
+ (dtmFrom < DateAdd(Day, 1, p_dtmFrom) And dtmTo >= p_dtmFrom) Or
+      (dtmFrom < DateAdd(Day, 1, p_dtmTo) And dtmTo >= p_dtmTo)) And
+      szQuerySource = p_szQuerySource And
+      szDocWorkplaceId = p_szDocWorkplaceId And
+      szFDataTrfSettlementId <> p_szFDataTrfSettlementId And
+      bApplied = 1;
 
 END;
 $BODY$
@@ -26773,7 +26785,13 @@ szFDataTrfSettlementId
 FROM 
 BOS_GEN_FDataTrfSettlement
 WHERE 
- ((dtmFrom < p_dtmFrom And dtmTo >= p_dtmFrom) Or;
+ ((dtmFrom < p_dtmFrom And dtmTo >= p_dtmFrom) Or
+ (dtmFrom < DateAdd(Day, 1, p_dtmTo) And dtmTo >=  DateAdd(Day, 1, p_dtmTo)) Or
+      (dtmFrom < p_dtmFrom And dtmTo > p_dtmTo)) And
+      szQuerySource = p_szQuerySource And
+      szDocWorkplaceId = p_szDocWorkplaceId And
+      szFDataTrfSettlementId <> p_szFDataTrfSettlementId And
+      bApplied = 1;
 
 END;
 $BODY$
@@ -26993,7 +27011,7 @@ p_szParentFieldName,
 p_szParentFieldContent,
 p_szDescription,
 p_dtmLastUpdated,
-p_bAlreadyTransferred,
+p_bAlreadyTransferred
 );
 
 END;
@@ -27011,7 +27029,9 @@ BEGIN
 DELETE 
  FROM BOS_GEN_FieldContent
 WHERE
-szFieldClass = p_szFieldClassAND szFieldName = p_szFieldNameAND szFieldContent = p_szFieldContent;
+szFieldClass = p_szFieldClass AND 
+szFieldName = p_szFieldName AND 
+szFieldContent = p_szFieldContent;
 END;
 $BODY$
 LANGUAGE plpgsql;
@@ -27215,7 +27235,7 @@ p_szFieldClass,
 p_szFieldName,
 p_szDescription,
 p_dtmLastUpdated,
-p_bALreadyTransferred,
+p_bALreadyTransferred
 );
 
 END;
@@ -27232,7 +27252,7 @@ BEGIN
 DELETE 
  FROM BOS_GEN_FieldName
 WHERE
-szFieldClass = p_szFieldClassAND szFieldName = p_szFieldName;
+szFieldClass = p_szFieldClass AND szFieldName = p_szFieldName;
 END;
 $BODY$
 LANGUAGE plpgsql;
@@ -27410,7 +27430,7 @@ p_szDescription,
 p_bAllowDynamicGLAccEntry,
 p_szFieldClass,
 p_dtmLastUpdated,
-p_bAlreadyTransferred,
+p_bAlreadyTransferred
 );
 
 END;
@@ -27552,9 +27572,10 @@ bBalancingSegment
 FROM 
 BOS_GEN_FlexiKeyItem
 WHERE 
-szFlexiKeyId = p_szFlexiKeyId ;ORDER BY 
+szFlexiKeyId = p_szFlexiKeyId 
+ORDER BY 
 szFlexiKeyId,
-btSegmentNumber
+btSegmentNumber;
 
 END;
 $BODY$
@@ -27570,7 +27591,7 @@ szFlexiKeyId,
 szDescription
 
 FROM 
-BOS_GEN_FlexiKey
+BOS_GEN_FlexiKey;
 
 END;
 $BODY$
@@ -27656,8 +27677,8 @@ p_szMenuId,
 p_szDescription,
 p_bLock,
 p_dtmLastUpdated,
-p_bAlreadyTransferred,
-SET ANSI_NULLS ON,
+p_bAlreadyTransferred
+--SET ANSI_NULLS ON,
 );
 
 END;
@@ -27688,8 +27709,8 @@ p_szMenuId,
 p_szDescription,
 p_bLock,
 p_dtmLastUpdated,
-p_bAlreadyTransferred,
-SET ANSI_NULLS ON,
+p_bAlreadyTransferred
+--SET ANSI_NULLS ON,
 );
 
 END;
@@ -27790,7 +27811,7 @@ szMenuId,
 szDescription
 
 FROM 
-BOS_GEN_Menu
+BOS_GEN_Menu;
 
 END;
 $BODY$
@@ -27844,8 +27865,9 @@ szLinkAddress
 FROM 
 BOS_GEN_MenuItem
 WHERE 
-szMenuId = p_szMenuId ;ORDER BY 
-szMenuId
+szMenuId = p_szMenuId 
+ORDER BY 
+szMenuId;
 
 END;
 $BODY$
@@ -28134,7 +28156,8 @@ BEGIN
 DELETE 
  From BOS_GEN_Olap
 WHERE
-szOlapTypeId = p_szOlapTypeId AndszOlapName = p_szOlapName;
+szOlapTypeId = p_szOlapTypeId And 
+szOlapName = p_szOlapName;
 END;
 $BODY$
 LANGUAGE plpgsql;
@@ -28149,7 +28172,8 @@ BEGIN
 DELETE 
  From BOS_GEN_Olap
 WHERE
-szOlapTypeId = p_szOlapTypeId AndszOlapName = p_szOlapName;
+szOlapTypeId = p_szOlapTypeId And 
+szOlapName = p_szOlapName;
 END;
 $BODY$
 LANGUAGE plpgsql;
@@ -28164,7 +28188,8 @@ BEGIN
 DELETE 
  From BOS_GEN_OlapItem
 WHERE
-szOlapTypeId = p_szOlapTypeId AndszOlapName = p_szOlapName;
+szOlapTypeId = p_szOlapTypeId And 
+szOlapName = p_szOlapName;
 END;
 $BODY$
 LANGUAGE plpgsql;
@@ -28179,7 +28204,8 @@ BEGIN
 DELETE 
  From BOS_GEN_OlapItem
 WHERE
-szOlapTypeId = p_szOlapTypeId AndszOlapName = p_szOlapName;
+szOlapTypeId = p_szOlapTypeId And 
+szOlapName = p_szOlapName;
 END;
 $BODY$
 LANGUAGE plpgsql;
@@ -28196,12 +28222,10 @@ szOlapTitle
 
 FROM 
 BOS_GEN_Olap
-order by
-szOlapTypeId,
-szOlapName
+
 ORDER BY 
 szOlapTypeId,
-szOlapName
+szOlapName;
 
 END;
 $BODY$
@@ -28220,8 +28244,9 @@ szOlapTitle
 FROM 
 BOS_GEN_Olap
 WHERE 
-szOlapTypeId = p_szOlapTypeId ;ORDER BY 
-szOlapName
+szOlapTypeId = p_szOlapTypeId 
+ORDER BY 
+szOlapName;
 
 END;
 $BODY$
@@ -28385,7 +28410,8 @@ UPDATE BOS_GEN_Olap
 SET 
 szOlapTitle = szOlapTitle
 WHERE 
-szOlapTypeId = p_szOlapTypeId And;
+szOlapTypeId = p_szOlapTypeId And
+szOlapName = p_szOlapName;
 
 END;
 $BODY$
@@ -28402,7 +28428,8 @@ UPDATE BOS_GEN_Olap
 SET 
 szOlapTitle = szOlapTitle
 WHERE 
-szOlapTypeId = p_szOlapTypeId And;
+szOlapTypeId = p_szOlapTypeId And
+szOlapName = p_szOlapName;
 
 END;
 $BODY$
@@ -28419,10 +28446,11 @@ $BODY$
 BEGIN
 UPDATE BOS_GEN_Olap
 SET 
-szOlapTitle = p_szOlapTitle
-, szOlapParameter = p_szOlapParameter
+szOlapTitle = p_szOlapTitle,
+szOlapParameter = p_szOlapParameter
 WHERE 
-szOlapTypeId = p_szOlapTypeId And;
+szOlapTypeId = p_szOlapTypeId And
+szOlapName = p_szOlapName;
 
 END;
 $BODY$
@@ -28439,10 +28467,11 @@ $BODY$
 BEGIN
 UPDATE BOS_GEN_Olap
 SET 
-szOlapTitle = p_szOlapTitle
-, szOlapParameter = p_szOlapParameter
+szOlapTitle = p_szOlapTitle, 
+szOlapParameter = p_szOlapParameter
 WHERE 
-szOlapTypeId = p_szOlapTypeId And;
+szOlapTypeId = p_szOlapTypeId And
+szOlapName = p_szOlapName;
 
 END;
 $BODY$
@@ -28464,7 +28493,7 @@ szReasonId,
 szReasonType,
 szDescription,
 dtmLastUpdated,
-bAlreadyTransferred,
+bAlreadyTransferred
 )
 VALUES
 (
@@ -28504,7 +28533,7 @@ szReasonType,
 szDescription
 
 FROM 
-BOS_GEN_Reason
+BOS_GEN_Reason;
 
 END;
 $BODY$
@@ -28634,7 +28663,7 @@ p_bIncludeSat,
 p_bIncludeSun,
 p_szDescription,
 p_dtmLastUpdated,
-p_bAlreadyTransferred,
+p_bAlreadyTransferred
 );
 
 END;
@@ -28756,7 +28785,8 @@ BGRS.szScheduleType AS szScheduleType_J
 
 FROM 
 BOS_GEN_RoutineScheduleItem AS BGRSI
-INNER JOIN BOS_GEN_RoutineSchedule AS BGRS ON BGRS.szScheduleId = BGRSI.szScheduleIdINNER JOIN BOS_GEN_RoutineSchedule AS BGRS ON BGRS.szScheduleId = BGRSI.szScheduleId;
+INNER JOIN BOS_GEN_RoutineSchedule AS BGRS ON 
+BGRS.szScheduleId = BGRSI.szScheduleId
 WHERE 
 BGRSI.szScheduleId = p_szScheduleId ;
 END;
@@ -28959,7 +28989,7 @@ szTrnId,
 szName
 
 FROM 
-BOS_GEN_TrnMaster
+BOS_GEN_TrnMaster;
 
 END;
 $BODY$
@@ -29145,7 +29175,7 @@ byteLevel,
 bGroup,
 szDefaultBalance,
 dtmLastUpdated,
-bAlreadyTransferred,
+bAlreadyTransferred
 )
 VALUES
 (
@@ -29159,7 +29189,7 @@ p_byteLevel,
 p_bGroup,
 p_szDefaultBalance,
 p_dtmLastUpdated,
-p_bAlreadyTransferred,
+p_bAlreadyTransferred
 );
 
 END;
@@ -29211,7 +29241,7 @@ BOS_GL_Account
 LEFT JOIN BOS_GL_Workplace AS WP ON WP.szWorkplaceId = BOS_GL_Account.szOnlyUsedForWorkplaceId
 LEFT JOIN BOS_SM_User AS USR ON USR.szUserId = BOS_GL_Account.szOnlyUsedForUserId
 WHERE
-szAccountId=p_szAccountId
+szAccountId=p_szAccountId;
 
 END;
 $BODY$
@@ -29228,10 +29258,9 @@ szName
 
 FROM 
 BOS_GL_Account
-order by
-szAccountId
+
 ORDER BY 
-szAccountId
+szAccountId;
 
 END;
 $BODY$
@@ -29287,6 +29316,29 @@ RETURNS void AS
 $BODY$
 BEGIN
 -- ### 2 update #####
+UPDATE
+	BOS_GL_Account
+SET
+	szName = p_szName,
+	szAccountType = p_szAccountType,
+	szOnlyUsedForWorkplaceId = p_szOnlyUsedForWorkplaceId,
+	szOnlyUsedForUserId = p_szOnlyUsedForUserId,
+	szFullPathAccId = p_szFullPathAccId ,
+	byteLevel = p_byteLevel ,
+	bGroup = p_bGroup ,
+	szDefaultBalance = p_szDefaultBalance 
+WHERE
+	szAccountId = p_szAccountId;
+
+UPDATE 
+	BOS_GL_Account 
+SET
+	szFullPathAccId = p_szFullPathAccId + substring(szFullPathAccId, len(p_szPrevFullPathAccId) + 1, len(szFullPathAccId) - len(p_szPrevFullPathAccId)),
+	byteLevel = byteLevel - p_shDiffLevel
+WHERE
+	szFullPathAccId LIKE p_szPrevFullPathAccId+'%' AND
+	szAccountId <> p_szAccountId;
+	
 END;
 $BODY$
 LANGUAGE plpgsql;
@@ -29308,6 +29360,28 @@ RETURNS void AS
 $BODY$
 BEGIN
 -- ### 2 update #####
+UPDATE
+	BOS_GL_Account
+SET
+	szName = p_szName,
+	szAccountType = p_szAccountType,
+	szOnlyUsedForWorkplaceId = p_szOnlyUsedForWorkplaceId,
+	szOnlyUsedForUserId = p_szOnlyUsedForUserId,
+	szFullPathAccId = p_szFullPathAccId ,
+	byteLevel = p_byteLevel ,
+	bGroup = p_bGroup ,
+	szDefaultBalance = p_szDefaultBalance 
+WHERE
+	szAccountId = p_szAccountId;
+
+UPDATE 
+	BOS_GL_Account 
+SET
+	szFullPathAccId = p_szFullPathAccId + substring(szFullPathAccId, len(p_szPrevFullPathAccId) + 1, len(szFullPathAccId) - len(p_szPrevFullPathAccId)),
+	byteLevel = byteLevel - p_shDiffLevel
+WHERE
+	szFullPathAccId LIKE p_szPrevFullPathAccId+'%' AND
+	szAccountId <> p_szAccountId;
 END;
 $BODY$
 LANGUAGE plpgsql;
@@ -29463,7 +29537,7 @@ LEFT JOIN BOS_GL_Ledger ON BOS_GL_Ledger.szLedgerId = BOS_GL_Company.szLedgerId
 LEFT JOIN BOS_CU_Currency ON BOS_CU_Currency.szCcyId = BOS_GL_Ledger.szCcyId
 
 WHERE
-BOS_GL_Company.szCompanyId = p_szCompanyId
+BOS_GL_Company.szCompanyId = p_szCompanyId;
 
 END;
 $BODY$
@@ -29502,7 +29576,7 @@ LEFT JOIN BOS_GL_Ledger ON BOS_GL_Ledger.szLedgerId = BOS_GL_Company.szLedgerId
 LEFT JOIN BOS_CU_Currency ON BOS_CU_Currency.szCcyId = BOS_GL_Ledger.szCcyId
 
 WHERE
-BOS_GL_Company.szCompanyId = p_szCompanyId
+BOS_GL_Company.szCompanyId = p_szCompanyId;
 
 
 END;
@@ -29519,7 +29593,7 @@ szCompanyId,
 szName
 
 FROM 
-BOS_GL_Company
+BOS_GL_Company;
 
 END;
 $BODY$
@@ -29964,7 +30038,7 @@ LEFT JOIN BOS_SM_User ON BOS_SM_User.szUserId = BOS_GL_FJournalTrans.szUserId
 
 
 WHERE
-szFJournalId=p_szFJournalId
+szFJournalId=p_szFJournalId;
 
 END;
 $BODY$
@@ -30046,7 +30120,7 @@ LEFT JOIN BOS_SM_User ON BOS_SM_User.szUserId = BOS_GL_FJournalTrans.szUserId
 
 
 WHERE
-szFJournalId=p_szFJournalId
+szFJournalId=p_szFJournalId;
 
 END;
 $BODY$
@@ -30061,7 +30135,7 @@ SELECT
 szFJournalId, dtmPost
 
 FROM 
-BOS_GL_FJournalTrans
+BOS_GL_FJournalTrans;
 
 END;
 $BODY$
@@ -30275,7 +30349,7 @@ szTranslationAdjustmentAccId,
 szTranslationAdjustmentGLSubAccId,
 -- Data Status.,
 dtmLastUpdated ,
-bAlreadyTransferred,
+bAlreadyTransferred
 )
 VALUES
 (
@@ -30292,7 +30366,7 @@ p_szTranslationAdjustmentAccId,
 p_szTranslationAdjustmentGLSubAccId,
 -- Data Status.,
 p_dtmLastUpdated ,
-p_bAlreadyTransferred,
+p_bAlreadyTransferred
 );
 
 END;
@@ -30332,7 +30406,7 @@ szTranslationAdjustmentAccId,
 szTranslationAdjustmentGLSubAccId,
 -- Data Status.,
 dtmLastUpdated ,
-bAlreadyTransferred,
+bAlreadyTransferred
 )
 VALUES
 (
@@ -30415,7 +30489,7 @@ AND TaSubAcc.szGLSubAccId = BOS_GL_Ledger.szTranslationAdjustmentGLSubAccId
 LEFT JOIN BOS_CU_Currency ON BOS_CU_Currency.szCcyId = BOS_GL_Ledger.szCcyId
 
 WHERE
-BOS_GL_Ledger.szLedgerId = p_szLedgerId
+BOS_GL_Ledger.szLedgerId = p_szLedgerId;
 
 END;
 $BODY$
@@ -30432,7 +30506,7 @@ szName,
 szDescription
 
 FROM 
-BOS_GL_Ledger
+BOS_GL_Ledger;
 
 END;
 $BODY$
@@ -30726,7 +30800,7 @@ p_TOszMobileNo,
 p_TOszEmail,
 p_TOszWebSite,
 p_dtmLastUpdated,
-p_bAlreadyTransferred,
+p_bAlreadyTransferred
 );
 
 END;
@@ -30757,7 +30831,7 @@ szTaxId,
 szName
 
 FROM 
-BOS_GL_TaxEntity
+BOS_GL_TaxEntity;
 
 END;
 $BODY$
@@ -31050,7 +31124,7 @@ p_szTaxTypeId,
 p_szName,
 p_decRate,
 p_dtmLastUpdated,
-p_bAlreadyTransferred,
+p_bAlreadyTransferred
 );
 
 END;
@@ -31081,7 +31155,7 @@ szTaxTypeId,
 szName
 
 FROM 
-BOS_GL_TaxType
+BOS_GL_TaxType;
 
 END;
 $BODY$
@@ -31287,10 +31361,10 @@ p_szPromoPriceId,
 p_szPromoPriceOrderId,
 p_szInvOrgId,
 p_dtmLastUpdated,
-p_bAlreadyTransferred,
-SET ANSI_NULLS ON,
-);
+p_bAlreadyTransferred
 
+);
+--SET ANSI_NULLS ON
 END;
 $BODY$
 LANGUAGE plpgsql;
@@ -31406,7 +31480,7 @@ p_szPromoPriceOrderId,
 p_szInvOrgId,
 p_dtmLastUpdated,
 p_bAlreadyTransferred,
-p_bActive,
+p_bActive
 );
 
 END;
@@ -31442,9 +31516,8 @@ ORDER BY
 --In un-read-committed mode order of result is un-predictable.
 --As list of workplaces is most loaded list, it is a good idea to
 --define its order.
-szWorkplaceId
-ORDER BY 
---In un-read-committed mode order of result is un-predictable.
+szWorkplaceId;
+
 
 END;
 $BODY$
@@ -31514,7 +31587,7 @@ LEFT JOIN BOS_CU_Currency AS Cu ON Cu.szCcyId = Le.szCcyId
 LEFT JOIN BOS_INV_InvOrg AS IO ON IO.szInvOrgId = Wo.szInvOrgId
 LEFT JOIN BOS_SD_SalesOrganization AS SO ON SO.szSalesOrgId = Wo.szSalesOrgId
 where
-Wo.szWorkplaceId = p_szWorkplaceId
+Wo.szWorkplaceId = p_szWorkplaceId;
 
 END;
 $BODY$
@@ -31585,7 +31658,7 @@ LEFT JOIN BOS_CU_Currency AS Cu ON Cu.szCcyId = Le.szCcyId
 LEFT JOIN BOS_INV_InvOrg AS IO ON IO.szInvOrgId = Wo.szInvOrgId
 LEFT JOIN BOS_SD_SalesOrganization AS SO ON SO.szSalesOrgId = Wo.szSalesOrgId
 where
-Wo.szWorkplaceId = p_szWorkplaceId
+Wo.szWorkplaceId = p_szWorkplaceId;
 
 END;
 $BODY$
@@ -31848,7 +31921,7 @@ p_szMobileNo,
 p_szEmail,
 p_szWebSite,
 p_dtmLastUpdated,
-p_bAlreadyTransferred,
+p_bAlreadyTransferred
 );
 
 END;
@@ -31934,7 +32007,7 @@ szEmail,
 szWebSite
 
 FROM 
-BOS_INV_Carrier
+BOS_INV_Carrier;
 
 END;
 $BODY$
@@ -32038,7 +32111,7 @@ SELECT
 szConditionTypeId, szDescription 
 
 FROM 
- BOS_INV_ConditionType 
+ BOS_INV_ConditionType; 
 
 END;
 $BODY$
@@ -32193,7 +32266,7 @@ p_shItemNumber,
 p_szProductId,
 p_decQty,
 p_szUomId,
-p_szParentId,
+p_szParentId
 );
 
 END;
@@ -32213,15 +32286,15 @@ INSERT INTO BOS_INV_FAdjustmentItemLot
 (
 szFAdjustmentId,
 shItemNumber,
-szLotId
-decQty,
+szLotId,
+decQty
 )
 VALUES
 (
 p_szFAdjustmentId,
 p_shItemNumber,
-p_szLotId
-p_decQty,
+p_szLotId,
+p_decQty
 );
 
 END;
@@ -32363,7 +32436,7 @@ LEFT JOIN BOS_GL_Company ON BOS_GL_Company.szCompanyId = BOS_INV_FAdjustment.szC
 LEFT JOIN BOS_SM_User ON BOS_SM_User.szUserId = BOS_INV_FAdjustment.szUserId
 
 where
-szFAdjustmentId = p_szFAdjustmentId
+szFAdjustmentId = p_szFAdjustmentId;
 
 END;
 $BODY$
@@ -32393,7 +32466,9 @@ BOS_INV_Product.szName AS szParentNm_J
 
 
 FROM 
-BOS_INV_FAdjustmentItem LEFT JOIN BOS_INV_Product ON BOS_INV_FAdjustmentItem.szProductId=BOS_INV_Product.szProductIdBOS_INV_FAdjustmentItem LEFT JOIN BOS_INV_Product ON BOS_INV_FAdjustmentItem.szProductId=BOS_INV_Product.szProductId;
+BOS_INV_FAdjustmentItem LEFT JOIN BOS_INV_Product ON 
+BOS_INV_FAdjustmentItem.szProductId=BOS_INV_Product.szProductId
+
 WHERE 
 BOS_INV_FAdjustmentItem.szFAdjustmentId = p_szFAdjustmentId ;
 END;
@@ -32424,7 +32499,9 @@ BOS_INV_Product.szName AS szParentNm_J
 
 
 FROM 
-BOS_INV_FAdjustmentItem LEFT JOIN BOS_INV_Product ON BOS_INV_FAdjustmentItem.szProductId=BOS_INV_Product.szProductIdBOS_INV_FAdjustmentItem LEFT JOIN BOS_INV_Product ON BOS_INV_FAdjustmentItem.szProductId=BOS_INV_Product.szProductId;
+BOS_INV_FAdjustmentItem LEFT JOIN BOS_INV_Product ON 
+BOS_INV_FAdjustmentItem.szProductId=BOS_INV_Product.szProductId
+
 WHERE 
 BOS_INV_FAdjustmentItem.szFAdjustmentId = p_szFAdjustmentId ;
 END;
@@ -32481,7 +32558,7 @@ szFAdjustmentId,
 dtmAdjustment
 
 FROM 
-BOS_INV_FAdjustment
+BOS_INV_FAdjustment;
 
 END;
 $BODY$
@@ -32772,7 +32849,7 @@ LEFT JOIN BOS_GL_Company ON BOS_GL_Company.szCompanyId = BOS_INV_FChgLotStatus.s
 LEFT JOIN BOS_SM_User ON BOS_SM_User.szUserId = BOS_INV_FChgLotStatus.szUserId
 
 where
-szFChgStatusLotId = p_szFChgStatusLotId
+szFChgStatusLotId = p_szFChgStatusLotId;
 
 END;
 $BODY$
@@ -32809,7 +32886,7 @@ szFChgStatusLotId,
 dtmFChgStatusLotId
 
 FROM 
-BOS_INV_FChgLotStatus
+BOS_INV_FChgLotStatus;
 
 END;
 $BODY$
@@ -33251,7 +33328,7 @@ p_dtmCreated,
 p_bSystemCreated,
 p_szUserId,
 p_dtmLastUpdated,
-p_bAlreadyTransferred,
+p_bAlreadyTransferred
 );
 
 END;
@@ -33291,11 +33368,11 @@ p_decQty,
 p_decUomQty,
 p_szUomId,
 p_decCOGS,
-p_szParentId,
+p_szParentId
 -- ==================================================================,
-SET ANSI_NULLS ON,
-);
 
+);
+--SET ANSI_NULLS ON
 END;
 $BODY$
 LANGUAGE plpgsql;
@@ -33333,11 +33410,11 @@ p_decQty,
 p_decUomQty,
 p_szUomId,
 p_decCOGS,
-p_szParentId,
+p_szParentId
 -- ==================================================================,
-SET ANSI_NULLS ON,
-);
 
+);
+--SET ANSI_NULLS ON
 END;
 $BODY$
 LANGUAGE plpgsql;
@@ -33355,15 +33432,15 @@ INSERT INTO BOS_INV_FDnItemLotQty
 (
 szFDnId,
 shItemNumber,
-szLotId
-decQty,
+szLotId,
+decQty
 )
 VALUES
 (
 p_szFDnId,
 p_shItemNumber,
-p_szLotId
-p_decQty,
+p_szLotId,
+p_decQty
 );
 
 END;
@@ -33559,7 +33636,7 @@ LEFT JOIN BOS_INV_Warehouse AS Wh ON Wh.szWarehouseId = BOS_INV_FDn.szLocationId
 LEFT JOIN BOS_INV_Carrier AS Carr ON Carr.szCarrierId = BOS_INV_FDn.szCarrierId
 
 WHERE
-BOS_INV_FDn.szFDnId=p_szFDnId
+BOS_INV_FDn.szFDnId=p_szFDnId;
 
 END;
 $BODY$
@@ -33670,7 +33747,7 @@ LEFT JOIN BOS_INV_Warehouse AS Wh ON Wh.szWarehouseId = BOS_INV_FDn.szLocationId
 LEFT JOIN BOS_INV_Carrier AS Carr ON Carr.szCarrierId = BOS_INV_FDn.szCarrierId
 
 WHERE
-BOS_INV_FDn.szFDnId=p_szFDnId
+BOS_INV_FDn.szFDnId=p_szFDnId;
 
 END;
 $BODY$
@@ -33710,11 +33787,11 @@ LEFT JOIN BOS_INV_Product ON BOS_INV_FDnItem.szProductId=BOS_INV_Product.szProdu
 LEFT JOIN BOS_INV_Product AS BIP2 ON BIP2.szProductId = BOS_INV_FDnItem.szParentId
 
 WHERE
-BOS_INV_FDnItem.szFDnId = p_szFDnId
+BOS_INV_FDnItem.szFDnId = p_szFDnId;
 
 -- ==================================================================
 
-SET ANSI_NULLS ON
+--SET ANSI_NULLS ON
 
 END;
 $BODY$
@@ -33755,11 +33832,11 @@ LEFT JOIN BOS_INV_Product ON BOS_INV_FDnItem.szProductId=BOS_INV_Product.szProdu
 LEFT JOIN BOS_INV_Product AS BIP2 ON BIP2.szProductId = BOS_INV_FDnItem.szParentId
 
 WHERE
-BOS_INV_FDnItem.szFDnId = p_szFDnId
+BOS_INV_FDnItem.szFDnId = p_szFDnId;
 
 -- ==================================================================
 
-SET ANSI_NULLS ON
+--SET ANSI_NULLS ON
 
 END;
 $BODY$
@@ -33815,7 +33892,7 @@ szFDnId,
 dtmDelivery
 
 FROM 
-BOS_INV_FDn
+BOS_INV_FDn;
 
 END;
 $BODY$
@@ -34146,7 +34223,7 @@ fdn.szWorkplaceId like p_szWpId
 and fdn.dtmDelivery >= p_dtmStart
 and fdn.dtmDelivery < p_dtmEnd
 and fdn.bApplied = 1
-and fdn.szDestinationType = 'WOR'
+and fdn.szDestinationType = 'WOR';
 
 END;
 $BODY$
@@ -34266,7 +34343,7 @@ p_bSystemCreated,
 p_szUserId,
 -- Data Status.,
 p_dtmLastUpdated,
-p_bAlreadyTransferred,
+p_bAlreadyTransferred
 -- ==================================================================,
 );
 
@@ -34388,7 +34465,7 @@ p_bSystemCreated,
 p_szUserId,
 -- Data Status.,
 p_dtmLastUpdated,
-p_bAlreadyTransferred,
+p_bAlreadyTransferred
 -- ==================================================================,
 );
 
@@ -34426,9 +34503,9 @@ p_szProductId,
 p_decQty,
 p_decUomQty,
 p_szUomId,
-p_szParentId,
+p_szParentId
 -- ==================================================================,
-SET ANSI_NULLS ON,
+--SET ANSI_NULLS ON,
 );
 
 END;
@@ -34465,9 +34542,9 @@ p_szProductId,
 p_decQty,
 p_decUomQty,
 p_szUomId,
-p_szParentId,
+p_szParentId
 -- ==================================================================,
-SET ANSI_NULLS ON,
+--SET ANSI_NULLS ON,
 );
 
 END;
@@ -34488,7 +34565,7 @@ INSERT INTO BOS_INV_FSidItemLotQty
 szFSidId,
 btItemNumber,
 szLotId,
-decQty,
+decQty
 )
 VALUES
 (
@@ -34662,12 +34739,12 @@ LEFT JOIN BOS_GL_Company ON BOS_GL_Company.szCompanyId = BOS_INV_FSid.szCompanyI
 LEFT JOIN BOS_SM_User ON BOS_SM_User.szUserId = BOS_INV_FSid.szUserId
 
 WHERE
-BOS_INV_FSid.szFSidId = p_szFSidId
+BOS_INV_FSid.szFSidId = p_szFSidId;
 
 
 -- ==================================================================
 
-set ANSI_NULLS ON
+--set ANSI_NULLS ON
 
 END;
 $BODY$
@@ -34749,12 +34826,12 @@ LEFT JOIN BOS_GL_Company ON BOS_GL_Company.szCompanyId = BOS_INV_FSid.szCompanyI
 LEFT JOIN BOS_SM_User ON BOS_SM_User.szUserId = BOS_INV_FSid.szUserId
 
 WHERE
-BOS_INV_FSid.szFSidId = p_szFSidId
+BOS_INV_FSid.szFSidId = p_szFSidId;
 
 
 -- ==================================================================
 
-set ANSI_NULLS ON
+--set ANSI_NULLS ON
 
 
 END;
@@ -34789,11 +34866,11 @@ LEFT JOIN BOS_INV_Product ON BOS_INV_Product.szProductId = BOS_INV_FSidItem.szPr
 LEFT JOIN BOS_INV_Product AS BIP2 ON BIP2.szProductId = BOS_INV_FSidItem.szProductId
 
 WHERE
-szFSidId = p_szFSidId
+szFSidId = p_szFSidId;
 
 -- ==================================================================
 
-set ANSI_NULLS ON
+--set ANSI_NULLS ON
 
 END;
 $BODY$
@@ -34827,11 +34904,11 @@ LEFT JOIN BOS_INV_Product ON BOS_INV_Product.szProductId = BOS_INV_FSidItem.szPr
 LEFT JOIN BOS_INV_Product AS BIP2 ON BIP2.szProductId = BOS_INV_FSidItem.szProductId
 
 WHERE
-szFSidId = p_szFSidId
+szFSidId = p_szFSidId;
 
 -- ==================================================================
 
-set ANSI_NULLS ON
+--set ANSI_NULLS ON
 
 
 END;
@@ -34889,7 +34966,7 @@ szFSidId,
 dtmIn
 
 FROM 
-BOS_INV_FSid
+BOS_INV_FSid;
 
 END;
 $BODY$
@@ -35211,7 +35288,7 @@ p_bSystemCreated,
 p_szUserId,
 -- Data Status.,
 p_dtmLastUpdated,
-p_bAlreadyTransferred,
+p_bAlreadyTransferred
 -- ==================================================================,
 );
 
@@ -35330,7 +35407,7 @@ p_bSystemCreated,
 p_szUserId,
 -- Data Status.,
 p_dtmLastUpdated,
-p_bAlreadyTransferred,
+p_bAlreadyTransferred
 -- ==================================================================,
 );
 
@@ -35368,7 +35445,7 @@ p_szProductId,
 p_decQty,
 p_decUomQty,
 p_szUomId,
-p_szParentId,
+p_szParentId
 -- ==================================================================,
 );
 
@@ -35406,7 +35483,7 @@ p_szProductId,
 p_decQty,
 p_decUomQty,
 p_szUomId,
-p_szParentId,
+p_szParentId
 -- ==================================================================,
 );
 
@@ -35428,7 +35505,7 @@ INSERT INTO BOS_INV_FSodItemLotQty
 szFSodId,
 btItemNumber,
 szLotId,
-decQty,
+decQty
 )
 VALUES
 (
@@ -35611,11 +35688,11 @@ LEFT JOIN BOS_SM_User ON BOS_SM_User.szUserId = BOS_INV_FSod.szUserId
 
 LEFT JOIN BOS_INV_Warehouse AS Wh ON Wh.szWarehouseId = BOS_INV_FSod.szLocationId
 WHERE
-BOS_INV_FSod.szFSodId = p_szFSodId
+BOS_INV_FSod.szFSodId = p_szFSodId;
 
 -- ==================================================================
 
-set ANSI_NULLS ON
+--set ANSI_NULLS ON
 
 END;
 $BODY$
@@ -35706,11 +35783,11 @@ LEFT JOIN BOS_SM_User ON BOS_SM_User.szUserId = BOS_INV_FSod.szUserId
 
 LEFT JOIN BOS_INV_Warehouse AS Wh ON Wh.szWarehouseId = BOS_INV_FSod.szLocationId
 WHERE
-BOS_INV_FSod.szFSodId = p_szFSodId
+BOS_INV_FSod.szFSodId = p_szFSodId;
 
 -- ==================================================================
 
-set ANSI_NULLS ON
+--set ANSI_NULLS ON
 
 
 END;
@@ -35769,7 +35846,7 @@ szFSodId,
 dtmOut
 
 FROM 
-BOS_INV_FSod
+BOS_INV_FSod;
 
 END;
 $BODY$
@@ -36057,7 +36134,7 @@ bSystemCreated,
 szUserId,
 -- Data Status.,
 dtmLastUpdated,
-bAlreadyTransferred,
+bAlreadyTransferred
 )
 VALUES
 (
@@ -36095,7 +36172,7 @@ p_bSystemCreated,
 p_szUserId,
 -- Data Status.,
 p_dtmLastUpdated,
-p_bAlreadyTransferred,
+p_bAlreadyTransferred
 );
 
 END;
@@ -36187,7 +36264,7 @@ p_decUomQty,
 p_szUomId,
 p_decPrice,
 p_bTaxable,
-p_szParentId,
+p_szParentId
 );
 
 END;
@@ -36242,7 +36319,7 @@ p_bTaxable,
 p_szParentId,
 p_szDistProductId,
 p_decDistQty,
-p_decDistPrice,
+p_decDistPrice
 );
 
 END;
@@ -36328,7 +36405,7 @@ p_szLotTypeId,
 p_szProductionCode,
 p_decLotStrength,
 p_dtmExpired,
-p_szLotStatus,
+p_szLotStatus
 );
 
 END;
@@ -36529,7 +36606,7 @@ LEFT JOIN BOS_SM_User ON BOS_SM_User.szUserId = BOS_INV_FSrc.szUserId
 left join BOS_CU_Currency on BOS_CU_Currency.szCcyId = BOS_INV_FSrc.szCcyId
 
 where
-szFSrcId = p_szFSrcId
+szFSrcId = p_szFSrcId;
 
 END;
 $BODY$
@@ -36541,7 +36618,46 @@ p_szFSrcId BOS_DT_szId)
 RETURNS void AS
 $BODY$
 BEGIN
+SELECT
+	BOS_INV_FSrcItem.szFSrcId,
+	BOS_INV_FSrcItem.shItemNumber,
+	BOS_INV_FSrcItem.szRefProductId,
+	BOS_INV_FSrcItem.szProductId,
 
+	BOS_INV_Product.szName As szProductNm,
+	BOS_INV_Product.szNickName As szProductNickName_J,
+	BOS_INV_Product.szQtyFormat As szProductQtyFormat,
+	BOS_INV_Product.szUomId AS szProductUomId,
+	BOS_INV_Product.szCompUomId AS szProductCompUomId,
+	BOS_INV_Product.szUomClassId AS szProductUomClassId_J,
+	BOS_INV_Product.szTrackingType AS szProductTrackingType,
+	PPI.szUomId AS szProductPurchInfoUomId_J,
+
+	BOS_INV_FSrcItem.decQty,
+	BOS_INV_FSrcItem.decUomQty,
+
+	BOS_INV_FSrcItem.szUomId,
+	BOS_INV_FSrcItem.decPrice,
+	BOS_INV_FSrcItem.bTaxable,
+
+	BOS_INV_FSrcItem.szParentId,
+	parent.szName AS szParentNm_J
+
+from
+	BOS_INV_FSrcItem 
+	left join BOS_INV_Product on BOS_INV_Product.szProductId = 
+
+BOS_INV_FSrcItem.szProductId
+	LEFT JOIN BOS_INV_ProductPurchaseInfo AS PPI ON PPI.szProductId = 
+
+BOS_INV_FSrcItem.szProductId
+	left join BOS_INV_FSrc on BOS_INV_FSrc.szFSrcId = BOS_INV_FSrcItem.szFSrcId
+	left join BOS_INV_Product AS parent on BOS_INV_FSrcItem.szParentId = 
+
+parent.szProductId
+
+where
+	BOS_INV_FSrcItem.szFSrcId = p_szFSrcId;
 END;
 $BODY$
 LANGUAGE plpgsql;
@@ -36592,7 +36708,7 @@ left join BOS_INV_Product AS parent on BOS_INV_FSrcItem.szParentId =
 parent.szProductId
 
 where
-BOS_INV_FSrcItem.szFSrcId = p_szFSrcId
+BOS_INV_FSrcItem.szFSrcId = p_szFSrcId;
 
 
 END;
@@ -36649,7 +36765,7 @@ left join BOS_INV_Product AS parent on BOS_INV_FSrcItem.szParentId =
 parent.szProductId
 
 where
-BOS_INV_FSrcItem.szFSrcId = p_szFSrcId
+BOS_INV_FSrcItem.szFSrcId = p_szFSrcId;
 
 
 END;
@@ -36730,7 +36846,7 @@ szFSrcId,
 dtmReceipt
 
 FROM 
-BOS_INV_FSrc
+BOS_INV_FSrc;
 
 END;
 $BODY$
@@ -36946,7 +37062,7 @@ bSystemCreated,
 szUserId,
 -- Data Status.,
 dtmLastUpdated,
-bAlreadyTransferred,
+bAlreadyTransferred
 )
 VALUES
 (
@@ -36986,7 +37102,7 @@ p_bSystemCreated,
 p_szUserId,
 -- Data Status.,
 p_dtmLastUpdated,
-p_bAlreadyTransferred,
+p_bAlreadyTransferred
 );
 
 END;
@@ -37075,7 +37191,7 @@ bSystemCreated,
 szUserId,
 -- Data Status.,
 dtmLastUpdated,
-bAlreadyTransferred,
+bAlreadyTransferred
 )
 VALUES
 (
@@ -37115,7 +37231,7 @@ p_bSystemCreated,
 p_szUserId,
 -- Data Status.,
 p_dtmLastUpdated,
-p_bAlreadyTransferred,
+p_bAlreadyTransferred
 );
 
 END;
@@ -37189,7 +37305,7 @@ p_decQty,
 p_decUomQty,
 p_szUomId,
 p_szDistProductId,
-p_decDistQty,
+p_decDistQty
 );
 
 END;
@@ -37372,7 +37488,7 @@ LEFT JOIN BOS_GL_Workplace ON BOS_GL_Workplace.szWorkplaceId = BOS_INV_FSrt.szWo
 LEFT JOIN BOS_GL_Company ON BOS_GL_Company.szCompanyId = BOS_INV_FSrt.szCompanyId
 LEFT JOIN BOS_SM_User ON BOS_SM_User.szUserId = BOS_INV_FSrt.szUserId
 where
-szFSrtId = p_szFSrtId
+szFSrtId = p_szFSrtId;
 
 END;
 $BODY$
@@ -37407,7 +37523,7 @@ BOS_INV_FSrtItem
 LEFT JOIN BOS_INV_Product on BOS_INV_Product.szProductId = BOS_INV_FSrtItem.szProductId
 LEFT JOIN BOS_INV_ProductPurchaseInfo AS PPI ON PPI.szProductId = BOS_INV_FSrtItem.szProductId
 WHERE
-szFSrtId = p_szFSrtId
+szFSrtId = p_szFSrtId;
 
 END;
 $BODY$
@@ -37445,7 +37561,7 @@ BOS_INV_FSrtItem
 LEFT JOIN BOS_INV_Product on BOS_INV_Product.szProductId = BOS_INV_FSrtItem.szProductId
 LEFT JOIN BOS_INV_ProductPurchaseInfo AS PPI ON PPI.szProductId = BOS_INV_FSrtItem.szProductId
 WHERE
-szFSrtId = p_szFSrtId
+szFSrtId = p_szFSrtId;
 
 
 END;
@@ -37500,7 +37616,7 @@ szFSrtId,
 dtmReturn
 
 FROM 
-BOS_INV_FSrt
+BOS_INV_FSrt;
 
 END;
 $BODY$
@@ -37926,7 +38042,7 @@ p_szLotTypeId,
 p_szProductionCode,
 p_decLotStrength,
 p_dtmExpired,
-p_szLotStatus,
+p_szLotStatus
 );
 
 END;
@@ -37946,15 +38062,15 @@ INSERT INTO BOS_INV_FStCorItemLotQty
 (
 szFStCorId,
 btItemNumber,
-szLotId
-decQty,
+szLotId,
+decQty
 )
 VALUES
 (
 p_szFStCorId,
 p_btItemNumber,
-p_szLotId
-p_decQty,
+p_szLotId,
+p_decQty
 );
 
 END;
@@ -37995,7 +38111,9 @@ p_szFStCorId BOS_DT_szId)
 RETURNS void AS
 $BODY$
 BEGIN
-
+   DELETE FROM  BOS_INV_FStCor
+WHERE
+	szFStCorId = p_szFStCorId;	
 END;
 $BODY$
 LANGUAGE plpgsql;
@@ -38105,7 +38223,7 @@ LEFT JOIN BOS_GL_Company ON BOS_GL_Company.szCompanyId = BOS_INV_FStCor.szCompan
 LEFT JOIN BOS_SM_User ON BOS_SM_User.szUserId = BOS_INV_FStCor.szUserId
 
 WHERE
-BOS_INV_FStCor.szFStCorId = p_szFStCorId
+BOS_INV_FStCor.szFStCorId = p_szFStCorId;
 
 END;
 $BODY$
@@ -38143,7 +38261,9 @@ BOS_INV_FStCorItem.decCOGS
 
 FROM 
 BOS_INV_FStCorItem
-LEFT JOIN BOS_INV_Product on BOS_INV_FStCorItem.szProductId = BOS_INV_Product.szProductIdLEFT JOIN BOS_INV_Product on BOS_INV_FStCorItem.szProductId = BOS_INV_Product.szProductId;
+LEFT JOIN BOS_INV_Product on 
+BOS_INV_FStCorItem.szProductId = BOS_INV_Product.szProductId
+
 
 WHERE 
 BOS_INV_FStCorItem.szFStCorId = p_szFStCorId ;
@@ -38169,7 +38289,9 @@ BOS_INV_FStCorItemLotInfo.dtmExpired,
 BOS_INV_FStCorItemLotInfo.szLotStatus
 
 FROM 
-BOS_INV_FStCorItemLotInfo left join BOS_INV_Product on BOS_INV_FStCorItemLotInfo.szProductId = BOS_INV_Product.szProductId
+BOS_INV_FStCorItemLotInfo 
+left join BOS_INV_Product on 
+BOS_INV_FStCorItemLotInfo.szProductId = BOS_INV_Product.szProductId
 WHERE 
 szFStCorId = p_szFStCorId And btItemNumber = p_btItemNumber ;
 END;
@@ -38225,7 +38347,7 @@ szFStCorId,
 dtmCorrection
 
 FROM 
-BOS_INV_FStCor
+BOS_INV_FStCor;
 
 END;
 $BODY$
@@ -38721,7 +38843,7 @@ p_szLotTypeId,
 p_szProductionCode,
 p_decLotStrength,
 p_dtmExpired,
-p_szLotStatus,
+p_szLotStatus
 );
 
 END;
@@ -38741,15 +38863,15 @@ INSERT INTO BOS_INV_FStInItemLotQty
 (
 szFStInId,
 btItemNumber,
-szLotId
-decQty,
+szLotId,
+decQty
 )
 VALUES
 (
 p_szFStInId,
 p_btItemNumber,
-p_szLotId
-p_decQty,
+p_szLotId,
+p_decQty
 );
 
 END;
@@ -38917,7 +39039,7 @@ LEFT JOIN BOS_GL_Company ON BOS_GL_Company.szCompanyId = BOS_INV_FStIn.szCompany
 LEFT JOIN BOS_SM_User ON BOS_SM_User.szUserId = BOS_INV_FStIn.szUserId
 
 WHERE
-BOS_INV_FStIn.szFStInId = p_szFStInId
+BOS_INV_FStIn.szFStInId = p_szFStInId;
 
 END;
 $BODY$
@@ -38986,7 +39108,7 @@ LEFT JOIN BOS_GL_Company ON BOS_GL_Company.szCompanyId = BOS_INV_FStIn.szCompany
 LEFT JOIN BOS_SM_User ON BOS_SM_User.szUserId = BOS_INV_FStIn.szUserId
 
 WHERE
-BOS_INV_FStIn.szFStInId = p_szFStInId
+BOS_INV_FStIn.szFStInId = p_szFStInId;
 
 END;
 $BODY$
@@ -39139,7 +39261,7 @@ szFStInId,
 dtmTransfer
 
 FROM 
-BOS_INV_FStIn
+BOS_INV_FStIn;
 
 END;
 $BODY$
@@ -39588,7 +39710,7 @@ p_szExpedition,
 p_szDriverName,
 p_szVehicleNumber,
 p_szDriver,
-p_szVehicle,
+p_szVehicle
 );
 
 END;
@@ -39625,9 +39747,9 @@ p_szProductId,
 p_decQty,
 p_decUomQty,
 p_szUomId,
-p_szParentId,
+p_szParentId
 -- ==================================================================,
-SET ANSI_NULLS ON,
+--SET ANSI_NULLS ON,
 );
 
 END;
@@ -39664,9 +39786,9 @@ p_szProductId,
 p_decQty,
 p_decUomQty,
 p_szUomId,
-p_szParentId,
+p_szParentId
 -- ==================================================================,
-SET ANSI_NULLS ON
+--SET ANSI_NULLS ON
 );
 
 END;
@@ -39889,7 +40011,7 @@ LEFT JOIN BOS_GL_Company ON BOS_GL_Company.szCompanyId = BOS_INV_FStIntern.szCom
 LEFT JOIN BOS_SM_User ON BOS_SM_User.szUserId = BOS_INV_FStIntern.szUserId
 
 WHERE
-BOS_INV_FStIntern.szFStInternId = p_szFStInternId
+BOS_INV_FStIntern.szFStInternId = p_szFStInternId;
 
 END;
 $BODY$
@@ -39957,7 +40079,7 @@ LEFT JOIN BOS_GL_Company ON BOS_GL_Company.szCompanyId = BOS_INV_FStIntern.szCom
 LEFT JOIN BOS_SM_User ON BOS_SM_User.szUserId = BOS_INV_FStIntern.szUserId
 
 WHERE
-BOS_INV_FStIntern.szFStInternId = p_szFStInternId
+BOS_INV_FStIntern.szFStInternId = p_szFStInternId;
 
 
 END;
@@ -39993,11 +40115,11 @@ BOS_INV_FStInternItem
 left join BOS_INV_Product on BOS_INV_FStInternItem.szProductId = BOS_INV_Product.szProductId
 LEFT JOIN BOS_INV_Product AS BIP2 ON BIP2.szProductId = BOS_INV_FStInternItem.szParentId
 WHERE
-szFStInternId=p_szFStInternId
+szFStInternId=p_szFStInternId;
 
 -- ==================================================================
 
-SET ANSI_NULLS ON
+--SET ANSI_NULLS ON
 
 END;
 $BODY$
@@ -40032,11 +40154,11 @@ BOS_INV_FStInternItem
 left join BOS_INV_Product on BOS_INV_FStInternItem.szProductId = BOS_INV_Product.szProductId
 LEFT JOIN BOS_INV_Product AS BIP2 ON BIP2.szProductId = BOS_INV_FStInternItem.szParentId
 WHERE
-szFStInternId=p_szFStInternId
+szFStInternId=p_szFStInternId;
 
 -- ==================================================================
 
-SET ANSI_NULLS ON
+--SET ANSI_NULLS ON
 
 
 END;
@@ -40132,7 +40254,7 @@ szFStInternId,
 dtmTransfer
 
 FROM 
-BOS_INV_FStIntern
+BOS_INV_FStIntern;
 
 END;
 $BODY$
@@ -40211,6 +40333,39 @@ RETURNS void AS
 $BODY$
 BEGIN
 -- ### 2 update #####
+UPDATE
+	BOS_INV_FStIntern
+SET
+	dtmTransfer = p_dtmTransfer,
+	szRefDocType = p_szRefDocType,
+	szRefDocId = p_szRefDocId,
+	szEmployeeId = p_szEmployeeId,
+	szFrWhId = p_szFrWhId,
+	szFrStockTypeId = p_szFrStockTypeId,
+	szToWhId = p_szToWhId,
+	szToStockTypeId = p_szToStockTypeId,
+	bVoid = p_bVoid,
+	bApplied = p_bApplied,
+	szCompanyId = p_szCompanyId,
+	szWorkplaceId = p_szWorkplaceId,
+	szTaxEntityId = p_szTaxEntityId,
+	bNeedApproval = p_bNeedApproval,
+	gdApprovedId = p_gdApprovedId,
+
+	dtmCreated = p_dtmCreated,
+	szUserId = p_szUserId,
+
+	szDescription=p_szDescription,
+
+    --Add Fields for UPDATE
+    bTransportationDetail=p_bTransportationDetail,
+    szExpedition=p_szExpedition,
+    szDriverName=p_szDriverName,
+    szVehicleNumber=p_szVehicleNumber,
+    szDriver=p_szDriver,
+    szVehicle=p_szVehicle
+WHERE
+	szFStInternId = p_szFStInternId;
 END;
 $BODY$
 LANGUAGE plpgsql;
@@ -40255,6 +40410,39 @@ RETURNS void AS
 $BODY$
 BEGIN
 -- ### 2 update #####
+UPDATE
+    BOS_INV_FStIntern
+SET
+    dtmTransfer = p_dtmTransfer,
+    szRefDocType = p_szRefDocType,
+    szRefDocId = p_szRefDocId,
+    szEmployeeId = p_szEmployeeId,
+    szFrWhId = p_szFrWhId,
+    szFrStockTypeId = p_szFrStockTypeId,
+    szToWhId = p_szToWhId,
+    szToStockTypeId = p_szToStockTypeId,
+    bVoid = p_bVoid,
+    bApplied = p_bApplied,
+    szCompanyId = p_szCompanyId,
+    szWorkplaceId = p_szWorkplaceId,
+    szTaxEntityId = p_szTaxEntityId,
+    bNeedApproval = p_bNeedApproval,
+    gdApprovedId = p_gdApprovedId,
+
+    dtmCreated = p_dtmCreated,
+    szUserId = p_szUserId,
+
+    szDescription=p_szDescription,
+
+    --Add Fields for UPDATE
+    bTransportationDetail=p_bTransportationDetail,
+    szExpedition=p_szExpedition,
+    szDriverName=p_szDriverName,
+    szVehicleNumber=p_szVehicleNumber,
+    szDriver=p_szDriver,
+    szVehicle=p_szVehicle
+WHERE
+    szFStInternId = p_szFStInternId;
 END;
 $BODY$
 LANGUAGE plpgsql;
@@ -40346,7 +40534,7 @@ p_szUserId,
 -- Data Status.,
 p_dtmLastUpdated,
 p_bAlreadyTransferred,
-p_szDescription,
+p_szDescription
 );
 
 END;
@@ -40453,17 +40641,17 @@ INSERT INTO BOS_INV_FStMorphItemLotQty
 szFStMorphId,
 btItemNumber,
 szLotId,
-decQty,
+decQty
 )
 VALUES
 (
 p_szFStMorphId,
 p_btItemNumber,
 p_szLotId,
-p_decQty,
-SET QUOTED_IDENTIFIER OFF,
-);
+p_decQty
 
+);
+--SET QUOTED_IDENTIFIER OFF,
 END;
 $BODY$
 LANGUAGE plpgsql;
@@ -40614,7 +40802,7 @@ LEFT JOIN BOS_GL_Company ON BOS_GL_Company.szCompanyId = BOS_INV_FStMorph.szComp
 LEFT JOIN BOS_SM_User ON BOS_SM_User.szUserId = BOS_INV_FStMorph.szUserId
 
 WHERE
-BOS_INV_FStMorph.szFStMorphId = p_szFStMorphId
+BOS_INV_FStMorph.szFStMorphId = p_szFStMorphId;
 
 END;
 $BODY$
@@ -40656,7 +40844,7 @@ BOS_INV_FStMorphItem
 left join BOS_INV_Product as b1 on BOS_INV_FStMorphItem.szProductId = b1.szProductId
 left join BOS_INV_Product as b2 on BOS_INV_FStMorphItem.szToProductId = b2.szProductId
 WHERE
-szFStMorphId=p_szFStMorphId
+szFStMorphId=p_szFStMorphId;
 
 END;
 $BODY$
@@ -40738,7 +40926,7 @@ szFStMorphId,
 dtmMorph
 
 FROM 
-BOS_INV_FStMorph
+BOS_INV_FStMorph;
 
 END;
 $BODY$
@@ -40906,7 +41094,7 @@ bSystemCreated,
 szUserId,
 -- Data Status.,
 dtmLastUpdated,
-bAlreadyTransferred,
+bAlreadyTransferred
 )
 VALUES
 (
@@ -41018,7 +41206,7 @@ bSystemCreated,
 szUserId,
 -- Data Status.,
 dtmLastUpdated,
-bAlreadyTransferred,
+bAlreadyTransferred
 )
 VALUES
 (
@@ -41122,7 +41310,7 @@ p_decNewProductCOGS,
 p_szUomIdToBeSold,
 p_szReasonId,
 p_szParentId,
-p_szParentIdToBeSold,
+p_szParentIdToBeSold
 -- ==================================================================,
 );
 
@@ -41193,7 +41381,7 @@ p_decNewProductCOGS,
 p_szUomIdToBeSold,
 p_szReasonId,
 p_szParentId,
-p_szParentIdToBeSold,
+p_szParentIdToBeSold
 -- ==================================================================,
 );
 
@@ -41215,14 +41403,14 @@ INSERT INTO BOS_INV_FStRejectItemLotQty
 szFStRejectId,
 shItemNumber,
 szLotId,
-decQty,
+decQty
 )
 VALUES
 (
 p_szFStRejectId,
 p_shItemNumber,
 p_szLotId,
-p_decQty,
+p_decQty
 );
 
 END;
@@ -41278,7 +41466,7 @@ VALUES
 p_szFStRejectId,
 p_shItemNumber,
 p_shItem2Number,
-p_szProductSn,
+p_szProductSn
 );
 
 END;
@@ -41402,7 +41590,7 @@ LEFT JOIN BOS_GL_Company ON BOS_GL_Company.szCompanyId = BOS_INV_FStReject.szCom
 LEFT JOIN BOS_SM_User ON BOS_SM_User.szUserId = BOS_INV_FStReject.szUserId
 
 WHERE
-BOS_INV_FStReject.szFStRejectId = p_szFStRejectId
+BOS_INV_FStReject.szFStRejectId = p_szFStRejectId;
 
 END;
 $BODY$
@@ -41469,7 +41657,7 @@ LEFT JOIN BOS_GL_Company ON BOS_GL_Company.szCompanyId = BOS_INV_FStReject.szCom
 LEFT JOIN BOS_SM_User ON BOS_SM_User.szUserId = BOS_INV_FStReject.szUserId
 
 WHERE
-BOS_INV_FStReject.szFStRejectId = p_szFStRejectId
+BOS_INV_FStReject.szFStRejectId = p_szFStRejectId;
 
 END;
 $BODY$
@@ -41534,11 +41722,11 @@ left join BOS_INV_Product as b3 on BOS_INV_FStRejectItem.szParentId = b3.szProdu
 left join BOS_INV_Product as b4 on BOS_INV_FStRejectItem.szParentIdTobeSold = b4.szProductId
 
 WHERE
-szFStRejectId=p_szFStRejectId
+szFStRejectId=p_szFStRejectId;
 
 -- ==================================================================
 
-set ANSI_NULLS ON
+--set ANSI_NULLS ON
 
 END;
 $BODY$
@@ -41603,11 +41791,11 @@ left join BOS_INV_Product as b3 on BOS_INV_FStRejectItem.szParentId = b3.szProdu
 left join BOS_INV_Product as b4 on BOS_INV_FStRejectItem.szParentIdTobeSold = b4.szProductId
 
 WHERE
-szFStRejectId=p_szFStRejectId
+szFStRejectId=p_szFStRejectId;
 
 -- ==================================================================
 
-set ANSI_NULLS ON
+--set ANSI_NULLS ON
 
 
 END;
@@ -41668,7 +41856,7 @@ dtmDocument
 
 
 FROM 
-BOS_INV_FStReject
+BOS_INV_FStReject;
 
 END;
 $BODY$
@@ -41934,10 +42122,10 @@ p_dtmLastUpdated,
 p_bAlreadyTransferred,
 p_szFAdjustmentId,
 p_szAdjustedById,
-p_szAdjustToId,
-SET ANSI_NULLS ON,
-);
+p_szAdjustToId
 
+);
+--SET ANSI_NULLS ON,
 END;
 $BODY$
 LANGUAGE plpgsql;
@@ -42029,10 +42217,10 @@ p_dtmLastUpdated,
 p_bAlreadyTransferred,
 p_szFAdjustmentId,
 p_szAdjustedById,
-p_szAdjustToId,
-SET ANSI_NULLS ON,
-);
+p_szAdjustToId
 
+);
+--SET ANSI_NULLS ON,
 END;
 $BODY$
 LANGUAGE plpgsql;
@@ -42104,7 +42292,7 @@ p_szProductId,
 p_decQty,
 p_decUomQty,
 p_szUomId,
-p_szParentId,
+p_szParentId
 );
 
 END;
@@ -42125,7 +42313,7 @@ INSERT INTO BOS_INV_FVRemaItemLotQty
 szFVRemaId,
 btItemNumber,
 szLotId,
-decQty,
+decQty
 )
 VALUES
 (
@@ -42279,10 +42467,10 @@ LEFT JOIN BOS_GL_Company ON BOS_GL_Company.szCompanyId = BOS_INV_FVRema.szCompan
 LEFT JOIN BOS_SM_User ON BOS_SM_User.szUserId = BOS_INV_FVRema.szUserId
 
 WHERE
-BOS_INV_FVRema.szFVRemaId = p_szFVRemaId
+BOS_INV_FVRema.szFVRemaId = p_szFVRemaId;
 
 
-SET ANSI_NULLS ON
+--SET ANSI_NULLS ON
 
 END;
 $BODY$
@@ -42344,10 +42532,10 @@ LEFT JOIN BOS_GL_Company ON BOS_GL_Company.szCompanyId = BOS_INV_FVRema.szCompan
 LEFT JOIN BOS_SM_User ON BOS_SM_User.szUserId = BOS_INV_FVRema.szUserId
 
 WHERE
-BOS_INV_FVRema.szFVRemaId = p_szFVRemaId
+BOS_INV_FVRema.szFVRemaId = p_szFVRemaId;
 
 
-SET ANSI_NULLS ON
+--SET ANSI_NULLS ON
 
 END;
 $BODY$
@@ -42403,7 +42591,7 @@ szFVRemaId,
 dtmRemain
 
 FROM 
-BOS_INV_FVRema
+BOS_INV_FVRema;
 
 END;
 $BODY$
@@ -42570,17 +42758,15 @@ RETURNS void AS
 $BODY$
 BEGIN
 INSERT INTO BOS_INV_LotInfo
-(
-  ,
-szLotId  ,
-szProductId  ,
-decLotStrength  ,
-szLotTypeId  ,
-szProductionCode  ,
-dtmExpired  ,
+(  
+szLotId,
+szProductId,
+decLotStrength,
+szLotTypeId,
+szProductionCode,
+dtmExpired,
 szLotStatus,
 dtmLastUpdated  
-  ,
 )
 VALUES
 (
@@ -42613,16 +42799,16 @@ $BODY$
 BEGIN
 INSERT INTO BOS_INV_LotInfo
 (
-  ,
-szLotId  ,
-szProductId  ,
-decLotStrength  ,
-szLotTypeId  ,
-szProductionCode  ,
-dtmExpired  ,
+
+szLotId,
+szProductId,
+decLotStrength,
+szLotTypeId,
+szProductionCode,
+dtmExpired,
 szLotStatus,
 dtmLastUpdated  
-  ,
+
 )
 VALUES
 (
@@ -42633,7 +42819,7 @@ p_szLotTypeId,
 p_szProductionCode,
 p_dtmExpired,
 p_szLotStatus,
-p_dtmLastUpdated,
+p_dtmLastUpdated
 );
 
 END;
@@ -42663,7 +42849,7 @@ SELECT
 szLotId
 
 FROM 
-BOS_INV_LotInfo
+BOS_INV_LotInfo;
 
 END;
 $BODY$
@@ -42678,11 +42864,19 @@ $BODY$
 BEGIN
 SELECT 
 BOS_INV_LotInfo.szLotTypeId,
+BOS_INV_LotInfo.decLotStrength,
+	BOS_INV_LotInfo.dtmExpired,
+	BOS_INV_LotInfo.szProductionCode,
+	BOS_INV_LotInfo.szLotStatus,
+	isnull(BOS_INV_Product.szName,'') as szProductNm,
+	BOS_INV_LotInfo.dtmLastUpdated
 
 FROM 
-BOS_INV_LotInfo left join BOS_INV_Product on BOS_INV_LotInfo.szProductId=BOS_INV_Product.szProductId
+BOS_INV_LotInfo left join BOS_INV_Product on 
+BOS_INV_LotInfo.szProductId=BOS_INV_Product.szProductId
 WHERE 
-BOS_INV_LotInfo.szLotId = p_szLotId and BOS_INV_LotInfo.szProductId = p_szProductId ;
+BOS_INV_LotInfo.szLotId = p_szLotId and 
+BOS_INV_LotInfo.szProductId = p_szProductId;
 END;
 $BODY$
 LANGUAGE plpgsql;
@@ -43154,9 +43348,11 @@ BOS_INV_OrderItemType.bAlreadyTransferred
 
 FROM 
 BOS_INV_OrderItemType
-LEFT JOIN BOS_AR_PaymentTerm ON BOS_AR_PaymentTerm.szPaymentTermId = BOS_INV_OrderItemType.szPaymentTermIdLEFT JOIN BOS_AR_PaymentTerm ON BOS_AR_PaymentTerm.szPaymentTermId = BOS_INV_OrderItemType.szPaymentTermId;
+LEFT JOIN BOS_AR_PaymentTerm ON 
+BOS_AR_PaymentTerm.szPaymentTermId = BOS_INV_OrderItemType.szPaymentTermId
+
 WHERE 
-szOrderItemTypeId=p_szOrderItemTypeId ;
+szOrderItemTypeId=p_szOrderItemTypeId;
 END;
 $BODY$
 LANGUAGE plpgsql;
@@ -43174,10 +43370,12 @@ ISNULL(BOS_AR_Category.szDescription,'') AS szCustNm_J
 
 FROM 
 BOS_INV_OrderItemTypeCust
-LEFT JOIN BOS_AR_Category ON BOS_AR_Category.szCategoryId = BOS_INV_OrderItemTypeCust.szCustIdLEFT JOIN BOS_AR_Category ON BOS_AR_Category.szCategoryId = BOS_INV_OrderItemTypeCust.szCustId;
+LEFT JOIN BOS_AR_Category ON BOS_AR_Category.szCategoryId = BOS_INV_OrderItemTypeCust.szCustId
+
 
 WHERE 
-BOS_INV_OrderItemTypeCust.szOrderItemTypeId = p_szOrderItemTypeId /****** Object:  StoredProcedure [dbo].[BOS_INV_OrderType_GetOrderTypeCust]    Script Date: 04/20/2015 17:10:47 ******/ SET ANSI_NULLS ON ;
+BOS_INV_OrderItemTypeCust.szOrderItemTypeId = p_szOrderItemTypeId;
+--SET ANSI_NULLS ON ;
 END;
 $BODY$
 LANGUAGE plpgsql;
@@ -43195,10 +43393,11 @@ ISNULL(BOS_AR_Category.szDescription,'') AS szCustNm_J
 
 FROM 
 BOS_INV_OrderItemTypeCust
-LEFT JOIN BOS_AR_Category ON BOS_AR_Category.szCategoryId = BOS_INV_OrderItemTypeCust.szCustIdLEFT JOIN BOS_AR_Category ON BOS_AR_Category.szCategoryId = BOS_INV_OrderItemTypeCust.szCustId;
+LEFT JOIN BOS_AR_Category ON BOS_AR_Category.szCategoryId = BOS_INV_OrderItemTypeCust.szCustId
+
 
 WHERE 
-BOS_INV_OrderItemTypeCust.szOrderItemTypeId = p_szOrderItemTypeId ;
+BOS_INV_OrderItemTypeCust.szOrderItemTypeId = p_szOrderItemTypeId;
 END;
 $BODY$
 LANGUAGE plpgsql;
@@ -43235,7 +43434,8 @@ BOS_INV_Product.szName AS szProductNm_J
 
 FROM 
 BOS_INV_OrderItemTypeProduct
-LEFT JOIN BOS_INV_Product ON BOS_INV_Product.szProductId = BOS_INV_OrderItemTypeProduct.szProductIdLEFT JOIN BOS_INV_Product ON BOS_INV_Product.szProductId = BOS_INV_OrderItemTypeProduct.szProductId;
+LEFT JOIN BOS_INV_Product ON BOS_INV_Product.szProductId = BOS_INV_OrderItemTypeProduct.szProductId
+
 
 WHERE 
 BOS_INV_OrderItemTypeProduct.szOrderItemTypeId = p_szOrderItemTypeId ;
@@ -43488,7 +43688,7 @@ p_szPriceOrderId,
 p_szPromoPriceId,
 p_szPromoPriceOrderId,
 p_dtmLastUpdated,
-p_bAlreadyTransferred,
+p_bAlreadyTransferred
 );
 
 END;
@@ -43844,7 +44044,7 @@ szOrderTypeId,
 szDescription
 
 FROM 
-BOS_INV_OrderType
+BOS_INV_OrderType;
 
 END;
 $BODY$
@@ -43885,7 +44085,8 @@ BOS_INV_OrderType.bAlreadyTransferred
 
 FROM 
 BOS_INV_OrderType
-LEFT JOIN BOS_INV_OrderType AS ROT ON ROT.szOrderTypeId = BOS_INV_OrderType.szReturnOrderTypeIdLEFT JOIN BOS_INV_OrderType AS ROT ON ROT.szOrderTypeId = BOS_INV_OrderType.szReturnOrderTypeId;
+LEFT JOIN BOS_INV_OrderType AS ROT ON ROT.szOrderTypeId = BOS_INV_OrderType.szReturnOrderTypeId
+
 
 WHERE 
 BOS_INV_OrderType.szOrderTypeId = p_szOrderTypeId ;
@@ -43906,7 +44107,8 @@ ISNULL(BOS_AR_Category.szDescription,'') AS szCustNm_J
 
 FROM 
 BOS_INV_OrderTypeCust
-LEFT JOIN BOS_AR_Category ON BOS_AR_Category.szCategoryId = BOS_INV_OrderTypeCust.szCustIdLEFT JOIN BOS_AR_Category ON BOS_AR_Category.szCategoryId = BOS_INV_OrderTypeCust.szCustId;
+LEFT JOIN BOS_AR_Category ON BOS_AR_Category.szCategoryId = BOS_INV_OrderTypeCust.szCustId
+
 
 WHERE 
 BOS_INV_OrderTypeCust.szOrderTypeId = p_szOrderTypeId ;
@@ -43927,7 +44129,8 @@ ISNULL(BOS_AR_Category.szDescription,'') AS szCustNm_J
 
 FROM 
 BOS_INV_OrderTypeCust
-LEFT JOIN BOS_AR_Category ON BOS_AR_Category.szCategoryId = BOS_INV_OrderTypeCust.szCustIdLEFT JOIN BOS_AR_Category ON BOS_AR_Category.szCategoryId = BOS_INV_OrderTypeCust.szCustId;
+LEFT JOIN BOS_AR_Category ON BOS_AR_Category.szCategoryId = BOS_INV_OrderTypeCust.szCustId
+
 
 WHERE 
 BOS_INV_OrderTypeCust.szOrderTypeId = p_szOrderTypeId ;
@@ -43984,7 +44187,8 @@ BOS_INV_Product.szName AS szProductNm_J
 
 FROM 
 BOS_INV_OrderTypeProduct
-LEFT JOIN BOS_INV_Product ON BOS_INV_Product.szProductId = BOS_INV_OrderTypeProduct.szProductIdLEFT JOIN BOS_INV_Product ON BOS_INV_Product.szProductId = BOS_INV_OrderTypeProduct.szProductId;
+LEFT JOIN BOS_INV_Product ON BOS_INV_Product.szProductId = BOS_INV_OrderTypeProduct.szProductId
+
 
 WHERE 
 BOS_INV_OrderTypeProduct.szOrderTypeId = p_szOrderTypeId ;
@@ -44865,7 +45069,7 @@ BEGIN
 DELETE 
 BOS_INV_Price
 WHERE
-szOwnerTrnId = p_szOwnerTrnIdAND szPriceId = p_szPriceId;
+szOwnerTrnId = p_szOwnerTrnId AND szPriceId = p_szPriceId;
 END;
 $BODY$
 LANGUAGE plpgsql;
@@ -44880,7 +45084,7 @@ BEGIN
 DELETE 
 BOS_INV_Price
 WHERE
-szOwnerTrnId = p_szOwnerTrnIdAND szPriceId = p_szPriceId;
+szOwnerTrnId = p_szOwnerTrnId AND szPriceId = p_szPriceId;
 END;
 $BODY$
 LANGUAGE plpgsql;
@@ -44895,7 +45099,7 @@ BEGIN
 DELETE 
 BOS_INV_PriceItem
 WHERE
-szOwnerTrnId = p_szOwnerTrnIdAND szPriceId = p_szPriceId;
+szOwnerTrnId = p_szOwnerTrnId AND szPriceId = p_szPriceId;
 END;
 $BODY$
 LANGUAGE plpgsql;
@@ -44910,7 +45114,7 @@ BEGIN
 DELETE 
 BOS_INV_PriceItem
 WHERE
-szOwnerTrnId = p_szOwnerTrnIdAND szPriceId = p_szPriceId;
+szOwnerTrnId = p_szOwnerTrnId AND szPriceId = p_szPriceId;
 END;
 $BODY$
 LANGUAGE plpgsql;
@@ -44925,7 +45129,7 @@ BEGIN
 DELETE 
 BOS_INV_PriceItemDiscBonus
 WHERE
-szOwnerTrnId = p_szOwnerTrnIdAND szPriceId = p_szPriceId;
+szOwnerTrnId = p_szOwnerTrnId AND szPriceId = p_szPriceId;
 END;
 $BODY$
 LANGUAGE plpgsql;
@@ -44940,7 +45144,7 @@ BEGIN
 DELETE 
 BOS_INV_PriceItemDiscBonus
 WHERE
-szOwnerTrnId = p_szOwnerTrnIdAND szPriceId = p_szPriceId;
+szOwnerTrnId = p_szOwnerTrnId AND szPriceId = p_szPriceId;
 END;
 $BODY$
 LANGUAGE plpgsql;
@@ -44956,7 +45160,9 @@ BEGIN
 DELETE 
 BOS_INV_PriceItemDiscBonus
 WHERE
-szOwnerTrnId = p_szOwnerTrnIdAND szPriceId = p_szPriceIdAND gdHistory = p_gdHistory;
+szOwnerTrnId = p_szOwnerTrnId AND 
+szPriceId = p_szPriceId AND 
+gdHistory = p_gdHistory;
 END;
 $BODY$
 LANGUAGE plpgsql;
@@ -44972,7 +45178,9 @@ BEGIN
 DELETE 
 BOS_INV_PriceItemDiscBonus
 WHERE
-szOwnerTrnId = p_szOwnerTrnIdAND szPriceId = p_szPriceIdAND gdHistory = p_gdHistory;
+szOwnerTrnId = p_szOwnerTrnId AND 
+szPriceId = p_szPriceId AND 
+gdHistory = p_gdHistory;
 END;
 $BODY$
 LANGUAGE plpgsql;
@@ -44987,7 +45195,8 @@ BEGIN
 DELETE 
 BOS_INV_PriceItemPricing
 WHERE
-szOwnerTrnId = p_szOwnerTrnIdAND szPriceId=p_szPriceId;
+szOwnerTrnId = p_szOwnerTrnId AND 
+szPriceId=p_szPriceId;
 END;
 $BODY$
 LANGUAGE plpgsql;
@@ -45002,7 +45211,7 @@ BEGIN
 DELETE 
 BOS_INV_PriceItemPricing
 WHERE
-szOwnerTrnId = p_szOwnerTrnIdAND szPriceId=p_szPriceId;
+szOwnerTrnId = p_szOwnerTrnId AND szPriceId=p_szPriceId;
 END;
 $BODY$
 LANGUAGE plpgsql;
@@ -45018,7 +45227,9 @@ BEGIN
 DELETE 
 BOS_INV_PriceItemPricing
 WHERE
-szOwnerTrnId = p_szOwnerTrnIdAND szPriceId = p_szPriceIdAND gdHistory = p_gdHistory;
+szOwnerTrnId = p_szOwnerTrnId AND 
+szPriceId = p_szPriceId AND 
+gdHistory = p_gdHistory;
 END;
 $BODY$
 LANGUAGE plpgsql;
@@ -45034,7 +45245,9 @@ BEGIN
 DELETE 
 BOS_INV_PriceItemPricing
 WHERE
-szOwnerTrnId = p_szOwnerTrnIdAND szPriceId = p_szPriceIdAND gdHistory = p_gdHistory;
+szOwnerTrnId = p_szOwnerTrnId AND 
+szPriceId = p_szPriceId AND 
+gdHistory = p_gdHistory;
 END;
 $BODY$
 LANGUAGE plpgsql;
@@ -45049,7 +45262,7 @@ BEGIN
 DELETE 
 BOS_INV_PriceItemProductBonus
 WHERE
-szOwnerTrnId = p_szOwnerTrnIdAND szPriceId=p_szPriceId;
+szOwnerTrnId = p_szOwnerTrnId AND szPriceId=p_szPriceId;
 END;
 $BODY$
 LANGUAGE plpgsql;
@@ -45064,7 +45277,7 @@ BEGIN
 DELETE 
 BOS_INV_PriceItemProductBonus
 WHERE
-szOwnerTrnId = p_szOwnerTrnIdAND szPriceId=p_szPriceId;
+szOwnerTrnId = p_szOwnerTrnId AND szPriceId=p_szPriceId;
 END;
 $BODY$
 LANGUAGE plpgsql;
@@ -45079,7 +45292,8 @@ BEGIN
 DELETE 
 BOS_INV_PriceItemProductBonusItem
 WHERE
-szOwnerTrnId = p_szOwnerTrnId ANDszPriceId=p_szPriceId;
+szOwnerTrnId = p_szOwnerTrnId AND 
+szPriceId=p_szPriceId;
 END;
 $BODY$
 LANGUAGE plpgsql;
@@ -45094,7 +45308,8 @@ BEGIN
 DELETE 
 BOS_INV_PriceItemProductBonusItem
 WHERE
-szOwnerTrnId = p_szOwnerTrnId ANDszPriceId=p_szPriceId;
+szOwnerTrnId = p_szOwnerTrnId AND
+szPriceId=p_szPriceId;
 END;
 $BODY$
 LANGUAGE plpgsql;
@@ -45110,7 +45325,9 @@ BEGIN
 DELETE 
 BOS_INV_PriceItemProductBonusItem
 WHERE
-szOwnerTrnId = p_szOwnerTrnId ANDszPriceId = p_szPriceId ANDp_gdHistory = p_gdHistory;
+szOwnerTrnId = p_szOwnerTrnId AND 
+szPriceId = p_szPriceId AND 
+p_gdHistory = p_gdHistory;
 END;
 $BODY$
 LANGUAGE plpgsql;
@@ -45126,7 +45343,9 @@ BEGIN
 DELETE 
 BOS_INV_PriceItemProductBonusItem
 WHERE
-szOwnerTrnId = p_szOwnerTrnId ANDszPriceId = p_szPriceId ANDp_gdHistory = p_gdHistory;
+szOwnerTrnId = p_szOwnerTrnId AND 
+szPriceId = p_szPriceId AND 
+p_gdHistory = p_gdHistory;
 END;
 $BODY$
 LANGUAGE plpgsql;
@@ -45142,7 +45361,9 @@ BEGIN
 DELETE 
 BOS_INV_PriceItemProductBonus
 WHERE
-szOwnerTrnId = p_szOwnerTrnId ANDszPriceId = p_szPriceId ANDgdHistory = p_gdHistory;
+szOwnerTrnId = p_szOwnerTrnId AND 
+szPriceId = p_szPriceId AND 
+gdHistory = p_gdHistory;
 END;
 $BODY$
 LANGUAGE plpgsql;
@@ -45158,7 +45379,9 @@ BEGIN
 DELETE 
 BOS_INV_PriceItemProductBonus
 WHERE
-szOwnerTrnId = p_szOwnerTrnId ANDszPriceId = p_szPriceId ANDgdHistory = p_gdHistory;
+szOwnerTrnId = p_szOwnerTrnId AND 
+szPriceId = p_szPriceId AND 
+gdHistory = p_gdHistory;
 END;
 $BODY$
 LANGUAGE plpgsql;
@@ -45174,7 +45397,9 @@ BEGIN
 DELETE 
 BOS_INV_PriceItem
 WHERE
-szOwnerTrnId = p_szOwnerTrnId ANDszPriceId = p_szPriceId ANDgdHistory = p_gdHistory;
+szOwnerTrnId = p_szOwnerTrnId AND 
+szPriceId = p_szPriceId AND 
+gdHistory = p_gdHistory;
 END;
 $BODY$
 LANGUAGE plpgsql;
@@ -45190,7 +45415,9 @@ BEGIN
 DELETE 
 BOS_INV_PriceItem
 WHERE
-szOwnerTrnId = p_szOwnerTrnId ANDszPriceId = p_szPriceId ANDgdHistory = p_gdHistory;
+szOwnerTrnId = p_szOwnerTrnId AND 
+szPriceId = p_szPriceId AND
+gdHistory = p_gdHistory;
 END;
 $BODY$
 LANGUAGE plpgsql;
@@ -45274,7 +45501,7 @@ BOS_INV_PriceItem.szProductId = ''
 )
 
 ORDER BY
-BOS_INV_PriceItem.szProductId
+BOS_INV_PriceItem.szProductId;
 
 END;
 $BODY$
@@ -45338,7 +45565,7 @@ BOS_INV_PriceItem.szProductId = ''
 )
 
 ORDER BY
-BOS_INV_PriceItem.szProductId
+BOS_INV_PriceItem.szProductId;
 
 END;
 $BODY$
@@ -45372,8 +45599,13 @@ BOS_INV_PriceItemDiscBonus
 left join BOS_SD_OrgStru_PrincipalDiscRef as PrDiscRef on BOS_INV_PriceItemDiscBonus.szPrincipalDiscRefId = PrDiscRef.szPrincipalDiscRefId
 
 WHERE 
-szOwnerTrnId = p_szOwnerTrnId AND szPriceId = p_szPriceId AND gdHistory = p_gdHistory AND szProductId = p_szProductId AND dtmItemValidStart = p_dtmItemValidStart ;ORDER BY 
-decMinQty
+szOwnerTrnId = p_szOwnerTrnId AND 
+szPriceId = p_szPriceId AND 
+gdHistory = p_gdHistory AND 
+szProductId = p_szProductId AND 
+dtmItemValidStart = p_dtmItemValidStart 
+ORDER BY 
+decMinQty;
 
 END;
 $BODY$
@@ -45407,8 +45639,9 @@ BOS_INV_PriceItemDiscBonus
 left join BOS_SD_OrgStru_PrincipalDiscRef as PrDiscRef on BOS_INV_PriceItemDiscBonus.szPrincipalDiscRefId = PrDiscRef.szPrincipalDiscRefId
 
 WHERE 
-szOwnerTrnId = p_szOwnerTrnId AND szPriceId = p_szPriceId AND gdHistory = p_gdHistory AND szProductId = p_szProductId AND dtmItemValidStart = p_dtmItemValidStart ;ORDER BY 
-decMinQty
+szOwnerTrnId = p_szOwnerTrnId AND szPriceId = p_szPriceId AND gdHistory = p_gdHistory AND szProductId = p_szProductId AND dtmItemValidStart = p_dtmItemValidStart 
+ORDER BY 
+decMinQty;
 
 END;
 $BODY$
@@ -45433,8 +45666,9 @@ FROM
 BOS_INV_PriceItemPricing
 
 WHERE 
-szOwnerTrnId = p_szOwnerTrnId AND szPriceId = p_szPriceId AND gdHistory = p_gdHistory AND szProductId = p_szProductId AND dtmItemValidStart = p_dtmItemValidStart ;ORDER BY 
-decMinQty
+szOwnerTrnId = p_szOwnerTrnId AND szPriceId = p_szPriceId AND gdHistory = p_gdHistory AND szProductId = p_szProductId AND dtmItemValidStart = p_dtmItemValidStart 
+ORDER BY 
+decMinQty;
 
 END;
 $BODY$
@@ -45459,8 +45693,9 @@ FROM
 BOS_INV_PriceItemPricing
 
 WHERE 
-szOwnerTrnId = p_szOwnerTrnId AND szPriceId = p_szPriceId AND gdHistory = p_gdHistory AND szProductId = p_szProductId AND dtmItemValidStart = p_dtmItemValidStart ;ORDER BY 
-decMinQty
+szOwnerTrnId = p_szOwnerTrnId AND szPriceId = p_szPriceId AND gdHistory = p_gdHistory AND szProductId = p_szProductId AND dtmItemValidStart = p_dtmItemValidStart 
+ORDER BY 
+decMinQty;
 
 END;
 $BODY$
@@ -45485,8 +45720,9 @@ FROM
 BOS_INV_PriceItemProductBonus
 
 WHERE 
-szOwnerTrnId = p_szOwnerTrnId AND szPriceId = p_szPriceId AND gdHistory = p_gdHistory AND szProductId = p_szProductId AND dtmItemValidStart = p_dtmItemValidStart ;ORDER BY 
-decMinQty
+szOwnerTrnId = p_szOwnerTrnId AND szPriceId = p_szPriceId AND gdHistory = p_gdHistory AND szProductId = p_szProductId AND dtmItemValidStart = p_dtmItemValidStart 
+ORDER BY 
+decMinQty;
 
 END;
 $BODY$
@@ -45511,8 +45747,9 @@ FROM
 BOS_INV_PriceItemProductBonus
 
 WHERE 
-szOwnerTrnId = p_szOwnerTrnId AND szPriceId = p_szPriceId AND gdHistory = p_gdHistory AND szProductId = p_szProductId AND dtmItemValidStart = p_dtmItemValidStart ;ORDER BY 
-decMinQty
+szOwnerTrnId = p_szOwnerTrnId AND szPriceId = p_szPriceId AND gdHistory = p_gdHistory AND szProductId = p_szProductId AND dtmItemValidStart = p_dtmItemValidStart 
+ORDER BY 
+decMinQty;
 
 END;
 $BODY$
@@ -45565,7 +45802,7 @@ BOS_INV_PriceItemProductBonusItem.szPriceId = p_szPriceId AND
 BOS_INV_PriceItemProductBonusItem.gdHistory = p_gdHistory AND
 BOS_INV_PriceItemProductBonusItem.szProductId = p_szProductId AND
 BOS_INV_PriceItemProductBonusItem.decMinQty = p_decMinQty AND
-BOS_INV_PriceItemProductBonusItem.dtmItemValidStart = p_dtmItemValidStart
+BOS_INV_PriceItemProductBonusItem.dtmItemValidStart = p_dtmItemValidStart;
 
 END;
 $BODY$
@@ -45618,7 +45855,7 @@ BOS_INV_PriceItemProductBonusItem.szPriceId = p_szPriceId AND
 BOS_INV_PriceItemProductBonusItem.gdHistory = p_gdHistory AND
 BOS_INV_PriceItemProductBonusItem.szProductId = p_szProductId AND
 BOS_INV_PriceItemProductBonusItem.decMinQty = p_decMinQty AND
-BOS_INV_PriceItemProductBonusItem.dtmItemValidStart = p_dtmItemValidStart
+BOS_INV_PriceItemProductBonusItem.dtmItemValidStart = p_dtmItemValidStart;
 
 END;
 $BODY$
@@ -45925,8 +46162,9 @@ SET
 szDescription = szDescription
 
 WHERE 
-szOwnerTrnId = p_szOwnerTrnId AND;
-
+szOwnerTrnId = p_szOwnerTrnId AND
+szPriceId = p_szPriceId AND
+	gdHistory = p_gdHistory;
 END;
 $BODY$
 LANGUAGE plpgsql;
@@ -45944,7 +46182,9 @@ SET
 szDescription = szDescription
 
 WHERE 
-szOwnerTrnId = p_szOwnerTrnId AND;
+szOwnerTrnId = p_szOwnerTrnId AND
+szPriceId = p_szPriceId AND
+	gdHistory = p_gdHistory;
 
 END;
 $BODY$
@@ -45963,7 +46203,9 @@ SET
 szDescription = szDescription
 
 WHERE 
-szOwnerTrnId = p_szOwnerTrnId AND;
+szOwnerTrnId = p_szOwnerTrnId AND
+szPriceId = p_szPriceId AND
+	szStatus = p_szStatus;
 
 END;
 $BODY$
@@ -45982,7 +46224,9 @@ SET
 szDescription = szDescription
 
 WHERE 
-szOwnerTrnId = p_szOwnerTrnId AND;
+szOwnerTrnId = p_szOwnerTrnId AND
+szPriceId = p_szPriceId AND
+	szStatus = p_szStatus;
 
 END;
 $BODY$
@@ -46048,7 +46292,9 @@ szDiscGroupId_2 = p_szDiscGroupId_2,
 szDiscGroupId_3 = p_szDiscGroupId_3
 
 WHERE 
-szOwnerTrnId = p_szOwnerTrnId AND;
+szOwnerTrnId = p_szOwnerTrnId AND
+szPriceId = p_szPriceId and
+	gdHistory = p_gdHistory;
 
 END;
 $BODY$
@@ -46114,7 +46360,9 @@ szDiscGroupId_2 = p_szDiscGroupId_2,
 szDiscGroupId_3 = p_szDiscGroupId_3
 
 WHERE 
-szOwnerTrnId = p_szOwnerTrnId AND;
+szOwnerTrnId = p_szOwnerTrnId AND
+szPriceId = p_szPriceId and
+	gdHistory = p_gdHistory;
 
 END;
 $BODY$
@@ -46134,7 +46382,9 @@ SET
 szStatus = p_szStatus
 
 WHERE 
-szOwnerTrnId = p_szOwnerTrnId AND;
+szOwnerTrnId = p_szOwnerTrnId AND
+	szPriceId = p_szPriceId and
+	gdHistory = p_gdHistory;
 
 END;
 $BODY$
@@ -46154,7 +46404,9 @@ SET
 szStatus = p_szStatus
 
 WHERE 
-szOwnerTrnId = p_szOwnerTrnId AND;
+szOwnerTrnId = p_szOwnerTrnId AND
+szPriceId = p_szPriceId and
+	gdHistory = p_gdHistory;
 
 END;
 $BODY$
@@ -47150,7 +47402,8 @@ BEGIN
 DELETE 
 from  BOS_INV_PriceOrder
 WHERE
-szOwnerTrnId = p_szOwnerTrnId ANDszPriceOrderId = p_szPriceOrderId;
+szOwnerTrnId = p_szOwnerTrnId AND 
+szPriceOrderId = p_szPriceOrderId;
 END;
 $BODY$
 LANGUAGE plpgsql;
@@ -47165,7 +47418,8 @@ BEGIN
 DELETE 
 from  BOS_INV_PriceOrder
 WHERE
-szOwnerTrnId = p_szOwnerTrnId ANDszPriceOrderId = p_szPriceOrderId;
+szOwnerTrnId = p_szOwnerTrnId AND 
+szPriceOrderId = p_szPriceOrderId;
 END;
 $BODY$
 LANGUAGE plpgsql;
@@ -47180,7 +47434,8 @@ BEGIN
 DELETE 
 BOS_INV_PriceOrderAmountDiscBonus
 WHERE
-szOwnerTrnId = p_szOwnerTrnId ANDszPriceOrderId = p_szPriceOrderId;
+szOwnerTrnId = p_szOwnerTrnId AND 
+szPriceOrderId = p_szPriceOrderId;
 END;
 $BODY$
 LANGUAGE plpgsql;
@@ -47195,7 +47450,8 @@ BEGIN
 DELETE 
 BOS_INV_PriceOrderAmountDiscBonus
 WHERE
-szOwnerTrnId = p_szOwnerTrnId ANDszPriceOrderId = p_szPriceOrderId;
+szOwnerTrnId = p_szOwnerTrnId AND 
+szPriceOrderId = p_szPriceOrderId;
 END;
 $BODY$
 LANGUAGE plpgsql;
@@ -47211,7 +47467,9 @@ BEGIN
 DELETE 
 BOS_INV_PriceOrderAmountDiscBonus
 WHERE
-szOwnerTrnId = p_szOwnerTrnId ANDszPriceOrderId = p_szPriceOrderId ANDgdHistory = p_gdHistory;
+szOwnerTrnId = p_szOwnerTrnId AND 
+szPriceOrderId = p_szPriceOrderId AND 
+gdHistory = p_gdHistory;
 END;
 $BODY$
 LANGUAGE plpgsql;
@@ -47227,7 +47485,9 @@ BEGIN
 DELETE 
 BOS_INV_PriceOrderAmountDiscBonus
 WHERE
-szOwnerTrnId = p_szOwnerTrnId ANDszPriceOrderId = p_szPriceOrderId ANDgdHistory = p_gdHistory;
+szOwnerTrnId = p_szOwnerTrnId AND
+szPriceOrderId = p_szPriceOrderId AND
+gdHistory = p_gdHistory;
 END;
 $BODY$
 LANGUAGE plpgsql;
@@ -47242,7 +47502,8 @@ BEGIN
 DELETE 
 BOS_INV_PriceOrderAmountProductBonus
 WHERE
-szOwnerTrnId = p_szOwnerTrnId ANDszPriceOrderId = p_szPriceOrderId;
+szOwnerTrnId = p_szOwnerTrnId AND
+szPriceOrderId = p_szPriceOrderId;
 END;
 $BODY$
 LANGUAGE plpgsql;
@@ -47257,7 +47518,8 @@ BEGIN
 DELETE 
 BOS_INV_PriceOrderAmountProductBonus
 WHERE
-szOwnerTrnId = p_szOwnerTrnId ANDszPriceOrderId = p_szPriceOrderId;
+szOwnerTrnId = p_szOwnerTrnId AND
+szPriceOrderId = p_szPriceOrderId;
 END;
 $BODY$
 LANGUAGE plpgsql;
@@ -47272,7 +47534,8 @@ BEGIN
 DELETE 
 from  BOS_INV_PriceOrderAmountProductBonusItem
 WHERE
-szOwnerTrnId = p_szOwnerTrnId ANDszPriceOrderId = p_szPriceOrderId;
+szOwnerTrnId = p_szOwnerTrnId AND
+szPriceOrderId = p_szPriceOrderId;
 END;
 $BODY$
 LANGUAGE plpgsql;
@@ -47287,7 +47550,8 @@ BEGIN
 DELETE 
 from  BOS_INV_PriceOrderAmountProductBonusItem
 WHERE
-szOwnerTrnId = p_szOwnerTrnId ANDszPriceOrderId = p_szPriceOrderId;
+szOwnerTrnId = p_szOwnerTrnId AND
+szPriceOrderId = p_szPriceOrderId;
 END;
 $BODY$
 LANGUAGE plpgsql;
@@ -47303,7 +47567,9 @@ BEGIN
 DELETE 
 from  BOS_INV_PriceOrderAmountProductBonusItem
 WHERE
-szOwnerTrnId = p_szOwnerTrnId ANDszPriceOrderId = p_szPriceOrderId ANDgdHistory = p_gdHistory;
+szOwnerTrnId = p_szOwnerTrnId AND
+szPriceOrderId = p_szPriceOrderId AND
+gdHistory = p_gdHistory;
 END;
 $BODY$
 LANGUAGE plpgsql;
@@ -47319,7 +47585,9 @@ BEGIN
 DELETE 
 from  BOS_INV_PriceOrderAmountProductBonusItem
 WHERE
-szOwnerTrnId = p_szOwnerTrnId ANDszPriceOrderId = p_szPriceOrderId ANDgdHistory = p_gdHistory;
+szOwnerTrnId = p_szOwnerTrnId AND
+szPriceOrderId = p_szPriceOrderId AND
+gdHistory = p_gdHistory;
 END;
 $BODY$
 LANGUAGE plpgsql;
@@ -47335,7 +47603,9 @@ BEGIN
 DELETE 
 BOS_INV_PriceOrderAmountProductBonus
 WHERE
-szOwnerTrnId = p_szOwnerTrnId ANDszPriceOrderId = p_szPriceOrderId ANDgdHistory = p_gdHistory;
+szOwnerTrnId = p_szOwnerTrnId AND
+szPriceOrderId = p_szPriceOrderId AND
+gdHistory = p_gdHistory;
 END;
 $BODY$
 LANGUAGE plpgsql;
@@ -47351,7 +47621,9 @@ BEGIN
 DELETE 
 BOS_INV_PriceOrderAmountProductBonus
 WHERE
-szOwnerTrnId = p_szOwnerTrnId ANDszPriceOrderId = p_szPriceOrderId ANDgdHistory = p_gdHistory;
+szOwnerTrnId = p_szOwnerTrnId AND
+szPriceOrderId = p_szPriceOrderId AND
+gdHistory = p_gdHistory;
 END;
 $BODY$
 LANGUAGE plpgsql;
@@ -47366,7 +47638,8 @@ BEGIN
 DELETE 
 from  BOS_INV_PriceOrderItem
 WHERE
-szOwnerTrnId = p_szOwnerTrnId ANDszPriceOrderId = p_szPriceOrderId;
+szOwnerTrnId = p_szOwnerTrnId AND
+szPriceOrderId = p_szPriceOrderId;
 END;
 $BODY$
 LANGUAGE plpgsql;
@@ -47381,7 +47654,8 @@ BEGIN
 DELETE 
 from  BOS_INV_PriceOrderItem
 WHERE
-szOwnerTrnId = p_szOwnerTrnId ANDszPriceOrderId = p_szPriceOrderId;
+szOwnerTrnId = p_szOwnerTrnId AND
+szPriceOrderId = p_szPriceOrderId;
 END;
 $BODY$
 LANGUAGE plpgsql;
@@ -47396,7 +47670,8 @@ BEGIN
 DELETE 
 from  BOS_INV_PriceOrderItemDiscBonus
 WHERE
-szOwnerTrnId = p_szOwnerTrnId ANDszPriceOrderId = p_szPriceOrderId;
+szOwnerTrnId = p_szOwnerTrnId AND
+szPriceOrderId = p_szPriceOrderId;
 END;
 $BODY$
 LANGUAGE plpgsql;
@@ -47411,7 +47686,8 @@ BEGIN
 DELETE 
 from  BOS_INV_PriceOrderItemDiscBonus
 WHERE
-szOwnerTrnId = p_szOwnerTrnId ANDszPriceOrderId = p_szPriceOrderId;
+szOwnerTrnId = p_szOwnerTrnId AND
+szPriceOrderId = p_szPriceOrderId;
 END;
 $BODY$
 LANGUAGE plpgsql;
@@ -47427,7 +47703,9 @@ BEGIN
 DELETE 
 from  BOS_INV_PriceOrderItemDiscBonus
 WHERE
-szOwnerTrnId = p_szOwnerTrnId ANDszPriceOrderId = p_szPriceOrderId ANDgdHistory = p_gdHistory;
+szOwnerTrnId = p_szOwnerTrnId AND
+szPriceOrderId = p_szPriceOrderId AND
+gdHistory = p_gdHistory;
 END;
 $BODY$
 LANGUAGE plpgsql;
@@ -47443,7 +47721,9 @@ BEGIN
 DELETE 
 from  BOS_INV_PriceOrderItemDiscBonus
 WHERE
-szOwnerTrnId = p_szOwnerTrnId ANDszPriceOrderId = p_szPriceOrderId ANDgdHistory = p_gdHistory;
+szOwnerTrnId = p_szOwnerTrnId AND
+szPriceOrderId = p_szPriceOrderId AND
+gdHistory = p_gdHistory;
 END;
 $BODY$
 LANGUAGE plpgsql;
@@ -47458,7 +47738,8 @@ BEGIN
 DELETE 
 from  BOS_INV_PriceOrderItemProductBonus
 WHERE
-szOwnerTrnId = p_szOwnerTrnId ANDszPriceOrderId = p_szPriceOrderId;
+szOwnerTrnId = p_szOwnerTrnId AND
+szPriceOrderId = p_szPriceOrderId;
 END;
 $BODY$
 LANGUAGE plpgsql;
@@ -47473,7 +47754,8 @@ BEGIN
 DELETE 
 from  BOS_INV_PriceOrderItemProductBonus
 WHERE
-szOwnerTrnId = p_szOwnerTrnId ANDszPriceOrderId = p_szPriceOrderId;
+szOwnerTrnId = p_szOwnerTrnId AND
+szPriceOrderId = p_szPriceOrderId;
 END;
 $BODY$
 LANGUAGE plpgsql;
@@ -47488,7 +47770,8 @@ BEGIN
 DELETE 
 from  BOS_INV_PriceOrderItemProductBonusItem
 WHERE
-szOwnerTrnId = p_szOwnerTrnId ANDszPriceOrderId = p_szPriceOrderId;
+szOwnerTrnId = p_szOwnerTrnId AND
+szPriceOrderId = p_szPriceOrderId;
 END;
 $BODY$
 LANGUAGE plpgsql;
@@ -47503,7 +47786,8 @@ BEGIN
 DELETE 
 from  BOS_INV_PriceOrderItemProductBonusItem
 WHERE
-szOwnerTrnId = p_szOwnerTrnId ANDszPriceOrderId = p_szPriceOrderId;
+szOwnerTrnId = p_szOwnerTrnId AND
+szPriceOrderId = p_szPriceOrderId;
 END;
 $BODY$
 LANGUAGE plpgsql;
@@ -47519,7 +47803,9 @@ BEGIN
 DELETE 
 from  BOS_INV_PriceOrderItemProductBonusItem
 WHERE
-szOwnerTrnId = p_szOwnerTrnId ANDszPriceOrderId = p_szPriceOrderId ANDgdHistory = p_gdHistory;
+szOwnerTrnId = p_szOwnerTrnId AND
+szPriceOrderId = p_szPriceOrderId AND
+gdHistory = p_gdHistory;
 END;
 $BODY$
 LANGUAGE plpgsql;
@@ -47535,7 +47821,9 @@ BEGIN
 DELETE 
 from  BOS_INV_PriceOrderItemProductBonusItem
 WHERE
-szOwnerTrnId = p_szOwnerTrnId ANDszPriceOrderId = p_szPriceOrderId ANDgdHistory = p_gdHistory;
+szOwnerTrnId = p_szOwnerTrnId AND
+szPriceOrderId = p_szPriceOrderId AND
+gdHistory = p_gdHistory;
 END;
 $BODY$
 LANGUAGE plpgsql;
@@ -47551,7 +47839,9 @@ BEGIN
 DELETE 
 from  BOS_INV_PriceOrderItemProductBonus
 WHERE
-szOwnerTrnId = p_szOwnerTrnId ANDszPriceOrderId = p_szPriceOrderId ANDgdHistory = p_gdHistory;
+szOwnerTrnId = p_szOwnerTrnId AND
+szPriceOrderId = p_szPriceOrderId AND
+gdHistory = p_gdHistory;
 END;
 $BODY$
 LANGUAGE plpgsql;
@@ -47567,7 +47857,9 @@ BEGIN
 DELETE 
 from  BOS_INV_PriceOrderItemProductBonus
 WHERE
-szOwnerTrnId = p_szOwnerTrnId ANDszPriceOrderId = p_szPriceOrderId ANDgdHistory = p_gdHistory;
+szOwnerTrnId = p_szOwnerTrnId AND
+szPriceOrderId = p_szPriceOrderId AND
+gdHistory = p_gdHistory;
 END;
 $BODY$
 LANGUAGE plpgsql;
@@ -47583,7 +47875,9 @@ BEGIN
 DELETE 
 from  BOS_INV_PriceOrderItem
 WHERE
-szOwnerTrnId = p_szOwnerTrnId ANDszPriceOrderId = p_szPriceOrderId ANDgdHistory = p_gdHistory;
+szOwnerTrnId = p_szOwnerTrnId AND
+szPriceOrderId = p_szPriceOrderId AND
+gdHistory = p_gdHistory;
 END;
 $BODY$
 LANGUAGE plpgsql;
@@ -47599,7 +47893,9 @@ BEGIN
 DELETE 
 from  BOS_INV_PriceOrderItem
 WHERE
-szOwnerTrnId = p_szOwnerTrnId ANDszPriceOrderId = p_szPriceOrderId ANDgdHistory = p_gdHistory;
+szOwnerTrnId = p_szOwnerTrnId AND
+szPriceOrderId = p_szPriceOrderId AND
+gdHistory = p_gdHistory;
 END;
 $BODY$
 LANGUAGE plpgsql;
@@ -47771,7 +48067,7 @@ where
 szOwnerTrnId = p_szOwnerTrnId AND
 szPriceOrderId = p_szPriceOrderId and 
 gdHistory = p_gdHistory and
-decMinAmount = p_decMinAmount
+decMinAmount = p_decMinAmount;
 
 END;
 $BODY$
@@ -47823,7 +48119,7 @@ where
 szOwnerTrnId = p_szOwnerTrnId AND
 szPriceOrderId = p_szPriceOrderId and 
 gdHistory = p_gdHistory and
-decMinAmount = p_decMinAmount
+decMinAmount = p_decMinAmount;
 
 END;
 $BODY$
@@ -47894,7 +48190,7 @@ left join BOS_INV_Product as P5 on BOS_INV_PriceOrderItem.szProductId_5 = P5.szP
 WHERE
 szOwnerTrnId = p_szOwnerTrnId AND
 szPriceOrderId = p_szPriceOrderId AND
-gdHistory = p_gdHistory
+gdHistory = p_gdHistory;
 
 END;
 $BODY$
@@ -47965,7 +48261,7 @@ left join BOS_INV_Product as P5 on BOS_INV_PriceOrderItem.szProductId_5 = P5.szP
 WHERE
 szOwnerTrnId = p_szOwnerTrnId AND
 szPriceOrderId = p_szPriceOrderId AND
-gdHistory = p_gdHistory
+gdHistory = p_gdHistory;
 
 END;
 $BODY$
@@ -48000,7 +48296,14 @@ BOS_INV_PriceOrderItemDiscBonus
 left join BOS_SD_OrgStru_PrincipalDiscRef as PrDiscRef on BOS_INV_PriceOrderItemDiscBonus.szPrincipalDiscRefId = PrDiscRef.szPrincipalDiscRefId
 
 WHERE 
-szOwnerTrnId = p_szOwnerTrnId AND szPriceOrderId = p_szPriceOrderId and gdHistory = p_gdHistory AND szProductId_1 = p_szProductId_1 AND szProductId_2 = p_szProductId_2 AND szProductId_3 = p_szProductId_3 AND szProductId_4 = p_szProductId_4 AND szProductId_5 = p_szProductId_5 ;
+szOwnerTrnId = p_szOwnerTrnId AND 
+szPriceOrderId = p_szPriceOrderId and 
+gdHistory = p_gdHistory AND 
+szProductId_1 = p_szProductId_1 AND 
+szProductId_2 = p_szProductId_2 AND 
+szProductId_3 = p_szProductId_3 AND 
+szProductId_4 = p_szProductId_4 AND 
+szProductId_5 = p_szProductId_5;
 END;
 $BODY$
 LANGUAGE plpgsql;
@@ -48149,7 +48452,7 @@ AND szProductId_2 = p_szProductId_2
 AND szProductId_3 = p_szProductId_3
 AND szProductId_4 = p_szProductId_4
 AND szProductId_5 = p_szProductId_5
-AND decMinQty = p_decMinQty
+AND decMinQty = p_decMinQty;
 
 END;
 $BODY$
@@ -48209,7 +48512,7 @@ AND szProductId_2 = p_szProductId_2
 AND szProductId_3 = p_szProductId_3
 AND szProductId_4 = p_szProductId_4
 AND szProductId_5 = p_szProductId_5
-AND decMinQty = p_decMinQty
+AND decMinQty = p_decMinQty;
 
 END;
 $BODY$
@@ -48271,7 +48574,8 @@ BOS_INV_PriceOrder.bAlreadyTransferred
 
 FROM 
 BOS_INV_PriceOrder
-LEFT JOIN BOS_CU_Currency ON BOS_CU_Currency.szCcyId = BOS_INV_PriceOrder.szCcyIdLEFT JOIN BOS_CU_Currency ON BOS_CU_Currency.szCcyId = BOS_INV_PriceOrder.szCcyId;
+LEFT JOIN BOS_CU_Currency ON BOS_CU_Currency.szCcyId = BOS_INV_PriceOrder.szCcyId
+
 
 WHERE 
 szOwnerTrnId = p_szOwnerTrnId AND szPriceOrderId = p_szPriceOrderId AND gdHistory = p_gdHistory ;
@@ -48335,7 +48639,8 @@ BOS_INV_PriceOrder.bAlreadyTransferred
 
 FROM 
 BOS_INV_PriceOrder
-LEFT JOIN BOS_CU_Currency ON BOS_CU_Currency.szCcyId = BOS_INV_PriceOrder.szCcyIdLEFT JOIN BOS_CU_Currency ON BOS_CU_Currency.szCcyId = BOS_INV_PriceOrder.szCcyId;
+LEFT JOIN BOS_CU_Currency ON BOS_CU_Currency.szCcyId = BOS_INV_PriceOrder.szCcyId
+
 
 WHERE 
 szOwnerTrnId = p_szOwnerTrnId AND szPriceOrderId = p_szPriceOrderId AND gdHistory = p_gdHistory ;
@@ -48399,7 +48704,8 @@ BOS_INV_PriceOrder.bAlreadyTransferred
 
 FROM 
 BOS_INV_PriceOrder
-LEFT JOIN BOS_CU_Currency ON BOS_CU_Currency.szCcyId = BOS_INV_PriceOrder.szCcyIdLEFT JOIN BOS_CU_Currency ON BOS_CU_Currency.szCcyId = BOS_INV_PriceOrder.szCcyId;
+LEFT JOIN BOS_CU_Currency ON BOS_CU_Currency.szCcyId = BOS_INV_PriceOrder.szCcyId
+
 
 WHERE 
 szOwnerTrnId = p_szOwnerTrnId AND szPriceOrderId = p_szPriceOrderId AND szStatus = p_szStatus ;
@@ -48463,7 +48769,8 @@ BOS_INV_PriceOrder.bAlreadyTransferred
 
 FROM 
 BOS_INV_PriceOrder
-LEFT JOIN BOS_CU_Currency ON BOS_CU_Currency.szCcyId = BOS_INV_PriceOrder.szCcyIdLEFT JOIN BOS_CU_Currency ON BOS_CU_Currency.szCcyId = BOS_INV_PriceOrder.szCcyId;
+LEFT JOIN BOS_CU_Currency ON BOS_CU_Currency.szCcyId = BOS_INV_PriceOrder.szCcyId
+
 
 WHERE 
 szOwnerTrnId = p_szOwnerTrnId AND szPriceOrderId = p_szPriceOrderId AND szStatus = p_szStatus ;
@@ -48567,7 +48874,9 @@ UPDATE BOS_INV_PriceOrder
 SET 
 szDescription = szDescription
 WHERE 
-szOwnerTrnId = p_szOwnerTrnId AND;
+szOwnerTrnId = p_szOwnerTrnId AND
+szPriceOrderId = p_szPriceOrderId AND
+	gdHistory = p_gdHistory;
 
 END;
 $BODY$
@@ -48585,7 +48894,9 @@ UPDATE BOS_INV_PriceOrder
 SET 
 szDescription = szDescription
 WHERE 
-szOwnerTrnId = p_szOwnerTrnId AND;
+szOwnerTrnId = p_szOwnerTrnId AND
+szPriceOrderId = p_szPriceOrderId AND
+	gdHistory = p_gdHistory;
 
 END;
 $BODY$
@@ -48604,7 +48915,9 @@ SET
 szDescription = szDescription
 
 WHERE 
-szOwnerTrnId = p_szOwnerTrnId AND;
+szOwnerTrnId = p_szOwnerTrnId AND
+szPriceOrderId = p_szPriceOrderId AND
+	szStatus = p_szStatus;
 
 END;
 $BODY$
@@ -48623,7 +48936,9 @@ SET
 szDescription = szDescription
 
 WHERE 
-szOwnerTrnId = p_szOwnerTrnId AND;
+szOwnerTrnId = p_szOwnerTrnId AND
+szPriceOrderId = p_szPriceOrderId AND
+	szStatus = p_szStatus;
 
 END;
 $BODY$
@@ -48708,7 +49023,9 @@ szDiscGroupId_2 = p_szDiscGroupId_2,
 szDiscGroupId_3 = p_szDiscGroupId_3
 
 WHERE 
-szOwnerTrnId = p_szOwnerTrnId AND;
+szOwnerTrnId = p_szOwnerTrnId AND
+szPriceOrderId = p_szPriceOrderId AND
+	gdHistory = p_gdHistory;
 
 END;
 $BODY$
@@ -48793,7 +49110,9 @@ szDiscGroupId_2 = p_szDiscGroupId_2,
 szDiscGroupId_3 = p_szDiscGroupId_3
 
 WHERE 
-szOwnerTrnId = p_szOwnerTrnId AND;
+szOwnerTrnId = p_szOwnerTrnId AND
+szPriceOrderId = p_szPriceOrderId AND
+	gdHistory = p_gdHistory;
 
 END;
 $BODY$
@@ -48813,7 +49132,9 @@ SET
 szStatus = p_szStatus
 
 WHERE 
-szOwnerTrnId = p_szOwnerTrnId AND;
+szOwnerTrnId = p_szOwnerTrnId AND
+	szPriceOrderId = p_szPriceOrderId and
+	gdHistory = p_gdHistory;
 
 END;
 $BODY$
@@ -48833,7 +49154,9 @@ SET
 szStatus = p_szStatus
 
 WHERE 
-szOwnerTrnId = p_szOwnerTrnId AND;
+szOwnerTrnId = p_szOwnerTrnId AND
+szPriceOrderId = p_szPriceOrderId and
+	gdHistory = p_gdHistory;
 
 END;
 $BODY$
@@ -48895,7 +49218,8 @@ BEGIN
 DELETE 
 from  BOS_INV_PriceOrderProvision
 WHERE
-szOwnerTrnId = p_szOwnerTrnId ANDszPriceOrderId = p_szPriceOrderId;
+szOwnerTrnId = p_szOwnerTrnId AND 
+szPriceOrderId = p_szPriceOrderId;
 END;
 $BODY$
 LANGUAGE plpgsql;
@@ -48911,7 +49235,9 @@ BEGIN
 DELETE 
 from  BOS_INV_PriceOrderProvision
 WHERE
-szOwnerTrnId = p_szOwnerTrnId ANDszPriceOrderId = p_szPriceOrderId ANDgdHistory = p_gdHistory;
+szOwnerTrnId = p_szOwnerTrnId AND
+szPriceOrderId = p_szPriceOrderId AND 
+gdHistory = p_gdHistory;
 END;
 $BODY$
 LANGUAGE plpgsql;
@@ -48994,7 +49320,8 @@ BEGIN
 DELETE 
  from BOS_INV_PriceOrderProvisionItem
 WHERE
-szOwnerTrnId = p_szOwnerTrnId ANDszPriceOrderId = p_szPriceOrderId;
+szOwnerTrnId = p_szOwnerTrnId AND
+szPriceOrderId = p_szPriceOrderId;
 END;
 $BODY$
 LANGUAGE plpgsql;
@@ -49010,7 +49337,9 @@ BEGIN
 DELETE 
  from BOS_INV_PriceOrderProvisionItem
 WHERE
-szOwnerTrnId = p_szOwnerTrnId ANDszPriceOrderId = p_szPriceOrderId ANDgdHistory = p_gdHistory;
+szOwnerTrnId = p_szOwnerTrnId AND
+szPriceOrderId = p_szPriceOrderId AND
+gdHistory = p_gdHistory;
 END;
 $BODY$
 LANGUAGE plpgsql;
@@ -49140,7 +49469,7 @@ p_decBonusDisc,
 p_szOrderItemTypeId,
 p_bCalcFrPrevDiscAmt,
 p_szPrincipalDiscRefId,
-p_szProductId,
+p_szProductId
 );
 
 END;
@@ -49157,7 +49486,8 @@ BEGIN
 DELETE 
 from  BOS_INV_PriceOrderProvisionItemDiscount
 WHERE
-szOwnerTrnId = p_szOwnerTrnId ANDszPriceOrderId = p_szPriceOrderId;
+szOwnerTrnId = p_szOwnerTrnId AND
+szPriceOrderId = p_szPriceOrderId;
 END;
 $BODY$
 LANGUAGE plpgsql;
@@ -49173,7 +49503,9 @@ BEGIN
 DELETE 
 from  BOS_INV_PriceOrderProvisionItemDiscount
 WHERE
-szOwnerTrnId = p_szOwnerTrnId ANDszPriceOrderId = p_szPriceOrderId ANDgdHistory = p_gdHistory;
+szOwnerTrnId = p_szOwnerTrnId AND
+szPriceOrderId = p_szPriceOrderId AND
+gdHistory = p_gdHistory;
 END;
 $BODY$
 LANGUAGE plpgsql;
@@ -49282,7 +49614,8 @@ BEGIN
 DELETE 
  from BOS_INV_PriceOrderProvisionItemProductBonus
 WHERE
-szOwnerTrnId = p_szOwnerTrnId ANDszPriceOrderId = p_szPriceOrderId;
+szOwnerTrnId = p_szOwnerTrnId AND
+szPriceOrderId = p_szPriceOrderId;
 END;
 $BODY$
 LANGUAGE plpgsql;
@@ -49298,7 +49631,9 @@ BEGIN
 DELETE 
  from BOS_INV_PriceOrderProvisionItemProductBonus
 WHERE
-szOwnerTrnId = p_szOwnerTrnId ANDszPriceOrderId = p_szPriceOrderId ANDgdHistory = p_gdHistory;
+szOwnerTrnId = p_szOwnerTrnId AND
+szPriceOrderId = p_szPriceOrderId AND
+gdHistory = p_gdHistory;
 END;
 $BODY$
 LANGUAGE plpgsql;
@@ -49387,7 +49722,8 @@ BEGIN
 DELETE 
  from BOS_INV_PriceOrderProvisionItemProductBonusItem
 WHERE
-szOwnerTrnId = p_szOwnerTrnId ANDszPriceOrderId = p_szPriceOrderId;
+szOwnerTrnId = p_szOwnerTrnId AND
+szPriceOrderId = p_szPriceOrderId;
 END;
 $BODY$
 LANGUAGE plpgsql;
@@ -49403,7 +49739,9 @@ BEGIN
 DELETE 
  from BOS_INV_PriceOrderProvisionItemProductBonusItem
 WHERE
-szOwnerTrnId = p_szOwnerTrnId ANDszPriceOrderId = p_szPriceOrderId ANDgdHistory = p_gdHistory;
+szOwnerTrnId = p_szOwnerTrnId AND
+szPriceOrderId = p_szPriceOrderId AND
+gdHistory = p_gdHistory;
 END;
 $BODY$
 LANGUAGE plpgsql;
@@ -49451,7 +49789,7 @@ szOwnerTrnId = p_szOwnerTrnId AND
 szPriceOrderId = p_szPriceOrderId AND
 gdHistory = p_gdHistory AND
 shProvisionId = p_shProvisionId AND
-shProvisionItemId = p_shProvisionItemId
+shProvisionItemId = p_shProvisionItemId;
 
 END;
 $BODY$
@@ -49546,7 +49884,7 @@ szBarcode,
 -- add szBarcodeSekunder and szBarcodeTersier --,
  szBarcodeSekunder,
 szBarcodeTersier,
-szApplicationClass,
+szApplicationClass
 )
 VALUES
 (
@@ -49591,7 +49929,7 @@ p_szBarcode,
 -- add szBarcodeSekunder and szBarcodeTersier --,
  p_szBarcodeSekunder,
 p_szBarcodeTersier,
-p_szApplicationClass,
+p_szApplicationClass
 );
 
 END;
@@ -49687,7 +50025,7 @@ szBarcode,
 -- add szBarcodeSekunder and szBarcodeTersier --,
  szBarcodeSekunder,
 szBarcodeTersier,
-szApplicationClass,
+szApplicationClass
 )
 VALUES
 (
@@ -49732,7 +50070,7 @@ p_szBarcode,
 -- add szBarcodeSekunder and szBarcodeTersier --,
  p_szBarcodeSekunder,
 p_szBarcodeTersier,
-p_szApplicationClass,
+p_szApplicationClass
 );
 
 END;
@@ -49932,10 +50270,10 @@ p_szLastSupplierId,
 p_szPriceId,
 p_szPromoPriceId,
 p_szDefaultSuppId,
-p_decBasePurchPrice_S,
-SET ANSI_NULLS ON,
-);
+p_decBasePurchPrice_S
 
+);
+--SET ANSI_NULLS ON,
 END;
 $BODY$
 LANGUAGE plpgsql;
@@ -49988,8 +50326,8 @@ p_szLastSupplierId,
 p_szPriceId,
 p_szPromoPriceId,
 p_szDefaultSuppId,
-p_decBasePurchPrice_S,
-SET ANSI_NULLS ON,
+p_decBasePurchPrice_S
+--SET ANSI_NULLS ON,
 );
 
 END;
@@ -50182,9 +50520,12 @@ $BODY$
 BEGIN
 SELECT 
 szProductId,
+	szName,
+	szNickName,
+	szUomId
 
 FROM 
-BOS_INV_Product
+BOS_INV_Product;
 
 END;
 $BODY$
@@ -50199,7 +50540,7 @@ SELECT
 szProductId
 
 FROM 
-BOS_INV_ProductPositionInfo
+BOS_INV_ProductPositionInfo;
 
 END;
 $BODY$
@@ -50214,7 +50555,7 @@ SELECT
 szProductId
 
 FROM 
-BOS_INV_ProductPrice
+BOS_INV_ProductPrice;
 
 END;
 $BODY$
@@ -50229,7 +50570,7 @@ SELECT
 szProductId
 
 FROM 
-BOS_INV_ProductPurchaseInfo
+BOS_INV_ProductPurchaseInfo;
 
 END;
 $BODY$
@@ -50244,7 +50585,7 @@ SELECT
 szProductId, szProductSN, szDescription 
 
 FROM 
-BOS_INV_ProductSerNum 
+BOS_INV_ProductSerNum; 
 
 END;
 $BODY$
@@ -50259,7 +50600,7 @@ SELECT
 szProductId
 
 FROM 
-BOS_INV_ProductTechnicalSpecInfo
+BOS_INV_ProductTechnicalSpecInfo;
 
 END;
 $BODY$
@@ -50385,7 +50726,7 @@ LEFT JOIN BOS_GL_WorkplaceProduct AS GWP ON GWP.szWorkplaceId = p_szWorkplaceId
 AND GWP.szProductId = BOS_INV_Product.szProductId
 
 WHERE
-BOS_INV_Product.szProductId  = p_szProductId
+BOS_INV_Product.szProductId  = p_szProductId;
 
 END;
 $BODY$
@@ -50511,7 +50852,7 @@ LEFT JOIN BOS_GL_WorkplaceProduct AS GWP ON GWP.szWorkplaceId = p_szWorkplaceId
 AND GWP.szProductId = BOS_INV_Product.szProductId  
 
 WHERE  
-BOS_INV_Product.szProductId  = p_szProductId
+BOS_INV_Product.szProductId  = p_szProductId;
 
 END;
 $BODY$
@@ -50560,7 +50901,7 @@ LEFT JOIN BOS_INV_ProductTechnicalSpecInfo AS BIPT ON BIPT.szProductId = BOS_INV
 LEFT JOIN BOS_GL_WorkplaceProduct AS GWP ON GWP.szWorkplaceId = p_szWorkplaceId
 AND GWP.szProductId = BOS_INV_ProductKitItem.szProductId
 WHERE	
-BOS_INV_ProductKitItem.szProductId = p_szProductId
+BOS_INV_ProductKitItem.szProductId = p_szProductId;
 
 END;
 $BODY$
@@ -50609,7 +50950,7 @@ LEFT JOIN BOS_INV_ProductTechnicalSpecInfo AS BIPT ON BIPT.szProductId = BOS_INV
 LEFT JOIN BOS_GL_WorkplaceProduct AS GWP ON GWP.szWorkplaceId = p_szWorkplaceId
 AND GWP.szProductId = BOS_INV_ProductKitItem.szProductId
 WHERE    
-BOS_INV_ProductKitItem.szProductId = p_szProductId
+BOS_INV_ProductKitItem.szProductId = p_szProductId;
 
 
 END;
@@ -50624,7 +50965,7 @@ $BODY$
 BEGIN
 SELECT 
 szName,
-
+szNickName
 FROM 
 BOS_INV_Product
 WHERE 
@@ -50642,6 +50983,14 @@ $BODY$
 BEGIN
 SELECT 
 szProductId,
+	szMediaType,
+	szMediaTitle,
+	szMachineBrandId,
+	szMachineType,
+	shYear,
+	szMachineSN,
+	szDrawingNumber,
+	szPositionNumber
 
 FROM 
 BOS_INV_ProductPositionInfo
@@ -50709,7 +51058,7 @@ LEFT JOIN BOS_INV_ProductCategory AS TBL_CAT9 ON TBL_CAT9.szProductCategoryId = 
 LEFT JOIN BOS_INV_ProductCategory AS TBL_CAT10 ON TBL_CAT10.szProductCategoryId = BOS_INV_Product.szCategory_10
 
 where
-BOS_INV_ProductPrice.szProductId = p_szProductId
+BOS_INV_ProductPrice.szProductId = p_szProductId;
 
 END;
 $BODY$
@@ -50721,6 +51070,7 @@ p_szProductId BOS_DT_szId)
 RETURNS void AS
 $BODY$
 BEGIN
+SELECT 
 BOS_INV_ProductPurchaseInfo.szProductId,
 BOS_INV_ProductPurchaseInfo.szUomId,
 BOS_INV_ProductPurchaseInfo.szTaxTypeId,
@@ -50742,7 +51092,7 @@ FROM BOS_INV_ProductPurchaseInfo
 LEFT JOIN BOS_AP_Supplier ON BOS_AP_Supplier.szSuppId = BOS_INV_ProductPurchaseInfo.szLastSupplierId
 LEFT JOIN BOS_CU_Currency ON BOS_CU_Currency.szCcyId = BOS_INV_ProductPurchaseInfo.szPriceCcyId
 LEFT JOIN BOS_AP_Supplier DefSupp ON DefSupp.szSuppId = BOS_INV_ProductPurchaseInfo.szDefaultSuppId
-WHERE szProductId  = p_szProductId
+WHERE szProductId  = p_szProductId;
 
 END;
 $BODY$
@@ -50754,6 +51104,7 @@ p_szProductId BOS_DT_szId)
 RETURNS void AS
 $BODY$
 BEGIN
+SELECT 
 BOS_INV_ProductPurchaseInfo.szProductId,  
 BOS_INV_ProductPurchaseInfo.szUomId,  
 BOS_INV_ProductPurchaseInfo.szTaxTypeId,  
@@ -50775,7 +51126,7 @@ FROM BOS_INV_ProductPurchaseInfo
 LEFT JOIN BOS_AP_Supplier ON BOS_AP_Supplier.szSuppId = BOS_INV_ProductPurchaseInfo.szLastSupplierId  
 LEFT JOIN BOS_CU_Currency ON BOS_CU_Currency.szCcyId = BOS_INV_ProductPurchaseInfo.szPriceCcyId  
 LEFT JOIN BOS_AP_Supplier DefSupp ON DefSupp.szSuppId = BOS_INV_ProductPurchaseInfo.szDefaultSuppId  
-WHERE szProductId  = p_szProductId
+WHERE szProductId  = p_szProductId;
 
 END;
 $BODY$
@@ -50807,6 +51158,21 @@ $BODY$
 BEGIN
 SELECT 
 szProductId,
+decWeight,
+	szUomWeight,
+	decVolume,
+	szUomVolume,
+	decLength,
+	szUomLength,
+	decWidth,
+	szUomWidth,
+	decHeight,
+	szUomHeight,
+	decStoreTemp,
+	szUomTemp,
+	decStoreHuminity,
+	szUomHuminity,
+	szDescription
 
 FROM 
 BOS_INV_ProductTechnicalSpecInfo
@@ -50995,7 +51361,8 @@ UPDATE BOS_INV_ProductSerNum
 SET 
 szDescription = szDescription
 WHERE 
-szProductId = p_szProductId and;
+szProductId = p_szProductId and
+szProductSN = p_szProductSN;
 
 END;
 $BODY$
@@ -51386,7 +51753,8 @@ UPDATE BOS_INV_ProductSerNum
 SET 
 szDescription = p_szDescription
 WHERE 
-szProductId = p_szProductId and;
+szProductId = p_szProductId and
+szProductSN = p_szProductSN;
 
 END;
 $BODY$
@@ -51535,7 +51903,8 @@ BEGIN
 DELETE 
  from BOS_INV_ProductCategory
 WHERE
-szProductCategoryId = p_szProductCategoryIdAND szCategoryType = p_szCategoryType;
+szProductCategoryId = p_szProductCategoryId AND 
+szCategoryType = p_szCategoryType;
 END;
 $BODY$
 LANGUAGE plpgsql;
@@ -51551,10 +51920,9 @@ szDescription
 
 FROM 
 BOS_INV_ProductCategory
-order by
-szProductCategoryId
+
 ORDER BY 
-szProductCategoryId
+szProductCategoryId;
 
 END;
 $BODY$
@@ -51577,7 +51945,8 @@ B.szDescription as szCategoryTypeDesc_J
 FROM 
 BOS_INV_ProductCategory A
 WHERE 
-A.szProductCategoryId = p_szProductCategoryId SET ANSI_NULLS ON ;
+A.szProductCategoryId = p_szProductCategoryId;
+-- SET ANSI_NULLS ON ;
 END;
 $BODY$
 LANGUAGE plpgsql;
@@ -51599,7 +51968,8 @@ B.szDescription as szCategoryTypeDesc_J
 FROM 
 BOS_INV_ProductCategory A
 WHERE 
-A.szProductCategoryId = p_szProductCategoryId SET ANSI_NULLS ON ;
+A.szProductCategoryId = p_szProductCategoryId;
+-- SET ANSI_NULLS ON ;
 END;
 $BODY$
 LANGUAGE plpgsql;
@@ -51822,7 +52192,7 @@ SELECT
 szCategoryType, szDescription
 
 FROM 
-BOS_INV_ProductCategoryType
+BOS_INV_ProductCategoryType;
 
 END;
 $BODY$
@@ -51940,7 +52310,9 @@ decAllocatedQty = decAllocatedQty + p_decAllocatedQty,
 decWpAllocatedQty = decWpAllocatedQty + p_decAllocatedQty
 
 WHERE 
-szProductId = p_szProductId AND;
+szProductId = p_szProductId AND
+szWorkplaceId = p_szWorkplaceId AND
+	dtmExpired = p_dtmExpired;
 
 END;
 $BODY$
@@ -51961,7 +52333,9 @@ decAllocatedQty = decAllocatedQty + p_decAllocatedQty,
 decWpAllocatedQty = decWpAllocatedQty + p_decAllocatedQty
 
 WHERE 
-szProductId = p_szProductId AND;
+szProductId = p_szProductId AND
+ szWorkplaceId = p_szWorkplaceId AND
+    dtmExpired = p_dtmExpired;
 
 END;
 $BODY$
@@ -51995,7 +52369,7 @@ decQtyOnHand,
 bFreeze,
 -- Data Status.,
 dtmLastUpdated,
-bAlreadyTransferred,
+bAlreadyTransferred
 )
 VALUES
 (
@@ -52010,7 +52384,7 @@ p_decQtyOnHand,
 p_bFreeze,
 -- Data Status.,
 p_dtmLastUpdated,
-p_bAlreadyTransferred,
+p_bAlreadyTransferred
 );
 
 END;
@@ -52045,7 +52419,7 @@ decQtyOnHand,
 bFreeze,
 -- Data Status.,
 dtmLastUpdated,
-bAlreadyTransferred,
+bAlreadyTransferred
 )
 VALUES
 (
@@ -52060,7 +52434,7 @@ p_decQtyOnHand,
 p_bFreeze,
 -- Data Status.,
 p_dtmLastUpdated,
-p_bAlreadyTransferred,
+p_bAlreadyTransferred
 );
 
 END;
@@ -52118,7 +52492,7 @@ p_dtmLastUpdated,
 p_bAlreadyTransferred,
 -- distributor original data,
 p_szDistProductId,
-p_decDistQtyOnHand,
+p_decDistQtyOnHand
 );
 
 END;
@@ -52137,14 +52511,14 @@ $BODY$
 BEGIN
 INSERT INTO BOS_INV_StockAllocation
 (
-  ,
+
 szProductId  ,
 szWorkplaceId  ,
 dtmExpired  ,
 decAllocatedQty  ,
 dtmLastUpdated,
 decWpAllocatedQty  
-  ,
+
 )
 VALUES
 (
@@ -52172,14 +52546,14 @@ $BODY$
 BEGIN
 INSERT INTO BOS_INV_StockAllocation
 (
-  ,
+
 szProductId  ,
 szWorkplaceId  ,
 dtmExpired  ,
 decAllocatedQty  ,
 dtmLastUpdated,
 decWpAllocatedQty  
-  ,
+
 )
 VALUES
 (
@@ -52188,7 +52562,7 @@ p_szWorkplaceId,
 p_dtmExpired,
 p_decAllocatedQty,
 p_dtmLastUpdated,
-p_decAllocatedQty,
+p_decAllocatedQty
 );
 
 END;
@@ -52255,7 +52629,7 @@ szPartyLocType,
 szPartyLocId,
 szFakturPajakId,
 decCOGS,
-dtmLastUpdated,
+dtmLastUpdated
 )
 VALUES
 (
@@ -52491,9 +52865,8 @@ p_decCOGS,
 p_bFreeze,
 p_dtmLastUpdated,
 p_szDistProductId,
-p_decDistQty,
+p_decDistQty
 );
-
 END;
 $BODY$
 LANGUAGE plpgsql;
@@ -52533,7 +52906,7 @@ p_szReportedAsType,
 p_szReportedAsId,
 p_shQty,
 p_dtmLastUpdated,
-0,
+0
 );
 
 END;
@@ -52575,7 +52948,7 @@ p_szReportedAsType,
 p_szReportedAsId,
 p_shQty,
 p_dtmLastUpdated,
-0,
+0
 );
 
 END;
@@ -52669,7 +53042,7 @@ p_szReportedAsType,
 p_szReportedAsId,
 p_shQty,
 p_dtmLastUpdated,
-0,
+0
 );
 
 END;
@@ -52705,7 +53078,7 @@ p_dtmLastChecked,
 p_szSuppId,
 p_szCheckerId,
 p_szChassisNumber,
-0,
+0
 );
 
 END;
@@ -52741,7 +53114,7 @@ p_dtmLastChecked,
 p_szSuppId,
 p_szCheckerId,
 p_szChassisNumber,
-0,
+0
 );
 
 END;
@@ -52819,7 +53192,7 @@ p_dtmDelivery,
 p_decQtyToDeliver,
 p_decQtyDelivered,
 -- Data Status.,
-p_dtmLastUpdated,
+p_dtmLastUpdated
 );
 
 END;
@@ -52897,7 +53270,7 @@ p_dtmReceive,
 p_decQtyToReceive,
 p_decQtyReceived,
 -- Data Status.,
-p_dtmLastUpdated,
+p_dtmLastUpdated
 );
 
 END;
@@ -52985,7 +53358,12 @@ SET
 decQtyOnHand = decQtyOnHand - p_decQtyDecr,
 dtmLastUpdated = p_dtmLastUpdated
 WHERE 
-szProductId = p_szProductId and;
+szProductId = p_szProductId and
+ szLocationType = p_szLocationType and  
+ szLocationId = p_szLocationId and  
+ szStockTypeId = p_szStockTypeId and  
+ szReportedAsType = p_szReportedAsType and  
+ szReportedAsId = p_szReportedAsId;
 
 END;
 $BODY$
@@ -53010,7 +53388,12 @@ SET
 decQtyOnHand = decQtyOnHand - p_decQtyDecr,
 dtmLastUpdated = p_dtmLastUpdated
 WHERE 
-szProductId = p_szProductId and;
+szProductId = p_szProductId and
+ szLocationType = p_szLocationType and    
+ szLocationId = p_szLocationId and    
+ szStockTypeId = p_szStockTypeId and    
+ szReportedAsType = p_szReportedAsType and    
+ szReportedAsId = p_szReportedAsId;
 
 END;
 $BODY$
@@ -53037,7 +53420,12 @@ decQtyOnHand = decQtyOnHand - p_decQtyDecr,
 dtmLastUpdated = p_dtmLastUpdated,
 decDistQtyOnHand = decDistQtyOnHand - p_decDistQtyDecr
 WHERE 
-szProductId = p_szProductId and;
+szProductId = p_szProductId and
+ szLocationType = p_szLocationType and    
+ szLocationId = p_szLocationId and    
+ szStockTypeId = p_szStockTypeId and    
+ szReportedAsType = p_szReportedAsType and    
+ szReportedAsId = p_szReportedAsId;
 
 END;
 $BODY$
@@ -53301,7 +53689,13 @@ left Join BOS_PI_Employee on BOS_PI_Employee.szEmployeeId=BOS_INV_StockSNProduct
 left Join BOS_INV_Product on BOS_INV_Product.szProductId=BOS_INV_StockSNProduct.szProductId
 
 WHERE 
-BOS_INV_StockSn.shQty>0 and BOS_INV_StockSn.szReportedAsType='WOR' and BOS_INV_StockSn.szReportedAsId like p_szWorkplaceId and BOS_INV_StockSn.szLocationType like p_szLocationType and BOS_INV_StockSn.szLocationId like p_szLocationId and BOS_INV_StockSn.szProductSn like p_szSerialNumber and BOS_INV_StockSNProduct.szProductId like p_szProductId 
+BOS_INV_StockSn.shQty>0 and 
+BOS_INV_StockSn.szReportedAsType='WOR' and 
+BOS_INV_StockSn.szReportedAsId like p_szWorkplaceId and 
+BOS_INV_StockSn.szLocationType like p_szLocationType and 
+BOS_INV_StockSn.szLocationId like p_szLocationId and 
+BOS_INV_StockSn.szProductSn like p_szSerialNumber and 
+BOS_INV_StockSNProduct.szProductId like p_szProductId 
 
 ORDER BY 
 szWorkplaceId,
@@ -53374,7 +53768,7 @@ FROM
 					a.szLocationId, 
 					a.szStockTypeId
 				from bos_inv_stocksnhistory a
-				inner join bos_inv_stockhistory b on b.[gdHistoryId] = a.[gdStockHistoryId]
+				inner join bos_inv_stockhistory b on b.gdHistoryId = a.gdStockHistoryId
 				where cast(b.dtmTransaction as date) > p_dtmTransaction
 					and a.szReportedAsId like p_szWorkplaceId
 					and a.szProductId like p_szProductId
@@ -54179,7 +54573,8 @@ BOS_INV_Stock.bFreeze As bFreeze
 
 FROM 
 BOS_INV_Stock
-LEFT JOIN BOS_INV_Product ON BOS_INV_Product.szProductId = BOS_INV_Stock.szProductIdLEFT JOIN BOS_INV_Product ON BOS_INV_Product.szProductId = BOS_INV_Stock.szProductId
+LEFT JOIN BOS_INV_Product ON BOS_INV_Product.szProductId = BOS_INV_Stock.szProductId
+
 
 WHERE 
 BOS_INV_Stock.szProductId = p_szProductId AND BOS_INV_Stock.szLocationType LIKE p_szLocationType AND BOS_INV_Stock.szLocationId LIKE p_szLocationId AND BOS_INV_Stock.szStockTypeId LIKE p_szStockTypeId AND BOS_INV_Stock.szReportedAsType LIKE p_szReportedAsType AND BOS_INV_Stock.szReportedAsId LIKE  p_szReportedAsId GROUP BY BOS_INV_Stock.szProductId, BOS_INV_Product.szName, BOS_INV_Product.szQtyFormat, BOS_INV_Product.szTrackingType, BOS_INV_Product.szUomId, BOS_INV_Product.szCompUomId, BOS_INV_Product.szUomClassId ,BOS_INV_Stock.bFreeze ;
@@ -54212,10 +54607,25 @@ BOS_INV_Stock.bFreeze As bFreeze
 
 FROM 
 BOS_INV_Stock
-LEFT JOIN BOS_INV_Product ON BOS_INV_Product.szProductId = BOS_INV_Stock.szProductIdLEFT JOIN BOS_INV_Product ON BOS_INV_Product.szProductId = BOS_INV_Stock.szProductId
+LEFT JOIN BOS_INV_Product ON BOS_INV_Product.szProductId = BOS_INV_Stock.szProductId
+
 
 WHERE 
-BOS_INV_Stock.szProductId = p_szProductId AND BOS_INV_Stock.szLocationType LIKE p_szLocationType AND BOS_INV_Stock.szLocationId LIKE p_szLocationId AND BOS_INV_Stock.szStockTypeId LIKE p_szStockTypeId AND BOS_INV_Stock.szReportedAsType LIKE p_szReportedAsType AND BOS_INV_Stock.szReportedAsId LIKE  p_szReportedAsId GROUP BY BOS_INV_Stock.szProductId, BOS_INV_Product.szName, BOS_INV_Product.szQtyFormat, BOS_INV_Product.szTrackingType, BOS_INV_Product.szUomId, BOS_INV_Product.szCompUomId, BOS_INV_Product.szUomClassId ,BOS_INV_Stock.bFreeze ;
+BOS_INV_Stock.szProductId = p_szProductId AND 
+BOS_INV_Stock.szLocationType LIKE p_szLocationType AND 
+BOS_INV_Stock.szLocationId LIKE p_szLocationId AND 
+BOS_INV_Stock.szStockTypeId LIKE p_szStockTypeId AND 
+BOS_INV_Stock.szReportedAsType LIKE p_szReportedAsType AND 
+BOS_INV_Stock.szReportedAsId LIKE  p_szReportedAsId 
+GROUP BY 
+BOS_INV_Stock.szProductId, 
+BOS_INV_Product.szName, 
+BOS_INV_Product.szQtyFormat, 
+BOS_INV_Product.szTrackingType, 
+BOS_INV_Product.szUomId, 
+BOS_INV_Product.szCompUomId, 
+BOS_INV_Product.szUomClassId ,
+BOS_INV_Stock.bFreeze ;
 END;
 $BODY$
 LANGUAGE plpgsql;
@@ -54247,10 +54657,25 @@ BOS_INV_Stock.bFreeze As bFreeze
 
 FROM 
 BOS_INV_Stock
-LEFT JOIN BOS_INV_Product ON BOS_INV_Product.szProductId = BOS_INV_Stock.szProductIdLEFT JOIN BOS_INV_Product ON BOS_INV_Product.szProductId = BOS_INV_Stock.szProductId
+LEFT JOIN BOS_INV_Product ON BOS_INV_Product.szProductId = BOS_INV_Stock.szProductId
+
 
 WHERE 
-BOS_INV_Stock.szProductId = p_szProductId AND BOS_INV_Stock.szLocationType LIKE p_szLocationType AND BOS_INV_Stock.szLocationId LIKE p_szLocationId AND BOS_INV_Stock.szStockTypeId LIKE p_szStockTypeId AND BOS_INV_Stock.szReportedAsType LIKE p_szReportedAsType AND BOS_INV_Stock.szReportedAsId LIKE  p_szReportedAsId GROUP BY BOS_INV_Stock.szProductId, BOS_INV_Product.szName, BOS_INV_Product.szQtyFormat, BOS_INV_Product.szTrackingType, BOS_INV_Product.szUomId, BOS_INV_Product.szCompUomId, BOS_INV_Product.szUomClassId ,BOS_INV_Stock.bFreeze ,BOS_INV_Stock.szDistProductId 
+BOS_INV_Stock.szProductId = p_szProductId AND 
+BOS_INV_Stock.szLocationType LIKE p_szLocationType AND 
+BOS_INV_Stock.szLocationId LIKE p_szLocationId AND 
+BOS_INV_Stock.szStockTypeId LIKE p_szStockTypeId AND 
+BOS_INV_Stock.szReportedAsType LIKE p_szReportedAsType 
+AND BOS_INV_Stock.szReportedAsId LIKE  p_szReportedAsId 
+GROUP BY BOS_INV_Stock.szProductId, 
+BOS_INV_Product.szName, 
+BOS_INV_Product.szQtyFormat, 
+BOS_INV_Product.szTrackingType, 
+BOS_INV_Product.szUomId, 
+BOS_INV_Product.szCompUomId, 
+BOS_INV_Product.szUomClassId ,
+BOS_INV_Stock.bFreeze ,
+BOS_INV_Stock.szDistProductId; 
 END;
 $BODY$
 LANGUAGE plpgsql;
@@ -54782,7 +55207,8 @@ decQtyDelivered, BOS_INV_StockToDeliver.dtmLastUpdated
 
 FROM 
 BOS_INV_StockToDeliver
-LEFT JOIN BOS_INV_Product ON BOS_INV_Product.szProductId = BOS_INV_StockToDeliver.szProductIdLEFT JOIN BOS_INV_Product ON BOS_INV_Product.szProductId = BOS_INV_StockToDeliver.szProductId;
+LEFT JOIN BOS_INV_Product ON BOS_INV_Product.szProductId = BOS_INV_StockToDeliver.szProductId
+
 
 WHERE 
 BOS_INV_StockToDeliver.szProductId = p_szProductId and szLocationType = p_szLocationType and szLocationId = p_szLocationId and (dtmDelivery >= p_dtmDelivery and dtmDelivery < dateadd(day, 1, p_dtmDelivery)) ;
@@ -54813,7 +55239,8 @@ decQtyDelivered, BOS_INV_StockToDeliver.dtmLastUpdated
 
 FROM 
 BOS_INV_StockToDeliver
-LEFT JOIN BOS_INV_Product ON BOS_INV_Product.szProductId = BOS_INV_StockToDeliver.szProductIdLEFT JOIN BOS_INV_Product ON BOS_INV_Product.szProductId = BOS_INV_StockToDeliver.szProductId;
+LEFT JOIN BOS_INV_Product ON BOS_INV_Product.szProductId = BOS_INV_StockToDeliver.szProductId
+
 
 WHERE 
 BOS_INV_StockToDeliver.szProductId = p_szProductId and szLocationType = p_szLocationType and szLocationId = p_szLocationId and (dtmDelivery >= p_dtmDelivery and dtmDelivery < dateadd(day, 1, p_dtmDelivery)) ;
@@ -54845,7 +55272,8 @@ decQtyReceived
 
 FROM 
 BOS_INV_StockToReceive
-LEFT JOIN BOS_INV_Product ON BOS_INV_Product.szProductId = BOS_INV_StockToReceive.szProductIdLEFT JOIN BOS_INV_Product ON BOS_INV_Product.szProductId = BOS_INV_StockToReceive.szProductId;
+LEFT JOIN BOS_INV_Product ON BOS_INV_Product.szProductId = BOS_INV_StockToReceive.szProductId
+
 
 WHERE 
 BOS_INV_StockToReceive.szProductId = p_szProductId and szLocationType = p_szLocationType and szLocationId = p_szLocationId and (dtmReceive >= p_dtmReceive and dtmReceive < dateadd(day, 1, p_dtmReceive)) ;
@@ -54876,7 +55304,8 @@ decQtyReceived, BOS_INV_StockToReceive.dtmLastUpdated
 
 FROM 
 BOS_INV_StockToReceive
-LEFT JOIN BOS_INV_Product ON BOS_INV_Product.szProductId = BOS_INV_StockToReceive.szProductIdLEFT JOIN BOS_INV_Product ON BOS_INV_Product.szProductId = BOS_INV_StockToReceive.szProductId;
+LEFT JOIN BOS_INV_Product ON BOS_INV_Product.szProductId = BOS_INV_StockToReceive.szProductId
+
 
 WHERE 
 BOS_INV_StockToReceive.szProductId = p_szProductId and szLocationType = p_szLocationType and szLocationId = p_szLocationId and (dtmReceive >= p_dtmReceive and dtmReceive < dateadd(day, 1, p_dtmReceive)) ;
@@ -55018,7 +55447,7 @@ szProductId = p_szProductId and
  szLocationId = p_szLocationId and      
  szStockTypeId = p_szStockTypeId and      
  szReportedAsType = p_szReportedAsType and      
- szReportedAsId = p_szReportedAsId
+ szReportedAsId = p_szReportedAsId;
 
 END;
 $BODY$
@@ -55377,7 +55806,8 @@ BOS_INV_Stock.bAlreadyTransferred
 
 FROM 
 BOS_INV_Stock
-LEFT JOIN BOS_INV_Product ON BOS_INV_Product.szProductId = BOS_INV_Stock.szProductIdLEFT JOIN BOS_INV_Product ON BOS_INV_Product.szProductId = BOS_INV_Stock.szProductId
+LEFT JOIN BOS_INV_Product ON BOS_INV_Product.szProductId = BOS_INV_Stock.szProductId
+
 
 WHERE 
 BOS_INV_Stock.szProductId = p_szProductId AND BOS_INV_Stock.szLocationType = p_szLocationType AND BOS_INV_Stock.szLocationId = p_szLocationId AND BOS_INV_Stock.szStockTypeId = p_szStockTypeId AND BOS_INV_Stock.szReportedAsType = p_szReportedAsType AND BOS_INV_Stock.szReportedAsId = p_szReportedAsId ;
@@ -55414,10 +55844,16 @@ BOS_INV_Stock.bAlreadyTransferred
 
 FROM 
 BOS_INV_Stock
-LEFT JOIN BOS_INV_Product ON BOS_INV_Product.szProductId = BOS_INV_Stock.szProductIdLEFT JOIN BOS_INV_Product ON BOS_INV_Product.szProductId = BOS_INV_Stock.szProductId
+LEFT JOIN BOS_INV_Product ON BOS_INV_Product.szProductId = BOS_INV_Stock.szProductId
+
 
 WHERE 
-BOS_INV_Stock.szProductId = p_szProductId AND BOS_INV_Stock.szLocationType = p_szLocationType AND BOS_INV_Stock.szLocationId = p_szLocationId AND BOS_INV_Stock.szStockTypeId = p_szStockTypeId AND BOS_INV_Stock.szReportedAsType = p_szReportedAsType AND BOS_INV_Stock.szReportedAsId = p_szReportedAsId ;
+BOS_INV_Stock.szProductId = p_szProductId AND 
+BOS_INV_Stock.szLocationType = p_szLocationType AND 
+BOS_INV_Stock.szLocationId = p_szLocationId AND 
+BOS_INV_Stock.szStockTypeId = p_szStockTypeId AND 
+BOS_INV_Stock.szReportedAsType = p_szReportedAsType AND 
+BOS_INV_Stock.szReportedAsId = p_szReportedAsId ;
 END;
 $BODY$
 LANGUAGE plpgsql;
@@ -55548,7 +55984,7 @@ WHERE
 szProductId = p_szProductId and
 szLocationType = p_szLocationType and
 	szLocationId = p_szLocationId and
-	(dtmReceive >= p_dtmReceive and dtmReceive < dateadd(day, 1, p_dtmReceive))
+	(dtmReceive >= p_dtmReceive and dtmReceive < dateadd(day, 1, p_dtmReceive));
 
 END;
 $BODY$
@@ -55729,7 +56165,7 @@ WHERE
 szProductId = p_szProductId and
 szLocationType = p_szLocationType and
 	szLocationId = p_szLocationId and
-	(dtmDelivery >= p_dtmDelivery and dtmDelivery < dateadd(day, 1, p_dtmDelivery))
+	(dtmDelivery >= p_dtmDelivery and dtmDelivery < dateadd(day, 1, p_dtmDelivery));
 
 END;
 $BODY$
@@ -56234,7 +56670,11 @@ BEGIN
 DELETE 
 FROM  BOS_INV_StockLot
 WHERE
-szLotId = p_szLotId andszProductId = p_szProductId andszLocationType = p_szLocationType andszLocationId = p_szLocationId andszStockTypeId = p_szStockTypeId;
+szLotId = p_szLotId and
+szProductId = p_szProductId and
+szLocationType = p_szLocationType and
+szLocationId = p_szLocationId and
+szStockTypeId = p_szStockTypeId;
 END;
 $BODY$
 LANGUAGE plpgsql;
@@ -56279,12 +56719,12 @@ BOS_INV_StockLot.szProductId,
 BOS_INV_StockLot.szLocationType, 
 BOS_INV_StockLot.szLocationId, 
 BOS_INV_StockLot.szStockTypeId, sum(decQtyOnHand) as decSumOfQtyOnHand,
-isnull(BOS_INV_LotInfo.szLotTypeId,"") as szLotTypeId,
+isnull(BOS_INV_LotInfo.szLotTypeId,'') as szLotTypeId,
 isnull(BOS_INV_LotInfo.decLotStrength,0) as decLotStrength,
 BOS_INV_LotInfo.dtmExpired,
-isnull(BOS_INV_LotInfo.szProductionCode,"") as szProductionCode,
-isnull(BOS_INV_LotInfo.szLotStatus,"") as szLotStatus,
-isnull(BOS_INV_Product.szName,"") as ProductNm
+isnull(BOS_INV_LotInfo.szProductionCode,'') as szProductionCode,
+isnull(BOS_INV_LotInfo.szLotStatus,'') as szLotStatus,
+isnull(BOS_INV_Product.szName,'') as ProductNm
 
 FROM
 BOS_INV_StockLot
@@ -56319,12 +56759,12 @@ BOS_INV_StockLot.szProductId,
 BOS_INV_StockLot.szLocationType, 
 BOS_INV_StockLot.szLocationId, 
 BOS_INV_StockLot.szStockTypeId, sum(decQtyOnHand) as decSumOfQtyOnHand,
-isnull(BOS_INV_LotInfo.szLotTypeId,"") as szLotTypeId,
+isnull(BOS_INV_LotInfo.szLotTypeId,'') as szLotTypeId,
 isnull(BOS_INV_LotInfo.decLotStrength,0) as decLotStrength,
 BOS_INV_LotInfo.dtmExpired,
-isnull(BOS_INV_LotInfo.szProductionCode,"") as szProductionCode,
-isnull(BOS_INV_LotInfo.szLotStatus,"") as szLotStatus,
-isnull(BOS_INV_Product.szName,"") as ProductNm
+isnull(BOS_INV_LotInfo.szProductionCode,'') as szProductionCode,
+isnull(BOS_INV_LotInfo.szLotStatus,'') as szLotStatus,
+isnull(BOS_INV_Product.szName,'') as ProductNm
 
 FROM
 BOS_INV_StockLot
@@ -56669,7 +57109,8 @@ BEGIN
 DELETE 
  from BOS_INV_Uom
 WHERE
-szUomClassId = p_szUomClassId ANDszUomId = p_szUomId;
+szUomClassId = p_szUomClassId AND
+szUomId = p_szUomId;
 END;
 $BODY$
 LANGUAGE plpgsql;
@@ -56684,7 +57125,8 @@ BEGIN
 DELETE 
 FROM  BOS_INV_UomConversion
 WHERE
-szUomClassId = p_szUomClassId ANDszUomId = p_szUomId;
+szUomClassId = p_szUomClassId AND
+szUomId = p_szUomId;
 END;
 $BODY$
 LANGUAGE plpgsql;
@@ -56801,7 +57243,7 @@ SET
 bLock=bLock
 WHERE 
 szUomClassId = p_szUomClassId AND
-szUomId = p_szUomId
+szUomId = p_szUomId;
 
 END;
 $BODY$
@@ -56858,7 +57300,7 @@ SELECT
 szUomClassId, szDescription 
 
 FROM 
-BOS_INV_UomClass 
+BOS_INV_UomClass;
 
 END;
 $BODY$
@@ -57578,7 +58020,7 @@ BOS_INV_StockType.bAvailableForSales
 
 FROM 
 BOS_INV_WarehouseStockType
-LEFT JOIN BOS_INV_StockType ON BOS_INV_StockType.szStockTypeId =LEFT JOIN BOS_INV_StockType ON BOS_INV_StockType.szStockTypeId =;
+LEFT JOIN BOS_INV_StockType ON BOS_INV_StockType.szStockTypeId =
 BOS_INV_WarehouseStockType.szStockTypeId
 WHERE 
 szWarehouseId = p_szWarehouseId ;
@@ -57898,8 +58340,7 @@ LEFT JOIN BOS_GL_FJournalTrans ON BOS_GL_FJournalTrans.szFJournalId = BOS_MKT_FP
 LEFT JOIN BOS_GL_Company ON BOS_GL_Company.szCompanyId = BOS_MKT_FPromo.szCompanyId
 LEFT JOIN BOS_GL_Workplace ON BOS_GL_Workplace.szWorkplaceId = BOS_MKT_FPromo.szWorkplaceId
 WHERE
-BOS_MKT_FPromo.szFPromoId = p_szFPromoId
-
+BOS_MKT_FPromo.szFPromoId = p_szFPromoId;
 END;
 $BODY$
 LANGUAGE plpgsql;
@@ -57934,7 +58375,7 @@ szFPromoId,
 szDescription
 
 FROM 
-BOS_MKT_FPromo
+BOS_MKT_FPromo;
 
 END;
 $BODY$
@@ -58242,7 +58683,8 @@ BOS_MKT_PromoViewer.bAlreadyTransferred
 
 FROM 
 BOS_MKT_PromoViewer
-LEFT JOIN BOS_INV_Product ON BOS_INV_Product.szProductId = BOS_MKT_PromoViewer.szProductIdLEFT JOIN BOS_INV_Product ON BOS_INV_Product.szProductId = BOS_MKT_PromoViewer.szProductId;
+LEFT JOIN BOS_INV_Product ON BOS_INV_Product.szProductId = BOS_MKT_PromoViewer.szProductId
+
 WHERE 
 BOS_MKT_PromoViewer.szPromoViewerId = p_szPromoViewerId ;
 END;
@@ -58478,7 +58920,7 @@ szName,
 szDescription
 
 FROM 
-BOS_PI_Department
+BOS_PI_Department;
 
 END;
 $BODY$
@@ -58734,7 +59176,7 @@ p_szBarcodeReaderType,
 p_bMustFillAssetMonitoring,
 p_dtmLastUpdated,
 p_bAlreadyTransferred,
-p_bCheckInUsingGps,
+p_bCheckInUsingGps
 );
 
 END;
@@ -59456,6 +59898,35 @@ RETURNS void AS
 $BODY$
 BEGIN
 -- ### 2 update #####
+UPDATE      
+ BOS_PI_Employee      
+SET      
+ szName = p_szName,      
+ szWorkplaceId = p_szWorkplaceId,      
+ szDeliveryGroupId = p_szDeliveryGroupId,      
+ szSupervisorId = p_szSupervisorId,      
+ szDivisionId = p_szDivisionId,      
+ szDepartmentId = p_szDepartmentId,      
+ szTeamId = p_szTeamId,      
+ bIncludeInDailySettlement = p_bIncludeInDailySettlement,      
+ szRoutineType = p_szRoutineType,      
+ szFVRemaScheduleId = p_szFVRemaScheduleId,      
+ intRoundingLevel_for_distribution = p_intRoundingLevel_for_distribution,      
+ szSubAccIdForMoDis = p_szSubAccIdForMoDis,      
+ bHasGprs = p_bHasGprs,      
+ bHasGps = p_bHasGps,      
+ bHasPrinter = p_bHasPrinter,      
+ bHasBarcodeCustInfo = p_bHasBarcodeCustInfo,      
+ bHasBarcodeReaderToReadSn = p_bHasBarcodeReaderToReadSn,      
+ bActive = p_bActive,      
+ szGpsType =p_szGpsType,      
+ szBarcodeReaderType=p_szBarcodeReaderType,      
+ bMustFillAssetMonitoring=p_bMustFillAssetMonitoring,      
+ bCheckInUsingGps = p_bCheckInUsingGps,
+ szDeviceType = p_szDeviceType,     
+  AdcId=p_AdcId
+WHERE      
+ szEmployeeId = p_szEmployeeId;
 END;
 $BODY$
 LANGUAGE plpgsql;
@@ -59522,7 +59993,7 @@ INSERT INTO BOS_PUR_FPoItemDateReceiptExpectation
 szFPO_sId,
 shItemNumber,
 dtmReceiptDate,
-decQtyOrder,
+decQtyOrder
 )
 VALUES
 (
@@ -59593,7 +60064,7 @@ BOS_PUR_FPoItemDateReceiptExpectation FPOI
 where
 FPOI.szFPo_sId = p_szFPo_sId
 and
-FPOI.shItemNumber = p_shItemNumber
+FPOI.shItemNumber = p_shItemNumber;
 
 END;
 $BODY$
@@ -59832,7 +60303,7 @@ LEFT JOIN BOS_PI_UserInfo ON BOS_PI_UserInfo.szUserId = BOS_PUR_FRequisition.szU
 LEFT JOIN BOS_PI_Division ON BOS_PI_Division.szDivisionId = BOS_PI_UserInfo.szDivisionId
 LEFT JOIN BOS_PI_Department ON BOS_PI_Department.szDepartmentId = BOS_PI_UserInfo.szDepartmentId
 WHERE
-szFRequisitionId = p_szFRequisitionId
+szFRequisitionId = p_szFRequisitionId;
 
 END;
 $BODY$
@@ -59880,7 +60351,7 @@ szFRequisitionId,
 dtmRequisition
 
 FROM 
-BOS_PUR_FRequisition
+BOS_PUR_FRequisition;
 
 END;
 $BODY$
@@ -60269,7 +60740,7 @@ szDescription,
 szTrnType
 
 FROM 
-BOS_PUR_PurchaseItemType
+BOS_PUR_PurchaseItemType;
 
 END;
 $BODY$
@@ -60350,7 +60821,9 @@ BOS_PUR_PurchaseItemTypeProduct.szProductId,
 BOS_INV_Product.szName AS szProductNm
 
 FROM 
-BOS_PUR_PurchaseItemTypeProduct LEFT JOIN BOS_INV_ProductBOS_PUR_PurchaseItemTypeProduct LEFT JOIN BOS_INV_Product;
+BOS_PUR_PurchaseItemTypeProduct 
+LEFT JOIN BOS_INV_Product
+
 ON BOS_PUR_PurchaseItemTypeProduct.szProductId = BOS_INV_Product.szProductId
 WHERE 
 BOS_PUR_PurchaseItemTypeProduct.szPurchaseItemTypeId = p_szPurchaseItemTypeId ;
@@ -60370,7 +60843,8 @@ BOS_SCM_PurchOrg.szDescription AS szPurchOrgDesc
 
 FROM 
 BOS_PUR_PurchaseItemTypePurchOrg
-LEFT JOIN BOS_SCM_PurchOrg ON BOS_PUR_PurchaseItemTypePurchOrg.szPurchOrgId = BOS_SCM_PurchOrg.szPurchOrgIdLEFT JOIN BOS_SCM_PurchOrg ON BOS_PUR_PurchaseItemTypePurchOrg.szPurchOrgId = BOS_SCM_PurchOrg.szPurchOrgId;
+LEFT JOIN BOS_SCM_PurchOrg ON BOS_PUR_PurchaseItemTypePurchOrg.szPurchOrgId = BOS_SCM_PurchOrg.szPurchOrgId
+
 WHERE 
 BOS_PUR_PurchaseItemTypePurchOrg.szPurchaseItemTypeId = p_szPurchaseItemTypeId ;
 END;
@@ -60388,7 +60862,9 @@ BOS_PUR_PurchaseItemTypeSupplier.szSupplierId,
 BOS_AP_Supplier.szName AS szSupplierNm
 
 FROM 
-BOS_PUR_PurchaseItemTypeSupplier LEFT JOIN BOS_AP_SupplierBOS_PUR_PurchaseItemTypeSupplier LEFT JOIN BOS_AP_Supplier;
+BOS_PUR_PurchaseItemTypeSupplier 
+LEFT JOIN BOS_AP_Supplier
+
 ON BOS_PUR_PurchaseItemTypeSupplier.szSupplierId = BOS_AP_Supplier.szSuppId
 WHERE 
 BOS_PUR_PurchaseItemTypeSupplier.szPurchaseItemTypeId = p_szPurchaseItemTypeId ;
@@ -60791,7 +61267,7 @@ szPurchaseTypeId,
 szDescription
 
 FROM 
-BOS_PUR_PurchaseType
+BOS_PUR_PurchaseType;
 
 END;
 $BODY$
@@ -60864,7 +61340,9 @@ BOS_PUR_PurchaseTypeProduct.szProductId,
 BOS_INV_Product.szName AS szProductNm
 
 FROM 
-BOS_PUR_PurchaseTypeProduct LEFT JOIN BOS_INV_ProductBOS_PUR_PurchaseTypeProduct LEFT JOIN BOS_INV_Product;
+BOS_PUR_PurchaseTypeProduct 
+LEFT JOIN BOS_INV_Product
+
 ON BOS_PUR_PurchaseTypeProduct.szProductId = BOS_INV_Product.szProductId
 WHERE 
 BOS_PUR_PurchaseTypeProduct.szPurchaseTypeId = p_szPurchaseTypeId ;
@@ -60883,7 +61361,9 @@ BOS_PUR_PurchaseTypePurchaseItemType.szPurchaseItemTypeId,
 BOS_PUR_PurchaseItemType.szDescription AS szPurchaseItemTypeDesc
 
 FROM 
-BOS_PUR_PurchaseTypePurchaseItemType LEFT JOIN BOS_PUR_PurchaseItemTypeBOS_PUR_PurchaseTypePurchaseItemType LEFT JOIN BOS_PUR_PurchaseItemType;
+BOS_PUR_PurchaseTypePurchaseItemType 
+LEFT JOIN BOS_PUR_PurchaseItemType
+
 ON BOS_PUR_PurchaseTypePurchaseItemType.szPurchaseItemTypeId = BOS_PUR_PurchaseItemType.szPurchaseItemTypeId
 WHERE 
 BOS_PUR_PurchaseTypePurchaseItemType.szPurchaseTypeId = p_szPurchaseTypeId ;
@@ -60903,7 +61383,8 @@ BOS_SCM_PurchOrg.szDescription AS szPurchOrgDesc
 
 FROM 
 BOS_PUR_PurchaseTypePurchOrg
-LEFT JOIN BOS_SCM_PurchOrg ON BOS_PUR_PurchaseTypePurchOrg.szPurchOrgId = BOS_SCM_PurchOrg.szPurchOrgIdLEFT JOIN BOS_SCM_PurchOrg ON BOS_PUR_PurchaseTypePurchOrg.szPurchOrgId = BOS_SCM_PurchOrg.szPurchOrgId;
+LEFT JOIN BOS_SCM_PurchOrg ON BOS_PUR_PurchaseTypePurchOrg.szPurchOrgId = BOS_SCM_PurchOrg.szPurchOrgId
+
 WHERE 
 BOS_PUR_PurchaseTypePurchOrg.szPurchaseTypeId = p_szPurchaseTypeId ;
 END;
@@ -60921,7 +61402,9 @@ BOS_PUR_PurchaseTypeSupplier.szSupplierId,
 BOS_AP_Supplier.szName AS szSupplierNm
 
 FROM 
-BOS_PUR_PurchaseTypeSupplier LEFT JOIN BOS_AP_SupplierBOS_PUR_PurchaseTypeSupplier LEFT JOIN BOS_AP_Supplier;
+BOS_PUR_PurchaseTypeSupplier 
+LEFT JOIN BOS_AP_Supplier
+
 ON BOS_PUR_PurchaseTypeSupplier.szSupplierId = BOS_AP_Supplier.szSuppId
 WHERE 
 BOS_PUR_PurchaseTypeSupplier.szPurchaseTypeId = p_szPurchaseTypeId ;
@@ -61067,7 +61550,7 @@ p_dtmCollection,
 p_dtmLastCollection,
 p_dtmLastUpdated,
 p_bAlreadyTransferred,
-p_gdAuditTrailId,
+p_gdAuditTrailId
 );
 
 END;
@@ -61107,7 +61590,7 @@ p_dtmCollection,
 p_dtmLastCollection,
 p_dtmLastUpdated,
 p_bAlreadyTransferred,
-p_gdAuditTrailId,
+p_gdAuditTrailId
 );
 
 END;
@@ -61178,7 +61661,7 @@ LEFT JOIN BOS_GEN_RoutineSchedule ON BOS_GEN_RoutineSchedule.szScheduleId = CCR.
 LEFT JOIN BOS_GEN_RoutineScheduleItem AS BGRSI ON BGRSI.szScheduleId = BOS_GEN_RoutineSchedule.szScheduleId AND
 BGRSI.shScheduleItem = 0
 WHERE
-CCR.szCustId = p_szCustId
+CCR.szCustId = p_szCustId;
 
 END;
 $BODY$
@@ -61220,7 +61703,7 @@ LEFT JOIN BOS_GEN_RoutineSchedule ON BOS_GEN_RoutineSchedule.szScheduleId = CCR.
 LEFT JOIN BOS_GEN_RoutineScheduleItem AS BGRSI ON BGRSI.szScheduleId = BOS_GEN_RoutineSchedule.szScheduleId AND
 BGRSI.shScheduleItem = 0
 WHERE
-CCR.szCustId = p_szCustId
+CCR.szCustId = p_szCustId;
 
 END;
 $BODY$
@@ -61311,7 +61794,7 @@ szScheduleId,
 dtmCollection
 
 FROM 
-BOS_SD_CustCollRoutine
+BOS_SD_CustCollRoutine;
 
 END;
 $BODY$
@@ -61328,7 +61811,7 @@ szScheduleId,
 dtmCollection
 
 FROM 
-BOS_SD_CustCollRoutine_DRAFT
+BOS_SD_CustCollRoutine_DRAFT;
 
 END;
 $BODY$
@@ -61556,10 +62039,8 @@ BEGIN
 DELETE 
  from BOS_SD_CustFocItem
 WHERE
-szCustId = p_szCustId andszProductId = p_szProductId*/CREATE procedure [dbo].[BOS_SD_CustFoc_DeleteCustFocItem]p_szCustId BOS_DT_szIdas;DELETE 
- from BOS_SD_CustFocItem
-WHERE
-szCustId = p_szCustId;
+szCustId = p_szCustId; 
+
 END;
 $BODY$
 LANGUAGE plpgsql;
@@ -61572,7 +62053,7 @@ $BODY$
 BEGIN
 SELECT 
 BOS_SD_CustFoc.szFocId,
-isnull(BOS_AR_Customer.szName,"") as szCustName,
+isnull(BOS_AR_Customer.szName,'') as szCustName,
 BOS_SD_CustFoc.dtmStart,
 BOS_SD_CustFoc.dtmEnd,
 
@@ -61629,7 +62110,10 @@ BOS_SD_CustFocItem.szUomId,
 BOS_SD_CustFocItem.dtmLastReset
 
 FROM 
-BOS_SD_CustFocItem LEFT JOIN BOS_INV_Product ON BOS_SD_CustFocItem.szProductId = BOS_INV_Product.szProductIdBOS_SD_CustFocItem LEFT JOIN BOS_INV_Product ON BOS_SD_CustFocItem.szProductId = BOS_INV_Product.szProductId;
+BOS_SD_CustFocItem 
+LEFT JOIN BOS_INV_Product ON 
+BOS_SD_CustFocItem.szProductId = BOS_INV_Product.szProductId
+
 WHERE 
 szCustId = p_szCustId ;
 END;
@@ -61646,7 +62130,7 @@ szCustId,
 szFocId
 
 FROM 
-BOS_SD_CustFoc
+BOS_SD_CustFoc;
 
 END;
 $BODY$
@@ -61694,7 +62178,7 @@ LEFT JOIN
 BOS_SD_CustFoc ON BOS_SD_CustFocItem.szCustId = BOS_SD_CustFoc.szCustId
 where
 BOS_SD_CustFocItem.szCustId = p_szCustId and
-BOS_SD_CustFocItem.szProductId = p_szProductId
+BOS_SD_CustFocItem.szProductId = p_szProductId;
 
 END;
 $BODY$
@@ -61830,7 +62314,8 @@ decQtyRemain = p_decQtyRemain,
 szUomId = p_szUomId,
 dtmLastReset = p_dtmLastReset
 WHERE 
-szCustId = p_szCustId AND;
+szCustId = p_szCustId AND
+szProductId = p_szProductId;
 
 END;
 $BODY$
@@ -61864,7 +62349,7 @@ decRemain,
 szTrnId,
 szDocId,
 szUrl,
-szDescription,
+szDescription
 )
 VALUES
 (
@@ -61878,7 +62363,7 @@ p_decRemain,
 p_szTrnId,
 p_szDocId,
 p_szUrl,
-p_szDescription,
+p_szDescription
 );
 
 END;
@@ -61913,7 +62398,7 @@ decRemain,
 szTrnId,
 szDocId,
 szUrl,
-szDescription,
+szDescription
 )
 VALUES
 (
@@ -61927,7 +62412,7 @@ p_decRemain,
 p_szTrnId,
 p_szDocId,
 p_szUrl,
-p_szDescription,
+p_szDescription
 );
 
 END;
@@ -61976,10 +62461,12 @@ $BODY$
 BEGIN
 SELECT DISTINCT
 BOS_SD_CustFocHistory.szProductId,
+IsNull(BOS_INV_Product.szName, '') As szName
 
 FROM 
 BOS_SD_CustFocHistory
-LEFT JOIN BOS_INV_Product ON BOS_SD_CustFocHistory.szProductId = BOS_INV_Product.szProductIdLEFT JOIN BOS_INV_Product ON BOS_SD_CustFocHistory.szProductId = BOS_INV_Product.szProductId;
+LEFT JOIN BOS_INV_Product ON BOS_SD_CustFocHistory.szProductId = BOS_INV_Product.szProductId
+
 WHERE 
 BOS_SD_CustFocHistory.szCustId LIKE p_szCustId ;
 END;
@@ -62324,7 +62811,7 @@ p_decValue,
 p_decAvgOrder,
 p_decMaxDropSize,
 p_szParentId,
-p_szParentNm,
+p_szParentNm
 -- ==================================================================,
 );
 
@@ -62380,7 +62867,7 @@ p_decValue,
 p_decAvgOrder,
 p_decMaxDropSize,
 p_szParentId,
-p_szParentNm,
+p_szParentNm
 -- ==================================================================,
 );
 
@@ -62436,7 +62923,7 @@ p_decValue,
 p_decAvgOrder,
 p_decMaxDropSize,
 p_szParentId,
-p_szParentNm,
+p_szParentNm
 -- ==================================================================,
 );
 
@@ -62492,7 +62979,7 @@ p_decValue,
 p_decAvgOrder,
 p_decMaxDropSize,
 p_szParentId,
-p_szParentNm,
+p_szParentNm
 -- ==================================================================,
 );
 
@@ -62548,7 +63035,7 @@ p_decValue,
 p_decAvgOrder,
 p_decMaxDropSize,
 p_szParentId,
-p_szParentNm,
+p_szParentNm
 -- ==================================================================,
 );
 
@@ -62652,7 +63139,7 @@ LEFT JOIN BOS_PI_Employee ON BOS_PI_Employee.szEmployeeId = BOS_SD_Route.szOpUse
 LEFT JOIN BOS_SD_DistrChannel ON BOS_AR_Customer.szDistrChannelId = BOS_SD_DistrChannel.szDistrChannelId
 LEFT JOIN BOS_GEN_RoutineSchedule ON BOS_GEN_RoutineSchedule.szScheduleId = BOS_SD_CustRoutine.szDefaultScheduleId
 WHERE
-BOS_SD_CustRoutine.szCustId = p_szCustId
+BOS_SD_CustRoutine.szCustId = p_szCustId;
 
 END;
 $BODY$
@@ -62698,7 +63185,7 @@ LEFT JOIN BOS_PI_Employee ON BOS_PI_Employee.szEmployeeId = BOS_SD_Route.szOpUse
 LEFT JOIN BOS_SD_DistrChannel ON BOS_AR_Customer.szDistrChannelId = BOS_SD_DistrChannel.szDistrChannelId
 LEFT JOIN BOS_GEN_RoutineSchedule ON BOS_GEN_RoutineSchedule.szScheduleId = BOS_SD_CustRoutine.szDefaultScheduleId
 WHERE
-BOS_SD_CustRoutine.szCustId = p_szCustId
+BOS_SD_CustRoutine.szCustId = p_szCustId;
 
 
 END;
@@ -62748,7 +63235,7 @@ LEFT JOIN BOS_SD_DistrChannel ON BOS_AR_Customer.szDistrChannelId = BOS_SD_Distr
 LEFT JOIN BOS_GEN_RoutineSchedule ON BOS_GEN_RoutineSchedule.szScheduleId = BOS_SD_CustRoutine_DRAFT.szDefaultScheduleId
 
 WHERE
-BOS_SD_CustRoutine_DRAFT.szCustId = p_szCustId
+BOS_SD_CustRoutine_DRAFT.szCustId = p_szCustId;
 
 
 END;
@@ -62798,7 +63285,7 @@ LEFT JOIN BOS_SD_DistrChannel ON BOS_AR_Customer.szDistrChannelId = BOS_SD_Distr
 LEFT JOIN BOS_GEN_RoutineSchedule ON BOS_GEN_RoutineSchedule.szScheduleId = BOS_SD_CustRoutine_DRAFT.szDefaultScheduleId
 
 WHERE
-BOS_SD_CustRoutine_DRAFT.szCustId = p_szCustId
+BOS_SD_CustRoutine_DRAFT.szCustId = p_szCustId;
 
 END;
 $BODY$
@@ -62851,11 +63338,11 @@ ORDER BY
 BOS_SD_CustRoutineItem.szScheduleId,
 BOS_SD_CustRoutineItem.shItemNumber,
 BOS_SD_CustRoutineItem.decValue,
-BOS_SD_CustRoutineItem.szProductId
+BOS_SD_CustRoutineItem.szProductId;
 
 -- ==================================================================
 
-set ANSI_NULLS ON
+--set ANSI_NULLS ON
 
 END;
 $BODY$
@@ -62908,11 +63395,11 @@ ORDER BY
 BOS_SD_CustRoutineItem.szScheduleId,
 BOS_SD_CustRoutineItem.shItemNumber,
 BOS_SD_CustRoutineItem.decValue,
-BOS_SD_CustRoutineItem.szProductId
+BOS_SD_CustRoutineItem.szProductId;
 
 -- ==================================================================
 
-set ANSI_NULLS ON
+--set ANSI_NULLS ON
 
 
 END;
@@ -62968,11 +63455,11 @@ ORDER BY
 BOS_SD_CustRoutineItem_DRAFT.szScheduleId,
 BOS_SD_CustRoutineItem_DRAFT.shItemNumber,
 BOS_SD_CustRoutineItem_DRAFT.decValue,
-BOS_SD_CustRoutineItem_DRAFT.szProductId
+BOS_SD_CustRoutineItem_DRAFT.szProductId;
 
 -- ==================================================================
 
-set ANSI_NULLS ON
+--set ANSI_NULLS ON
 
 
 END;
@@ -63028,11 +63515,11 @@ ORDER BY
 BOS_SD_CustRoutineItem_DRAFT.szScheduleId,
 BOS_SD_CustRoutineItem_DRAFT.shItemNumber,
 BOS_SD_CustRoutineItem_DRAFT.decValue,
-BOS_SD_CustRoutineItem_DRAFT.szProductId
+BOS_SD_CustRoutineItem_DRAFT.szProductId;
 
 -- ==================================================================
 
-set ANSI_NULLS ON
+--set ANSI_NULLS ON
 
 END;
 $BODY$
@@ -63124,14 +63611,15 @@ BSDI.szProductId,
 BSDI.szUomId,
 --NICE FINDING :) COUNT OF PRODUCT ID CANNOT BE ZERO BECOZ IF IT IS,
 --THERE WILL BE NO QUANTITY TO BE SUMMED UP TOO.
-Convert(Decimal(18, 2), Sum(BSDI.decQty) / COUNT(BSDI.szProductId)) As decQty
+CAST(Sum(BSDI.decQty) / COUNT(BSDI.szProductId) AS Decimal(18, 2)) As decQty
 
 FROM 
 BOS_SD_FDo As BSD
 Inner Join BOS_SD_FDoItem As BSDI On BSD.szDoId = BSDI.szDoId
 WHERE 
-BSD.dtmDelivery >= p_dtmFrom And BSD.dtmDelivery < dateadd(day, 1, p_dtmTo) And BSD.szCustId = p_szCustId AND bApplied = 1 AND BSDI.szProductId <> ''	--DISCOUNT AND ALIKE HAVE NO PRODUCT ID, AND SHOULD NOT BE CALCULATED. Group By BSDI.szProductId, BSDI.szUomId ;ORDER BY 
-BSDI.szProductId
+BSD.dtmDelivery >= p_dtmFrom And BSD.dtmDelivery < dateadd(day, 1, p_dtmTo) And BSD.szCustId = p_szCustId AND bApplied = 1 AND BSDI.szProductId <> ''	--DISCOUNT AND ALIKE HAVE NO PRODUCT ID, AND SHOULD NOT BE CALCULATED. Group By BSDI.szProductId, BSDI.szUomId 
+ORDER BY 
+BSDI.szProductId;
 
 END;
 $BODY$
@@ -63161,7 +63649,7 @@ BSC.szDefaultScheduleId,
 BSC.decDefaultScheduleValue,
 BSCRI.bPrintPrice,
 BSCRI.decQty,
-Convert(Decimal(18, 2), Sum(BSDI.decQty) / COUNT(BSDI.szProductId)) As decAvgOrder
+Cast(Sum(BSDI.decQty) / COUNT(BSDI.szProductId)AS Decimal(18, 2)) As decAvgOrder
 
 From
 BOS_SD_CustRoutine As BSC
@@ -63198,7 +63686,7 @@ BSCRI.decQty
 Order By
 BSC.szCustId,
 BSDI.szProductId,
-BSDI.szUomId
+BSDI.szUomId;
 
 END;
 $BODY$
@@ -63228,7 +63716,7 @@ BSC.szDefaultScheduleId,
 BSC.decDefaultScheduleValue,
 BSCRI.bPrintPrice,
 BSCRI.decQty,
-Convert(Decimal(18, 2), Sum(BSDI.decQty) / COUNT(BSDI.szProductId)) As decAvgOrder
+Cast(Sum(BSDI.decQty) / COUNT(BSDI.szProductId) AS Decimal(18, 2)) As decAvgOrder
 
 From
 BOS_SD_CustRoutine_DRAFT As BSC
@@ -63265,7 +63753,7 @@ BSCRI.decQty
 Order By
 BSC.szCustId,
 BSDI.szProductId,
-BSDI.szUomId
+BSDI.szUomId;
 
 END;
 $BODY$
@@ -63281,7 +63769,7 @@ szCustId,
 dtmDelivery
 
 FROM 
-BOS_SD_CustRoutine
+BOS_SD_CustRoutine;
 
 END;
 $BODY$
@@ -63297,7 +63785,7 @@ szCustId,
 dtmDelivery
 
 FROM 
-BOS_SD_CustRoutine_DRAFT
+BOS_SD_CustRoutine_DRAFT;
 
 END;
 $BODY$
@@ -63318,7 +63806,8 @@ BSCI.szProductId, COALESCE(BIP.szName, '') As szProductName, BSCI.decQty
 FROM 
 BOS_SD_CustRoutine As BSC
 Inner Join BOS_SD_CustRoutineItem As BSCI ON BSC.szCustId = BSCI.szCustId
-LEFT JOIN BOS_GEN_RoutineSchedule BGRS ON BGRS.szScheduleId = BSCI.szScheduleIdLEFT JOIN BOS_GEN_RoutineSchedule BGRS ON BGRS.szScheduleId = BSCI.szScheduleId;
+LEFT JOIN BOS_GEN_RoutineSchedule BGRS ON BGRS.szScheduleId = BSCI.szScheduleId
+
 Left Join BOS_INV_Product As BIP ON BSCI.szProductId = BIP.szProductId
 WHERE 
 BSC.szCustId = p_szCustId And BGRS.szScheduleType = p_szScheduleType And BSCI.decValue = p_decValue AND BSCI.szTeamId = p_szTeamId ;
@@ -63341,7 +63830,8 @@ BSCI.szProductId, COALESCE(BIP.szName, '') As szProductName, BSCI.decQty
 FROM 
 BOS_SD_CustRoutine As BSC
 Inner Join BOS_SD_CustRoutineItem As BSCI ON BSC.szCustId = BSCI.szCustId
-LEFT JOIN BOS_GEN_RoutineSchedule BGRS ON BGRS.szScheduleId = BSCI.szScheduleIdLEFT JOIN BOS_GEN_RoutineSchedule BGRS ON BGRS.szScheduleId = BSCI.szScheduleId;
+LEFT JOIN BOS_GEN_RoutineSchedule BGRS ON BGRS.szScheduleId = BSCI.szScheduleId
+
 Left Join BOS_INV_Product As BIP ON BSCI.szProductId = BIP.szProductId
 WHERE 
 BSC.szCustId = p_szCustId And BGRS.szScheduleType = p_szScheduleType And BSCI.decValue = p_decValue AND BSCI.szTeamId = p_szTeamId ;
@@ -63364,7 +63854,8 @@ BSCI.szProductId, COALESCE(BIP.szName, '') As szProductName, BSCI.decQty
 FROM 
 BOS_SD_CustRoutine_DRAFT As BSC
 Inner Join BOS_SD_CustRoutineItem_DRAFT As BSCI ON BSC.szCustId = BSCI.szCustId
-LEFT JOIN BOS_GEN_RoutineSchedule BGRS ON BGRS.szScheduleId = BSCI.szScheduleIdLEFT JOIN BOS_GEN_RoutineSchedule BGRS ON BGRS.szScheduleId = BSCI.szScheduleId;
+LEFT JOIN BOS_GEN_RoutineSchedule BGRS ON BGRS.szScheduleId = BSCI.szScheduleId
+
 Left Join BOS_INV_Product As BIP ON BSCI.szProductId = BIP.szProductId
 WHERE 
 BSC.szCustId = p_szCustId And BGRS.szScheduleType = p_szScheduleType And BSCI.decValue = p_decValue AND BSCI.szTeamId = p_szTeamId ;
@@ -63387,7 +63878,8 @@ BSCI.szProductId, COALESCE(BIP.szName, '') As szProductName, BSCI.decQty
 FROM 
 BOS_SD_CustRoutine_DRAFT As BSC
 Inner Join BOS_SD_CustRoutineItem_DRAFT As BSCI ON BSC.szCustId = BSCI.szCustId
-LEFT JOIN BOS_GEN_RoutineSchedule BGRS ON BGRS.szScheduleId = BSCI.szScheduleIdLEFT JOIN BOS_GEN_RoutineSchedule BGRS ON BGRS.szScheduleId = BSCI.szScheduleId;
+LEFT JOIN BOS_GEN_RoutineSchedule BGRS ON BGRS.szScheduleId = BSCI.szScheduleId
+
 Left Join BOS_INV_Product As BIP ON BSCI.szProductId = BIP.szProductId
 WHERE 
 BSC.szCustId = p_szCustId And BGRS.szScheduleType = p_szScheduleType And BSCI.decValue = p_decValue AND BSCI.szTeamId = p_szTeamId ;
@@ -63998,7 +64490,7 @@ p_decValue,
 p_decAvgOrder,
 p_decMaxDropSize,
 p_decMinDropSize,
-p_szParentId,
+p_szParentId
 -- ==================================================================,
 );
 
@@ -64054,7 +64546,7 @@ p_decValue,
 p_decAvgOrder,
 p_decMaxDropSize,
 p_decMinDropSize,
-p_szParentId,
+p_szParentId
 -- ==================================================================,
 );
 
@@ -64110,7 +64602,7 @@ p_decValue,
 p_decAvgOrder,
 p_decMaxDropSize,
 p_decMinDropSize,
-p_szParentId,
+p_szParentId
 -- ==================================================================,
 );
 
@@ -64166,7 +64658,7 @@ p_decValue,
 p_decAvgOrder,
 p_decMaxDropSize,
 p_decMinDropSize,
-p_szParentId,
+p_szParentId
 -- ==================================================================,
 );
 
@@ -64222,7 +64714,7 @@ p_decValue,
 p_decAvgOrder,
 p_decMaxDropSize,
 p_decMinDropSize,
-p_szParentId,
+p_szParentId
 -- ==================================================================,
 );
 
@@ -64357,7 +64849,7 @@ LEFT JOIN BOS_SD_DistrChannel ON BOS_AR_Customer.szDistrChannelId = BOS_SD_Distr
 LEFT JOIN BOS_GEN_RoutineSchedule ON BOS_GEN_RoutineSchedule.szScheduleId = CTOR.szDefaultScheduleId
 
 WHERE
-CTOR.szCustId = p_szCustId
+CTOR.szCustId = p_szCustId;
 
 END;
 $BODY$
@@ -64406,7 +64898,7 @@ LEFT JOIN BOS_SD_DistrChannel ON BOS_AR_Customer.szDistrChannelId = BOS_SD_Distr
 LEFT JOIN BOS_GEN_RoutineSchedule ON BOS_GEN_RoutineSchedule.szScheduleId = CTOR.szDefaultScheduleId
 
 WHERE
-CTOR.szCustId = p_szCustId
+CTOR.szCustId = p_szCustId;
 
 
 END;
@@ -64456,7 +64948,7 @@ LEFT JOIN BOS_SD_DistrChannel ON BOS_AR_Customer.szDistrChannelId = BOS_SD_Distr
 LEFT JOIN BOS_GEN_RoutineSchedule ON BOS_GEN_RoutineSchedule.szScheduleId = CTOR.szDefaultScheduleId
 
 WHERE
-CTOR.szCustId = p_szCustId
+CTOR.szCustId = p_szCustId;
 
 END;
 $BODY$
@@ -64505,7 +64997,7 @@ LEFT JOIN BOS_SD_DistrChannel ON BOS_AR_Customer.szDistrChannelId = BOS_SD_Distr
 LEFT JOIN BOS_GEN_RoutineSchedule ON BOS_GEN_RoutineSchedule.szScheduleId = CTOR.szDefaultScheduleId  
 
 WHERE  
-CTOR.szCustId = p_szCustId
+CTOR.szCustId = p_szCustId;
 
 END;
 $BODY$
@@ -64562,11 +65054,11 @@ CTORI.szTeamId,
 CTORI.shItemNumber,
 CTORI.szScheduleId,
 CTORI.decValue,
-CTORI.szProductId
+CTORI.szProductId;
 
 -- ==================================================================
 
-set ANSI_NULLS ON
+--set ANSI_NULLS ON
 
 END;
 $BODY$
@@ -64623,11 +65115,11 @@ CTORI.szTeamId,
 CTORI.shItemNumber,
 CTORI.szScheduleId,
 CTORI.decValue,
-CTORI.szProductId
+CTORI.szProductId;
 
 -- ==================================================================
 
-set ANSI_NULLS ON
+--set ANSI_NULLS ON
 
 
 END;
@@ -64684,11 +65176,11 @@ CTORI.szTeamId,
 CTORI.shItemNumber,
 CTORI.szScheduleId,
 CTORI.decValue,
-CTORI.szProductId
+CTORI.szProductId;
 
 -- ==================================================================
 
-set ANSI_NULLS ON
+--set ANSI_NULLS ON
 
 END;
 $BODY$
@@ -64744,11 +65236,11 @@ CTORI.szTeamId,
 CTORI.shItemNumber,  
 CTORI.szScheduleId,  
 CTORI.decValue,  
-CTORI.szProductId  
+CTORI.szProductId; 
 
 -- ==================================================================  
 
-set ANSI_NULLS ON
+--set ANSI_NULLS ON
 
 END;
 $BODY$
@@ -64827,14 +65319,15 @@ BSDI.szProductId,
 BSDI.szUomId,
 --NICE FINDING :) COUNT OF PRODUCT ID CANNOT BE ZERO BECOZ IF IT IS,
 --THERE WILL BE NO QUANTITY TO BE SUMMED UP TOO.
-Convert(Decimal(18, 2), Sum(BSDI.decQty) / COUNT(BSDI.szProductId)) As decQty
+Cast( Sum(BSDI.decQty) / COUNT(BSDI.szProductId) AS Decimal(18, 2)) As decQty
 
 FROM 
 BOS_SD_FSo As BSD
 Inner Join BOS_SD_FSoItem As BSDI On BSD.szFSoId = BSDI.szFSoId
 WHERE 
-BSD.dtmOrder >= p_dtmFrom And BSD.dtmOrder < DATEADD(DAY, 1, p_dtmTo) And BSD.szCustId = p_szCustId AND BSD.bApplied = 1 AND BSDI.szProductId <> ''	--DISCOUNT AND ALIKE HAVE NO PRODUCT ID, AND SHOULD NOT BE CALCULATED. Group By BSDI.szProductId, BSDI.szUomId ;ORDER BY 
-BSDI.szProductId
+BSD.dtmOrder >= p_dtmFrom And BSD.dtmOrder < DATEADD(DAY, 1, p_dtmTo) And BSD.szCustId = p_szCustId AND BSD.bApplied = 1 AND BSDI.szProductId <> ''	--DISCOUNT AND ALIKE HAVE NO PRODUCT ID, AND SHOULD NOT BE CALCULATED. Group By BSDI.szProductId, BSDI.szUomId 
+ORDER BY 
+BSDI.szProductId;
 
 END;
 $BODY$
@@ -64864,7 +65357,7 @@ BSC.szDefaultScheduleId,
 BSC.decDefaultScheduleValue,
 BSCTI.bPrintPrice,
 BSCTI.decQty,
-Convert(Decimal(18, 2), Sum(BSSI.decQty) / COUNT(BSSI.szProductId)) As decAvgOrder
+Cast((Sum(BSSI.decQty) / COUNT(BSSI.szProductId)) AS Decimal(18, 2)) As decAvgOrder
 
 From
 BOS_SD_CustTORoutine As BSC
@@ -64901,7 +65394,7 @@ BSCTI.decQty
 Order By
 BSC.szCustId,
 BSSI.szProductId,
-BSSI.szUomId
+BSSI.szUomId;
 
 END;
 $BODY$
@@ -64931,7 +65424,7 @@ BSC.szDefaultScheduleId,
 BSC.decDefaultScheduleValue,
 BSCTI.bPrintPrice,
 BSCTI.decQty,
-Convert(Decimal(18, 2), Sum(BSSI.decQty) / COUNT(BSSI.szProductId)) As decAvgOrder
+Cast((Sum(BSSI.decQty) / COUNT(BSSI.szProductId))AS Decimal(18, 2)) As decAvgOrder
 
 From
 BOS_SD_CustTORoutine_DRAFT As BSC
@@ -64968,7 +65461,7 @@ BSCTI.decQty
 Order By
 BSC.szCustId,
 BSSI.szProductId,
-BSSI.szUomId
+BSSI.szUomId;
 
 END;
 $BODY$
@@ -64984,7 +65477,7 @@ szCustId,
 dtmTakingOrder
 
 FROM 
-BOS_SD_CustTORoutine
+BOS_SD_CustTORoutine;
 
 END;
 $BODY$
@@ -65000,7 +65493,7 @@ szCustId,
 dtmTakingOrder
 
 FROM 
-BOS_SD_CustTORoutine_DRAFT
+BOS_SD_CustTORoutine_DRAFT;
 
 END;
 $BODY$
@@ -65021,7 +65514,8 @@ BSCI.szProductId, COALESCE(BIP.szName, '') As szProductName, BSCI.decQty
 FROM 
 BOS_SD_CustTORoutine As BSC
 Inner Join BOS_SD_CustTORoutineItem As BSCI ON BSCI.szCustId = BSC.szCustId
-LEFT JOIN BOS_GEN_RoutineSchedule BGRS ON BGRS.szScheduleId = BSCI.szScheduleIdLEFT JOIN BOS_GEN_RoutineSchedule BGRS ON BGRS.szScheduleId = BSCI.szScheduleId;
+LEFT JOIN BOS_GEN_RoutineSchedule BGRS ON BGRS.szScheduleId = BSCI.szScheduleId
+
 Left Join BOS_INV_Product As BIP ON BSCI.szProductId = BIP.szProductId
 WHERE 
 BSC.szCustId = p_szCustId And BGRS.szScheduleType = p_szScheduleType AND BSCI.decValue = p_decValue AND BSCI.szTeamId = p_szTeamId ;
@@ -65044,7 +65538,8 @@ BSCI.szProductId, COALESCE(BIP.szName, '') As szProductName, BSCI.decQty
 FROM 
 BOS_SD_CustTORoutine As BSC
 Inner Join BOS_SD_CustTORoutineItem As BSCI ON BSCI.szCustId = BSC.szCustId
-LEFT JOIN BOS_GEN_RoutineSchedule BGRS ON BGRS.szScheduleId = BSCI.szScheduleIdLEFT JOIN BOS_GEN_RoutineSchedule BGRS ON BGRS.szScheduleId = BSCI.szScheduleId;
+LEFT JOIN BOS_GEN_RoutineSchedule BGRS ON BGRS.szScheduleId = BSCI.szScheduleId
+
 Left Join BOS_INV_Product As BIP ON BSCI.szProductId = BIP.szProductId
 WHERE 
 BSC.szCustId = p_szCustId And BGRS.szScheduleType = p_szScheduleType AND BSCI.decValue = p_decValue AND BSCI.szTeamId = p_szTeamId ;
@@ -65067,7 +65562,8 @@ BSCI.szProductId, COALESCE(BIP.szName, '') As szProductName, BSCI.decQty
 FROM 
 BOS_SD_CustTORoutine_DRAFT As BSC
 Inner Join BOS_SD_CustTORoutineItem_DRAFT As BSCI ON BSCI.szCustId = BSC.szCustId
-LEFT JOIN BOS_GEN_RoutineSchedule BGRS ON BGRS.szScheduleId = BSCI.szScheduleIdLEFT JOIN BOS_GEN_RoutineSchedule BGRS ON BGRS.szScheduleId = BSCI.szScheduleId;
+LEFT JOIN BOS_GEN_RoutineSchedule BGRS ON BGRS.szScheduleId = BSCI.szScheduleId
+
 Left Join BOS_INV_Product As BIP ON BSCI.szProductId = BIP.szProductId
 WHERE 
 BSC.szCustId = p_szCustId And BGRS.szScheduleType = p_szScheduleType AND BSCI.decValue = p_decValue AND BSCI.szTeamId = p_szTeamId ;
@@ -65090,7 +65586,8 @@ BSCI.szProductId, COALESCE(BIP.szName, '') As szProductName, BSCI.decQty
 FROM 
 BOS_SD_CustTORoutine_DRAFT As BSC
 Inner Join BOS_SD_CustTORoutineItem_DRAFT As BSCI ON BSCI.szCustId = BSC.szCustId
-LEFT JOIN BOS_GEN_RoutineSchedule BGRS ON BGRS.szScheduleId = BSCI.szScheduleIdLEFT JOIN BOS_GEN_RoutineSchedule BGRS ON BGRS.szScheduleId = BSCI.szScheduleId;
+LEFT JOIN BOS_GEN_RoutineSchedule BGRS ON BGRS.szScheduleId = BSCI.szScheduleId
+
 Left Join BOS_INV_Product As BIP ON BSCI.szProductId = BIP.szProductId
 WHERE 
 BSC.szCustId = p_szCustId And BGRS.szScheduleType = p_szScheduleType AND BSCI.decValue = p_decValue AND BSCI.szTeamId = p_szTeamId ;
@@ -65481,7 +65978,7 @@ p_szDistrChannelId,
 p_szName,
 p_szDescription,
 p_dtmLastUpdated,
-p_bAlreadyTransferred,
+p_bAlreadyTransferred
 );
 
 END;
@@ -65552,7 +66049,7 @@ szDistrChannelId,
 szName
 
 FROM 
-BOS_SD_DistrChannel
+BOS_SD_DistrChannel;
 
 END;
 $BODY$
@@ -65633,8 +66130,13 @@ dtmLastUpdated,
 bAlreadyTransferred
 )
 VALUES
-(
-);
+(p_szEmployeeId,
+p_szPeriodType,
+p_dtmStart,
+p_dtmEnd,
+p_decTargetAmount, 
+p_dtmLastUpdated, 
+p_bAlreadyTransferred);
 
 END;
 $BODY$
@@ -65883,7 +66385,7 @@ bSystemCreated,
 szUserId,
 -- Data Status.,
 dtmLastUpdated,
-bAlreadyTransferred,
+bAlreadyTransferred
 )
 VALUES
 (
@@ -65948,7 +66450,7 @@ p_szReasonId,
 p_szDescription,
 p_bSuccess,
 p_szCollRefNo,
-p_szCollTaskType,
+p_szCollTaskType
 );
 
 END;
@@ -66033,11 +66535,11 @@ LEFT JOIN BOS_AR_ArTrans ON BOS_AR_ArTrans.szTrnId = BOS_SD_CjrTracking.szTrnId
 AND BOS_AR_ArTrans.szDocId = BOS_SD_CjrTracking.szDocId
 
 WHERE
-BOS_SD_CjrTracking.szCjrTrackingId = p_szCjrTrackingId
+BOS_SD_CjrTracking.szCjrTrackingId = p_szCjrTrackingId;
 
 -- ==================================================================
 
-set ANSI_NULLS ON
+--set ANSI_NULLS ON
 
 END;
 $BODY$
@@ -66080,11 +66582,11 @@ LEFT JOIN BOS_AR_ArTrans ON BOS_AR_ArTrans.szTrnId = BOS_SD_CjrTracking.szTrnId
 AND BOS_AR_ArTrans.szDocId = BOS_SD_CjrTracking.szDocId    
 
 WHERE    
-BOS_SD_CjrTracking.szCjrTrackingId = p_szCjrTrackingId    
+BOS_SD_CjrTracking.szCjrTrackingId = p_szCjrTrackingId;  
 
 -- ==================================================================    
 
-set ANSI_NULLS ON
+--set ANSI_NULLS ON
 
 END;
 $BODY$
@@ -66143,7 +66645,7 @@ LEFT JOIN BOS_GL_Company ON BOS_GL_Company.szCompanyId = BOS_SD_FCjr.szCompanyId
 LEFT JOIN BOS_GL_Workplace ON BOS_GL_Workplace.szWorkplaceId = BOS_SD_FCjr.szWorkplaceId
 
 WHERE
-BOS_SD_FCjr.szFCjrId = p_szFCjrId
+BOS_SD_FCjr.szFCjrId = p_szFCjrId;
 
 END;
 $BODY$
@@ -66167,8 +66669,9 @@ bSuccess
 FROM 
 BOS_SD_FCjrItem
 WHERE 
-szFCjrId = p_szFCjrId ;ORDER BY 
-shItemNumber
+szFCjrId = p_szFCjrId 
+ORDER BY 
+shItemNumber;
 
 
 END;
@@ -66193,9 +66696,17 @@ BOS_SD_CjrTracking.szTrnId,
 BOS_SD_CjrTracking.szDocId
 
 FROM 
-BOS_SD_CjrTracking INNER JOIN BOS_AR_Customer ON BOS_SD_CjrTracking.szCustId = BOS_AR_Customer.szCustIdBOS_SD_CjrTracking INNER JOIN BOS_AR_Customer ON BOS_SD_CjrTracking.szCustId = BOS_AR_Customer.szCustId;
+BOS_SD_CjrTracking 
+INNER JOIN BOS_AR_Customer ON 
+BOS_SD_CjrTracking.szCustId = BOS_AR_Customer.szCustId
+
 WHERE 
-BOS_AR_Customer.szStatus <> p_szStatusTrouble AND BOS_SD_CjrTracking.bFinished = 0 AND BOS_SD_CjrTracking.bTasked = 0 AND BOS_SD_CjrTracking.szCollectorId LIKE p_szCollectorId AND BOS_SD_CjrTracking.szCustId LIKE p_szCustId AND (dtmNext  >= p_dtmStart AND dtmNext < p_dtmEnd + 1) ;
+BOS_AR_Customer.szStatus <> p_szStatusTrouble AND 
+BOS_SD_CjrTracking.bFinished = 0 AND 
+BOS_SD_CjrTracking.bTasked = 0 AND 
+BOS_SD_CjrTracking.szCollectorId LIKE p_szCollectorId AND 
+BOS_SD_CjrTracking.szCustId LIKE p_szCustId AND 
+(dtmNext  >= p_dtmStart AND dtmNext < p_dtmEnd + 1) ;
 END;
 $BODY$
 LANGUAGE plpgsql;
@@ -66209,7 +66720,7 @@ SELECT
 szCjrTrackingId
 
 FROM 
-BOS_SD_CjrTracking
+BOS_SD_CjrTracking;
 
 END;
 $BODY$
@@ -66256,7 +66767,7 @@ LEFT JOIN BOS_GEN_RoutineSchedule AS BGRS ON BGRS.szScheduleId = BSC.szScheduleI
 WHERE  
 BSD.dtmNext >= p_dtmFrom And BSD.dtmNext < DateAdd(Day, 1, p_dtmTo) And
 --BSD.szCollectorId LIKE p_szCollectorId And  
-BSD.bFinished = p_bFinished   
+BSD.bFinished = p_bFinished;   
 
 ELSE
 SELECT  
@@ -66288,9 +66799,9 @@ LEFT JOIN BOS_GEN_RoutineSchedule AS BGRS ON BGRS.szScheduleId = BSC.szScheduleI
 WHERE  
 BSD.dtmNext >= p_dtmFrom And BSD.dtmNext < DateAdd(Day, 1, p_dtmTo) And
 BSD.szCollectorId = p_szCollectorId And  
-BSD.bFinished = p_bFinished
+BSD.bFinished = p_bFinished;
 
-END IF
+END IF;
 END;
 $BODY$
 LANGUAGE plpgsql;
@@ -66336,7 +66847,7 @@ LEFT JOIN BOS_GEN_RoutineSchedule AS BGRS ON BGRS.szScheduleId = BSC.szScheduleI
 WHERE  
 BSD.dtmNext >= p_dtmFrom And BSD.dtmNext < DateAdd(Day, 1, p_dtmTo) And
 --BSD.szCollectorId LIKE p_szCollectorId And  
-BSD.bFinished = p_bFinished   
+BSD.bFinished = p_bFinished;   
 
 ELSE
 SELECT  
@@ -66368,10 +66879,10 @@ LEFT JOIN BOS_GEN_RoutineSchedule AS BGRS ON BGRS.szScheduleId = BSC.szScheduleI
 WHERE  
 BSD.dtmNext >= p_dtmFrom And BSD.dtmNext < DateAdd(Day, 1, p_dtmTo) And
 BSD.szCollectorId = p_szCollectorId And  
-BSD.bFinished = p_bFinished
+BSD.bFinished = p_bFinished;
 
 
-END IF
+END IF;
 END;
 $BODY$
 LANGUAGE plpgsql;
@@ -66386,7 +66897,7 @@ szFCjrId,
 dtmFCjr
 
 FROM 
-BOS_SD_FCjr
+BOS_SD_FCjr;
 
 END;
 $BODY$
@@ -66439,9 +66950,10 @@ Left Join BOS_AR_ArTrans As BAT On BSC.szTrnId = BAT.szTrnId And BSC.szDocId = B
 BSC.szCustId = BAT.szCustId And BAT.bClosed = 0
 Left Join BOS_SD_FDo As BSFDO on BSC.szDocId = BSFDO.szFirstFInvoiceId
 WHERE 
-BSF.szFCjrId = p_szFCjrId ;ORDER BY 
+BSF.szFCjrId = p_szFCjrId 
+ORDER BY 
 BSFI.szFCjrId,
-BSFI.shItemNumber
+BSFI.shItemNumber;
 
 END;
 $BODY$
@@ -66476,9 +66988,10 @@ Left Join BOS_AR_ArTrans As BAT On BSC.szTrnId = BAT.szTrnId And BSC.szDocId = B
 BSC.szCustId = BAT.szCustId And BAT.bClosed = 0
 Left Join BOS_SD_FDo As BSFDO on BSC.szDocId = BSFDO.szFirstFInvoiceId
 WHERE 
-BSF.szFCjrId = p_szFCjrId ;ORDER BY 
+BSF.szFCjrId = p_szFCjrId 
+ORDER BY 
 BSFI.szFCjrId,
-BSFI.shItemNumber
+BSFI.shItemNumber;
 
 
 END;
@@ -66512,9 +67025,11 @@ COALESCE(BSFDO.szManualNo, '') As szDoManual
 FROM 
 BOS_SD_FCjr As BSF
 WHERE 
-BSF.szFCjrId = p_szFCjrId ;ORDER BY 
+BSF.szFCjrId = p_szFCjrId 
+
+ORDER BY 
 BSFI.szFCjrId,
-BSFI.shItemNumber
+BSFI.shItemNumber;
 
 
 
@@ -66553,9 +67068,10 @@ COALESCE(BAT.decAmount, 0) As decInvAmount
 FROM 
 BOS_SD_FCjr As BSF
 WHERE 
-BSF.szFCjrId = p_szFCjrId ;ORDER BY 
+BSF.szFCjrId = p_szFCjrId 
+ORDER BY 
 BSFI.szFCjrId,
-BSFI.shItemNumber
+BSFI.shItemNumber;
 
 
 
@@ -66596,7 +67112,7 @@ BAT.szCustId = p_szCustId AND
 BAT.dtmDue_Printed < dateadd(day, isnull(BAP.intDayBeforeDueDateToSendInvoice, 0) + 1, p_dtmCollected)  
 
 Order by  
-BAT.szTrnId, BAT.szDocId, BSC.szCjrTrackingId, BAT.szCustId
+BAT.szTrnId, BAT.szDocId, BSC.szCjrTrackingId, BAT.szCustId;
 
 END;
 $BODY$
@@ -66632,7 +67148,7 @@ BAT.szCustId = p_szCustId AND
 BAT.dtmDue_Printed < dateadd(day, isnull(BAP.intDayBeforeDueDateToSendInvoice, 0) + 1, p_dtmCollected)  
 
 Order by  
-BAT.szTrnId, BAT.szDocId, BSC.szCjrTrackingId, BAT.szCustId
+BAT.szTrnId, BAT.szDocId, BSC.szCjrTrackingId, BAT.szCustId;
 
 
 END;
@@ -67087,7 +67603,8 @@ SET
 szReasonId = p_szReasonId,
 szDescription = p_szDescription
 WHERE 
-szFCjrID = p_szFCjrId AND;
+szFCjrID = p_szFCjrId AND
+szCjrTrackingId = p_szCjrTrackingId;
 
 END;
 $BODY$
@@ -67105,7 +67622,8 @@ UPDATE BOS_SD_FCjrItem
 SET 
 bSuccess = p_bSuccess
 WHERE 
-szFCjrID = p_szFCjrId AND;
+szFCjrID = p_szFCjrId AND
+szCjrTrackingId = p_szCjrTrackingId;
 
 END;
 $BODY$
@@ -67264,7 +67782,7 @@ LEFT JOIN BOS_GL_Company ON BOS_GL_Company.szCompanyId = BOS_SD_FCustFoc.szCompa
 LEFT JOIN BOS_GL_Workplace ON BOS_GL_Workplace.szWorkplaceId = BOS_SD_FCustFoc.szWorkplaceId
 
 WHERE
-szFCustFocId = p_szFCustFocId
+szFCustFocId = p_szFCustFocId;
 
 END;
 $BODY$
@@ -67281,7 +67799,7 @@ szCustId,
 szFocId
 
 FROM 
-BOS_SD_FCustFoc
+BOS_SD_FCustFoc;
 
 END;
 $BODY$
@@ -67574,8 +68092,8 @@ shItemNumber,
 szProductId,
 decQty,
 szUomId,
-szOrderItemTypeId
-szParentId,
+szOrderItemTypeId,
+szParentId
 )
 VALUES
 (
@@ -67611,8 +68129,8 @@ shItemNumber,
 szProductId,
 decQty,
 szUomId,
-szOrderItemTypeId
-szParentId,
+szOrderItemTypeId,
+szParentId
 )
 VALUES
 (
@@ -67622,7 +68140,7 @@ p_szProductId,
 p_decQty,
 p_szUomId,
 p_szOrderItemTypeId,
-p_szParentId,
+p_szParentId
 );
 
 END;
@@ -67753,7 +68271,7 @@ p_szHelperId_3,
 p_decRit,
 -- Weight and Volume,
 p_decTonase,
-p_decCubication,
+p_decCubication
 -- ==================================================================,
 );
 
@@ -67885,7 +68403,7 @@ p_szHelperId_3,
 p_decRit,
 -- Weight and Volume,
 p_decTonase,
-p_decCubication,
+p_decCubication
 -- ==================================================================,
 );
 
@@ -68020,7 +68538,7 @@ p_szBarcodeScanFailReasonId,
 p_szGPSScanFailReasonId,
 p_bScanGPSSuccess,
 p_bScanBarcodeSuccess,
-p_decJourneySpendTime,
+p_decJourneySpendTime
 );
 
 END;
@@ -68184,7 +68702,7 @@ p_szWpId4,
 p_szWhId4,
 p_szFPrId4,
 p_decQty4,
-p_szParentId,
+p_szParentId
 );
 
 END;
@@ -68215,7 +68733,8 @@ BEGIN
 DELETE 
 BOS_SD_DjrTrackingProduct
 WHERE
-szDjrTrackingId = p_szDjrTrackingIdAND shItemNumber = p_shItemNumber;
+szDjrTrackingId = p_szDjrTrackingId AND 
+shItemNumber = p_shItemNumber;
 END;
 $BODY$
 LANGUAGE plpgsql;
@@ -68310,7 +68829,7 @@ LEFT JOIN BOS_CRL_FCall ON BOS_CRL_FCall.szFCallId = BOS_SD_DJRTracking.szFCallI
 LEFT JOIN BOS_SD_FDo ON BOS_SD_FDo.szDoId = BOS_SD_DJRTracking.szFDoId
 
 WHERE
-BOS_SD_DjrTracking.szDjrTrackingId = p_szDjrTrackingId
+BOS_SD_DjrTracking.szDjrTrackingId = p_szDjrTrackingId;
 
 END;
 $BODY$
@@ -68364,7 +68883,7 @@ LEFT JOIN BOS_CRL_FCall ON BOS_CRL_FCall.szFCallId = BOS_SD_DJRTracking.szFCallI
 LEFT JOIN BOS_SD_FDo ON BOS_SD_FDo.szDoId = BOS_SD_DJRTracking.szFDoId      
 
 WHERE      
-BOS_SD_DjrTracking.szDjrTrackingId = p_szDjrTrackingId
+BOS_SD_DjrTracking.szDjrTrackingId = p_szDjrTrackingId;
 
 END;
 $BODY$
@@ -68471,7 +68990,7 @@ BOS_SD_DjrTrackingProduct.szOrderItemTypeId
 Where
 BOS_SD_DjrTrackingProduct.szDjrTrackingId = p_szDjrTrackingId
 Order By
-BOS_SD_DjrTrackingProduct.shItemNumber
+BOS_SD_DjrTrackingProduct.shItemNumber;
 
 
 END;
@@ -68565,11 +69084,11 @@ LEFT JOIN BOS_INV_Vehicle ON BOS_INV_Vehicle.szVehicleId = BOS_SD_FDjr.szVehicle
 LEFT JOIN BOS_INV_VehicleCapacity ON BOS_INV_VehicleCapacity.szVehicleCapacityId = BOS_INV_Vehicle.szVehicleCapacityId
 LEFT JOIN BOS_SD_DeliveryGroup ON BOS_SD_DeliveryGroup.szDeliveryGroupId = BOS_SD_FDjr.szDeliveryGroupId
 WHERE
-BOS_SD_FDjr.szFDjrId = p_szFDjrId
+BOS_SD_FDjr.szFDjrId = p_szFDjrId;
 
 -- ==================================================================
 
-set ANSI_NULLS ON
+--set ANSI_NULLS ON
 
 END;
 $BODY$
@@ -68662,11 +69181,11 @@ LEFT JOIN BOS_INV_Vehicle ON BOS_INV_Vehicle.szVehicleId = BOS_SD_FDjr.szVehicle
 LEFT JOIN BOS_INV_VehicleCapacity ON BOS_INV_VehicleCapacity.szVehicleCapacityId = BOS_INV_Vehicle.szVehicleCapacityId
 LEFT JOIN BOS_SD_DeliveryGroup ON BOS_SD_DeliveryGroup.szDeliveryGroupId = BOS_SD_FDjr.szDeliveryGroupId
 WHERE
-BOS_SD_FDjr.szFDjrId = p_szFDjrId
+BOS_SD_FDjr.szFDjrId = p_szFDjrId;
 
 -- ==================================================================
 
-set ANSI_NULLS ON
+--set ANSI_NULLS ON
 
 
 END;
@@ -68706,8 +69225,9 @@ Left Join BOS_SD_DjrTracking ON BOS_SD_FDjrItem.szDjrTrackingId = BOS_SD_DjrTrac
 Left Join BOS_AR_Customer ON BOS_AR_Customer.szCustId = BOS_SD_DjrTracking.szCustId
 
 WHERE 
-BOS_SD_FDjrItem.szFDjrId = p_szFDjrId ;ORDER BY 
-BOS_SD_FDjrItem.shItemNumber
+BOS_SD_FDjrItem.szFDjrId = p_szFDjrId 
+ORDER BY 
+BOS_SD_FDjrItem.shItemNumber;
 
 END;
 $BODY$
@@ -68746,8 +69266,9 @@ Left Join BOS_SD_DjrTracking ON BOS_SD_FDjrItem.szDjrTrackingId = BOS_SD_DjrTrac
 Left Join BOS_AR_Customer ON BOS_AR_Customer.szCustId = BOS_SD_DjrTracking.szCustId
 
 WHERE 
-BOS_SD_FDjrItem.szFDjrId = p_szFDjrId ;ORDER BY 
-BOS_SD_FDjrItem.shItemNumber
+BOS_SD_FDjrItem.szFDjrId = p_szFDjrId 
+ORDER BY 
+BOS_SD_FDjrItem.shItemNumber;
 
 
 END;
@@ -68810,7 +69331,7 @@ LEFT JOIN BOS_INV_Product As BIP ON BIP.szProductId = BSF.szProductId
 LEFT JOIN BOS_INV_ProductTechnicalSpecInfo AS BIPT ON BIPT.szProductId = BSF.szProductId  
 LEFT JOIN BOS_INV_Product AS BIP2 ON BIP2.szProductId = BSF.szParentId  
 WHERE  
-szFDjrId = p_szFDjrId
+szFDjrId = p_szFDjrId;
 
 END;
 $BODY$
@@ -68872,7 +69393,7 @@ LEFT JOIN BOS_INV_Product As BIP ON BIP.szProductId = BSF.szProductId
 LEFT JOIN BOS_INV_ProductTechnicalSpecInfo AS BIPT ON BIPT.szProductId = BSF.szProductId  
 LEFT JOIN BOS_INV_Product AS BIP2 ON BIP2.szProductId = BSF.szParentId  
 WHERE  
-szFDjrId = p_szFDjrId
+szFDjrId = p_szFDjrId;
 
 
 END;
@@ -68908,7 +69429,7 @@ szType = p_szType AND
 szDriverId = p_szDriverId AND
 szCustId = p_szCustId AND
 szTeamId LIKE p_szTeamId AND
-(dtmNext  >= p_dtmStart AND dtmNext < dateadd(day, 1, p_dtmEnd))
+(dtmNext  >= p_dtmStart AND dtmNext < dateadd(day, 1, p_dtmEnd));
 
 ELSE
 
@@ -68927,9 +69448,9 @@ szCustId = p_szCustId AND
 szTeamId LIKE p_szTeamId AND
 BOS_GEN_RoutineSchedule.szScheduleType = p_szScheduleType AND
 decValue = p_decValue AND
-(dtmNext  >= p_dtmStart AND dtmNext < dateadd(day, 1, p_dtmEnd))
+(dtmNext  >= p_dtmStart AND dtmNext < dateadd(day, 1, p_dtmEnd));
 
-END IF
+END IF;
 END;
 $BODY$
 LANGUAGE plpgsql;
@@ -68963,7 +69484,7 @@ szType = p_szType AND
 szDriverId = p_szDriverId AND  
 szCustId = p_szCustId AND  
 szTeamId LIKE p_szTeamId AND  
-(dtmNext  >= p_dtmStart AND dtmNext < dateadd(day, 1, p_dtmEnd))  
+(dtmNext  >= p_dtmStart AND dtmNext < dateadd(day, 1, p_dtmEnd));  
 
 ELSE  
 
@@ -68982,9 +69503,9 @@ szCustId = p_szCustId AND
 szTeamId LIKE p_szTeamId AND  
 BOS_GEN_RoutineSchedule.szScheduleType = p_szScheduleType AND  
 decValue = p_decValue AND  
-(dtmNext  >= p_dtmStart AND dtmNext < dateadd(day, 1, p_dtmEnd))
+(dtmNext  >= p_dtmStart AND dtmNext < dateadd(day, 1, p_dtmEnd));
 
-END IF
+END IF;
 END;
 $BODY$
 LANGUAGE plpgsql;
@@ -68999,7 +69520,7 @@ szDjrTrackingId
 
 
 FROM 
-BOS_SD_DjrTracking
+BOS_SD_DjrTracking;
 
 END;
 $BODY$
@@ -69045,7 +69566,8 @@ BSD.dtmNext >= p_dtmFrom And BSD.dtmNext < DateAdd(Day, 1, p_dtmTo) And
 BSD.bFinished = p_bFinished  
 
 ORDER BY  
-BSD.szDriverId  
+BSD.szDriverId;
+  
 ELSE
 SELECT  
 BSD.bFinished,  
@@ -69075,9 +69597,9 @@ BSD.szDriverId = p_szDriverId And
 BSD.bFinished = p_bFinished  
 
 ORDER BY  
-BSD.szDriverId
+BSD.szDriverId;
 
-END IF
+END IF;
 END;
 $BODY$
 LANGUAGE plpgsql;
@@ -69122,7 +69644,7 @@ BSD.dtmNext >= p_dtmFrom And BSD.dtmNext < DateAdd(Day, 1, p_dtmTo) And
 BSD.bFinished = p_bFinished  
 
 ORDER BY  
-BSD.szDriverId  
+BSD.szDriverId;  
 ELSE
 SELECT  
 BSD.bFinished,  
@@ -69152,10 +69674,10 @@ BSD.szDriverId = p_szDriverId And
 BSD.bFinished = p_bFinished  
 
 ORDER BY  
-BSD.szDriverId
+BSD.szDriverId;
 
 
-END IF
+END IF;
 END;
 $BODY$
 LANGUAGE plpgsql;
@@ -69170,7 +69692,7 @@ szFDjrId,
 dtmFDjr
 
 FROM 
-BOS_SD_FDjr
+BOS_SD_FDjr;
 
 END;
 $BODY$
@@ -69198,7 +69720,8 @@ BOS_SD_DjrTracking.szFDoId
 
 FROM 
 BOS_SD_DjrTracking
-LEFT JOIN BOS_AR_Customer ON BOS_SD_DjrTracking.szCustId = BOS_AR_Customer.szCustIdLEFT JOIN BOS_AR_Customer ON BOS_SD_DjrTracking.szCustId = BOS_AR_Customer.szCustId;
+LEFT JOIN BOS_AR_Customer ON BOS_SD_DjrTracking.szCustId = BOS_AR_Customer.szCustId
+
 
 WHERE 
 (BOS_AR_Customer.szStatus = p_szStatusACT OR BOS_AR_Customer.szStatus = p_szStatusFDE) AND BOS_SD_DjrTracking.bFinished = 0 AND BOS_SD_DjrTracking.bTasked = 0 AND BOS_SD_DjrTracking.szType LIKE p_szType AND BOS_SD_DjrTracking.szDriverId LIKE p_szDriverId AND BOS_SD_DjrTracking.szCustId LIKE p_szCustId AND BOS_SD_DjrTracking.szTeamId LIKE p_szTeamId AND (BOS_SD_DjrTracking.dtmNext  >= p_dtmStart AND BOS_SD_DjrTracking.dtmNext < dateadd(day, 1, p_dtmEnd)) ;
@@ -69228,7 +69751,8 @@ BOS_SD_DjrTracking.szFDoId
 
 FROM 
 BOS_SD_DjrTracking
-LEFT JOIN BOS_AR_Customer ON BOS_SD_DjrTracking.szCustId = BOS_AR_Customer.szCustIdLEFT JOIN BOS_AR_Customer ON BOS_SD_DjrTracking.szCustId = BOS_AR_Customer.szCustId;
+LEFT JOIN BOS_AR_Customer ON BOS_SD_DjrTracking.szCustId = BOS_AR_Customer.szCustId
+
 
 WHERE 
 (BOS_AR_Customer.szStatus = p_szStatusACT OR BOS_AR_Customer.szStatus = p_szStatusFDE) AND BOS_SD_DjrTracking.bFinished = 0 AND BOS_SD_DjrTracking.bTasked = 0 AND BOS_SD_DjrTracking.szType LIKE p_szType AND BOS_SD_DjrTracking.szDriverId LIKE p_szDriverId AND BOS_SD_DjrTracking.szCustId LIKE p_szCustId AND BOS_SD_DjrTracking.szTeamId LIKE p_szTeamId AND (BOS_SD_DjrTracking.dtmNext  >= p_dtmStart AND BOS_SD_DjrTracking.dtmNext < dateadd(day, 1, p_dtmEnd)) ;
@@ -69269,11 +69793,11 @@ LEFT JOIN BOS_INV_Product AS BIP ON BIP.szProductId = BSDP.szProductId
 LEFT JOIN BOS_INV_ProductTechnicalSpecInfo AS BIPT ON BIPT.szProductId = BSDP.szProductId
 
 WHERE
-BSD.szDjrTrackingId = p_szDjrTrackingId
+BSD.szDjrTrackingId = p_szDjrTrackingId;
 
 -- ==================================================================
 
-set ANSI_NULLS ON
+--set ANSI_NULLS ON
 
 END;
 $BODY$
@@ -69312,11 +69836,11 @@ LEFT JOIN BOS_INV_Product AS BIP ON BIP.szProductId = BSDP.szProductId
 LEFT JOIN BOS_INV_ProductTechnicalSpecInfo AS BIPT ON BIPT.szProductId = BSDP.szProductId
 
 WHERE
-BSD.szDjrTrackingId = p_szDjrTrackingId
+BSD.szDjrTrackingId = p_szDjrTrackingId;
 
 -- ==================================================================
 
-set ANSI_NULLS ON
+--set ANSI_NULLS ON
 
 
 END;
@@ -69370,8 +69894,9 @@ Left Join BOS_SD_FDo As BSFDLast On BSFDLast.szDoId = BSC.szLastFDoId
 Left Join BOS_SD_FDo As BSFD On BSFD.szDoId = BSD.szFDoId
 Left Join BOS_AR_ArMaster As BAAM On BAAM.szCustId = BSD.szCustId And BAAM.szCcyId = BSFD.szCcyId
 WHERE 
-BSF.szFDjrId = p_szFDjrId ;ORDER BY 
-BSFI.shItemNumber
+BSF.szFDjrId = p_szFDjrId 
+ORDER BY 
+BSFI.shItemNumber;
 
 END;
 $BODY$
@@ -69407,8 +69932,9 @@ Left Join BOS_SD_FDo As BSFDLast On BSFDLast.szDoId = BSC.szLastFDoId
 Left Join BOS_SD_FDo As BSFD On BSFD.szDoId = BSD.szFDoId
 Left Join BOS_AR_ArMaster As BAAM On BAAM.szCustId = BSD.szCustId And BAAM.szCcyId = BSFD.szCcyId
 WHERE 
-BSF.szFDjrId = p_szFDjrId ;ORDER BY 
-BSFI.shItemNumber
+BSF.szFDjrId = p_szFDjrId 
+ORDER BY 
+BSFI.shItemNumber;
 
 END;
 $BODY$
@@ -69728,6 +70254,31 @@ RETURNS void AS
 $BODY$
 BEGIN
 -- ### 2 update #####
+UPDATE
+	BOS_SD_DjrTracking
+
+SET
+	--DO NOT UPDATE DO ID AS ONCE TRACKING IS CREATED FOR CERTAIN DO ID, IT CANNOT BE CHANGED
+	--(IF IT CAN, IT WILL ONLY MAKE THINGS MORE CLUTTER, WITHOUT OBVIOUS USE).
+	szType = p_szType,
+	szCustId = p_szCustId,
+	szDriverId = p_szDriverId,
+	szFDjrId = p_szFDjrId,
+	bFinished = p_bFinished,
+	bSuccess = p_bSuccess,
+	bTasked = p_bTasked,
+	dtmNext = p_dtmNext,
+	btTrialCount = p_btTrialCount,
+	szTeamId = p_szTeamId,
+	szScheduleId = p_szScheduleId,
+	decValue = p_decValue,
+	szFCallId = p_szFCallId,
+	szWorkplaceId = p_szWorkplaceId,
+	bDoNotIncrStockToDeliver = p_bDoNotIncrStockToDeliver
+	, dtmLastUpdated = p_dtmLastUpdated
+
+WHERE
+	szDjrTrackingId = p_szDjrTrackingId;
 END;
 $BODY$
 LANGUAGE plpgsql;
@@ -69755,6 +70306,31 @@ RETURNS void AS
 $BODY$
 BEGIN
 -- ### 2 update #####
+UPDATE  
+ BOS_SD_DjrTracking  
+  
+SET  
+ --DO NOT UPDATE DO ID AS ONCE TRACKING IS CREATED FOR CERTAIN DO ID, IT CANNOT BE CHANGED  
+ --(IF IT CAN, IT WILL ONLY MAKE THINGS MORE CLUTTER, WITHOUT OBVIOUS USE).  
+ szType = p_szType,  
+ szCustId = p_szCustId,  
+ szDriverId = p_szDriverId,  
+ szFDjrId = p_szFDjrId,  
+ bFinished = p_bFinished,  
+ bSuccess = p_bSuccess,  
+ bTasked = p_bTasked,  
+ dtmNext = p_dtmNext,  
+ btTrialCount = p_btTrialCount,  
+ szTeamId = p_szTeamId,  
+ szScheduleId = p_szScheduleId,  
+ decValue = p_decValue,  
+ szFCallId = p_szFCallId,  
+ szWorkplaceId = p_szWorkplaceId,  
+ bDoNotIncrStockToDeliver = p_bDoNotIncrStockToDeliver  
+ , dtmLastUpdated = p_dtmLastUpdated  
+  
+WHERE  
+ szDjrTrackingId = p_szDjrTrackingId;
 END;
 $BODY$
 LANGUAGE plpgsql;
@@ -69981,7 +70557,8 @@ SET
 szReasonId = p_szReasonId,
 szDescription = p_szDescription
 WHERE 
-szFDjrID = p_szFDjrId AND;
+szFDjrID = p_szFDjrId AND
+szDjrTrackingId = p_szDjrTrackingId;
 
 END;
 $BODY$
@@ -69999,7 +70576,8 @@ UPDATE BOS_SD_FDjrItem
 SET 
 bSuccess = p_bSuccess
 WHERE 
-szFDjrID = p_szFDjrId AND;
+szFDjrID = p_szFDjrId AND
+szDjrTrackingId = p_szDjrTrackingId;
 
 END;
 $BODY$
@@ -70028,7 +70606,7 @@ WHERE
 BOS_SD_FDo.bVoid = 0 AND BOS_SD_FDo.bApplied = 0 AND
 BOS_SD_FDo.dtmDelivery >= p_dtmFrom AND BOS_SD_FDo.dtmDelivery < dateadd(day, 1, p_dtmTo)
 --AND BOS_SD_FDo.szDriverId = p_szOpUserId
-AND BOS_SD_FDo.szWorkplaceId = p_szWorkplaceId
+AND BOS_SD_FDo.szWorkplaceId = p_szWorkplaceId;
 ELSE
 SELECT
 count(DISTINCT BOS_SD_FDo.szDoId) as iDoCount
@@ -70041,9 +70619,9 @@ WHERE
 BOS_SD_FDo.bVoid = 0 AND BOS_SD_FDo.bApplied = 0 AND
 BOS_SD_FDo.dtmDelivery >= p_dtmFrom AND BOS_SD_FDo.dtmDelivery < dateadd(day, 1, p_dtmTo)
 AND BOS_SD_FDo.szDriverId = p_szOpUserId
-AND BOS_SD_FDo.szWorkplaceId = p_szWorkplaceId
+AND BOS_SD_FDo.szWorkplaceId = p_szWorkplaceId;
 
-END IF
+END IF;
 END;
 $BODY$
 LANGUAGE plpgsql;
@@ -70071,7 +70649,7 @@ WHERE
 BOS_SD_FDo.bVoid = 0 AND BOS_SD_FDo.bApplied = 0 AND
 BOS_SD_FDo.dtmDelivery >= p_dtmFrom AND BOS_SD_FDo.dtmDelivery < dateadd(day, 1, p_dtmTo)
 --AND BOS_SD_FDo.szDriverId = p_szOpUserId
-AND BOS_SD_FDo.szWorkplaceId = p_szWorkplaceId
+AND BOS_SD_FDo.szWorkplaceId = p_szWorkplaceId;
 ELSE
 SELECT
 count(DISTINCT BOS_SD_FDo.szDoId) as iDoCount
@@ -70084,10 +70662,10 @@ WHERE
 BOS_SD_FDo.bVoid = 0 AND BOS_SD_FDo.bApplied = 0 AND
 BOS_SD_FDo.dtmDelivery >= p_dtmFrom AND BOS_SD_FDo.dtmDelivery < dateadd(day, 1, p_dtmTo)
 AND BOS_SD_FDo.szDriverId = p_szOpUserId
-AND BOS_SD_FDo.szWorkplaceId = p_szWorkplaceId
+AND BOS_SD_FDo.szWorkplaceId = p_szWorkplaceId;
 
 
-END IF
+END IF;
 END;
 $BODY$
 LANGUAGE plpgsql;
@@ -70286,7 +70864,7 @@ decCubication,
 bUploadedFromMoDis,
 dtmStartVisit	,
 dtmEndVisit	,
-decVisitSpendTime	,
+decVisitSpendTime,
 bScanSuccess	,
 szScanFailReason
 )
@@ -70700,7 +71278,7 @@ p_szBarcodeScanFailReason,
 p_bScanBarcodeSuccess,
 p_decJourneySpendTime,
 p_AdcId,
-p_szCustReceiptNo,
+p_szCustReceiptNo
 );
 
 END;
@@ -71015,7 +71593,7 @@ p_szBarcodeScanFailReason,
 p_bScanBarcodeSuccess,
 p_decJourneySpendTime,
 p_AdcId,
-p_szCustReceiptNo,
+p_szCustReceiptNo
 );
 
 END;
@@ -71102,7 +71680,7 @@ p_szPrincipalDiscRefId,
 -- for Cubication and Tonase,
 p_decTonase,
 p_decCubication,
-p_szParentId,
+p_szParentId
 -- ==================================================================,
 );
 
@@ -71286,7 +71864,7 @@ p_decCubication,
 p_szParentId,
 p_szDistProductId,
 p_decDistQty,
-p_decDistPrice,
+p_decDistPrice
 );
 
 END;
@@ -71394,7 +71972,7 @@ p_decDistPrice,
 p_szBudgetId,
 p_decPrincipalCostAmount,
 p_decPrincipalCostQty,
-p_bBudgetTransferred,
+p_bBudgetTransferred
 );
 
 END;
@@ -71456,7 +72034,7 @@ $BODY$
 BEGIN
 INSERT INTO BOS_SD_FDOItemBonusSource
 (
-  ,
+
 szFDoId  ,
 shItemNumber  ,
 szProductId  ,
@@ -71465,7 +72043,7 @@ szPaymentType  ,
 decBonusAmount  ,
 decBonusQty  ,
 szParentId  
-  ,
+
 )
 VALUES
 (
@@ -71646,7 +72224,7 @@ $BODY$
 BEGIN
 INSERT INTO BOS_SD_FDOProductDepositBonusItem
 (
-  ,
+  
 szDoId  ,
 shItemNumber  ,
 szProductId  ,
@@ -71654,7 +72232,7 @@ decQty  ,
 szUomId  ,
 szOrderItemTypeId  ,
 bGenByTotal  
-  ,
+
 )
 VALUES
 (
@@ -71722,7 +72300,7 @@ $BODY$
 BEGIN
 INSERT INTO BOS_SD_FDoProductDepositBonusItemBonusSource
 (
-  ,
+  
 szFDoId  ,
 shItemNumber  ,
 szProductId  ,
@@ -71730,7 +72308,7 @@ szOrderItemTypeId  ,
 szPaymentType  ,
 decBonusAmount  ,
 decBonusQty  
-  ,
+
 )
 VALUES
 (
@@ -71807,7 +72385,8 @@ BEGIN
 DELETE 
 BOS_SD_FDOItem
 WHERE
-szDoId = p_szDoIdAND shItemNumber = p_shItemNumber;
+szDoId = p_szDoId AND 
+shItemNumber = p_shItemNumber;
 END;
 $BODY$
 LANGUAGE plpgsql;
@@ -71822,7 +72401,7 @@ BEGIN
 DELETE 
 BOS_SD_FDOItem
 WHERE
-szDoId = p_szDoIdAND shItemNumber = p_shItemNumber;
+szDoId = p_szDoId AND shItemNumber = p_shItemNumber;
 END;
 $BODY$
 LANGUAGE plpgsql;
@@ -71869,7 +72448,12 @@ BEGIN
 DELETE 
 BOS_SD_FDoItemBonusSource
 WHERE
-szFDoId = p_szFDoIdAND shItemNumber = p_shItemNumberAND szProductId = p_szProductIdAND szOrderItemTypeId = p_szOrderItemTypeIdAND szPaymentType = p_szPaymentTypeAND szParentId = p_szParentId;
+szFDoId = p_szFDoId AND 
+shItemNumber = p_shItemNumber AND 
+szProductId = p_szProductId AND 
+szOrderItemTypeId = p_szOrderItemTypeId AND 
+szPaymentType = p_szPaymentType AND 
+szParentId = p_szParentId;
 END;
 $BODY$
 LANGUAGE plpgsql;
@@ -71888,7 +72472,12 @@ BEGIN
 DELETE 
 BOS_SD_FDoItemBonusSource
 WHERE
-szFDoId = p_szFDoIdAND shItemNumber = p_shItemNumberAND szProductId = p_szProductIdAND szOrderItemTypeId = p_szOrderItemTypeIdAND szPaymentType = p_szPaymentTypeAND szParentId = p_szParentId;
+szFDoId = p_szFDoId AND 
+shItemNumber = p_shItemNumber AND 
+szProductId = p_szProductId AND 
+szOrderItemTypeId = p_szOrderItemTypeId AND 
+szPaymentType = p_szPaymentType AND 
+szParentId = p_szParentId;
 END;
 $BODY$
 LANGUAGE plpgsql;
@@ -71932,7 +72521,9 @@ BEGIN
 DELETE 
 BOS_SD_FDoItemLotQty
 WHERE
-szFDoId = p_szFDoIdAND shItemNumber = p_shItemNumberAND szLotId = p_szLotId;
+szFDoId = p_szFDoId
+AND shItemNumber = p_shItemNumber
+AND szLotId = p_szLotId;
 END;
 $BODY$
 LANGUAGE plpgsql;
@@ -71948,7 +72539,9 @@ BEGIN
 DELETE 
 BOS_SD_FDoItemLotQty
 WHERE
-szFDoId = p_szFDoIdAND shItemNumber = p_shItemNumberAND szLotId = p_szLotId;
+szFDoId = p_szFDoId
+AND shItemNumber = p_shItemNumber
+AND szLotId = p_szLotId;
 END;
 $BODY$
 LANGUAGE plpgsql;
@@ -71986,7 +72579,9 @@ BEGIN
 DELETE 
 BOS_SD_FDOItemSN
 WHERE
-szDoId = p_szDoIdAND shItemNumber = p_shItemNumberAND shItemSnNumber = p_shItemSnNumber;
+szDoId = p_szDoId
+AND shItemNumber = p_shItemNumber
+AND shItemSnNumber = p_shItemSnNumber;
 END;
 $BODY$
 LANGUAGE plpgsql;
@@ -72002,7 +72597,9 @@ BEGIN
 DELETE 
 BOS_SD_FDOItemSN
 WHERE
-szDoId = p_szDoIdAND shItemNumber = p_shItemNumberAND shItemSnNumber = p_shItemSnNumber;
+szDoId = p_szDoId
+AND shItemNumber = p_shItemNumber
+AND shItemSnNumber = p_shItemSnNumber;
 END;
 $BODY$
 LANGUAGE plpgsql;
@@ -72269,7 +72866,7 @@ LEFT JOIN BOS_CU_Currency ON BOS_CU_Currency.szCcyId = BOS_SD_FDo.szCcyId
 LEFT JOIN BOS_INV_OrderType ON BOS_INV_OrderType.szOrderTypeId = BOS_SD_FDo.szOrderTypeId  
 
 WHERE  
-BOS_SD_FDo.szDoId = p_szDoId
+BOS_SD_FDo.szDoId = p_szDoId;
 
 END;
 $BODY$
@@ -72491,7 +73088,7 @@ LEFT JOIN BOS_CU_Currency ON BOS_CU_Currency.szCcyId = BOS_SD_FDo.szCcyId
 LEFT JOIN BOS_INV_OrderType ON BOS_INV_OrderType.szOrderTypeId = BOS_SD_FDo.szOrderTypeId      
 
 WHERE      
-BOS_SD_FDo.szDoId = p_szDoId
+BOS_SD_FDo.szDoId = p_szDoId;
 
 END;
 $BODY$
@@ -72713,7 +73310,7 @@ LEFT JOIN BOS_CU_Currency ON BOS_CU_Currency.szCcyId = BOS_SD_FDo.szCcyId
 LEFT JOIN BOS_INV_OrderType ON BOS_INV_OrderType.szOrderTypeId = BOS_SD_FDo.szOrderTypeId      
 
 WHERE      
-BOS_SD_FDo.szDoId = p_szDoId  
+BOS_SD_FDo.szDoId = p_szDoId ; 
 
 
 
@@ -72941,7 +73538,7 @@ LEFT JOIN BOS_CU_Currency ON BOS_CU_Currency.szCcyId = BOS_SD_FDo.szCcyId
 LEFT JOIN BOS_INV_OrderType ON BOS_INV_OrderType.szOrderTypeId = BOS_SD_FDo.szOrderTypeId      
 
 WHERE      
-BOS_SD_FDo.szDoId = p_szDoId
+BOS_SD_FDo.szDoId = p_szDoId;
 
 
 
@@ -73034,11 +73631,11 @@ AND BGWP.szProductId = BOS_SD_FDoItem.szProductId
 WHERE 
 BOS_SD_FDOItem.szDoId = p_szDoId
 ORDER BY
-BOS_SD_FDOItem.shItemNumber
+BOS_SD_FDOItem.shItemNumber;
 
 -- ==================================================================
 
-set ANSI_NULLS ON
+--set ANSI_NULLS ON
 
 END;
 $BODY$
@@ -73129,7 +73726,7 @@ AND BGWP.szProductId = BOS_SD_FDoItem.szProductId
 WHERE   
 BOS_SD_FDOItem.szDoId = p_szDoId  
 ORDER BY  
-BOS_SD_FDOItem.shItemNumber
+BOS_SD_FDOItem.shItemNumber;
 
 END;
 $BODY$
@@ -73224,7 +73821,7 @@ AND BGWP.szProductId = BOS_SD_FDoItem.szProductId
 WHERE   
 BOS_SD_FDOItem.szDoId = p_szDoId  
 ORDER BY  
-BOS_SD_FDOItem.shItemNumber
+BOS_SD_FDOItem.shItemNumber;
 
 
 END;
@@ -73325,7 +73922,7 @@ AND BGWP.szProductId = BOS_SD_FDoItem.szProductId
 WHERE   
 BOS_SD_FDOItem.szDoId = p_szDoId  
 ORDER BY  
-BOS_SD_FDOItem.shItemNumber
+BOS_SD_FDOItem.shItemNumber;
 
 
 
@@ -73342,7 +73939,12 @@ $BODY$
 BEGIN
 SELECT 
 szProductId,
-
+	szOrderItemTypeId,
+	szPaymentType,
+	decBonusAmount,
+	decBonusQty,
+	szParentId
+	
 FROM 
 BOS_SD_FDOItemBonusSource
 WHERE 
@@ -73360,7 +73962,11 @@ $BODY$
 BEGIN
 SELECT 
 szProductId,
-
+ szOrderItemTypeId,  
+ szPaymentType,  
+ decBonusAmount,  
+ decBonusQty,  
+ szParentId  
 FROM 
 BOS_SD_FDOItemBonusSource
 WHERE 
@@ -73416,7 +74022,7 @@ $BODY$
 BEGIN
 SELECT 
 shItemSnNumber,
-
+	szProductSN
 FROM 
 BOS_SD_FDOItemSN
 WHERE 
@@ -73434,7 +74040,8 @@ $BODY$
 BEGIN
 SELECT 
 shItemSnNumber,
-
+ szProductSN  
+ 
 FROM 
 BOS_SD_FDOItemSN
 WHERE 
@@ -73524,6 +74131,10 @@ $BODY$
 BEGIN
 SELECT 
 szProductId,
+	szOrderItemTypeId,
+	szPaymentType,
+	decBonusAmount,
+	decBonusQty
 
 FROM 
 BOS_SD_FDoProductDepositBonusItemBonusSource
@@ -73542,7 +74153,11 @@ $BODY$
 BEGIN
 SELECT 
 szProductId,
-
+ szOrderItemTypeId,  
+ szPaymentType,  
+ decBonusAmount,  
+ decBonusQty  
+ 
 FROM 
 BOS_SD_FDoProductDepositBonusItemBonusSource
 WHERE 
@@ -73563,7 +74178,8 @@ FCall.szFCallId
 
 FROM 
 BOS_CRL_FCall as FCall
-LEFT JOIN BOS_SD_DjrTracking as DjrTrackingLEFT JOIN BOS_SD_DjrTracking as DjrTracking;
+LEFT JOIN BOS_SD_DjrTracking as DjrTracking
+
 on DjrTracking.szDjrTrackingId = FCall.szTrackingId and szCallType = p_szCallType
 WHERE 
 DjrTracking.szFDoId = p_szFDoId ;
@@ -73583,7 +74199,8 @@ FCall.szFCallId
 
 FROM 
 BOS_CRL_FCall as FCall
-LEFT JOIN BOS_SD_DjrTracking as DjrTrackingLEFT JOIN BOS_SD_DjrTracking as DjrTracking;
+LEFT JOIN BOS_SD_DjrTracking as DjrTracking
+
 on DjrTracking.szDjrTrackingId = FCall.szTrackingId and szCallType = p_szCallType
 WHERE 
 DjrTracking.szFDoId = p_szFDoId ;
@@ -73602,7 +74219,7 @@ dtmDelivery,
 szCustId
 
 FROM 
-BOS_SD_FDO
+BOS_SD_FDO;
 
 END;
 $BODY$
@@ -73624,8 +74241,9 @@ FROM
 BOS_SD_FDo
 
 WHERE 
-szWorkplaceId Like p_szWorkplaceId And dtmDelivery >= p_dtmFrom And dtmDelivery < DateAdd(Day, 1, p_dtmTo) ;ORDER BY 
-szDoId
+szWorkplaceId Like p_szWorkplaceId And dtmDelivery >= p_dtmFrom And dtmDelivery < DateAdd(Day, 1, p_dtmTo) 
+ORDER BY 
+szDoId;
 
 END;
 $BODY$
@@ -73659,7 +74277,7 @@ left join BOS_PI_Employee on BOS_PI_Employee.szEmployeeId = BOS_SD_DjrTracking.s
 WHERE 
 InvCust.szCustId = p_szCustId AND
 BOS_SD_FDo.bApplied = 0 AND
-BOS_SD_FDo.bVoid = 0
+BOS_SD_FDo.bVoid = 0;
 
 END;
 $BODY$
@@ -73688,7 +74306,7 @@ AND dtmDelivery < dateadd(day, 1, p_dtmTo)
 AND BOS_SD_FDo.szDriverId LIKE p_szOpUserId
 AND (select COUNT(szdoid) from BOS_SD_FDoItem where BOS_SD_FDoItem.szDoId = BOS_SD_FDo.szDoId) > 0  
 ) AS SUMMARY
-ORDER BY SUMMARY.decAmount
+ORDER BY SUMMARY.decAmount;
 
 END;
 $BODY$
@@ -73720,7 +74338,7 @@ AND dtmDelivery < dateadd(day, 1, p_dtmTo)
 --AND BOS_SD_FDo.szDriverId = p_szOpUserId  
 AND (select COUNT(szdoid) from BOS_SD_FDoItem where BOS_SD_FDoItem.szDoId = BOS_SD_FDo.szDoId) > 0    
 ) AS SUMMARY  
-ORDER BY SUMMARY.decAmount
+ORDER BY SUMMARY.decAmount;
 ELSE
 SELECT szDoId FROM  
 (  
@@ -73736,9 +74354,9 @@ AND dtmDelivery < dateadd(day, 1, p_dtmTo)
 AND BOS_SD_FDo.szDriverId = p_szOpUserId  
 AND (select COUNT(szdoid) from BOS_SD_FDoItem where BOS_SD_FDoItem.szDoId = BOS_SD_FDo.szDoId) > 0    
 ) AS SUMMARY  
-ORDER BY SUMMARY.decAmount
+ORDER BY SUMMARY.decAmount;
 
-END IF
+END IF;
 END;
 $BODY$
 LANGUAGE plpgsql;
@@ -75146,7 +75764,7 @@ dtmCreated,
 bSystemCreated,
 -- Data Status.,
 dtmLastUpdated,
-bAlreadyTransferred,
+bAlreadyTransferred
 )
 VALUES
 (
@@ -75305,7 +75923,7 @@ LEFT JOIN BOS_GL_FJournalTrans ON FDoCorr.szFJournalId = BOS_GL_FJournalTrans.sz
 LEFT JOIN BOS_GL_Company ON BOS_GL_Company.szCompanyId = FDoCorr.szCompanyId
 LEFT JOIN BOS_GL_Workplace ON BOS_GL_Workplace.szWorkplaceId = FDoCorr.szWorkplaceId
 WHERE
-FDoCorr.szFDoCorrectionId = p_szFDoCorrectionId
+FDoCorr.szFDoCorrectionId = p_szFDoCorrectionId;
 
 END;
 $BODY$
@@ -75331,7 +75949,7 @@ BOS_SD_FDoCorrectionItem
 LEFT JOIN BOS_AR_Customer as CustFDo ON CustFDo.szCustId = BOS_SD_FDoCorrectionItem.szFDoCustId
 LEFT JOIN BOS_AR_Customer as Cust ON Cust.szCustId = BOS_SD_FDoCorrectionItem.szCustId
 WHERE
-szFDoCorrectionId = p_szFDoCorrectionId
+szFDoCorrectionId = p_szFDoCorrectionId;
 
 END;
 $BODY$
@@ -75348,7 +75966,7 @@ szDescription,
 dtmDate
 
 FROM 
-BOS_SD_FDoCorrection
+BOS_SD_FDoCorrection;
 
 END;
 $BODY$
@@ -75515,7 +76133,7 @@ p_szFDOPrintingTypeId,
 p_szDescription,
 p_szProductDefault,
 p_dtmLastUpdated,
-p_bAlreadyTransferred,
+p_bAlreadyTransferred
 );
 
 END;
@@ -75551,7 +76169,9 @@ BOS_SD_FDOPrintingType.bAlreadyTransferred
 
 FROM 
 BOS_SD_FDOPrintingType
-LEFT JOIN BOS_INV_Product ON BOS_INV_Product.szProductId = BOS_SD_FDOPrintingType.szProductDefaultLEFT JOIN BOS_INV_Product ON BOS_INV_Product.szProductId = BOS_SD_FDOPrintingType.szProductDefault;
+LEFT JOIN BOS_INV_Product ON BOS_INV_Product.szProductId = BOS_SD_FDOPrintingType.szProductDefault
+
+
 WHERE 
 szFDOPrintingTypeId = p_szFDOPrintingTypeId ;
 END;
@@ -75573,7 +76193,8 @@ BOS_SD_FDOPrintingType.bAlreadyTransferred
 
 FROM 
 BOS_SD_FDOPrintingType
-LEFT JOIN BOS_INV_Product ON BOS_INV_Product.szProductId = BOS_SD_FDOPrintingType.szProductDefaultLEFT JOIN BOS_INV_Product ON BOS_INV_Product.szProductId = BOS_SD_FDOPrintingType.szProductDefault;
+LEFT JOIN BOS_INV_Product ON BOS_INV_Product.szProductId = BOS_SD_FDOPrintingType.szProductDefault
+
 WHERE 
 szFDOPrintingTypeId = p_szFDOPrintingTypeId ;
 END;
@@ -75586,10 +76207,10 @@ RETURNS void AS
 $BODY$
 BEGIN
 SELECT 
-Select szFDOPrintingTypeId, szDescription
+szFDOPrintingTypeId, szDescription
 
 FROM 
-BOS_SD_FDOPrintingType
+BOS_SD_FDOPrintingType;
 
 END;
 $BODY$
@@ -75849,7 +76470,7 @@ LEFT JOIN BOS_SM_User ON BOS_SM_User.szUserId = BOS_SD_FInvHandOver.szUserId
 LEFT JOIN BOS_PI_Employee AS FR_EMP ON FR_EMP.szEmployeeId = BOS_SD_FInvHandOver.szFrOpUserId
 LEFT JOIN BOS_PI_Employee AS TO_EMP ON TO_EMP.szEmployeeId = BOS_SD_FInvHandOver.szToOpUserId
 Where
-BOS_SD_FInvHandOver.szFInvHandOverId = p_szFInvHandOverId
+BOS_SD_FInvHandOver.szFInvHandOverId = p_szFInvHandOverId;
 
 END;
 $BODY$
@@ -75880,7 +76501,7 @@ LEFT JOIN BOS_AR_ArTrans  ON BOS_AR_ArTrans.szDocId = BOS_SD_FInvHandOverItem.sz
 LEFT JOIN BOS_CU_Currency ON BOS_CU_Currency.szCcyId = BOS_SD_FInvoice.szCcyId
 LEFT JOIN BOS_PI_Employee ON BOS_PI_Employee.szEmployeeId = BOS_SD_FInvoice.szKeptByOpUserId
 Where
-BOS_SD_FInvHandOverItem.szFInvHandOverId = p_szFInvHandOverId
+BOS_SD_FInvHandOverItem.szFInvHandOverId = p_szFInvHandOverId;
 
 END;
 $BODY$
@@ -76140,7 +76761,7 @@ LEFT JOIN BOS_PI_Employee AS FR_EMP ON FR_EMP.szEmployeeId = BOS_SD_FInvMoveIn.s
 LEFT JOIN BOS_PI_Employee AS TO_EMP ON TO_EMP.szEmployeeId = BOS_SD_FInvMoveIn.szToOpUserId
 
 Where
-BOS_SD_FInvMoveIn.szFInvMoveInId = p_szFInvMoveInId
+BOS_SD_FInvMoveIn.szFInvMoveInId = p_szFInvMoveInId;
 
 END;
 $BODY$
@@ -76174,7 +76795,7 @@ LEFT JOIN BOS_AR_ArTrans  ON BOS_AR_ArTrans.szDocId = BOS_SD_FInvMoveOutItem.szF
 LEFT JOIN BOS_CU_Currency ON BOS_CU_Currency.szCcyId = BOS_SD_FInvoice.szCcyId
 
 Where
-BOS_SD_FInvMoveIn.szFInvMoveInId = p_szFInvMoveInId
+BOS_SD_FInvMoveIn.szFInvMoveInId = p_szFInvMoveInId;
 
 END;
 $BODY$
@@ -76510,7 +77131,7 @@ LEFT JOIN BOS_PI_Employee AS FR_EMP ON FR_EMP.szEmployeeId = BOS_SD_FInvMoveOut.
 LEFT JOIN BOS_PI_Employee AS TO_EMP ON TO_EMP.szEmployeeId = BOS_SD_FInvMoveOut.szToOpUserId
 
 Where
-BOS_SD_FInvMoveOut.szFInvMoveOutId = p_szFInvMoveOutId
+BOS_SD_FInvMoveOut.szFInvMoveOutId = p_szFInvMoveOutId;
 
 END;
 $BODY$
@@ -76542,7 +77163,7 @@ LEFT JOIN BOS_AR_ArTrans  ON BOS_AR_ArTrans.szDocId = BOS_SD_FInvMoveOutItem.szF
 LEFT JOIN BOS_CU_Currency ON BOS_CU_Currency.szCcyId = BOS_SD_FInvoice.szCcyId
 
 Where
-BOS_SD_FInvMoveOutItem.szFInvMoveOutId = p_szFInvMoveOutId
+BOS_SD_FInvMoveOutItem.szFInvMoveOutId = p_szFInvMoveOutId;
 
 END;
 $BODY$
@@ -76767,9 +77388,9 @@ szTaxEntityId,
 bNeedApproval,
 gdApprovedId,
 szFJournalId,
-dtmCreated  --Doc status 2,
-bSystemCreated  --Doc status 2,
-szUserId  --Doc status 3,
+dtmCreated,  --Doc status 2,
+bSystemCreated,  --Doc status 2,
+szUserId,  --Doc status 3,
 -- Data Status.,
 dtmLastUpdated,
 bAlreadyTransferred,
@@ -76958,9 +77579,9 @@ szTaxEntityId,
 bNeedApproval,
 gdApprovedId,
 szFJournalId,
-dtmCreated  --Doc status 2,
-bSystemCreated  --Doc status 2,
-szUserId  --Doc status 3,
+dtmCreated,  --Doc status 2,
+bSystemCreated,  --Doc status 2,
+szUserId,  --Doc status 3,
 -- Data Status.,
 dtmLastUpdated,
 bAlreadyTransferred,
@@ -77119,7 +77740,7 @@ p_szDescription,
 p_szFInvoiceItemUsage,
 p_decCOGS,
 p_szPrincipalDiscRefId,
-p_szParentId,
+p_szParentId
 -- ==================================================================,
 );
 
@@ -77311,7 +77932,7 @@ p_szPrincipalDiscRefId,
 p_szParentId,
 p_szDistProductId,
 p_decDistQty,
-p_decDistPrice,
+p_decDistPrice
 );
 
 END;
@@ -77423,7 +78044,7 @@ p_decDistPrice,
 p_szBudgetId,
 p_decPrincipalCostAmount,
 p_decPrincipalCostQty,
-p_bBudgetTransferred,
+p_bBudgetTransferred
 );
 
 END;
@@ -77754,7 +78375,8 @@ BEGIN
 DELETE 
 BOS_SD_FInvoiceItem
 WHERE
-szFInvoiceId = p_szFInvoiceIdAND shItemNumber = p_shItemNumber;
+szFInvoiceId = p_szFInvoiceId
+AND shItemNumber = p_shItemNumber;
 END;
 $BODY$
 LANGUAGE plpgsql;
@@ -77769,7 +78391,8 @@ BEGIN
 DELETE 
 BOS_SD_FInvoiceItem
 WHERE
-szFInvoiceId = p_szFInvoiceIdAND shItemNumber = p_shItemNumber;
+szFInvoiceId = p_szFInvoiceId
+AND shItemNumber = p_shItemNumber;
 END;
 $BODY$
 LANGUAGE plpgsql;
@@ -77818,7 +78441,12 @@ BEGIN
 DELETE 
 BOS_SD_FInvItemBonusSource
 WHERE
-szFInvoiceId = p_szFInvoiceIdAND shItemNumber = p_shItemNumberAND szFDoId = p_szFDoIdAND szProductId = p_szProductIdAND szProductSn = p_szProductSnAND szOrderItemTypeId = p_szOrderItemTypeIdAND szPaymentType = p_szPaymentTypeAND szParentId = p_szParentId;
+szFInvoiceId = p_szFInvoiceId
+AND shItemNumber = p_shItemNumber AND szFDoId = p_szFDoId
+AND szProductId = p_szProductId
+AND szProductSn = p_szProductSn AND szOrderItemTypeId = p_szOrderItemTypeId
+AND szPaymentType = p_szPaymentType
+AND szParentId = p_szParentId;
 END;
 $BODY$
 LANGUAGE plpgsql;
@@ -77839,7 +78467,14 @@ BEGIN
 DELETE 
 BOS_SD_FInvItemBonusSource
 WHERE
-szFInvoiceId = p_szFInvoiceIdAND shItemNumber = p_shItemNumberAND szFDoId = p_szFDoIdAND szProductId = p_szProductIdAND szProductSn = p_szProductSnAND szOrderItemTypeId = p_szOrderItemTypeIdAND szPaymentType = p_szPaymentTypeAND szParentId = p_szParentId;
+szFInvoiceId = p_szFInvoiceId AND 
+shItemNumber = p_shItemNumber AND 
+szFDoId = p_szFDoId AND 
+szProductId = p_szProductId AND 
+szProductSn = p_szProductSn AND 
+szOrderItemTypeId = p_szOrderItemTypeId AND 
+szPaymentType = p_szPaymentType AND 
+szParentId = p_szParentId;
 END;
 $BODY$
 LANGUAGE plpgsql;
@@ -77882,7 +78517,7 @@ BEGIN
 DELETE 
 BOS_SD_FInvoiceProductBonusItem
 WHERE
-szFInvoiceId = p_szFInvoiceIdAND shItemNumber = p_shItemNumber;
+szFInvoiceId = p_szFInvoiceId AND shItemNumber = p_shItemNumber;
 END;
 $BODY$
 LANGUAGE plpgsql;
@@ -77897,7 +78532,7 @@ BEGIN
 DELETE 
 BOS_SD_FInvoiceProductBonusItem
 WHERE
-szFInvoiceId = p_szFInvoiceIdAND shItemNumber = p_shItemNumber;
+szFInvoiceId = p_szFInvoiceId AND shItemNumber = p_shItemNumber;
 END;
 $BODY$
 LANGUAGE plpgsql;
@@ -77946,7 +78581,14 @@ BEGIN
 DELETE 
 BOS_SD_FInvProductBonusItemBonusSource
 WHERE
-szFInvoiceId = p_szFInvoiceIdAND shItemNumber = p_shItemNumberAND szFDoId = p_szFDoIdAND szProductId = p_szProductIdAND szProductSn = p_szProductSnAND szOrderItemTypeId = p_szOrderItemTypeIdAND szPaymentType = p_szPaymentTypeAND szParentId = p_szParentId;
+szFInvoiceId = p_szFInvoiceId AND 
+shItemNumber = p_shItemNumber AND 
+szFDoId = p_szFDoId AND 
+szProductId = p_szProductId AND 
+szProductSn = p_szProductSn AND 
+szOrderItemTypeId = p_szOrderItemTypeId AND 
+szPaymentType = p_szPaymentType AND 
+szParentId = p_szParentId;
 END;
 $BODY$
 LANGUAGE plpgsql;
@@ -77967,7 +78609,14 @@ BEGIN
 DELETE 
 BOS_SD_FInvProductBonusItemBonusSource
 WHERE
-szFInvoiceId = p_szFInvoiceIdAND shItemNumber = p_shItemNumberAND szFDoId = p_szFDoIdAND szProductId = p_szProductIdAND szProductSn = p_szProductSnAND szOrderItemTypeId = p_szOrderItemTypeIdAND szPaymentType = p_szPaymentTypeAND szParentId = p_szParentId;
+szFInvoiceId = p_szFInvoiceId AND 
+shItemNumber = p_shItemNumber AND 
+szFDoId = p_szFDoId AND 
+szProductId = p_szProductId AND 
+szProductSn = p_szProductSn AND 
+szOrderItemTypeId = p_szOrderItemTypeId AND 
+szPaymentType = p_szPaymentType AND 
+szParentId = p_szParentId;
 END;
 $BODY$
 LANGUAGE plpgsql;
@@ -78119,7 +78768,7 @@ LEFT JOIN BOS_SD_FInvOpname ON BOS_SD_FInvOpname.szFInvOpnameId = BOS_SD_FInvoic
 LEFT JOIN BOS_PI_Employee AS KeptByEmp ON KeptByEmp.szEmployeeId = BOS_SD_FInvoice.szKeptByOpUserId  
 
 Where  
-BOS_SD_FInvoice.szFInvoiceId = p_szFInvoiceId
+BOS_SD_FInvoice.szFInvoiceId = p_szFInvoiceId;
 
 END;
 $BODY$
@@ -78273,7 +78922,7 @@ LEFT JOIN BOS_SD_FInvOpname ON BOS_SD_FInvOpname.szFInvOpnameId = BOS_SD_FInvoic
 LEFT JOIN BOS_PI_Employee AS KeptByEmp ON KeptByEmp.szEmployeeId = BOS_SD_FInvoice.szKeptByOpUserId    
 
 Where    
-BOS_SD_FInvoice.szFInvoiceId = p_szFInvoiceId
+BOS_SD_FInvoice.szFInvoiceId = p_szFInvoiceId;
 
 END;
 $BODY$
@@ -78343,13 +78992,13 @@ WHERE
 BOS_SD_FInvoiceItem.szFInvoiceId = p_szFInvoiceId
 
 ORDER BY
-BOS_SD_FInvoiceItem.shItemNumber
+BOS_SD_FInvoiceItem.shItemNumber;
 
 /**
 Do not add any "order-by" clause, our updating function depends on item number to always be sorted.
 **/
 
-set ANSI_NULLS ON
+--set ANSI_NULLS ON
 
 END;
 $BODY$
@@ -78419,7 +79068,7 @@ WHERE
 BOS_SD_FInvoiceItem.szFInvoiceId = p_szFInvoiceId  
 
 ORDER BY  
-BOS_SD_FInvoiceItem.shItemNumber  
+BOS_SD_FInvoiceItem.shItemNumber;  
 
 /**  
 Do not add any "order-by" clause, our updating function depends on item number to always be sorted.  
@@ -78497,7 +79146,7 @@ WHERE
 BOS_SD_FInvoiceItem.szFInvoiceId = p_szFInvoiceId  
 
 ORDER BY  
-BOS_SD_FInvoiceItem.shItemNumber  
+BOS_SD_FInvoiceItem.shItemNumber;  
 
 
 END;
@@ -78577,7 +79226,7 @@ WHERE
 BOS_SD_FInvoiceItem.szFInvoiceId = p_szFInvoiceId  
 
 ORDER BY  
-BOS_SD_FInvoiceItem.shItemNumber  
+BOS_SD_FInvoiceItem.shItemNumber;  
 
 
 
@@ -78701,8 +79350,9 @@ BOS_SD_FInvoiceProductBonusItem.szParentId
 FROM 
 BOS_SD_FInvoiceProductBonusItem left join BOS_INV_Product on BOS_SD_FInvoiceProductBonusItem.szProductId = BOS_INV_Product.szProductId
 WHERE 
-BOS_SD_FInvoiceProductBonusItem.szFInvoiceId = p_szFInvoiceId ;ORDER BY 
-BOS_SD_FInvoiceProductBonusItem.shItemNumber
+BOS_SD_FInvoiceProductBonusItem.szFInvoiceId = p_szFInvoiceId 
+ORDER BY 
+BOS_SD_FInvoiceProductBonusItem.shItemNumber;
 
 END;
 $BODY$
@@ -78732,8 +79382,9 @@ BOS_SD_FInvoiceProductBonusItem.szParentId
 FROM 
 BOS_SD_FInvoiceProductBonusItem left join BOS_INV_Product on BOS_SD_FInvoiceProductBonusItem.szProductId = BOS_INV_Product.szProductId
 WHERE 
-BOS_SD_FInvoiceProductBonusItem.szFInvoiceId = p_szFInvoiceId ;ORDER BY 
-BOS_SD_FInvoiceProductBonusItem.shItemNumber
+BOS_SD_FInvoiceProductBonusItem.szFInvoiceId = p_szFInvoiceId 
+ORDER BY 
+BOS_SD_FInvoiceProductBonusItem.shItemNumber;
 
 END;
 $BODY$
@@ -78869,11 +79520,13 @@ InvItem.decDiscount
 
 FROM 
 BOS_SD_FInvoiceItem AS InvItem
-LEFT JOIN BOS_INV_Product AS Prod ON Prod.szProductId = InvItem.szProductIdLEFT JOIN BOS_INV_Product AS Prod ON Prod.szProductId = InvItem.szProductId;
+LEFT JOIN BOS_INV_Product AS Prod ON Prod.szProductId = InvItem.szProductId
+
 
 WHERE 
-InvItem.szFinvoiceId=p_szFInvoiceId GROUP BY InvItem.szProductId, Prod.szName, InvItem.decPrice, InvItem.szInvItemType, InvItem.bTaxable, InvItem.szPaymentType, InvItem.decDiscount ;ORDER BY 
-InvItem.szProductId
+InvItem.szFinvoiceId=p_szFInvoiceId GROUP BY InvItem.szProductId, Prod.szName, InvItem.decPrice, InvItem.szInvItemType, InvItem.bTaxable, InvItem.szPaymentType, InvItem.decDiscount 
+ORDER BY 
+InvItem.szProductId;
 
 END;
 $BODY$
@@ -78898,11 +79551,12 @@ InvItem.decDiscount
 
 FROM 
 BOS_SD_FInvoiceItem AS InvItem
-LEFT JOIN BOS_INV_Product AS Prod ON Prod.szProductId = InvItem.szProductIdLEFT JOIN BOS_INV_Product AS Prod ON Prod.szProductId = InvItem.szProductId;
+LEFT JOIN BOS_INV_Product AS Prod ON Prod.szProductId = InvItem.szProductId
 
 WHERE 
-InvItem.szFinvoiceId=p_szFInvoiceId GROUP BY InvItem.szProductId, Prod.szName, InvItem.decPrice, InvItem.szInvItemType, InvItem.bTaxable, InvItem.szPaymentType, InvItem.decDiscount ;ORDER BY 
-InvItem.szProductId
+InvItem.szFinvoiceId=p_szFInvoiceId GROUP BY InvItem.szProductId, Prod.szName, InvItem.decPrice, InvItem.szInvItemType, InvItem.bTaxable, InvItem.szPaymentType, InvItem.decDiscount 
+ORDER BY 
+InvItem.szProductId;
 
 END;
 $BODY$
@@ -78994,10 +79648,11 @@ BOS_SD_FDo
 INNER JOIN BOS_AR_Customer on BOS_SD_FDo.szCustId = BOS_Ar_Customer.szCustIdINNER JOIN BOS_AR_Customer on BOS_SD_FDo.szCustId = BOS_Ar_Customer.szCustId;
 
 WHERE 
-BOS_SD_FDo.szFInvoiceId = '' and BOS_SD_FDo.bApplied = 1 and ( (BOS_AR_Customer.bInvoiceToCust = 1  and BOS_AR_Customer.szCustId = p_szInvToCustId)  or (BOS_AR_Customer.bInvoiceToCust = 0  and  BOS_AR_Customer.szInvoiceToCustId = p_szInvToCustId) ) and BOS_SD_FDo.dtmDelivery < DateAdd(Day, 1, p_dtmEnd) and BOS_SD_FDo.dtmDelivery >= p_dtmStart AND BOS_SD_FDo.szCcyId = p_szCcyId ;ORDER BY 
+BOS_SD_FDo.szFInvoiceId = '' and BOS_SD_FDo.bApplied = 1 and ( (BOS_AR_Customer.bInvoiceToCust = 1  and BOS_AR_Customer.szCustId = p_szInvToCustId)  or (BOS_AR_Customer.bInvoiceToCust = 0  and  BOS_AR_Customer.szInvoiceToCustId = p_szInvToCustId) ) and BOS_SD_FDo.dtmDelivery < DateAdd(Day, 1, p_dtmEnd) and BOS_SD_FDo.dtmDelivery >= p_dtmStart AND BOS_SD_FDo.szCcyId = p_szCcyId 
+ORDER BY 
 BOS_AR_Customer.szCustId,
 BOS_SD_FDo.dtmDelivery,
-BOS_SD_FDo.szDoId
+BOS_SD_FDo.szDoId;
 
 END;
 $BODY$
@@ -89143,8 +89798,9 @@ bSuccess
 FROM 
 BOS_SD_FSjItem
 WHERE 
-szFSjId = p_szFSjId ;ORDER BY 
-shItemNumber
+szFSjId = p_szFSjId 
+ORDER BY 
+shItemNumber;
 
 END;
 $BODY$
@@ -89216,9 +89872,10 @@ Inner Join BOS_SD_FSjItem As BSSI On BSS.szFSjId = BSSI.szFSjId
 Inner Join BOS_SD_SjTracking As BST On BSSI.szSjTrackingId = BST.szSjTrackingId
 Left Join BOS_CRL_FCall As BCC On BST.szFCallId = BCC.szFCallId
 WHERE 
-BSS.szFSjId = p_szFSjId ;ORDER BY 
+BSS.szFSjId = p_szFSjId 
+ORDER BY 
 BSS.szFSjId,
-BSSI.shItemNumber
+BSSI.shItemNumber;
 
 END;
 $BODY$
@@ -89238,8 +89895,9 @@ Select Distinct BOS_SD_SjTracking.szSalesId, COALESCE(BOS_PI_Employee.szName, ''
 FROM 
 BOS_SD_SjTracking Left Join BOS_PI_Employee ON BOS_SD_SjTracking.szSalesId = BOS_PI_Employee.szEmployeeId
 WHERE 
-BOS_SD_SjTracking.dtmNext >= p_dtmStart And BOS_SD_SjTracking.dtmNext < DateAdd(Day, 1, p_dtmEnd) And BOS_SD_SjTracking.bTasked = 0 And BOS_SD_SjTracking.bFinished = 0 And BOS_CRL_FCall.szForwardToWorkplaceId LIKE p_szWorkplaceId ;ORDER BY 
-BOS_SD_SjTracking.szSalesId
+BOS_SD_SjTracking.dtmNext >= p_dtmStart And BOS_SD_SjTracking.dtmNext < DateAdd(Day, 1, p_dtmEnd) And BOS_SD_SjTracking.bTasked = 0 And BOS_SD_SjTracking.bFinished = 0 And BOS_CRL_FCall.szForwardToWorkplaceId LIKE p_szWorkplaceId 
+ORDER BY 
+BOS_SD_SjTracking.szSalesId;
 
 END;
 $BODY$
@@ -89551,7 +90209,8 @@ SET
 szReasonId = p_szReasonId,
 szDescription = p_szDescription
 WHERE 
-szFSjID = p_szFSjId AND;
+szFSjID = p_szFSjId AND
+szSjTrackingId = p_szSjTrackingId;
 
 END;
 $BODY$
@@ -89647,7 +90306,7 @@ bSystemCreated,
 szUserId,
 -- Data Status.,
 dtmLastUpdated,
-bAlreadyTransferred,
+bAlreadyTransferred
 )
 VALUES
 (
@@ -89674,7 +90333,7 @@ p_bSystemCreated,
 p_szUserId,
 -- Data Status.,
 p_dtmLastUpdated,
-p_bAlreadyTransferred,
+p_bAlreadyTransferred
 );
 
 END;
@@ -92231,8 +92890,9 @@ FROM
 BOS_SD_FSo
 
 WHERE 
-szWorkplaceId Like p_szWorkplaceId And dtmOrder >= p_dtmFrom And dtmOrder < DateAdd(Day, 1, p_dtmTo) ;ORDER BY 
-szFSoId
+szWorkplaceId Like p_szWorkplaceId And dtmOrder >= p_dtmFrom And dtmOrder < DateAdd(Day, 1, p_dtmTo) 
+ORDER BY 
+szFSoId;
 
 END;
 $BODY$
@@ -93841,8 +94501,9 @@ Left Join BOS_SD_TOTracking ON BOS_SD_FTOItem.szTOTrackingId = BOS_SD_TOTracking
 Left Join BOS_AR_Customer ON BOS_AR_Customer.szCustId = BOS_SD_TOTracking.szCustId
 
 WHERE 
-BOS_SD_FTOItem.szFTOId = p_szFTOId ;ORDER BY 
-BOS_SD_FTOItem.shItemNumber
+BOS_SD_FTOItem.szFTOId = p_szFTOId 
+ORDER BY 
+BOS_SD_FTOItem.shItemNumber;
 
 END;
 $BODY$
@@ -93883,8 +94544,9 @@ Left Join BOS_SD_TOTracking ON BOS_SD_FTOItem.szTOTrackingId = BOS_SD_TOTracking
 Left Join BOS_AR_Customer ON BOS_AR_Customer.szCustId = BOS_SD_TOTracking.szCustId
 
 WHERE 
-BOS_SD_FTOItem.szFTOId = p_szFTOId ;ORDER BY 
-BOS_SD_FTOItem.shItemNumber
+BOS_SD_FTOItem.szFTOId = p_szFTOId 
+ORDER BY 
+BOS_SD_FTOItem.shItemNumber;
 
 
 END;
@@ -94115,8 +94777,9 @@ Left Join BOS_SD_FSo As BSFDLast On BSC.szLastFSoId = BSFDLast.szFSoId
 Left Join BOS_SD_FSo As BSFD On BSD.szFSoId = BSFD.szFSoId
 Left Join BOS_AR_ArMaster As BAAM On BSD.szCustId = BAAM.szCustId And BSFD.szCcyId = BAAM.szCcyId
 WHERE 
-BSF.szFTOId = p_szFTOId ;ORDER BY 
-BSFI.shItemNumber
+BSF.szFTOId = p_szFTOId 
+ORDER BY 
+BSFI.shItemNumber;
 
 END;
 $BODY$
@@ -94150,8 +94813,9 @@ Left Join BOS_SD_FSo As BSFDLast On BSC.szLastFSoId = BSFDLast.szFSoId
 Left Join BOS_SD_FSo As BSFD On BSD.szFSoId = BSFD.szFSoId
 Left Join BOS_AR_ArMaster As BAAM On BSD.szCustId = BAAM.szCustId And BSFD.szCcyId = BAAM.szCcyId
 WHERE 
-BSF.szFTOId = p_szFTOId ;ORDER BY 
-BSFI.shItemNumber
+BSF.szFTOId = p_szFTOId 
+ORDER BY 
+BSFI.shItemNumber;
 
 END;
 $BODY$
@@ -95029,7 +95693,8 @@ SET
 szReasonId = p_szReasonId,
 szDescription = p_szDescription
 WHERE 
-szFTOID = p_szFTOId AND;
+szFTOID = p_szFTOId AND
+szTOTrackingId = p_szTOTrackingId;
 
 END;
 $BODY$
@@ -95047,7 +95712,8 @@ UPDATE BOS_SD_FTOItem
 SET 
 bSuccess = p_bSuccess
 WHERE 
-szFTOID = p_szFTOId AND;
+szFTOID = p_szFTOId AND
+szTOTrackingId = p_szTOTrackingId;
 
 END;
 $BODY$
@@ -95089,8 +95755,8 @@ btTrialCount = p_btTrialCount,
 szTeamId = p_szTeamId,
 szScheduleId = p_szScheduleId,
 decValue = p_decValue,
-szFCallId = p_szFCallId
-, dtmLastUpdated = p_dtmLastUpdated
+szFCallId = p_szFCallId, 
+dtmLastUpdated = p_dtmLastUpdated
 
 WHERE 
 szTOTrackingId = p_szTOTrackingId;
@@ -95135,8 +95801,8 @@ btTrialCount = p_btTrialCount,
 szTeamId = p_szTeamId,
 szScheduleId = p_szScheduleId,
 decValue = p_decValue,
-szFCallId = p_szFCallId
-, dtmLastUpdated = p_dtmLastUpdated
+szFCallId = p_szFCallId, 
+dtmLastUpdated = p_dtmLastUpdated
 
 WHERE 
 szTOTrackingId = p_szTOTrackingId;
@@ -96238,8 +96904,9 @@ FROM
 BOS_SD_RentalProduct As BSRP
 Left Join BOS_AR_Customer As BAC On BSRP.szCustId = BAC.szCustId
 WHERE 
-BAC.szDlvWorkplaceId Like p_szWorkplaceId ;ORDER BY 
-BSRP.szSerNum, BSRP.szCustId
+BAC.szDlvWorkplaceId Like p_szWorkplaceId 
+ORDER BY 
+BSRP.szSerNum, BSRP.szCustId;
 
 END;
 $BODY$
@@ -97028,7 +97695,7 @@ where
 bsr.szRouteType like p_szRouteType and bsr.szOpUserId like p_szOpUserId
 
 order by
-bsr.szRouteId
+bsr.szRouteId;
 
 END;
 $BODY$
@@ -97061,7 +97728,7 @@ where
 bsr.szRouteType like p_szRouteType and bsr.szOpUserId like p_szOpUserId
 
 order by
-bsr.szRouteId
+bsr.szRouteId;
 
 END;
 $BODY$
@@ -97742,9 +98409,10 @@ FROM
 BOS_SD_RouteItem LEFT JOIN BOS_AR_Customer ONBOS_SD_RouteItem LEFT JOIN BOS_AR_Customer ON;
 BOS_SD_RouteItem.szCustId = BOS_AR_Customer.szCustId
 WHERE 
-BOS_SD_RouteItem.szRouteId = p_szRouteId ;ORDER BY 
+BOS_SD_RouteItem.szRouteId = p_szRouteId 
+ORDER BY 
 --Must be explicit becoz the behavior of index in un-commited isolation level is un-guessed.
-BOS_SD_RouteItem.intItemNumber
+BOS_SD_RouteItem.intItemNumber;
 
 END;
 $BODY$
@@ -97763,11 +98431,12 @@ BOS_AR_Customer.szName AS szCustNm
 
 FROM 
 BOS_SD_RouteItem_DRAFT
-LEFT JOIN BOS_AR_Customer ON BOS_SD_RouteItem_DRAFT.szCustId = BOS_AR_Customer.szCustIdLEFT JOIN BOS_AR_Customer ON BOS_SD_RouteItem_DRAFT.szCustId = BOS_AR_Customer.szCustId;
+LEFT JOIN BOS_AR_Customer ON BOS_SD_RouteItem_DRAFT.szCustId = BOS_AR_Customer.szCustId
 WHERE 
-BOS_SD_RouteItem_DRAFT.szRouteId = p_szRouteId ;ORDER BY 
+BOS_SD_RouteItem_DRAFT.szRouteId = p_szRouteId 
+ORDER BY 
 --Must be explicit becoz the behavior of index in un-commited isolation level is un-guessed.
-BOS_SD_RouteItem_DRAFT.intItemNumber
+BOS_SD_RouteItem_DRAFT.intItemNumber;
 
 END;
 $BODY$
@@ -98484,10 +99153,9 @@ szFullPathId
 
 FROM 
 BOS_SD_SalesOrganization
-order by
-szSalesOrgId
+
 ORDER BY 
-szSalesOrgId
+szSalesOrgId;
 
 END;
 $BODY$
@@ -98509,8 +99177,9 @@ szFullPathId
 FROM 
 BOS_SD_SalesOrganization
 WHERE 
-szFullPathId LIKE p_szFullPathId+'%' AND byteLevel = p_byteLevel ;ORDER BY 
-szSalesOrgId
+szFullPathId LIKE p_szFullPathId+'%' AND byteLevel = p_byteLevel 
+ORDER BY 
+szSalesOrgId;
 
 END;
 $BODY$
@@ -98532,8 +99201,9 @@ szFullPathId
 FROM 
 BOS_SD_SalesOrganization
 WHERE 
-szFullPathId LIKE p_szFullPathId+'%' AND byteLevel >= p_byteLevel ;ORDER BY 
-szSalesOrgId
+szFullPathId LIKE p_szFullPathId+'%' AND byteLevel >= p_byteLevel 
+ORDER BY 
+szSalesOrgId;
 
 END;
 $BODY$
@@ -98618,6 +99288,27 @@ RETURNS void AS
 $BODY$
 BEGIN
 -- ### 2 update #####
+UPDATE BOS_SD_SalesOrganization set
+	szName = p_szName,
+	szDescription = p_szDescription,
+	szFullPathId = p_szFullPathId,
+	byteLevel = p_byteLevel,
+	szParentSalesOrgId = p_szParentSalesOrgId,
+	szPriceId = p_szPriceId,
+	szPriceOrderId = p_szPriceOrderId,
+	szPromoPriceId = p_szPromoPriceId,
+	szPromoPriceOrderId = p_szPromoPriceOrderId
+
+where
+	szSalesOrgId = p_szSalesOrgId;
+
+
+UPDATE BOS_SD_SalesOrganization SET
+	szFullPathId = p_szFullPathId + substring(szFullPathId, len(p_szPrevFullPathId) + 1, len(szFullPathId) - len(p_szPrevFullPathId)),
+	byteLevel = byteLevel - p_shDiffLevel
+WHERE
+	szFullPathId LIKE p_szPrevFullPathId+'%' AND
+	szSalesOrgId <> p_szSalesOrgId;
 END;
 $BODY$
 LANGUAGE plpgsql;
@@ -98676,9 +99367,10 @@ BOS_SM_BosTxAuditTrail
 Inner Join BOS_SM_BosTxAuditTrailItem On BOS_SM_BosTxAuditTrail.gdTxId = BOS_SM_BosTxAuditTrailItem.gdTxId
 Left Join BOS_SM_User On BOS_SM_BosTxAuditTrail.szUserId = BOS_SM_User.szUserId
 WHERE 
-BOS_SM_BosTxAuditTrailItem.gdRecordAuditTrailId = p_gdAuditTrailId And BOS_SM_BosTxAuditTrail.szUserId Like p_szUserId ;ORDER BY 
+BOS_SM_BosTxAuditTrailItem.gdRecordAuditTrailId = p_gdAuditTrailId And BOS_SM_BosTxAuditTrail.szUserId Like p_szUserId 
+ORDER BY 
 BOS_SM_BosTxAuditTrail.dtmCommitted,
-BOS_SM_BosTxAuditTrail.szUserId
+BOS_SM_BosTxAuditTrail.szUserId;
 
 END;
 $BODY$
@@ -98859,9 +99551,9 @@ p_szDescription,
 p_bSystemBoq,
 p_szWorkplaceFilter,
 p_dtmLastUpdated,
-p_bAlreadyTransferred,
+p_bAlreadyTransferred
 ---------------------------------
-SET ANSI_NULLS ON,
+--SET ANSI_NULLS ON,
 );
 
 END;
@@ -98922,7 +99614,9 @@ BEGIN
 DELETE 
  FROM BOS_SM_Boq
 WHERE
-szBoqTemplateId = p_szBoqTemplateId ANDszBoqName = p_szBoqName ANDszBoqId = p_szBoqId;
+szBoqTemplateId = p_szBoqTemplateId AND
+szBoqName = p_szBoqName AND
+szBoqId = p_szBoqId;
 END;
 $BODY$
 LANGUAGE plpgsql;
@@ -98938,7 +99632,9 @@ BEGIN
 DELETE 
  FROM BOS_SM_BoqLastUsed
 WHERE
-szBoqTemplateId = p_szBoqTemplateId ANDszBoqName = p_szBoqName ANDszUserId = p_szUserId;
+szBoqTemplateId = p_szBoqTemplateId AND
+szBoqName = p_szBoqName AND
+szUserId = p_szUserId;
 END;
 $BODY$
 LANGUAGE plpgsql;
@@ -98953,7 +99649,8 @@ BEGIN
 DELETE 
  FROM BOS_SM_BoqTemplate
 WHERE
-szBoqTemplateId = p_szBoqTemplateId ANDszBoqName = p_szBoqName;
+szBoqTemplateId = p_szBoqTemplateId AND
+szBoqName = p_szBoqName;
 END;
 $BODY$
 LANGUAGE plpgsql;
@@ -99327,7 +100024,9 @@ UPDATE BOS_SM_Boq
 SET 
 szOrderByClause = szOrderByClause
 WHERE 
-szBoqTemplateId = p_szBoqTemplateId AND;
+szBoqTemplateId = p_szBoqTemplateId AND
+	szBoqName = p_szBoqName AND
+	szBoqId = p_szBoqId;
 
 END;
 $BODY$
@@ -99345,7 +100044,9 @@ UPDATE BOS_SM_BoqLastUsed
 SET 
 szBoqId = szBoqId
 WHERE 
-szBoqTemplateId = p_szBoqTemplateId AND;
+szBoqTemplateId = p_szBoqTemplateId AND
+szBoqName = p_szBoqName AND
+	szUserId = p_szUserId;
 
 END;
 $BODY$
@@ -99362,7 +100063,8 @@ UPDATE BOS_SM_BoqTemplate
 SET 
 bSystemBoq = bSystemBoq
 WHERE 
-szBoqTemplateId = p_szBoqTemplateId AND;
+szBoqTemplateId = p_szBoqTemplateId AND
+szBoqName = p_szBoqName;
 
 END;
 $BODY$
@@ -99386,12 +100088,38 @@ szOrderByClause = p_szOrderByClause,
 szWhereClause = p_szWhereClause
 
 WHERE 
-szBoqTemplateId = p_szBoqTemplateId AND;
+szBoqTemplateId = p_szBoqTemplateId AND
+	szBoqName = p_szBoqName AND
+	szBoqId = p_szBoqId;
 
 END;
 $BODY$
 LANGUAGE plpgsql;
 
+CREATE OR REPLACE FUNCTION BOS_SM_Boq_UpdateBoq_013(
+p_szBoqTemplateId BOS_DT_szBigId,
+p_szBoqName BOS_DT_szBigId,
+p_szBoqId BOS_DT_szBigId,
+p_szSelectClause BOS_DT_szMessage,
+p_szOrderByClause BOS_DT_szMessage,
+p_szWhereClause BOS_DT_szMessage)
+RETURNS void AS
+$BODY$
+BEGIN
+UPDATE BOS_SM_Boq
+SET 
+szSelectClause = p_szSelectClause,
+szOrderByClause = p_szOrderByClause,
+szWhereClause = p_szWhereClause
+
+WHERE 
+szBoqTemplateId = p_szBoqTemplateId AND
+	szBoqName = p_szBoqName AND
+	szBoqId = p_szBoqId;
+
+END;
+$BODY$
+LANGUAGE plpgsql;
 
 CREATE OR REPLACE FUNCTION BOS_SM_Boq_UpdateBoqLastUsed(
 p_szBoqTemplateId BOS_DT_szBigId,
@@ -99405,7 +100133,9 @@ UPDATE BOS_SM_BoqLastUsed
 SET 
 szBoqId = p_szBoqId
 WHERE 
-szBoqTemplateId = p_szBoqTemplateId AND;
+szBoqTemplateId = p_szBoqTemplateId AND
+szBoqName = p_szBoqName AND
+szUserId = p_szUserId;
 
 END;
 $BODY$
@@ -99429,7 +100159,10 @@ szDescription = p_szDescription,
 bSystemBoq = p_bSystemBoq,
 szWorkplaceFilter = p_szWorkplaceFilter
 WHERE 
-szBoqTemplateId = p_szBoqTemplateId AND;
+szBoqTemplateId = p_szBoqTemplateId AND
+szBoqName = p_szBoqName;
+
+--SET ANSI_NULLS ON;
 
 END;
 $BODY$
@@ -99455,7 +100188,8 @@ bSystemBoq = p_bSystemBoq,
 szWorkplaceFilter = p_szWorkplaceFilter,
 szCompanyFilter = p_szCompanyFilter
 WHERE 
-szBoqTemplateId = p_szBoqTemplateId AND;
+szBoqTemplateId = p_szBoqTemplateId AND
+ szBoqName = p_szBoqName;
 
 END;
 $BODY$
@@ -99599,7 +100333,8 @@ btItemNumber
 FROM 
 BOS_SM_BosObjectTemplateItem
 WHERE 
-szClassName = p_szClassName ;ORDER BY 
+szClassName = p_szClassName 
+ORDER BY 
 btLevel, bPrimaryKey desc, btItemNumber
 
 END;
@@ -100149,9 +100884,9 @@ select distinct szConfigItemTypeId
 FROM 
 BOS_SM_ConfigTemplateItem
 WHERE 
- szConfigTemplateId = p_szConfigTemplateId;
+ szConfigTemplateId = p_szConfigTemplateId
 ORDER BY 
-order by szConfigItemTypeId
+szConfigItemTypeId;
 
 END;
 $BODY$
@@ -100245,7 +100980,9 @@ UPDATE BOS_SM_ConfigInfoItem
 SET 
 szValue = szValue
 WHERE 
-szConfigTemplateId = p_szConfigTemplateId and;
+szConfigTemplateId = p_szConfigTemplateId and
+	szConfigItemTypeId = p_szConfigItemTypeId and
+	szConfigItemTypeValue = p_szConfigItemTypeValue;
 
 END;
 $BODY$
@@ -100628,7 +101365,8 @@ szGroupId
 FROM 
 BOS_SM_GroupUser
 WHERE 
-szUserId = p_szUserId ;ORDER BY 
+szUserId = p_szUserId 
+ORDER BY 
 --In read-un-committed transaction, the behavior of index is --like-- un-defined.
 
 END;
@@ -100738,6 +101476,19 @@ RETURNS void AS
 $BODY$
 BEGIN
 -- ### 2 update #####
+UPDATE BOS_SM_Group SET
+	szFullPathGroupId=p_szFullPathGroupId,
+	byteLevel=p_byteLevel,
+	szName=p_szName
+WHERE
+	szGroupId=p_szGroupId;
+
+UPDATE BOS_SM_Group SET
+	szFullPathGroupId = p_szFullPathGroupId + substring(szFullPathGroupId, len(p_szPrevFullPathGroupId) + 1, len(szFullPathGroupId) - len(p_szPrevFullPathGroupId)),
+	byteLevel = byteLevel - p_shDiffLevel
+WHERE
+	szFullPathGroupId LIKE p_szPrevFullPathGroupId+'%' AND
+	szGroupId <> p_szGroupId;
 END;
 $BODY$
 LANGUAGE plpgsql;
@@ -102115,7 +102866,8 @@ UPDATE BOS_SM_SecInfo
 SET 
 bLock=bLock
 WHERE 
-szGroupId=p_szGroupId AND;
+szGroupId=p_szGroupId AND
+szSecTplId=p_szSecTplId;
 
 END;
 $BODY$
@@ -102245,8 +102997,8 @@ p_iWrongLoginCounter,
 p_dtmLastUpdated,
 p_bAlreadyTransferred,
 p_dtmLoginExpiredDate,
-p_szApplicationClass,
-SET ANSI_NULLS ON,
+p_szApplicationClass
+--SET ANSI_NULLS ON,
 );
 
 END;
@@ -102304,8 +103056,8 @@ p_iWrongLoginCounter,
 p_dtmLastUpdated,
 p_bAlreadyTransferred,
 p_dtmLoginExpiredDate,
-p_szApplicationClass,
-SET ANSI_NULLS ON,
+p_szApplicationClass
+--SET ANSI_NULLS ON,
 );
 
 END;
@@ -102659,7 +103411,7 @@ BOS_TIN_CustTaxIndConfig.bAlreadyTransferred
 
 FROM 
 BOS_TIN_CustTaxIndConfig
-LEFT JOIN BOS_AR_CustInvoice ON BOS_TIN_CustTaxIndConfig.szCustId = BOS_AR_CustInvoice.szCustIdLEFT JOIN BOS_AR_CustInvoice ON BOS_TIN_CustTaxIndConfig.szCustId = BOS_AR_CustInvoice.szCustId;
+LEFT JOIN BOS_AR_CustInvoice ON BOS_TIN_CustTaxIndConfig.szCustId = BOS_AR_CustInvoice.szCustId
 
 WHERE 
 BOS_TIN_CustTaxIndConfig.szCustId = p_szCustId ;
@@ -102685,7 +103437,8 @@ BOS_TIN_CustTaxIndConfig.bAlreadyTransferred
 
 FROM 
 BOS_TIN_CustTaxIndConfig
-LEFT JOIN BOS_AR_CustInvoice ON BOS_TIN_CustTaxIndConfig.szCustId = BOS_AR_CustInvoice.szCustIdLEFT JOIN BOS_AR_CustInvoice ON BOS_TIN_CustTaxIndConfig.szCustId = BOS_AR_CustInvoice.szCustId;
+LEFT JOIN BOS_AR_CustInvoice ON BOS_TIN_CustTaxIndConfig.szCustId = BOS_AR_CustInvoice.szCustId
+
 
 WHERE 
 BOS_TIN_CustTaxIndConfig.szCustId = p_szCustId ;
@@ -102890,9 +103643,9 @@ p_bSystemCreated,
 p_szUserId,
 p_dtmLastUpdated,
 p_bAlreadyTransferred,
-p_shTaxIndConfigType,
+p_shTaxIndConfigType
 -----------------------
-SET ANSI_NULLS ON,
+--SET ANSI_NULLS ON,
 );
 
 END;
@@ -103023,9 +103776,9 @@ p_bSystemCreated,
 p_szUserId,
 p_dtmLastUpdated,
 p_bAlreadyTransferred,
-p_shTaxIndConfigType,
+p_shTaxIndConfigType
 -----------------------
-SET ANSI_NULLS ON,
+--SET ANSI_NULLS ON,
 );
 
 END;
@@ -103217,9 +103970,9 @@ p_decDiscount,
 p_decDPP,
 p_decTax,
 p_decTaxRate,
-p_decReturnQtyRemaining,
+p_decReturnQtyRemaining
 -----------------------,
-SET ANSI_NULLS ON
+--SET ANSI_NULLS ON
 );
 
 END;
@@ -103360,11 +104113,11 @@ LEFT JOIN BOS_SM_User ON BOS_SM_User.szUserId = BOS_TIN_FakturPajak.szUserId
 LEFT JOIN BOS_CU_Currency ON BOS_CU_Currency.szCcyId = BOS_TIN_FakturPajak.szCcyId
 
 WHERE
-BOS_TIN_FakturPajak.szFakturPajakId = p_szFakturPajakId
+BOS_TIN_FakturPajak.szFakturPajakId = p_szFakturPajakId;
 
 
 -----------------------
-SET ANSI_NULLS ON
+--SET ANSI_NULLS ON
 
 END;
 $BODY$
@@ -103449,11 +104202,11 @@ LEFT JOIN BOS_SM_User ON BOS_SM_User.szUserId = BOS_TIN_FakturPajak.szUserId
 LEFT JOIN BOS_CU_Currency ON BOS_CU_Currency.szCcyId = BOS_TIN_FakturPajak.szCcyId
 
 WHERE
-BOS_TIN_FakturPajak.szFakturPajakId = p_szFakturPajakId
+BOS_TIN_FakturPajak.szFakturPajakId = p_szFakturPajakId;
 
 
 -----------------------
-SET ANSI_NULLS ON
+--SET ANSI_NULLS ON
 
 END;
 $BODY$
@@ -103582,10 +104335,10 @@ LEFT JOIN BOS_INV_Product ON BOS_INV_Product.szProductId = BOS_TIN_FakturPajakIt
 LEFT JOIN BOS_GL_TaxType ON BOS_GL_TaxType.szTaxTypeId = BOS_INV_Product.szTaxTypeId    
 
 WHERE    
-BOS_TIN_FakturPajakItem.szFakturPajakId = p_szFakturPajakId   
+BOS_TIN_FakturPajakItem.szFakturPajakId = p_szFakturPajakId;   
 
 -----------------------
-SET ANSI_NULLS ON
+--SET ANSI_NULLS ON
 
 
 END;
