@@ -334,7 +334,7 @@ namespace SQLMigration.Converter.ScriptBuilder
                              sqlResult + "\r\n" +
                           "END;\r\n" +
                           "$BODY$\r\n" +
-                         "LANGUAGE plpgsql;\r\n" +
+                         "LANGUAGE plpgsql VOLATILE;\r\n" +
                          "\r\n";
             }
             else
@@ -347,7 +347,7 @@ namespace SQLMigration.Converter.ScriptBuilder
                             sqlResult + "\r\n" +
                          "END;\r\n" +
                          "$BODY$\r\n" +
-                        "LANGUAGE plpgsql;\r\n" +
+                        "LANGUAGE plpgsql VOLATILE;\r\n" +
                         "\r\n";
             }
             return result;
@@ -2205,6 +2205,7 @@ namespace SQLMigration.Converter.ScriptBuilder
             new TablesFieldDataType { DataType="int", ConvertedDataType="integer" },
             new TablesFieldDataType { DataType="longvarbinary", ConvertedDataType="bytea" },
             new TablesFieldDataType { DataType="longvarchar", ConvertedDataType="text" },
+            new TablesFieldDataType { DataType="text", ConvertedDataType="text" },
             new TablesFieldDataType { DataType="longvarwchar", ConvertedDataType="text" },
             new TablesFieldDataType { DataType="numeric", ConvertedDataType="numeric" },
             new TablesFieldDataType { DataType="bit", ConvertedDataType="bit" },
