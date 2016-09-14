@@ -9241,7 +9241,9 @@ p_szcategoryid bos_dt_szid)
 returns void as
 $body$
 begin
-
+DELETE FROM bos_ar_category
+WHERE 
+	szcategoryid = p_szcategoryid;
 end;
 $body$
 language plpgsql volatile;
@@ -17636,7 +17638,9 @@ p_szfcustcscid bos_dt_szid)
 returns void as
 $body$
 begin
-
+DELETE FROM  BOS_AR_FCustChgSalesCfg
+WHERE
+	szFCustCSCId = p_szFCustCSCId;
 end;
 $body$
 language plpgsql volatile;
@@ -20933,7 +20937,9 @@ p_szbankid bos_dt_szid)
 returns void as
 $body$
 begin
-
+DELETE FROM  bos_cas_bank
+WHERE
+	szbankid = p_szbankid;
 end;
 $body$
 language plpgsql volatile;
@@ -21385,7 +21391,10 @@ p_szcreateid bos_dt_szid)
 returns void as
 $body$
 begin
-
+DELETE from
+	bos_cas_fcashoutitem
+where
+	szcreateid=p_szcreateid;
 end;
 $body$
 language plpgsql volatile;
@@ -24700,7 +24709,9 @@ p_szfpdrreceiptid bos_dt_szid)
 returns void as
 $body$
 begin
-
+DELETE from bos_cas_fpdrreceipt
+where
+szfpdrreceiptid=p_szfpdrreceiptid;
 end;
 $body$
 language plpgsql volatile;
@@ -27959,7 +27970,8 @@ p_szccyid bos_dt_szsmallid)
 returns void as
 $body$
 begin
-
+DELETE FROM bos_cu_currency
+where szccyid = p_szccyid;
 end;
 $body$
 language plpgsql volatile;
@@ -27970,7 +27982,8 @@ p_szccyrateid bos_dt_szmediumid)
 returns void as
 $body$
 begin
-
+DELETE FROM bos_cu_currencyrate
+where szccyrateid = p_szccyrateid;
 end;
 $body$
 language plpgsql volatile;
@@ -27981,7 +27994,8 @@ p_szccyrateid bos_dt_szmediumid)
 returns void as
 $body$
 begin
-
+DELETE FROM bos_cu_currencyrateitem
+where szccyrateid = p_szccyrateid;
 end;
 $body$
 language plpgsql volatile;
@@ -54155,7 +54169,8 @@ p_szproductid bos_dt_szid)
 returns void as
 $body$
 begin
-
+DELETE FROM bos_inv_product
+where szproductid = p_szproductid;
 end;
 $body$
 language plpgsql volatile;
@@ -54194,7 +54209,9 @@ p_szproductid bos_dt_szid)
 returns void as
 $body$
 begin
-
+DELETE FROM  bos_inv_productprice
+where
+	szproductid = p_szproductid;
 end;
 $body$
 language plpgsql volatile;
@@ -54220,7 +54237,10 @@ p_szproductsn bos_dt_szsn)
 returns void as
 $body$
 begin
-
+DELETE FROM bos_inv_productsernum 
+where
+	szproductid = p_szproductid and
+	szproductsn = p_szproductsn;
 end;
 $body$
 language plpgsql volatile;
@@ -57180,7 +57200,14 @@ p_dtmdelivery timestamp)
 returns void as
 $body$
 begin
-
+DELETE FROM
+	bos_inv_stocktodeliver 
+where
+	szproductid = p_szproductid and
+	szlocationtype = p_szlocationtype and
+	szlocationid = p_szlocationid and
+	(dtmdelivery >= p_dtmdelivery and dtmdelivery < interval '1 day' + p_dtmdelivery);
+	
 end;
 $body$
 language plpgsql volatile;
@@ -57194,7 +57221,14 @@ p_dtmreceive timestamp)
 returns void as
 $body$
 begin
+DELETE FROM
+	bos_inv_stocktoreceive 
 
+where
+	szproductid = p_szproductid and
+	szlocationtype = p_szlocationtype and
+	szlocationid = p_szlocationid and
+	(dtmreceive >= p_dtmreceive and dtmreceive < interval '1 day' + p_dtmreceive);
 end;
 $body$
 language plpgsql volatile;
@@ -61193,6 +61227,8 @@ p_szvehicleid bos_dt_szid)
 returns void as
 $body$
 begin
+DELETE FROM bos_inv_vehicle 
+where szvehicleid = p_szvehicleid;
 
 end;
 $body$
@@ -76061,7 +76097,9 @@ p_szdoid bos_dt_szid)
 returns void as
 $body$
 begin
-
+DELETE FROM bos_sd_fdo
+where
+	szdoid = p_szdoid;
 end;
 $body$
 language plpgsql volatile;
@@ -76072,7 +76110,9 @@ p_szdoid bos_dt_szid)
 returns void as
 $body$
 begin
-
+DELETE FROM bos_sd_fdo
+where
+	szdoid = p_szdoid;
 end;
 $body$
 language plpgsql volatile;
@@ -76372,7 +76412,9 @@ p_szfdoid bos_dt_szid)
 returns void as
 $body$
 begin
-
+DELETE FROM  bos_sd_fdoproductdepositbonusitembonussource
+where
+	szfdoid = p_szfdoid;
 end;
 $body$
 language plpgsql volatile;
@@ -76383,7 +76425,9 @@ p_szfdoid bos_dt_szid)
 returns void as
 $body$
 begin
-
+DELETE FROM  bos_sd_fdoproductdepositbonusitembonussource
+where
+	szfdoid = p_szfdoid;
 end;
 $body$
 language plpgsql volatile;

@@ -325,6 +325,19 @@ namespace SQLMigration.Converter.ScriptBuilder
          
           var sqlResult = SqlQueryCheck(schemaInfo.SqlCode, spType);
 
+/////###############tes
+            //if (sqlResult == "")
+            //{
+            //    using (StreamWriter w = File.AppendText("D:\\tempMigration\\result\\tes_kosong.txt"))
+            //    {
+            //        w.WriteLine(FnName);
+            //        w.Flush();
+            //    }
+            //}
+/////#######tes end          
+
+
+
             if (parName == "")
             {
                 result = "CREATE OR REPLACE FUNCTION " + FnName + "()\r\n" +
@@ -2280,7 +2293,12 @@ namespace SQLMigration.Converter.ScriptBuilder
             }
             else
             {
-                cekResult = GetDataTypeMap(data.DataType) + cekResult;
+                if (GetDataTypeMap(data.DataType) == "bytea")
+                {
+                    cekResult = GetDataTypeMap(data.DataType);
+                }
+                else
+                { cekResult = GetDataTypeMap(data.DataType) + cekResult; }
             }
             return cekResult;
 
