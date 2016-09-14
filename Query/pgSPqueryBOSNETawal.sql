@@ -108390,7 +108390,7 @@ begin
   return result;
 end;
 $BODY$
-  LANGUAGE plpgsql VOLATILE
+  LANGUAGE plpgsql VOLATILE;
   
 create or replace function sp_getrowsforalltables()
  returns table(skema varchar, tablename varchar, totalrow integer) as
