@@ -134,17 +134,32 @@ namespace SQLMigrationManager
             {
                 var tempSchema = new SPTempSource();
                 var data = dt.Rows[i];
-
-                tempSchema.SPName = data["specific_name"].ToString();
-                tempSchema.SqlCode = data["SqlCode"].ToString();
-                tempSchema.ParameterNumber = System.Convert.ToInt32(data["ORDINAL_POSITION"]);
-                tempSchema.ParameterName = data["parameter_name"].ToString();
-                tempSchema.DataType = data["DATA_TYPE"].ToString();
-                tempSchema.DomainType = data["USER_DEFINED_TYPE_NAME"].ToString();
-                tempSchema.ParameterMaxBytes = System.Convert.ToInt32(data["CHARACTER_MAXIMUM_LENGTH"].GetType() == typeof(DBNull) ? 0 : data["CHARACTER_MAXIMUM_LENGTH"]);
-                tempSchema.NumericPrecision = System.Convert.ToInt32(data["NUMERIC_PRECISION"].GetType() == typeof(DBNull) ? 0 : data["NUMERIC_PRECISION"]);
-                tempSchema.NumericScale = System.Convert.ToInt32(data["NUMERIC_SCALE"].GetType() == typeof(DBNull) ? 0 : data["NUMERIC_SCALE"]);
-                tempResult.Add(tempSchema);
+                if (data["parameter_name"].ToString() != "none")
+                {
+                    tempSchema.SPName = data["name"].ToString();
+                    tempSchema.SqlCode = data["SqlCode"].ToString();
+                    tempSchema.ParameterNumber = System.Convert.ToInt32(data["ORDINAL_POSITION"]);
+                    tempSchema.ParameterName = data["parameter_name"].ToString();
+                    tempSchema.DataType = data["DATA_TYPE"].ToString();
+                    tempSchema.DomainType = data["USER_DEFINED_TYPE_NAME"].ToString();
+                    tempSchema.ParameterMaxBytes = System.Convert.ToInt32(data["CHARACTER_MAXIMUM_LENGTH"].GetType() == typeof(DBNull) ? 0 : data["CHARACTER_MAXIMUM_LENGTH"]);
+                    tempSchema.NumericPrecision = System.Convert.ToInt32(data["NUMERIC_PRECISION"].GetType() == typeof(DBNull) ? 0 : data["NUMERIC_PRECISION"]);
+                    tempSchema.NumericScale = System.Convert.ToInt32(data["NUMERIC_SCALE"].GetType() == typeof(DBNull) ? 0 : data["NUMERIC_SCALE"]);
+                    tempResult.Add(tempSchema);
+                }
+                else
+                {
+                    tempSchema.SPName = data["name"].ToString();
+                    tempSchema.SqlCode = data["SqlCode"].ToString();
+                    tempSchema.ParameterNumber = 0;
+                    tempSchema.ParameterName = "";
+                    tempSchema.DataType = "";
+                    tempSchema.DomainType = "";
+                    tempSchema.ParameterMaxBytes = 0;
+                    tempSchema.NumericPrecision = 0;
+                    tempSchema.NumericScale = 0;
+                    tempResult.Add(tempSchema);
+                }
             }
 
             var UsedParameterName = tempResult.GroupBy(x => x.SPName).Select(y => y.First()).ToList();

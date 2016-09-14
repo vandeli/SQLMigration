@@ -86,6 +86,7 @@ namespace EasyTools.DB
                 {
                     return;
                 }
+                addEmptyElementsToXML(dataSet);
                 dataSet.WriteXmlSchema("D:\\tempMigration\\" + tableName[n] + ".xsd");
                 dataSet.WriteXml("D:\\tempMigration\\" + tableName[n] + ".xml");//, XmlWriteMode.WriteSchema);
                 dbCommand.Dispose();
@@ -128,11 +129,11 @@ namespace EasyTools.DB
         //                           dbData.userName + ";Password=" + dbData.password + ";";
 
         //    var nquery = sql + tableName[0];
-            
+
         //    SqlConnection SqlCon = new SqlConnection(strConnection);
 
         //    SqlDataReader SqlDr;
-          
+
         //    SqlCon.Open();
         //    SqlCommand SqlCmd = SqlCon.CreateCommand();
 
@@ -196,6 +197,22 @@ namespace EasyTools.DB
         //}
 
 
+
+        private void addEmptyElementsToXML(DataSet dataSet)
+        {
+            foreach (DataTable dataTable in dataSet.Tables)
+            {
+                foreach (DataRow dataRow in dataTable.Rows)
+                {
+                    for (int j = 0; j < dataRow.ItemArray.Length; j++)
+                    {
+                        if (dataRow.ItemArray[j] == DBNull.Value)
+                        
+                            dataRow.SetField(j,0);
+                    }
+                }
+            }
+        }
 
         public void Execute(DBData dbData, string sql)
         {

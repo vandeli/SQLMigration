@@ -218,9 +218,7 @@ namespace SQLMigration.Converter.ScriptBuilder
                 script = script.Replace(@"@", "m_");
                 var splittedText = Regex.Split(script, "\r\nas\r\n", RegexOptions.IgnoreCase).ToList().Skip(1).ToArray();
 
-             //   var parameters = getAllParameters().Where(x => x.IsResult == false && x.Name == proc);
-             //   var parameter = parameters.ToList().Aggregate(new StringBuilder(), (sb, i) => sb.Append("m_" + i.ParamName.Substring(1, i.ParamName.Length - 1) + " " + i.getConvertedDataType() + "\r\n,")).ToString();
-             //   parameter = parameter.Substring(0, parameter.Length - 1);
+   
                 foreach (var allparam in singleOutputs)
                  {
                         parameter += allparam.ParameterName + "\r\n";
@@ -243,35 +241,39 @@ namespace SQLMigration.Converter.ScriptBuilder
             var spType = "Other";
             var nReturn = "";
             var parName = "";
-           
-            
-
-        //    StringReader strReader = new StringReader(schemaInfo.SqlCode);
 
 
+
+         
             using (StringReader reader = new StringReader(schemaInfo.SqlCode))
             {
                 string line = string.Empty;
+                var breakFlag = false;
+                //  line = reader.ReadLine();
                 do
                 {
                     line = reader.ReadLine();
                     if (line != null)
                     {
                         var lines = line.TrimStart();
-                        if (lines.Contains("Update"))
-                        { spType = "update";}
-                        else if (lines.Contains("insert"))
-                        { spType = "insert"; }
-                        else if (lines.Contains("delete"))
-                        { spType = "delete"; }
-                        else if (lines.Contains("select"))
-                        { spType = "select"; }
-                        //else
-                        //{ spType = "other"; }
+                        //    if ((lines.Contains("Update") )|| (lines.Contains("update")) || (lines.Contains("UPDATE")))
+                        if (Regex.IsMatch(lines, @"\b(update|Update|UPDATE)\b"))
+                        { spType = "update"; breakFlag = true; break; }
+                        else if (Regex.IsMatch(lines, @"\b(insert|Insert|INSERT)\b"))
+                        { spType = "insert"; breakFlag = true; break; }
+                        else if (Regex.IsMatch(lines, @"\b(delete|Delete|DELETE)\b"))
+                        { spType = "delete"; breakFlag = true; break; }
+                        else if (Regex.IsMatch(lines, @"\b(if|If|IF)\b"))
+                        { spType = "ifclause"; breakFlag = true; break; }
+                        else if (Regex.IsMatch(lines, @"\b(select|Select|SELECT)\b"))
+                        { spType = "select"; breakFlag = true; break; }
+                        else if (Regex.IsMatch(lines, @"\b(exec|Exec|EXEC)\b"))
+                        { spType = "exec"; breakFlag = true; break; }
 
                     }
-
-                } while (line != null);
+                    else
+                    { breakFlag = true; }
+                } while ((line != null) || (!breakFlag));
             }
 
 
@@ -291,7 +293,7 @@ namespace SQLMigration.Converter.ScriptBuilder
 
 
                     if (i < (schemaInfo.usedParameterList.Count - 1))
-                        parName += ",";
+                        parName += ",\r\n";
                 }
                 else
                 {
@@ -316,19 +318,38 @@ namespace SQLMigration.Converter.ScriptBuilder
                 }
 
             }
-          
-           var sqlResult = SqlQueryCheck(schemaInfo.SqlCode, spType);
-                   
-            
-            result = "CREATE OR REPLACE FUNCTION " + FnName + "(" + parName + ")\r\n" +
-                     "RETURNS void AS\r\n" +
-                     "$BODY$\r\n" +
-                     "BEGIN\r\n" +
-                        sqlResult + "\r\n"+
-                     "END;\r\n" +
-                     "$BODY$\r\n" +
-                    "LANGUAGE plpgsql;\r\n" +
-                    "\r\n";
+            //## testing here //
+          //   string txtSQLcode = File.ReadAllText(@"D:\BOSNET\Project\BOSNET\BOSNETLINUX\sampleSQL.txt", Encoding.UTF8);
+
+        //     var sqlResult = SqlQueryCheck(txtSQLcode, "select");
+         
+          var sqlResult = SqlQueryCheck(schemaInfo.SqlCode, spType);
+
+            if (parName == "")
+            {
+                result = "CREATE OR REPLACE FUNCTION " + FnName + "()\r\n" +
+                          "RETURNS void AS\r\n" +
+                          "$BODY$\r\n" +
+                          "BEGIN\r\n" +
+                             sqlResult + "\r\n" +
+                          "END;\r\n" +
+                          "$BODY$\r\n" +
+                         "LANGUAGE plpgsql VOLATILE;\r\n" +
+                         "\r\n";
+            }
+            else
+            {
+
+                result = "CREATE OR REPLACE FUNCTION " + FnName + "(\r\n" + parName + ")\r\n" +
+                         "RETURNS void AS\r\n" +
+                         "$BODY$\r\n" +
+                         "BEGIN\r\n" +
+                            sqlResult + "\r\n" +
+                         "END;\r\n" +
+                         "$BODY$\r\n" +
+                        "LANGUAGE plpgsql VOLATILE;\r\n" +
+                        "\r\n";
+            }
             return result;
            
         }
@@ -356,14 +377,10 @@ namespace SQLMigration.Converter.ScriptBuilder
             {
                 if (!File.Exists(path))
                     throw new FileNotFoundException();
-                //var nValue = 
+             
                 GetRecodScript(schemaInfo,path, SchemaPath);
                 result = pathResult;
-                //using (StreamWriter sw = new StreamWriter(pathResult))
-                //{
-                //    sw.Write(nValue);
-                //}
-
+             
 
                 }
             catch (FileNotFoundException)
@@ -491,99 +508,1458 @@ namespace SQLMigration.Converter.ScriptBuilder
         public string SqlQueryCheck(String sql, String sptype)
         {
             var result = "";
-            string nUpdate, nInsert, nDelete;
+            try
+            {            
+           
             switch (sptype)
             {
                 case "update":
-                    nUpdate = "";
-                    string uTableName = "";
-                    string wKolom= "";
-                    string[] sKolom;
-                    string[] allLines;
-                    int sIndex = 0;
-                    int sLine = 0;
-
-                    int totalLines = CountLines(sql);
-                    allLines = new string[totalLines];
-                    using (StringReader reader2 = new StringReader(sql))
-                    {
-                        string line = string.Empty;
-                        do
-                        {
-                            line = reader2.ReadLine();
-                            if (line != null)
-                            {
-                                allLines[sLine] = line.TrimStart();
-                                sLine++;
-                            }
-                        } while (line != null);
-                    }
-
-
-                   
-                   
-
-                    for (var s = 0; s < allLines.Length; s++)
-                    {
-                        if (allLines[s].TrimStart() == "Set")
-                            sIndex = s;
-                        if (allLines[s].TrimStart() == "Where")
-                            sIndex = s - sIndex - 1;                       
-                    }
-
-                    sKolom = new string[sIndex];
-
-                    for (var i = 0; i < allLines.Length; i++)
-                    {
-                        if (allLines[i] == "Update")
-                        {
-                            uTableName = allLines[i + 1].TrimStart();
-                        }
-                        else if (allLines[i] == "Set")
-                        {
-                            for (var n = 0; n < sIndex; n++)
-                            {
-                                sKolom[n] = allLines[i + n + 1].TrimStart();
-                                sKolom[n] = sKolom[n].Replace(@"@", "p_");
-                            }
-                            
-                        }
-                        else if (allLines[i] == "Where")
-                        {
-                            wKolom = allLines[i + 1].TrimStart();
-                            wKolom = wKolom.Replace(@"@", "p_");
-                        }
-
-
-                    }
-                    nUpdate = "UPDATE " + uTableName + "\r\n" +
-                              "SET \r\n";
-                              for (var n = 0; n < sIndex; n++)
-                                {
-                                    nUpdate += sKolom[n] + "\r\n";
-                                }
-                    nUpdate += "WHERE \r\n" + wKolom + "\r\n";
-                    result = nUpdate;    
-                    //UPDATE BOS_AP_ApTrans
-                    //SET decRemain = decRemain + '@p_decAmount'
-                    //WHERE szTrnId = '@p_szTrnId' And szDocId = '@p_szDocId' And szSuppId = '@p_szSuppId' And shRevNo = '@p_shRevNo';
+                    
+                    result = SPUpdatePattern(sql);                          
+               
                     break;
 
                 case "insert":
-                    nInsert = "not set yet";
-                    result = nInsert;
-                    break;
+                 
+                      result = SPInsertPattern(sql);
+                        break;
 
                 case "delete":
-                    nDelete = "not set yet ";
-                    result = nDelete;
-                    break;
+                        result = SPDeletePattern(sql);
+                        break;
 
-                default:
-                    result = "not set yet ";
+                case "select":
+                        
+                        result = SPSelectPattern(sql);
+                        break;
+
+                    case "ifclause":
+                        result = SPifclausePattern(sql);
+                        break;
+
+                    case "exec":
+                        var nExec = " EXEC PATTERN not set";
+                        result = nExec;
+                        break;
+
+                    default:
+                    result = "--NOT DEFINED PATTERN ";
                     break;
             }
+            
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                MessageBox.Show(ex.Message + "\r\n"+ sql);
+            }
             return result;
+        }
+
+        private string SPifclausePattern(string sql)
+        {
+            string nSelect;
+            nSelect = "";
+            int sLine = 0;
+            var start = 0;
+            var scek = false;
+            int totalLines = CountLines(sql);
+            var allLines = new string[totalLines];
+            using (StringReader reader2 = new StringReader(sql))
+            {
+                string line = string.Empty;
+                do
+                {
+                    line = reader2.ReadLine();
+                    if (line != null)
+                    {
+                        allLines[sLine] = line.TrimStart();
+                        sLine++;
+                    }
+                } while (line != null);
+            }
+
+
+            for (var i = 0; i < allLines.Length; i++)
+            {
+                if (Regex.IsMatch(allLines[i], @"\b(as|As|AS)\b"))
+                {
+                    if (scek == false)
+                    {
+                        start = i;
+                        scek = true;
+                    }
+                }
+            }
+            var nIf = 0;
+            for (var i = start + 1; i < allLines.Length; i++)
+            {
+
+                var rText = allLines[i];
+                rText = rText.Replace(@"IsNull", "COALESCE");
+                rText = rText.Replace(@"@", "p_");
+                if ((allLines[i].Split(' ').First() == "If") || (allLines[i].Split(' ').First() == "if") || (allLines[i].Split(' ').First() == "IF"))
+                {
+                    if (nIf == 0)
+                    {
+                        rText = rText + "\r\n" + "  THEN";
+                        nIf++;
+                    }
+                    else
+                    {
+                        rText = "END IF\r\n" + rText;
+                        rText = rText + "\r\n" + "  THEN";
+                    }
+                    
+                }
+
+                nSelect += rText + "\r\n";
+
+                if(i == allLines.Length-1)
+                {
+                    nSelect = nSelect + "\r\n" + "END IF";
+                }
+                     
+            }
+            return nSelect;
+        }
+
+        private string SPSelectPattern(string sql)
+        {
+            string nSelect;
+            int tAS = 0;
+            int tFROM = 0;
+            int tSELECT = 0;
+            int tWHERE = 0;
+            int tORDER = 0;
+            int updateType = 0;
+            nSelect = "";
+            string uTableName = "";
+
+            string wKolom = "";
+            string[] AS_array;
+            string[] sKolom;
+            string[] sFrom;
+            string[] sWhere;
+            string[] sOrder;
+            string[] allLines;
+            int totSelect = 0;
+            int totJoin = 0;
+            int sIndex = 0;
+            int ssIndex = 0;
+            int fIndex = 0;
+            int wIndex = 0;
+            int oIndex = 0;
+            int sLine = 0;
+            bool cLine;
+            cLine = false;
+            var getAll = false;
+            var isDist = false;
+            var isLimit = false;
+            var LimitValue = "";
+            int totalLines = CountLines(sql);
+            allLines = new string[totalLines];
+            using (StringReader reader2 = new StringReader(sql))
+            {
+                string line = string.Empty;
+                do
+                {
+                    line = reader2.ReadLine();
+                    if (line != null)
+                    {
+                        allLines[sLine] = line.TrimStart();
+                        sLine++;
+                    }
+                } while (line != null);
+            }
+            for (var x = 0; x < allLines.Length; x++)
+            {
+                if (Regex.IsMatch(allLines[x], @"\b(select|Select|SELECT)\b"))
+                {
+                    totSelect++;
+                }
+                if (Regex.IsMatch(allLines[x], @"\b(join|join|JOIN)\b"))
+                {
+                    totJoin++;
+                }
+
+            }
+            if ((totSelect > 1) ||(totJoin > 1) )
+            { getAll = true; }
+
+             var tsIndex = 0;
+            if (getAll != true)
+            {
+                for (var s = 0; s < allLines.Length; s++)
+                {
+                    allLines[s] = allLines[s].TrimEnd();
+                    allLines[s] = allLines[s].TrimStart();
+                    if (Regex.IsMatch(allLines[s], @"\b(select|Select|SELECT)\b"))
+                    {
+                        var iSELECT = allLines[s].Split(' ').Count();
+                        if(Regex.IsMatch(allLines[s], @"\b(from|From|FROM)\b"))
+                        {
+                            fIndex = 1;
+                        }
+
+                        if (tsIndex == 0)
+                        {
+                            sIndex = s;
+                            tsIndex = 1;
+                            if (iSELECT > 1)
+                            {
+                                sIndex = 1;
+                            }
+                        }
+
+                    }
+                    if ((allLines[s].Split(' ').Last() == "From") || (allLines[s].Split(' ').Last() == "from") || (allLines[s].Split(' ').Last() == "FROM"))
+                    {
+                        fIndex = s;
+                    }
+                        if ((allLines[s].Split(' ').First() == "From") || (allLines[s].Split(' ').First() == "from") || (allLines[s].Split(' ').First() == "FROM"))
+                    {
+                        var iFROM = allLines[s].Split(' ').Count();
+                        if (s == sIndex)
+                        {
+                            sIndex = 1;
+                            fIndex = s;
+                        }
+                        else
+                        {
+                            if (sIndex > 1)
+                            {
+                                sIndex = s - sIndex - 1; fIndex = s;
+                            }
+                        }
+                        if (iFROM > 1)
+                        {
+                            fIndex = 1;
+                        }
+
+                    }
+                    if (Regex.IsMatch(allLines[s], @"\b(where|Where|WHERE)\b"))
+                    {
+                        var iWhere = allLines[s].Split(' ').Count();
+
+                        if (s == fIndex)
+                        {
+                            fIndex = 1;
+                            //wIndex = s;
+                        }
+                        else { fIndex = s - fIndex - 1; }
+
+                        if (iWhere > 1)
+                        {
+                            wIndex = 1;
+                        }
+                        else
+                        {
+                            for (var i = s; i < allLines.Length; i++)
+                            {
+                                if (Regex.IsMatch(allLines[i], @"\b(order|Order|ORDER)\b"))
+                                { break; }
+                                else
+                                { wIndex++; }
+
+                            }
+                        }
+                    }
+                    if (Regex.IsMatch(allLines[s], @"\b(order|Order|ORDER)\b"))
+                    {
+                        var iOrder = allLines[s].Split(' ').Count();
+                        if (iOrder > 2)
+                        {
+                            oIndex = 1;
+                        }
+                        else
+                        {
+                            for (var i = s; i < allLines.Length; i++)
+                            {
+                                if (i > allLines.Length - 1)
+                                { break; }
+                                else { oIndex++; }
+
+                            }
+                        }
+                    }
+
+
+                }
+                if (wIndex == 0)
+                {
+                    if (fIndex > 1)
+                    {
+                        var fIndexTemp = fIndex;
+                        fIndex = 0;
+                        for (var i = fIndexTemp; i < allLines.Length; i++)
+                        {
+                            allLines[i] = allLines[i].TrimEnd();
+                            allLines[i] = allLines[i].TrimStart();
+                            fIndex++;
+                        }
+                    }
+                }
+
+                sKolom = new string[sIndex];
+                sFrom = new string[fIndex];
+                sWhere = new string[wIndex];
+                sOrder = new string[oIndex];
+
+                for (var i = 0; i < allLines.Length; i++)
+                {
+                    allLines[i] = allLines[i].TrimEnd();
+                    allLines[i] = allLines[i].TrimStart();
+
+                    if ((allLines[i].Split(' ').First() == "as") || (allLines[i].Split(' ').First() == "As") || (allLines[i].Split(' ').First() == "AS"))
+                    {
+                        if (tAS == 0)
+                        {
+                            var iAS = allLines[i].Split(' ').Count();
+
+                            switch (iAS)
+                            {
+                                case 1:
+                                    break;
+                                case 2:
+
+                                    for (var n = 0; n < sIndex; n++)
+                                    {
+                                        sKolom[n] = allLines[i + n + 1].TrimStart();
+                                        sKolom[n] = sKolom[n].Replace(@"@", "p_");
+                                    }
+
+                                    tSELECT = 1;
+                                    break;
+                                case 3:
+
+                                    sKolom[0] = allLines[i].Split(' ').Last();
+                                    tSELECT = 1;
+                                    break;
+
+                                default:
+                                    AS_array = allLines[i].Split(' ');
+
+                                    if (Regex.IsMatch(allLines[i], @"\b(from|From|FROM)\b"))
+                                    {
+
+                                        //####################3                                 //   {
+                                        for (var a = 2; a < AS_array.Length; a++)
+                                        {
+                                            if (Regex.IsMatch(AS_array[a], @"\b(from|From|FROM)\b"))
+                                            { break; }
+                                            sKolom[0] += AS_array[a] + " ";
+
+                                        }
+
+                                        sKolom[0] = sKolom[0].Replace(@"@", "p_");
+                                        if (Regex.IsMatch(allLines[i].Split(' ').Last(), @"\b(from|From|FROM)\b"))
+                                        {
+                                            for (var s = 0; s < fIndex; s++)
+                                            {
+                                                sFrom[s] = allLines[i + s + 1].TrimStart();
+                                                //  sFrom[s] = sFrom[s].Replace(@",", "");
+                                                sFrom[s] = sFrom[s].Replace(@"@", "p_");
+                                            }
+                                        }
+                                        else
+                                        {
+                                            var more = new bool();
+                                            more = false;
+                                            for (var a = 0; a < AS_array.Length; a++)
+                                            {
+                                                if (more == true)
+                                                {
+                                                    sFrom[0] += AS_array[a] + " ";
+                                                    //  sFrom[0] = sFrom[0].Replace(@",", "");
+                                                    sFrom[0] = sFrom[0].Replace(@"@", "p_");
+                                                }
+
+                                                if (Regex.IsMatch(AS_array[a], @"\b(from|From|FROM)\b"))
+                                                {
+                                                    more = true;
+                                                }
+
+                                            }
+
+                                        }
+                                        tFROM = 1;
+                                    }
+                                    else
+                                    {
+                                        for (var a = 2; a < AS_array.Length; a++)
+                                        {
+                                            sKolom[0] += AS_array[a] + " ";
+
+                                        }
+
+                                        sKolom[0] = sKolom[0].Replace(@"@", "p_");
+
+                                    }
+                                    tSELECT = 1;
+
+                                    break;
+                            }
+                            tAS = 1;
+                        }
+
+                    }
+
+                    if ((allLines[i].Split(' ').First() == "Select") || (allLines[i].Split(' ').First() == "select") || (allLines[i].Split(' ').First() == "SELECT"))
+                    {
+                        if (tSELECT == 0)
+                        {
+                            //  string[] AS_array = allLines[i].Split(' ');
+                            var iSELECT = allLines[i].Split(' ').Count();
+                            switch (iSELECT)
+                            {
+                                case 1:
+
+                                    for (var n = 0; n < sIndex; n++)
+                                    {
+                                        sKolom[n] = allLines[i + n + 1].TrimStart();
+                                        sKolom[n] = sKolom[n].Replace(@"@", "p_");
+                                    }
+
+                                    tSELECT = 1;
+
+                                    break;
+                                case 2:
+                                    if (Regex.IsMatch(allLines[i].Split(' ').Last(), @"\b(distinct|Distinct|DISTINCT)\b"))
+                                    {
+                                        isDist = true;
+
+                                        for (var n = 0; n < sIndex; n++)
+                                        {
+                                            sKolom[n] = allLines[i + n + 1].TrimStart();
+                                            sKolom[n] = sKolom[n].Replace(@"@", "p_");
+                                        }
+                                    }
+                                    else
+                                    {
+                                        sKolom[0] = allLines[i].Split(' ').Last();
+                                    }
+                                    tSELECT = 1;
+                                    break;
+
+
+                                default:
+                                    AS_array = allLines[i].Split(' ');
+                                    if (Regex.IsMatch(allLines[i], @"\b(top|Top|TOP)\b"))
+                                    {
+                                        isLimit = true;
+                                        LimitValue = allLines[i];
+                                        for (var n = 0; n < sIndex; n++)
+                                        {
+                                            sKolom[n] = allLines[i + n + 1].TrimStart();
+                                            sKolom[n] = sKolom[n].Replace(@"@", "p_");
+                                        }
+                                        tSELECT = 1;
+                                    }
+
+                                    if (Regex.IsMatch(allLines[i], @"\b(from|From|FROM)\b"))
+                                    {
+
+                                        for (var a = 1; a < AS_array.Length; a++)
+                                        {
+                                            if (Regex.IsMatch(AS_array[a], @"\b(from|From|FROM)\b"))
+                                            { break; }
+                                            sKolom[0] += AS_array[a] + " ";
+
+                                        }
+
+                                        sKolom[0] = sKolom[0].Replace(@"@", "p_");
+                                        if (Regex.IsMatch(allLines[i].Split(' ').Last(), @"\b(from|From|FROM)\b"))
+                                        {
+                                            for (var s = 0; s < fIndex; s++)
+                                            {
+                                                sFrom[s] = allLines[i + s + 1].TrimStart();
+                                                sFrom[s] = sFrom[s].Replace(@"@", "p_");
+                                            }
+                                        }
+                                        else
+                                        {
+                                            var more = new bool();
+                                            more = false;
+                                            for (var a = 0; a < AS_array.Length; a++)
+                                            {
+                                                if (more == true)
+                                                {
+                                                    sFrom[0] += AS_array[a] + " ";
+                                                    sFrom[0] = sFrom[0].Replace(@"@", "p_");
+                                                }
+
+                                                if (Regex.IsMatch(AS_array[a], @"\b(from|From|FROM)\b"))
+                                                {
+                                                    more = true;
+                                                }
+
+                                            }
+                                            // sFrom[0] = allLines[i].Split(' ').Last();
+                                        }
+                                        tFROM = 1;
+                                    }
+                                    else
+                                    {
+                                        if (tSELECT == 0)
+                                        {
+                                            sKolom[0] = allLines[i].Replace(@"SELECT", "");
+                                            sKolom[0] = sKolom[0].Replace(@"@", "p_");
+                                        }
+                                    }
+                                    tSELECT = 1;
+
+
+                                    break;
+                            }
+
+                            tSELECT = 1;
+                        }
+                    }
+
+                    else if ((allLines[i].Split(' ').First() == "From") || (allLines[i].Split(' ').First() == "from") || (allLines[i].Split(' ').First() == "FROM"))
+                    {
+                        if (tFROM == 0)
+                        {
+
+                            var iFROM = allLines[i].Split(' ').Count();
+                            var kFrom = allLines[i].Split(' ').First();
+                            switch (iFROM)
+                            {
+                                case 1:
+
+                                    for (var n = 0; n < fIndex; n++)
+                                    {
+                                        if (i + n + 1 > allLines.Length - 1)
+                                        {
+                                            break;
+                                        }
+                                        else
+                                        {
+                                            sFrom[n] = allLines[i + n + 1].TrimStart();
+                                            sFrom[n] = sFrom[n].Replace(@"@", "p_");
+                                        }
+
+                                    }
+                                    break;
+
+                                case 2:
+
+                                    sFrom[0] = allLines[i].Replace(kFrom, "");
+                                    sFrom[0] = sFrom[0].TrimStart();
+                                    sFrom[0] = sFrom[0].Replace(@"@", "p_");
+                                    break;
+
+                                default:
+                                    sFrom[0] = allLines[i].Replace(kFrom, "");
+                                    sFrom[0] = sFrom[0].TrimStart();
+                                    sFrom[0] = sFrom[0].Replace(@"@", "p_");
+                                    break;
+                            }
+                            tFROM = 1;
+                        }
+
+
+                    }
+                    else if ((allLines[i].Split(' ').First() == "Where") || (allLines[i].Split(' ').First() == "where") || (allLines[i].Split(' ').First() == "WHERE"))
+                    {
+                        if (tWHERE == 0)
+                        {
+                            var iWHERE = allLines[i].Split(' ').Count();
+                            var kWHERE = allLines[i].Split(' ').First();
+                            switch (iWHERE)
+                            {
+                                case 1:
+
+                                    for (var n = 0; n + 1 < wIndex; n++)
+                                    {
+                                        sWhere[n] = allLines[i + n + 1].TrimStart();
+                                        sWhere[n] = sWhere[n].Replace(@"@", "p_");
+                                    }
+                                    break;
+
+                                default:
+
+                                    sWhere[0] = allLines[i].Replace(kWHERE, "");
+                                    sWhere[0] = sWhere[0].Replace(@"@", "p_");
+                                    break;
+                            }
+                        }
+
+                    }
+
+                    else if ((allLines[i].Split(' ').First() == "Order") || (allLines[i].Split(' ').First() == "order") || (allLines[i].Split(' ').First() == "ORDER"))
+                    {
+                        if (tORDER == 0)
+                        {
+                            var iORDER = allLines[i].Split(' ').Count();
+                            var kORDER = allLines[i].Split(' ').First();
+                            switch (iORDER)
+                            {
+                                case 2:
+
+                                    for (var n = 0; n < oIndex; n++)
+                                    {
+                                        if (i + n + 1 > allLines.Length - 1)
+                                        { break; }
+                                        else
+                                        {
+                                            sOrder[n] = allLines[i + n + 1].TrimStart();
+                                            sOrder[n] = sOrder[n].Replace(@"@", "p_");
+                                        }
+                                    }
+                                    break;
+
+                                default:
+
+                                    sOrder[0] = allLines[i].Replace(kORDER + " BY", "");
+                                    sOrder[0] = sOrder[0].Replace(@"@", "p_");
+                                    break;
+                            }
+                        }
+
+                    }
+                }
+
+
+                if (isDist == true)
+                { nSelect = "SELECT DISTINCT\r\n"; }
+                else
+                { nSelect = "SELECT \r\n"; }
+
+
+                if (sIndex > 1)
+                {
+                    for (var n = 0; n < sIndex; n++)
+                    {
+                        if (sKolom[n] != null)
+                        {
+
+                            sKolom[n] = sKolom[n].Replace(@"IsNull", "COALESCE");
+                            nSelect += sKolom[n] + "\r\n";
+
+                        }
+                    }
+                }
+                else
+                {
+                    sKolom[0] = sKolom[0].Replace(@"IsNull", "COALESCE");
+                    nSelect += sKolom[0] + "\r\n";
+                }
+                //==========================
+                nSelect += "\r\n";
+                nSelect += "FROM \r\n";
+
+                if (fIndex > 1)
+                {
+                    for (var n = 0; n < fIndex; n++)
+                    {
+                        if (sFrom[n] != null)
+                        {
+                            if (sFrom[n].Contains("JOIN"))
+                            {
+                                sFrom[n] += sFrom[n] + ";";
+                            }
+                            nSelect += sFrom[n] + "\r\n";
+                        }
+                    }
+                }
+                else
+                {
+                    if (sFrom[0].Contains("JOIN"))
+                    {
+                        sFrom[0] += sFrom[0] + ";";
+                    }
+                    nSelect += sFrom[0] + "\r\n";
+                }
+
+
+                //========================================
+                if (wIndex != 0)
+                {
+                    nSelect += "WHERE \r\n";
+                    if (wIndex > 1)
+                    {
+                        for (var n = 0; n < wIndex; n++)
+                        {
+                            if ((sWhere[n] != null) && (sWhere[n] != ""))
+                            {
+                                if (sWhere[n].Length > 1)
+                                {
+                                    var text = sWhere[n].Substring(0, 2);
+                                    if (text != "--")
+                                    { nSelect += sWhere[n] + " "; }
+                                }
+                                else
+                                { nSelect += sWhere[n] + " "; }
+                            }
+                            
+                        }
+                        nSelect += ";";
+
+                    }
+                    else
+                    {
+                        nSelect += sWhere[0] + ";\r\n";
+                    }
+                }
+                //==========================================
+                if (oIndex != 0)
+                {
+                    nSelect += "ORDER BY \r\n";
+                    if (oIndex > 1)
+                    {
+                        for (var n = 0; n < oIndex; n++)
+                        {
+                            if (sOrder[n] != null)
+                            {
+                                nSelect += sOrder[n] + "\r\n";
+                            }
+                        }
+                    }
+                    else
+                    {
+                        nSelect += sOrder[0] + "\r\n";
+                    }
+                }
+
+                if (isLimit == true)
+                {
+                    nSelect += "LIMIT " + LimitValue.Split(' ').Last();
+                }
+
+            }
+            else
+            {
+                var start = 0;
+                var scek = false;
+                for (var i = 0; i < allLines.Length; i++)
+                {
+                    if (Regex.IsMatch(allLines[i], @"\b(as|As|AS)\b"))
+                    {
+                        if (scek == false)
+                        {
+                            start = i;
+                            scek = true;
+                        }
+                    }
+                }
+
+                    for (var i = start+1; i < allLines.Length; i++)
+                {
+                   
+                    var rText = allLines[i];
+                    rText = rText.Replace(@"IsNull", "COALESCE");
+                    rText = rText.Replace(@"@", "p_");
+                    nSelect += allLines[i] + "\r\n";
+                }
+            }
+            return nSelect;
+        }
+
+        private string SPInsertPattern(string sql)
+        {
+            string nInsert;
+            int tAS = 0;
+            int tSET = 0;
+            int tINSERT = 0;
+            int tVALUES = 0;
+            int insertType = 0;
+            nInsert = "";
+            string uTableName = "";
+            string wKolom = "";
+            string[] sKolom;
+            string[] vKolom;
+            string[] allLines;
+            int sIndex = 0;
+            int vIndex = 0;
+            int sLine = 0;
+
+            int totalLines = CountLines(sql);
+            allLines = new string[totalLines];
+            using (StringReader reader2 = new StringReader(sql))
+            {
+                string line = string.Empty;
+                do
+                {
+                    line = reader2.ReadLine();
+                    if (line != null)
+                    {
+                        allLines[sLine] = line.TrimStart();
+                        sLine++;
+                    }
+                } while (line != null);
+            }
+
+
+            var tsIndex = 0;
+            for (var s = 0; s < allLines.Length; s++)
+            {
+
+                if (Regex.IsMatch(allLines[s], @"\b(insert|Insert|INSERT)\b"))  //|| (Regex.IsMatch(allLines[s], "Set")) || (Regex.IsMatch(allLines[s], "SET")))
+                {
+              
+                    var iA = allLines[s].TrimEnd().Split(' ').Count();
+                    if (tsIndex == 0)
+                    {
+                        if ((iA == 2)|| (iA == 1))
+                        {
+                            sIndex = s+1;
+                            tsIndex = 1;
+                        }
+                        else
+                        {
+                            sIndex = s;
+                            tsIndex = 1;
+                        }
+                    }
+                }
+                if (Regex.IsMatch(allLines[s], @"\b(values|Values|VALUES)\b"))  // || (Regex.IsMatch(allLines[s], "Where")) || (Regex.IsMatch(allLines[s], "WHERE")))
+                { sIndex = s - sIndex - 1; vIndex = allLines.Length - s-1; }
+            }
+
+            if (sIndex != 0)
+            { sKolom = new string[sIndex]; }
+            else
+            { sKolom = new string[1]; }
+            vKolom = new string[vIndex];
+
+            for (var i = 0; i < allLines.Length; i++)
+            {
+                allLines[i] = allLines[i].Replace(@"(", "");
+                allLines[i] = allLines[i].Replace(@")", "");
+                allLines[i] = allLines[i].TrimStart();
+                allLines[i] = allLines[i].TrimEnd();
+
+                //  var tess = allLines[i].Split(' ').Count();
+                if ((allLines[i].Split(' ').First() == "as") || (allLines[i].Split(' ').First() == "As") || (allLines[i].Split(' ').First() == "AS"))
+                {
+                    if (tAS == 0)
+                    {
+                        var iAS = allLines[i].TrimEnd().Split(' ').Count();
+
+                        switch (iAS)
+                        {
+                            case 1:
+                                break;
+
+                            case 4:
+
+                                uTableName = allLines[i].Split(' ').Last();
+                                for (var n = 0; n < sIndex; n++)
+                                {
+
+                                    sKolom[n] = allLines[i + n + 1].TrimStart();
+
+                                    sKolom[n] = sKolom[n].Replace(@"(", "");
+                                    sKolom[n] = sKolom[n].Replace(@")", "");
+                                    sKolom[n] = sKolom[n].Replace(@",", "");
+                                    sKolom[n] = sKolom[n].Replace(@"@", "p_");
+
+                                }
+                                tINSERT = 1;
+
+                                break;
+                            default:
+                                break;
+                        }
+                        tAS = 1;
+                    }
+
+                }
+
+                if ((allLines[i].Split(' ').First() == "insert") || (allLines[i].Split(' ').First() == "Insert") || (allLines[i].Split(' ').First() == "INSERT"))
+                {
+                    if (tINSERT == 0)
+                    {
+                        var iINSERT = allLines[i].TrimEnd().Split(' ').Count();
+                        switch (iINSERT)
+                        {
+                            case 1:
+                                uTableName = allLines[i + 1].TrimStart();
+                                for (var n = 0; n < sIndex; n++)
+                                {
+                                    sKolom[n] = allLines[i + n + 2].TrimStart();
+                                    sKolom[n] = allLines[i + n + 2].TrimEnd();
+                                    sKolom[n] = sKolom[n].Replace(@"(", "");
+                                    sKolom[n] = sKolom[n].Replace(@")", "");
+                                    sKolom[n] = sKolom[n].Replace(@",", "");
+                                    sKolom[n] = sKolom[n].Replace(@"@", "p_");
+                                }
+                                tINSERT = 1;
+                                break;
+                            case 2:
+                                uTableName = allLines[i + 1].TrimStart();
+                                for (var n = 0; n < sIndex; n++)
+                                {
+                                    sKolom[n] = allLines[i + n + 2].TrimStart();
+                                    sKolom[n] = allLines[i + n + 2].TrimEnd();
+                                    sKolom[n] = sKolom[n].Replace(@"(", "");
+                                    sKolom[n] = sKolom[n].Replace(@")", "");
+                                    sKolom[n] = sKolom[n].Replace(@",", "");
+                                    sKolom[n] = sKolom[n].Replace(@"@", "p_");
+                                }
+                                tINSERT = 1;
+                                break;
+                            case 3:
+                                uTableName = allLines[i].Split(' ').Last();
+                                for (var n = 0; n < sIndex; n++)
+                                {
+                                    sKolom[n] = allLines[i + n + 1].TrimStart();
+                                    sKolom[n] = allLines[i + n + 1].TrimEnd();
+                                    sKolom[n] = sKolom[n].Replace(@"(", "");
+                                    sKolom[n] = sKolom[n].Replace(@")", "");
+                                    sKolom[n] = sKolom[n].Replace(@",", "");
+                                    sKolom[n] = sKolom[n].Replace(@"@", "p_");
+                                }
+                                tINSERT = 1;
+                               
+                                break;
+
+                            default:
+                                break;
+                        }
+                      
+                        tINSERT = 1;
+                    }
+                }
+                else if ((allLines[i].Split(' ').First() == "Values") || (allLines[i].Split(' ').First() == "values") || (allLines[i].Split(' ').First() == "VALUES"))
+                {
+                    if (tVALUES == 0)
+                    {
+                      
+                        var iVALUES = allLines[i].TrimEnd().Split(' ').Count();
+                        var kValues = allLines[i].Split(' ').First();
+                        switch (iVALUES)
+                        {
+                            case 1:
+
+                                for (var n = 0;  n < vIndex; n++)
+                                {
+                                    vKolom[n] = allLines[i + n + 1].TrimStart();
+                                    vKolom[n] = allLines[i + n + 1].TrimEnd();
+                                    vKolom[n] = vKolom[n].Replace(@"(", "");
+                                    vKolom[n] = vKolom[n].Replace(@")", "");
+                                    vKolom[n] = vKolom[n].Replace(@",", "");
+                                    vKolom[n] = vKolom[n].Replace(@"@", "p_");
+                                }
+
+                                tVALUES = 1;
+                                break;
+
+                            default:
+
+
+                                tVALUES = 1;
+                                break;
+                        }
+                        tSET = 1;
+                    }
+                }
+                else if ((allLines[i].Split(' ').First() == "Values(") || (allLines[i].Split(' ').First() == "values(") || (allLines[i].Split(' ').First() == "VALUES("))
+                {
+                    if (tVALUES == 0)
+                    {
+
+                        var iVALUES = allLines[i].TrimEnd().Split(' ').Count();
+                        var kValues = allLines[i].Split(' ').First();
+                        switch (iVALUES)
+                        {
+                            case 1:
+
+                                for (var n = 0; n < vIndex; n++)
+                                {
+                                    vKolom[n] = allLines[i + n + 1].TrimStart();
+                                    vKolom[n] = allLines[i + n + 1].TrimEnd();
+                                    vKolom[n] = vKolom[n].Replace(@"(", "");
+                                    vKolom[n] = vKolom[n].Replace(@")", "");
+                                    vKolom[n] = vKolom[n].Replace(@",", "");
+                                    vKolom[n] = vKolom[n].Replace(@"@", "p_");
+                                }
+
+                                tVALUES = 1;
+                                break;
+
+                            default:
+
+
+                                tVALUES = 1;
+                                break;
+                        }
+                        tSET = 1;
+                    }
+                }
+            }
+                
+
+                
+            nInsert = "INSERT INTO " + uTableName + "\r\n" +
+                      "(\r\n";
+
+            for (var n = 0; n < sIndex; n++)
+            {
+                if (sKolom[n] != "")
+                {
+                    if (n == sIndex - 2)
+                    { nInsert += sKolom[n] + "\r\n"; }
+                    else
+                    { nInsert += sKolom[n] + ",\r\n"; }
+                }
+            }
+            nInsert += ")\r\n";
+
+            nInsert += "VALUES\r\n" +
+                "(\r\n";
+            for (var z = 0; z < vIndex; z++)
+            {
+                if ((vKolom[z] != "") && (vKolom[z] != "set ANSI_NULLS ON"))
+                {
+                    if (z == vIndex - 2)
+                    { nInsert += vKolom[z] + "\r\n"; }
+                    else
+                    { nInsert += vKolom[z] + ",\r\n"; }
+                }
+            }
+            nInsert += ");\r\n";
+
+            return nInsert;
+        }
+
+        private string SPDeletePattern(string sql)
+        {
+            string nDelete;
+            int tAS = 0;
+            int tDELETE = 0;
+            int tWHERE = 0;
+            int deleteType = 0;
+            int whereType = 0;
+            nDelete = "";
+            string[] uTableName;
+            string[] uWhere;
+            string wKolom = "";
+            string[] sKolom;
+            string[] allLines;
+            int sIndex = 0;
+            int sLine = 0;
+            int hasRead = 0;
+
+            int totalLines = CountLines(sql);
+            allLines = new string[totalLines];
+            using (StringReader reader2 = new StringReader(sql))
+            {
+                string line = string.Empty;
+                do
+                {
+                    line = reader2.ReadLine();
+                    if (line != null)
+                    {
+                        allLines[sLine] = line.TrimStart();
+                        sLine++;
+                    }
+                } while (line != null);
+            }
+
+            for (var x = 0; x < allLines.Length; x++)
+            {
+                allLines[x] = allLines[x].TrimEnd();
+                allLines[x] = allLines[x].TrimStart();
+                if ((allLines[x].Split(' ').First() == "delete") || (allLines[x].Split(' ').First() == "Delete") || (allLines[x].Split(' ').First() == "DELETE"))
+                {
+                    deleteType += 1;
+                }
+                if ((allLines[x].Split(' ').First() == "Where") || (allLines[x].Split(' ').First() == "where") || (allLines[x].Split(' ').First() == "WHERE"))
+                {
+                    whereType += 1;
+                }
+            }
+
+            uTableName = new string[deleteType];
+            uWhere = new string[whereType];
+
+            var counter = 0;
+            tDELETE = 1;
+            tWHERE = 1;
+            for (var i = 0; i < allLines.Length; i++)
+                {
+                    allLines[i] = allLines[i].TrimEnd();
+                    allLines[i] = allLines[i].TrimStart();
+                //  var tess = allLines[i].Split(' ').Count();
+                if ((allLines[i].Split(' ').First() == "delete") || (allLines[i].Split(' ').First() == "Delete") || (allLines[i].Split(' ').First() == "DELETE"))
+                    {
+
+                    var kSet = allLines[i].Split(' ').First();
+                  
+                    counter ++;  
+                        if (tDELETE <= deleteType)  //# 99 : tag agar jika ada DELETE lagi tidak akan di baca
+                        {
+                        allLines[i] = allLines[i].TrimEnd();
+                        var iDELETE = allLines[i].Split(' ').Count();
+                           
+
+                        switch (iDELETE)
+                            {
+                                case 1:
+                                    uTableName[tDELETE-1] = allLines[i + 1].TrimStart();
+                                    tDELETE += 1;
+                                    break;
+                                case 2:
+                                    if(Regex.IsMatch(allLines[i], @"\b(from|From|FROM)\b"))
+                                        {
+                                          uTableName[tDELETE - 1] = allLines[i].Split(' ').Last();
+                                          uTableName[tDELETE - 1] += "  " + allLines[i + 1].TrimStart();
+                                        }
+                                    else
+                                        {
+                                          uTableName[tDELETE - 1] = allLines[i].Split(' ').Last();
+                                        }
+                                   
+                                    tDELETE += 1;
+                                    break;
+                                case 3:
+                                     uTableName[tDELETE - 1] = allLines[i].Replace(kSet, "");
+                                        tDELETE += 1;
+                                        break;
+                                
+                                default:
+                                uTableName[tDELETE - 1] = allLines[i].Replace(kSet, "");
+                                tDELETE += 1;
+                                break;
+                            }
+                          
+                      
+                        }
+
+                    }
+
+                 
+                    else if ((allLines[i].Split(' ').First() == "Where") || (allLines[i].Split(' ').First() == "where") || (allLines[i].Split(' ').First() == "WHERE"))
+                    {
+                   
+                        var kSet = allLines[i].Split(' ').First();
+                        
+                       
+                        if (tWHERE <= whereType)  
+                        {
+                        allLines[i] = allLines[i].TrimEnd();
+                        var iWHERE = allLines[i].Split(' ').Count();
+
+                            switch (iWHERE)
+                            {
+                                case 1:
+                                if (whereType > 1)
+                                {
+                                    var stop = false;
+                                    for (var y = i; y < allLines.Length; y++)
+                                    {
+                                        if ((stop != true) && (y != allLines.Length -1))
+                                        {
+                                            if (Regex.IsMatch(allLines[y+1], @"\b(delete|Delete|DELETE)\b"))
+                                            {
+                                                stop = true;
+                                            }
+                                            else
+                                            {
+                                                uWhere[tWHERE - 1] += allLines[y + 1].TrimStart() ;
+                                            }
+                                        }
+                                       
+                                        
+                                    }
+                                    uWhere[tWHERE - 1] = uWhere[tWHERE - 1].Replace(@"@", "p_");
+
+                                }
+                                else
+                                {
+                                    for (var y = i; y < allLines.Length; y++)
+                                    {
+                                        if (y != allLines.Length - 1)
+                                        { uWhere[tWHERE - 1] += allLines[y + 1].TrimStart() ; }
+                                    }
+                                    uWhere[tWHERE - 1] = uWhere[tWHERE - 1].Replace(@"@", "p_");
+                                }
+                                tWHERE += 1;
+                                break;
+                              
+                                default:
+                                uWhere[tWHERE - 1] = allLines[i].Replace(kSet, "");
+                                uWhere[tWHERE - 1] = uWhere[tWHERE - 1].Replace(@"@", "p_");
+                                tWHERE += 1;
+                                    break;
+                            }
+
+
+                        }
+
+                    }
+
+
+                }
+               
+            if (deleteType == 1)
+                    {
+                      if (whereType == 0)
+                        {
+                             nDelete = "DELETE \r\n" + uTableName[0] + ";\r\n";
+                        }
+                      else
+                {
+                    nDelete = "DELETE \r\n" + uTableName[0] + "\r\n" +
+                                   "WHERE\r\n" +
+                                   uWhere[0] + ";";
+                }
+                       
+                    }
+                               
+                else if (whereType == 0)
+                {
+                    for (var y = 0; y < deleteType; y++)
+                    {
+                    nDelete += "DELETE \r\n" + uTableName[y] + ";\r\n";
+                    }
+                    
+                }
+                else
+                    {
+                        for (var y = 0; y < deleteType; y++)
+                        {
+                             nDelete += "DELETE \r\n" + uTableName[y] + "\r\n" +
+                                         "WHERE\r\n" +
+                                        uWhere[y] + ";";
+                          }
+                    }
+
+     
+            return nDelete;
+        }
+
+        private string SPUpdatePattern(string sql)
+        {
+
+            string nUpdate;
+            int tAS = 0;
+            int tSET = 0;
+            int tUPDATE = 0;
+            int tWHERE = 0;
+            int updateType = 0;
+            nUpdate = "";
+            string uTableName = "";
+            string wKolom = "";
+            string[] sKolom;
+            string[] allLines;
+            int sIndex = 0;
+            int sLine = 0;
+
+            int totalLines = CountLines(sql);
+            allLines = new string[totalLines];
+            using (StringReader reader2 = new StringReader(sql))
+            {
+                string line = string.Empty;
+                do
+                {
+                    line = reader2.ReadLine();
+                    if (line != null)
+                    {
+                        allLines[sLine] = line.TrimStart();
+                        sLine++;
+                    }
+                } while (line != null);
+            }
+
+            for (var x = 0; x < allLines.Length; x++)
+            {
+                allLines[x] = allLines[x].TrimEnd();
+                allLines[x] = allLines[x].TrimStart();
+                if (Regex.IsMatch(allLines[x], @"\b(update|Update|UPDATE)\b"))
+                {
+                    updateType += 1;
+                }
+            }
+
+            if (updateType == 1)  //#### awal switch ##
+            {
+
+                var tsIndex = 0;
+                for (var s = 0; s < allLines.Length; s++)
+                {
+                    allLines[s] = allLines[s].TrimEnd();
+                    allLines[s] = allLines[s].TrimStart();
+                    if (Regex.IsMatch(allLines[s], @"\b(set|Set|SET)\b"))  //|| (Regex.IsMatch(allLines[s], "Set")) || (Regex.IsMatch(allLines[s], "SET")))
+                    {
+                        if (tsIndex == 0)
+                        {
+                            sIndex = s;
+                            tsIndex = 1;
+                        }
+                    }
+                    if (Regex.IsMatch(allLines[s], @"\b(where|Where|WHERE)\b"))  // || (Regex.IsMatch(allLines[s], "Where")) || (Regex.IsMatch(allLines[s], "WHERE")))
+                    { sIndex = s - sIndex - 1; }
+                }
+
+                if (sIndex != 0)
+                { sKolom = new string[sIndex]; }
+                else
+                { sKolom = new string[1]; }
+
+                for (var i = 0; i < allLines.Length; i++)
+                {
+                    allLines[i] = allLines[i].TrimEnd();
+                    allLines[i] = allLines[i].TrimStart();
+                    //  var tess = allLines[i].Split(' ').Count();
+                    if ((allLines[i].Split(' ').First() == "as") || (allLines[i].Split(' ').First() == "As") || (allLines[i].Split(' ').First() == "AS"))
+                    {
+                        if (tAS == 0)
+                        {
+                            var iAS = allLines[i].Split(' ').Count();
+
+                            switch (iAS)
+                            {
+                                case 1:
+                                    break;
+                                case 2:
+                                    uTableName = allLines[i + 1].TrimStart();
+                                    tUPDATE = 1;
+                                    break;
+                                case 3:
+                                    uTableName = allLines[i].Split(' ').Last();
+                                    tUPDATE = 1;
+                                    break;
+                                case 4:
+                                    string[] nTN = allLines[i].Split(' ');
+                                    uTableName = nTN[2];
+                                    for (var n = 0; n < sIndex; n++)
+                                    {
+                                        sKolom[n] = allLines[i + n + 1].TrimStart();
+                                        sKolom[n] = sKolom[n].Replace(@"@", "p_");
+                                    }
+                                    tUPDATE = 1;
+                                    tSET = 1;
+                                    break;
+                                default:
+                                    break;
+                            }
+                            tAS = 1;
+                        }
+
+                    }
+
+                    if ((allLines[i].Split(' ').First() == "Update") || (allLines[i].Split(' ').First() == "update") || (allLines[i].Split(' ').First() == "UPDATE"))
+                    {
+                        if (tUPDATE == 0)
+                        {
+                            var iUPDATE = allLines[i].Split(' ').Count();
+                            switch (iUPDATE)
+                            {
+                                case 1:
+                                    uTableName = allLines[i + 1].TrimStart();
+                                    tUPDATE = 1;
+                                    break;
+                                case 2:
+                                    uTableName = allLines[i].Split(' ').Last();
+                                    tUPDATE = 1;
+                                    break;
+                                case 3:
+                                    string[] nTN = allLines[i].Split(' ');
+                                    uTableName = nTN[1];
+                                    for (var n = 0; n < sIndex; n++)
+                                    {
+                                        sKolom[n] = allLines[i + n + 1].TrimStart();
+                                        sKolom[n] = sKolom[n].Replace(@"@", "p_");
+                                    }
+                                    tUPDATE = 1;
+                                    tSET = 1;
+                                    break;
+
+                                default:
+                                    break;
+                            }
+                            // uTableName = allLines[i + 1].TrimStart();
+                            tUPDATE = 1;
+                        }
+                    }
+                    else if ((allLines[i].Split(' ').First() == "Set") || (allLines[i].Split(' ').First() == "set") || (allLines[i].Split(' ').First() == "SET"))
+                    {
+                        if (tSET == 0)
+                        {
+                            //if (sIndex == 0)
+                            //{
+
+                            //    var tes = "tes";
+
+                            //}
+                            var iSET = allLines[i].Split(' ').Count();
+                            var kSet = allLines[i].Split(' ').First();
+                            switch (iSET)
+                            {
+                                case 1:
+
+                                    for (var n = 0; n < sIndex; n++)
+                                    {
+                                        sKolom[n] = allLines[i + n + 1].TrimStart();
+                                        sKolom[n] = sKolom[n].Replace(@"@", "p_");
+                                    }
+
+                                    tSET = 1;
+                                    break;
+
+                                default:
+
+                                    sKolom[0] = allLines[i].Replace(kSet, "");
+                                    sKolom[0] = sKolom[0].Replace(@"@", "p_");
+
+
+                                    tSET = 1;
+                                    break;
+                            }
+                            tSET = 1;
+                        }
+
+
+                    }
+                    else if ((allLines[i].Split(' ').First() == "Where") || (allLines[i].Split(' ').First() == "where") || (allLines[i].Split(' ').First() == "WHERE"))
+                    {
+                        if (tWHERE == 0)
+                        {
+                            var iWHERE = allLines[i].Split(' ').Count();
+                            var kWHERE = allLines[i].Split(' ').First();
+                            switch (iWHERE)
+                            {
+                                case 1:
+                                    wKolom = allLines[i + 1].TrimStart();
+                                    wKolom = wKolom.Replace(@"@", "p_");
+                                    break;
+
+                                default:
+                                    wKolom = allLines[i].Replace(kWHERE, "");
+                                    wKolom = wKolom.Replace(@"@", "p_");
+                                    break;
+                            }
+                        }
+
+                    }
+
+
+                }
+                nUpdate = "UPDATE " + uTableName + "\r\n" +
+                          "SET \r\n";
+                if (sIndex != 0)
+                {
+                    for (var n = 0; n < sIndex; n++)
+                    {
+                        nUpdate += sKolom[n] + "\r\n";
+                    }
+                }
+                else
+                {
+                    nUpdate += sKolom[0] + "\r\n";
+                }
+
+                nUpdate += "WHERE \r\n" + wKolom + ";\r\n";
+            }
+            else //## another type
+            {
+                nUpdate = "-- ### 2 update #####";
+            }
+            return nUpdate;
         }
 
         public void GetRecodScript(RecordSchemaInfoData schemaInfo, string path, string SchemaPath)
@@ -596,7 +1972,7 @@ namespace SQLMigration.Converter.ScriptBuilder
             var columnName = "";
             var nValues = "";
             var getValue = "";
-            var itsBinary = false;
+          //  var itsBinary = false;
             //if (schemaInfo.name == "BOS_AR_ArTrans")
             //    Console.WriteLine(schemaInfo.name);
 
@@ -646,8 +2022,8 @@ namespace SQLMigration.Converter.ScriptBuilder
                                             rColumnName[r] = childElement.Name;
                                             rColumnDT[r] = childElement.SchemaTypeName.Name;
                                         //   MessageBox.Show(childElement.Name + " " + childElement.SchemaTypeName.Name);
-                                            if (rColumnDT[r] == "base64Binary")
-                                               { itsBinary = true; }
+                                        //    if (rColumnDT[r] == "base64Binary")
+                                        //       { itsBinary = true; }
 
                                             r++;
                                         }
@@ -685,7 +2061,9 @@ namespace SQLMigration.Converter.ScriptBuilder
                 using (StreamWriter sw = new StreamWriter(pathResult))
                 {
                     //  sw.Write(nValue);
-
+                   // if (schemaInfo.name == "BOS_INV_StockTransferType")
+                    //    Console.WriteLine("test");
+                    
                     getValue += "INSERT INTO " + schemaInfo.name + "(" + columnName + ") " + "VALUES\r\n";
                     //    sw.WriteLine("INSERT INTO " + schemaInfo.name + "(" + columnName + ") " + "VALUES");
                     sw.Write(getValue);
@@ -700,7 +2078,7 @@ namespace SQLMigration.Converter.ScriptBuilder
                             var nColumn = list[p].ChildNodes[i].InnerText;
                              nColumn = nColumn.Replace(@"'", "''");
                             //   nValues += nColumn;
-                            if (nColumn == "")
+                            if (nColumn == "" || nColumn == null)
                             {
                                 if (i == (list[p].ChildNodes.Count - 1))
                                 {
@@ -827,6 +2205,7 @@ namespace SQLMigration.Converter.ScriptBuilder
             new TablesFieldDataType { DataType="int", ConvertedDataType="integer" },
             new TablesFieldDataType { DataType="longvarbinary", ConvertedDataType="bytea" },
             new TablesFieldDataType { DataType="longvarchar", ConvertedDataType="text" },
+            new TablesFieldDataType { DataType="text", ConvertedDataType="text" },
             new TablesFieldDataType { DataType="longvarwchar", ConvertedDataType="text" },
             new TablesFieldDataType { DataType="numeric", ConvertedDataType="numeric" },
             new TablesFieldDataType { DataType="bit", ConvertedDataType="bit" },
